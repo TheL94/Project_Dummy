@@ -7,6 +7,5 @@ public class Cell : MonoBehaviour {
     public void Init(Vector3 _position)
     {
         transform.position = _position;
-
     }
 }
