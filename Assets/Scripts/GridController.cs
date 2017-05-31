@@ -16,10 +16,12 @@ public class GridController : MonoBehaviour
     public void Setup()
     {
         CreateGrid(GridHeight, GridWidth, CellSize, CellOffset);
+
         if(CellImage != null)
             ShowGrid(CellImage, GridHeight, GridWidth);
-    }
 
+        InitGridNodes(GridHeight, GridWidth);
+    }
     public GridNode GetGridCenter()
     {     
         return Grid[GridHeight / 2, GridWidth / 2];
@@ -30,25 +32,29 @@ public class GridController : MonoBehaviour
         return Grid[_gridPosition.x, _gridPosition.y];
     }
 
-    public GridNode GetAdjacentPositions(GridNode _node, Directions _direction)
+    public List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
     {
-        GridNode adjacentPosition = new GridNode();
-        switch (_direction) 
+        List<GridNode> adjacentNodes = new List<GridNode>();
+
+        if (_gridPosition.x + 1 < GridHeight)
         {
-            case Directions.Up:
-                adjacentPosition = Grid[_node.GridPosition.x, _node.GridPosition.y + 1];
-                break;
-            case Directions.Down:
-                adjacentPosition = Grid[_node.GridPosition.x, _node.GridPosition.y - 1];
-                break;
-            case Directions.Left:
-                adjacentPosition = Grid[_node.GridPosition.x - 1, _node.GridPosition.y];
-                break;
-            case Directions.Rigth:
-                adjacentPosition = Grid[_node.GridPosition.x + 1, _node.GridPosition.y];
-                break;
+            adjacentNodes.Add(Grid[_gridPosition.x + 1, _gridPosition.y]);
         }
-        return adjacentPosition;
+        if (_gridPosition.x - 1 >= 0)
+        { 
+            adjacentNodes.Add(Grid[_gridPosition.x - 1, _gridPosition.y]);
+        }
+
+        if(_gridPosition.y + 1 < GridWidth)
+        { 
+            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y + 1]);
+        }
+        if (_gridPosition.y - 1 >= 0)
+        { 
+            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y - 1]);
+        }
+
+        return adjacentNodes;
     }
 
     void CreateGrid(int _gridHeight, int _gridWidth, float _cellSize, float _cellOffset)
@@ -59,10 +65,22 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < _gridWidth; j++)
             {
-                Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, transform.position.y + j * _cellSize + _cellOffset, 0), GridNode.CellState.Available);
+                Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, transform.position.y + j * _cellSize + _cellOffset, 0));
             }
         }
     }
+
+    void InitGridNodes(int _gridHeight, int _gridWidth)
+    {
+        for (int i = 0; i < _gridHeight; i++)
+        {
+            for (int j = 0; j < _gridWidth; j++)
+            {
+                Grid[i, j].Init(GetAdjacentNodes(new GridPosition(i, j)));
+            }
+        }
+    }
+
 
     void ShowGrid(GameObject _cellImage, int _gridHeight, int _gridWidth)
     {
@@ -74,6 +92,4 @@ public class GridController : MonoBehaviour
             }
         }
     }
-
-    public enum Directions {Up, Down, Left, Rigth}
 }

@@ -6,19 +6,22 @@ public class GridNode
 {
     public GridPosition GridPosition;
     public Vector3 WorldPosition;
-    public CellState State;
     public Cell RelativeCell;
+
+    List<GridNode> AdjacentNodes;
 
     public GridNode() { }
 
-    public GridNode(GridPosition _gridPosition, Vector3 _worldPosition, CellState _state)
+    public GridNode(GridPosition _gridPosition, Vector3 _worldPosition)
     {
         GridPosition = _gridPosition;
         WorldPosition = _worldPosition;
-        State = _state;
     }
 
-    public enum CellState { Available, Occupied }
+    public void Init(List<GridNode> _adjacentNodes)
+    {
+        AdjacentNodes = _adjacentNodes;
+    }
 }
 
 public struct GridPosition
