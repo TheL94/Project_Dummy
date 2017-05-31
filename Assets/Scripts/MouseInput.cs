@@ -57,7 +57,7 @@ public class MouseInput : MonoBehaviour {
 
         if (node != null)
         {
-            if(GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(GameManager.I.GridCtrl.GetAdjacentNodes(node.GridPosition)))
+            if(GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
             {
                 transform.position = node.WorldPosition;
                 node.RelativeCell = GetComponent<Cell>();

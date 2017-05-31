@@ -8,7 +8,7 @@ public class GridNode
     public Vector3 WorldPosition;
     public Cell RelativeCell;
 
-    List<GridNode> AdjacentNodes;
+    public List<GridNode> AdjacentNodes;
 
     public GridNode() { }
 

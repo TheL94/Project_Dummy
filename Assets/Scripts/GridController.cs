@@ -45,9 +45,9 @@ public class GridController : MonoBehaviour
         return null;
     }
 
-    public bool CheckAdjacentNodesRelativeCell(List<GridNode> _nodes)
+    public bool CheckAdjacentNodesRelativeCell(GridNode _node)
     {
-        foreach (GridNode node in _nodes)
+        foreach (GridNode node in _node.AdjacentNodes)
         {
             if (node.RelativeCell != null)
             {
@@ -55,31 +55,6 @@ public class GridController : MonoBehaviour
             }
         }
         return false;
-    }
-
-    public List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
-    {
-        List<GridNode> adjacentNodes = new List<GridNode>();
-
-        if (_gridPosition.x + 1 < GridHeight)
-        {
-            adjacentNodes.Add(Grid[_gridPosition.x + 1, _gridPosition.y]);
-        }
-        if (_gridPosition.x - 1 >= 0)
-        { 
-            adjacentNodes.Add(Grid[_gridPosition.x - 1, _gridPosition.y]);
-        }
-
-        if(_gridPosition.y + 1 < GridWidth)
-        { 
-            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y + 1]);
-        }
-        if (_gridPosition.y - 1 >= 0)
-        { 
-            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y - 1]);
-        }
-
-        return adjacentNodes;
     }
 
     void CreateGrid(int _gridHeight, int _gridWidth, float _cellSize, float _cellOffset)
@@ -116,5 +91,30 @@ public class GridController : MonoBehaviour
                 Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
             }
         }
+    }
+
+    List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
+    {
+        List<GridNode> adjacentNodes = new List<GridNode>();
+
+        if (_gridPosition.x + 1 < GridHeight)
+        {
+            adjacentNodes.Add(Grid[_gridPosition.x + 1, _gridPosition.y]);
+        }
+        if (_gridPosition.x - 1 >= 0)
+        {
+            adjacentNodes.Add(Grid[_gridPosition.x - 1, _gridPosition.y]);
+        }
+
+        if (_gridPosition.y + 1 < GridWidth)
+        {
+            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y + 1]);
+        }
+        if (_gridPosition.y - 1 >= 0)
+        {
+            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.y - 1]);
+        }
+
+        return adjacentNodes;
     }
 }
