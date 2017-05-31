@@ -5,16 +5,14 @@ using UnityEngine;
 public class MouseInput : MonoBehaviour {
 
     Vector3 startPosition;
-    List<CheckRoomCollision> CheckRoomControllers = new List<CheckRoomCollision>();
     bool InPosition = false;
     float doubleClickStart = 0;
 
+    Room room;
+
     private void Start()
     {
-        foreach (CheckRoomCollision controller in GetComponentsInChildren<CheckRoomCollision>())
-        {
-            CheckRoomControllers.Add(controller);
-        }
+        room = GetComponent<Room>();
     }
 
     private void OnMouseDown()
@@ -34,7 +32,7 @@ public class MouseInput : MonoBehaviour {
 
     void OnMouseUp()
     {
-        if ((Time.time - doubleClickStart) <= 0.3f)
+        if ((Time.time - doubleClickStart) <= 0.4f)
         {
             DoubleClickActions();
             doubleClickStart = -1;
@@ -48,26 +46,25 @@ public class MouseInput : MonoBehaviour {
 
     void DoubleClickActions()
     {
-        Debug.Log("Double Clicked!");
-        // TODO : chiammare la funzione di rotazione della stanza su cui stai cliccando
+        room.Rotate();
     }
 
     void SingleClickActions()
     {
-        if (!InPosition)
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
+
+        if (node != null)
         {
-            foreach (CheckRoomCollision controller in CheckRoomControllers)
+            if(GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(GameManager.I.GridCtrl.GetAdjacentNodes(node.GridPosition)))
             {
-                if (controller.CanAttach == true)
-                {
-                    Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
-                    Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-                    transform.position = objPosition;
-                    InPosition = true;
-                }
-                else
-                    transform.position = startPosition;
+                transform.position = node.WorldPosition;
+                node.RelativeCell = GetComponent<Cell>();
+                InPosition = true;
+                return;
             }
         }
+        transform.position = startPosition;
     }
 }

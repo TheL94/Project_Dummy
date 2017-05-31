@@ -32,6 +32,31 @@ public class GridController : MonoBehaviour
         return Grid[_gridPosition.x, _gridPosition.y];
     }
 
+    public GridNode GetSpecificGridNode(Vector3 _worldPosition)
+    {
+        for (int i = 0; i < GridHeight; i++)
+        {
+            for (int j = 0; j < GridWidth; j++)
+            {
+                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < 0.3f)
+                    return Grid[i, j];
+            }
+        }
+        return null;
+    }
+
+    public bool CheckAdjacentNodesRelativeCell(List<GridNode> _nodes)
+    {
+        foreach (GridNode node in _nodes)
+        {
+            if (node.RelativeCell != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
     {
         List<GridNode> adjacentNodes = new List<GridNode>();
