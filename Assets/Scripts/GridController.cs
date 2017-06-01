@@ -38,7 +38,7 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < GridWidth; j++)
             {
-                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < 0.3f)
+                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < 0.25f)
                     return Grid[i, j];
             }
         }

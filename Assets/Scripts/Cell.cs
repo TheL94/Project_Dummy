@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class Cell : MonoBehaviour {
+public class Cell : MonoBehaviour
+{
+    public List<Door> CellDoors = new List<Door>();
+    bool IsInPosition;
 
-    public void Init(Vector3 _position)
+    public void Setup()
     {
-        transform.position = _position;
+        CellDoors = GetComponentsInChildren<Door>().ToList();
     }
 }

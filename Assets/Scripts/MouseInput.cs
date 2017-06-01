@@ -24,9 +24,7 @@ public class MouseInput : MonoBehaviour {
     {
         if (!InPosition)
         {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
-            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            transform.position = objPosition;
+            MousePositionToGridPosition();
         }
     }
 
@@ -40,7 +38,7 @@ public class MouseInput : MonoBehaviour {
         else
         {
             doubleClickStart = Time.time;
-            SingleClickActions();
+            DropAction();
         }
     }
 
@@ -49,7 +47,19 @@ public class MouseInput : MonoBehaviour {
         room.Rotate();
     }
 
-    void SingleClickActions()
+    void MousePositionToGridPosition()
+    {
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
+
+        if (node != null)
+            transform.position = node.WorldPosition;
+        else
+            transform.position = mousePosition;
+    }
+
+    void DropAction()
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -57,7 +67,7 @@ public class MouseInput : MonoBehaviour {
 
         if (node != null)
         {
-            if(GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
+            if (GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
             {
                 transform.position = node.WorldPosition;
                 node.RelativeCell = GetComponent<Cell>();
@@ -65,6 +75,6 @@ public class MouseInput : MonoBehaviour {
                 return;
             }
         }
-        transform.position = startPosition;
+        transform.position = startPosition;   
     }
 }
