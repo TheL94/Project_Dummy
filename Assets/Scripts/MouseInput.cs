@@ -70,7 +70,7 @@ public class MouseInput : MonoBehaviour {
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
 
-        if (node != null)
+        if (node != null & node.RelativeCell == null)
         {
             if (GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
             {
