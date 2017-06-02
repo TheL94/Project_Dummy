@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        RoomMng = Instantiate(RoomManagerPrefab);
+        RoomMng = GetComponentInChildren<RoomManager>();
         GridCtrl = Instantiate(GridControllerPrefab);
 
         GridCtrl.Setup();
