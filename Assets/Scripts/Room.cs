@@ -36,7 +36,7 @@ public class Room : MonoBehaviour {
         if (canRotate)
         {
             canRotate = false;
-            transform.DORotate(Vector3.forward * -90, 0.5f).OnComplete(() => { canRotate = true; }); 
+            transform.DORotate(Vector3.up * -90, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() => { canRotate = true; }); 
         }
     }
 }

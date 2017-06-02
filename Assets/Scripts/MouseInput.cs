@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 
 public class MouseInput : MonoBehaviour {
 
-    float doubleClickStart = 0;
-
+    public bool IsSelected;
     Room room;
 
     private void Start()
@@ -19,35 +18,33 @@ public class MouseInput : MonoBehaviour {
         room.startPosition = transform.position;
     }
 
-    private void OnMouseDrag()
+    protected void Update()
     {
-        if (!room.InPosition)
+        if (IsSelected)
         {
-            MousePositionToGridPosition();
+            MousePositionToGridPosition(); 
         }
     }
 
-    void OnMouseUp()
-    {
-        if (!room.InPosition)
-        {
-            if ((Time.time - doubleClickStart) <= 0.4f)
-            {
-                DoubleClickActions();
-                doubleClickStart = -1;
-            }
-            else
-            {
-                doubleClickStart = Time.time;
-                DropAction();
-            } 
-        }
-    }
+    //void OnMouseUp()
+    //{
+    //    if (!room.InPosition)
+    //    {
+    //        if ((Time.time - doubleClickStart) <= 0.4f)
+    //        {
+    //            DoubleClickActions();
+    //            doubleClickStart = -1;
+    //        }
+    //        else
+    //        {
+    //            IsSelected = false;
+    //            doubleClickStart = Time.time;
+    //            DropAction();
+    //        } 
+    //    }
+    //}
 
-    void DoubleClickActions()
-    {
-        room.Rotate();
-    }
+    
 
     void MousePositionToGridPosition()
     {
