@@ -18,13 +18,7 @@ public class MouseInput : MonoBehaviour {
         room.startPosition = transform.position;
     }
 
-    protected void Update()
-    {
-        if (IsSelected)
-        {
-            MousePositionToGridPosition(); 
-        }
-    }
+    
 
     //void OnMouseUp()
     //{
@@ -46,7 +40,7 @@ public class MouseInput : MonoBehaviour {
 
     
 
-    void MousePositionToGridPosition()
+    public void MousePositionToGridPosition()
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);

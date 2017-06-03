@@ -6,48 +6,54 @@ public class RoomController : MonoBehaviour {
 
     float doubleClickStart = 0;
     public Room Room;
-    public RotateRoom RotateRoom;
-
-    Vector3 roomStartPosition;
-
-
-    private void Start()
-    {
-        RotateRoom.Init(this);
+    float timeToHold = 0.15f;
+    Vector3 _roomStartPosition;
+    public Vector3 RoomStartPosition { get
+        { return _roomStartPosition; }
+        set {
+            if (_roomStartPosition == new Vector3(0,0,0))
+            {
+                _roomStartPosition = value; 
+            }
+        }
     }
 
     private void OnMouseDown()
     {
-        roomStartPosition = Room.transform.position;
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
-        Vector3 ObjPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Room.GetComponent<MouseInput>().enabled = true;
-        Room.transform.position = ObjPosition;
-        Room.GetComponent<MouseInput>().IsSelected = true;
+        RoomStartPosition = Room.transform.position;
+        
+    }
+
+
+    private void OnMouseDrag()
+    {
+        timeToHold -= Time.deltaTime;
+        if(timeToHold <= 0)
+        {
+            Room.GetComponent<MouseInput>().MousePositionToGridPosition();
+        }
     }
 
     private void OnMouseUp()
     {
-
-        if ((Time.time - doubleClickStart) <= 0.4f)
+        if ((Time.time - doubleClickStart) <= 0.2f)
         {
             RotateRoomAction();
             doubleClickStart = -1;
         }
         else
         {
-            //IsSelected = false;
             doubleClickStart = Time.time;
             DropAction();
         }
+        timeToHold = 0.15f;
     }
 
     void DropAction()
     {
-        Room.GetComponent<MouseInput>().IsSelected = false;
         //Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
         //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Room.transform.position = roomStartPosition;
+        Room.transform.position = RoomStartPosition;
     }
     public void RotateRoomAction()
     {
