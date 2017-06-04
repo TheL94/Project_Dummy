@@ -9,6 +9,8 @@ public class GridController : MonoBehaviour
     public float CellSize;
     public float CellOffset;
 
+    public float GridPositionSensitivity;
+
     public GameObject CellImage;
 
     GridNode[,] Grid;
@@ -39,7 +41,7 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < GridHeight; j++)
             {
-                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < 0.3f)
+                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < GridPositionSensitivity)
                     return Grid[i, j];
             }
         }

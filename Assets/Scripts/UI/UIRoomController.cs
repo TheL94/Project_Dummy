@@ -4,14 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IDropHandler, IPointerDownHandler {
+public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IDropHandler {
 
     public Room ActualRoom;
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        ActualRoom.RoomMovment.FollowMousePosition(eventData);
-    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -19,14 +14,14 @@ public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandle
             ActualRoom.Rotate();            
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        ActualRoom.RoomMovment.FollowMousePosition(eventData);
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("drop");
         ActualRoom.RoomMovment.DropAction(eventData);
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        ActualRoom.StartPosition = ActualRoom.transform.position;
     }
 }

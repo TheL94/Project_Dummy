@@ -15,37 +15,31 @@ public class RoomMovment : MonoBehaviour {
 
     public void FollowMousePosition(PointerEventData _eventData)
     {
-        //Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 100);
-        //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        //GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
-
-        //if (node != null)
-        //    transform.position = node.WorldPosition;
-        //else
-        //    transform.position = objPosition;
-
-        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z));
+        Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
+        Debug.Log(objPosition);
+        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
 
         if (node != null)
             transform.position = node.WorldPosition;
         else
-            transform.position = Camera.main.ScreenToWorldPoint(_eventData.position);
+            transform.position = objPosition;
     }
 
     public void DropAction(PointerEventData _eventData)
     {
-        Debug.Log("drop");
-        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z));
+        Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
+        GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
 
-        if (node != null & node.RelativeCell == null)
+        if (node != null && node.RelativeCell == null)
         {
             if (GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
             {
                 transform.position = node.WorldPosition;
-                node.RelativeCell = GetComponent<Cell>();
+                node.RelativeCell = room.RoomCells[0];
                 return;
             }
         }
-        transform.position = room.StartPosition;
+
+        room.transform.position = room.StartPosition;
     }
 }

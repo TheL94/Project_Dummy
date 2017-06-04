@@ -24,6 +24,7 @@ public class Room : MonoBehaviour {
     public void Init()
     {
         RoomMovment.Init(this);
+        StartPosition = transform.position;
     }
 
     public void Rotate()
