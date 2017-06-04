@@ -16,7 +16,6 @@ public class RoomMovment : MonoBehaviour {
     public void FollowMousePosition(PointerEventData _eventData)
     {
         Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
-        Debug.Log(objPosition);
         GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
 
         if (node != null)

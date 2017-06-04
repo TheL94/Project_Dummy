@@ -41,7 +41,7 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < GridHeight; j++)
             {
-                if (Vector2.Distance(Grid[i, j].WorldPosition, _worldPosition) < GridPositionSensitivity)
+                if (Vector3.Distance(Grid[i, j].WorldPosition, _worldPosition) <= GridPositionSensitivity)
                     return Grid[i, j];
             }
         }
