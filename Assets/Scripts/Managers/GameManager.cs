@@ -30,7 +30,5 @@ public class GameManager : MonoBehaviour {
 
         GridCtrl.Setup();
         RoomMng.Setup();
-
-        Camera.main.transform.position = new Vector3 (RoomMng.FirstRoom.transform.position.x, Camera.main.transform.position.y, RoomMng.FirstRoom.transform.position.z);
     }
 }

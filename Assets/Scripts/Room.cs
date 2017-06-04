@@ -9,7 +9,7 @@ public class Room : MonoBehaviour {
     public List<Cell> RoomCells;
 
     [HideInInspector]
-    public MouseInput MouseInput;
+    public RoomMovment RoomMovment;
     [HideInInspector]
     public Vector3 StartPosition;
 
@@ -18,12 +18,12 @@ public class Room : MonoBehaviour {
     private void Awake()
     {
         RoomCells = GetComponentsInChildren<Cell>().ToList();
-        MouseInput = GetComponent<MouseInput>();
+        RoomMovment = GetComponent<RoomMovment>();
     }
 
     public void Init()
     {
-        MouseInput.Init(this);
+        RoomMovment.Init(this);
     }
 
     public void Rotate()
