@@ -16,12 +16,12 @@ public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
-        ActualRoom.RoomMovment.FollowMousePosition(eventData);
+        ActualRoom.RoomMovment.DragActions(eventData);
     }
 
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("drop");
-        ActualRoom.RoomMovment.DropAction(eventData);
+        ActualRoom.RoomMovment.DropActions(eventData);
     }
 }
