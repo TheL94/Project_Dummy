@@ -24,7 +24,7 @@ public class RoomMovment : MonoBehaviour {
             transform.position = objPosition;
     }
 
-    public void DropActions(PointerEventData _eventData)
+    public bool DropActions(PointerEventData _eventData)
     {
         Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
         GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
@@ -35,10 +35,11 @@ public class RoomMovment : MonoBehaviour {
             {
                 transform.position = node.WorldPosition;
                 node.RelativeCell = room.RoomCells[0];
-                return;
+                return true;
             }
         }
 
         room.transform.position = room.StartPosition;
+        return false;
     }
 }

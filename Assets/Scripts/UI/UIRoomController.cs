@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IDropHandler {
+public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler {
 
     public Room ActualRoom;
+    public int Index;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -19,9 +20,12 @@ public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandle
         ActualRoom.RoomMovment.DragActions(eventData);
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("drop");
-        ActualRoom.RoomMovment.DropActions(eventData);
+        if (eventData.dragging)
+        {
+            if(ActualRoom.RoomMovment.DropActions(eventData))
+                ActualRoom = GameManager.I.RoomMng.InstantiateRoom(Index);
+        }
     }
 }

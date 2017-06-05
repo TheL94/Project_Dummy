@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour {
 
     public RoomManager RoomManagerPrefab;
     public GridController GridControllerPrefab;
+    public UIManager UIManagerPrefab;
 
     [HideInInspector]
     public RoomManager RoomMng;
     [HideInInspector]
     public GridController GridCtrl;
+    [HideInInspector]
+    public UIManager UIMng;
 
     private void Awake()
     {
@@ -25,10 +28,12 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        RoomMng = Instantiate(RoomManagerPrefab);
         GridCtrl = Instantiate(GridControllerPrefab);
+        UIMng = Instantiate(UIManagerPrefab);
+        RoomMng = Instantiate(RoomManagerPrefab);
 
         GridCtrl.Setup();
+        UIMng.CreateCanvasGame();
         RoomMng.Setup();
     }
 }
