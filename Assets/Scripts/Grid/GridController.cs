@@ -8,7 +8,7 @@ public class GridController : MonoBehaviour
     public int GridWidth;
     public float CellSize;
     public float CellOffset;
-
+    public float GridY = 0f;
     public float GridPositionSensitivity;
 
     public GameObject CellImage;
@@ -68,7 +68,7 @@ public class GridController : MonoBehaviour
         {
             for (int j = 0; j < _gridHeight; j++)
             {
-                Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, 0, transform.position.z + j * _cellSize + _cellOffset));
+                Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, GridY, transform.position.z + j * _cellSize + _cellOffset));
             }
         }
     }
