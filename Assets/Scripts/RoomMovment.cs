@@ -34,6 +34,7 @@ public class RoomMovment : MonoBehaviour {
             if (GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
             {
                 transform.position = node.WorldPosition;
+                room.transform.parent = null;
                 node.RelativeCell = room.RoomCells[0];
                 return true;
             }

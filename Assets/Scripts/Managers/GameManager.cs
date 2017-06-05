@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour {
     public GridController GridCtrl;
     [HideInInspector]
     public UIManager UIMng;
+    [HideInInspector]
+    public RoomPreviewController RoomPreviewCtrl;
 
     private void Awake()
     {
@@ -32,8 +34,15 @@ public class GameManager : MonoBehaviour {
         UIMng = Instantiate(UIManagerPrefab);
         RoomMng = Instantiate(RoomManagerPrefab);
 
+        CreateRoomPreview();
         GridCtrl.Setup();
         UIMng.CreateCanvasGame();
         RoomMng.Setup();
+    }
+
+    public void CreateRoomPreview()
+    {
+        RoomPreviewCtrl = Instantiate(Resources.Load("Prefabs/RoomUIPreviews/RoomPreviewsContainer") as GameObject, transform).GetComponentInChildren<RoomPreviewController>();
+        RoomPreviewCtrl.Init();
     }
 }

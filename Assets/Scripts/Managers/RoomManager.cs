@@ -12,7 +12,7 @@ public class RoomManager : MonoBehaviour
     {
         InstantiateFirstRoom(RoomPrefab, GameManager.I.GridCtrl.GetGridCenter());
 
-        for (int i = 0; i < GameManager.I.UIMng.roomPreviewController.RoomSpawns.Count; i++)
+        for (int i = 0; i < GameManager.I.RoomPreviewCtrl.RoomSpawns.Count; i++)
         {
             GameManager.I.UIMng.roomPreviewController.UIRoomControllers[i].ActualRoom = InstantiateRoom(i);
         }
@@ -29,7 +29,7 @@ public class RoomManager : MonoBehaviour
 
     public Room InstantiateRoom(int _roomIndex)
     {
-        Room room = Instantiate(RoomPrefab, GameManager.I.UIMng.roomPreviewController.RoomSpawns[_roomIndex]);
+        Room room = Instantiate(RoomPrefab, GameManager.I.RoomPreviewCtrl.RoomSpawns[_roomIndex]);
         room.Init();
         return room;
     }

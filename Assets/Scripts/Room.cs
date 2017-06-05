@@ -10,8 +10,17 @@ public class Room : MonoBehaviour {
 
     [HideInInspector]
     public RoomMovment RoomMovment;
-    [HideInInspector]
-    public Vector3 StartPosition;
+
+    Vector3 _startPosition; 
+    public Vector3 StartPosition {
+    get { return _startPosition; }
+    set {
+            if (_startPosition == new Vector3(0,0,0))
+            {
+                _startPosition = value; 
+            }
+        }
+    }
 
     bool canRotate = true;
 

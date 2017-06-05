@@ -5,11 +5,11 @@ using UnityEngine;
 public class UIManager : MonoBehaviour {
 
     [HideInInspector]
-    public RoomPreviewController roomPreviewController;
+    public RoomPanelController roomPreviewController;
 
     public void CreateCanvasGame()
     {
-        roomPreviewController = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform).GetComponentInChildren<RoomPreviewController>();
+        roomPreviewController = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform).GetComponentInChildren<RoomPanelController>();
         roomPreviewController.Init();
     }
 
