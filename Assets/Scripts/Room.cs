@@ -32,7 +32,7 @@ public class Room : MonoBehaviour {
         if (canRotate)
         {
             canRotate = false;
-            transform.DORotate(transform.up * 90f, 0.5f).OnComplete(() => { canRotate = true; });
+            transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() => { canRotate = true; });
         }
     }
 }
