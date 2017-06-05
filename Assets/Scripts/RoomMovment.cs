@@ -26,7 +26,7 @@ public class RoomMovment : MonoBehaviour {
 
     public bool DropActions(PointerEventData _eventData)
     {
-        Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
+        Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, Camera.main.nearClipPlane, Camera.main.ScreenToWorldPoint(_eventData.position).z);
         GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
 
         if (node != null && node.RelativeCell == null)
