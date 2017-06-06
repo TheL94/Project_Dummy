@@ -25,7 +25,11 @@ public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandle
         if (eventData.dragging)
         {
             if(ActualRoom.RoomMovment.DropActions(eventData))
+            {
+                Destroy(ActualRoom.RoomMovment);
+                // crea nuova stanza visualizzata nella ui
                 ActualRoom = GameManager.I.RoomMng.InstantiateRoom(Index);
+            }
         }
     }
 }
