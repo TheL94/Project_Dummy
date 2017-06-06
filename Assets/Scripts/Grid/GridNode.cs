@@ -2,36 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridNode
+namespace Framework.Grid
 {
-    public GridPosition GridPosition;
-    public Vector3 WorldPosition;
-    public Cell RelativeCell;
-
-    public List<GridNode> AdjacentNodes;
-
-    public GridNode() { }
-
-    public GridNode(GridPosition _gridPosition, Vector3 _worldPosition)
+    public class GridNode
     {
-        GridPosition = _gridPosition;
-        WorldPosition = _worldPosition;
+        public GridPosition GridPosition;
+        public Vector3 WorldPosition;
+        public Cell RelativeCell;
+
+        public List<GridNode> AdjacentNodes;
+
+        public GridNode() { }
+
+        public GridNode(GridPosition _gridPosition, Vector3 _worldPosition)
+        {
+            GridPosition = _gridPosition;
+            WorldPosition = _worldPosition;
+        }
+
+        public void Init(List<GridNode> _adjacentNodes)
+        {
+            AdjacentNodes = _adjacentNodes;
+        }
     }
 
-    public void Init(List<GridNode> _adjacentNodes)
+    public struct GridPosition
     {
-        AdjacentNodes = _adjacentNodes;
-    }
-}
+        public int x;
+        public int z;
 
-public struct GridPosition
-{
-    public int x;
-    public int z;
-
-    public GridPosition(int _x, int _z)
-    {
-        x = _x;
-        z = _z;
+        public GridPosition(int _x, int _z)
+        {
+            x = _x;
+            z = _z;
+        }
     }
 }

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell : MonoBehaviour
+namespace Framework.Grid
 {
+    public class Cell : MonoBehaviour
+    {
 
+    }
 }

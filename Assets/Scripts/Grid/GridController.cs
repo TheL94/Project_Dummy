@@ -2,121 +2,124 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridController : MonoBehaviour
+namespace Framework.Grid
 {
-    public int GridHeight;
-    public int GridWidth;
-    public float CellSize;
-    public float CellOffset;
-    public float GridY = 0f;
-    public float GridPositionSensitivity;
-
-    public GameObject CellImage;
-
-    GridNode[,] Grid;
-
-    public void Setup()
+    public class GridController : MonoBehaviour
     {
-        CreateGrid(GridWidth, GridHeight, CellSize, CellOffset);
+        public int GridHeight;
+        public int GridWidth;
+        public float CellSize;
+        public float CellOffset;
+        public float GridY = 0f;
+        public float GridPositionSensitivity;
 
-        if (CellImage != null)
-            ShowGrid(CellImage, GridWidth, GridHeight);
+        public GameObject CellImage;
 
-        InitGridNodes(GridWidth, GridHeight);
-    }
+        GridNode[,] Grid;
 
-    public GridNode GetGridCenter()
-    {     
-        return Grid[GridWidth / 2, GridHeight / 2];
-    }
-
-    public GridNode GetSpecificGridNode(GridPosition _gridPosition)
-    {
-        return Grid[_gridPosition.x, _gridPosition.z];
-    }
-
-    public GridNode GetSpecificGridNode(Vector3 _worldPosition)
-    {
-        for (int i = 0; i < GridWidth; i++)
+        public void Setup()
         {
-            for (int j = 0; j < GridHeight; j++)
+            CreateGrid(GridWidth, GridHeight, CellSize, CellOffset);
+
+            if (CellImage != null)
+                ShowGrid(CellImage, GridWidth, GridHeight);
+
+            InitGridNodes(GridWidth, GridHeight);
+        }
+
+        public GridNode GetGridCenter()
+        {
+            return Grid[GridWidth / 2, GridHeight / 2];
+        }
+
+        public GridNode GetSpecificGridNode(GridPosition _gridPosition)
+        {
+            return Grid[_gridPosition.x, _gridPosition.z];
+        }
+
+        public GridNode GetSpecificGridNode(Vector3 _worldPosition)
+        {
+            for (int i = 0; i < GridWidth; i++)
             {
-                if (Vector3.Distance(Grid[i, j].WorldPosition, _worldPosition) <= GridPositionSensitivity)
-                    return Grid[i, j];
+                for (int j = 0; j < GridHeight; j++)
+                {
+                    if (Vector3.Distance(Grid[i, j].WorldPosition, _worldPosition) <= GridPositionSensitivity)
+                        return Grid[i, j];
+                }
+            }
+            return null;
+        }
+
+        public bool CheckAdjacentNodesRelativeCell(GridNode _node)
+        {
+            foreach (GridNode node in _node.AdjacentNodes)
+            {
+                if (node.RelativeCell != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void CreateGrid(int _gridWidth, int _gridHeight, float _cellSize, float _cellOffset)
+        {
+            Grid = new GridNode[_gridWidth, _gridHeight];
+
+            for (int i = 0; i < _gridWidth; i++)
+            {
+                for (int j = 0; j < _gridHeight; j++)
+                {
+                    Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, GridY, transform.position.z + j * _cellSize + _cellOffset));
+                }
             }
         }
-        return null;
-    }
 
-    public bool CheckAdjacentNodesRelativeCell(GridNode _node)
-    {
-        foreach (GridNode node in _node.AdjacentNodes)
+        void InitGridNodes(int _gridWidth, int _gridHeight)
         {
-            if (node.RelativeCell != null)
+            for (int i = 0; i < _gridWidth; i++)
             {
-                return true;
+                for (int j = 0; j < _gridHeight; j++)
+                {
+                    Grid[i, j].Init(GetAdjacentNodes(new GridPosition(i, j)));
+                }
             }
         }
-        return false;
-    }
 
-    void CreateGrid(int _gridWidth, int _gridHeight, float _cellSize, float _cellOffset)
-    {
-        Grid = new GridNode[_gridWidth, _gridHeight];
-
-        for (int i = 0; i < _gridWidth; i++)
+        void ShowGrid(GameObject _cellImage, int _gridWidth, int _gridHeight)
         {
-            for (int j = 0; j < _gridHeight; j++)
+            for (int i = 0; i < _gridWidth; i++)
             {
-                Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, GridY, transform.position.z + j * _cellSize + _cellOffset));
+                for (int j = 0; j < _gridHeight; j++)
+                {
+                    Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
+                }
             }
         }
-    }
 
-    void InitGridNodes(int _gridWidth, int _gridHeight)
-    {
-        for (int i = 0; i < _gridWidth; i++)
+        List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
         {
-            for (int j = 0; j < _gridHeight; j++)
+            List<GridNode> adjacentNodes = new List<GridNode>();
+
+            if (_gridPosition.x + 1 < GridWidth)
             {
-                Grid[i, j].Init(GetAdjacentNodes(new GridPosition(i, j)));
+                adjacentNodes.Add(Grid[_gridPosition.x + 1, _gridPosition.z]);
             }
-        }
-    }
-
-    void ShowGrid(GameObject _cellImage, int _gridWidth, int _gridHeight)
-    {
-        for (int i = 0; i < _gridWidth; i++)
-        {
-            for (int j = 0; j < _gridHeight; j++)
+            if (_gridPosition.x - 1 >= 0)
             {
-                Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
+                adjacentNodes.Add(Grid[_gridPosition.x - 1, _gridPosition.z]);
             }
-        }
-    }
 
-    List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
-    {
-        List<GridNode> adjacentNodes = new List<GridNode>();
+            if (_gridPosition.z + 1 < GridHeight)
+            {
+                adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.z + 1]);
+            }
+            if (_gridPosition.z - 1 >= 0)
+            {
+                adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.z - 1]);
+            }
 
-        if (_gridPosition.x + 1 < GridWidth)
-        {
-            adjacentNodes.Add(Grid[_gridPosition.x + 1, _gridPosition.z]);
+            return adjacentNodes;
         }
-        if (_gridPosition.x - 1 >= 0)
-        {
-            adjacentNodes.Add(Grid[_gridPosition.x - 1, _gridPosition.z]);
-        }
-
-        if (_gridPosition.z + 1 < GridHeight)
-        {
-            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.z + 1]);
-        }
-        if (_gridPosition.z - 1 >= 0)
-        {
-            adjacentNodes.Add(Grid[_gridPosition.x, _gridPosition.z - 1]);
-        }
-
-        return adjacentNodes;
     }
 }
