@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Framework.Grid;
+using DumbProject.Grid;
 
-namespace Framework.Rooms
+namespace DumbProject.Rooms
 {
-    public class RoomGenertor : MonoBehaviour
+    public class RoomGenerator : MonoBehaviour
     {
         public Room RoomPrefab;
         [HideInInspector]

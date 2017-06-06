@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-namespace Framework.UI
+
+namespace DumbProject.UI
 {
     public class RoomPanelController : MonoBehaviour
     {

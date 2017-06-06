@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Framework.Grid;
+using DumbProject.Grid;
 
-namespace Framework.Rooms
+namespace DumbProject.Rooms
 {
     public class RoomMovment : MonoBehaviour
     {

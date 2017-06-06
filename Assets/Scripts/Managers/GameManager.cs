@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Framework.Rooms;
-using Framework.Grid;
-using Framework.UI;
+using DumbProject.Rooms;
+using DumbProject.Grid;
+using DumbProject.UI;
+using DumbProject.Generic;
 
 public class GameManager : MonoBehaviour {
 
     public static GameManager I;
 
-    public RoomGenertor RoomGenertorPrefab;
+    public RoomGenerator RoomGenertorPrefab;
     public GridController GridControllerPrefab;
     public UIManager UIManagerPrefab;
 
     [HideInInspector]
-    public RoomGenertor RoomGenertor;
+    public RoomGenerator RoomGenerator;
     [HideInInspector]
     public GridController GridCtrl;
     [HideInInspector]
@@ -35,12 +36,12 @@ public class GameManager : MonoBehaviour {
     {
         GridCtrl = Instantiate(GridControllerPrefab);
         UIMng = Instantiate(UIManagerPrefab);
-        RoomGenertor = Instantiate(RoomGenertorPrefab);
+        RoomGenerator = Instantiate(RoomGenertorPrefab);
 
         CreateRoomPreview();
         GridCtrl.Setup();
         UIMng.CreateCanvasGame();
-        RoomGenertor.Setup();
+        RoomGenerator.Setup();
     }
 
     public void CreateRoomPreview()

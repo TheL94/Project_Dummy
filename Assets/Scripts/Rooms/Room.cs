@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
-using Framework.Grid;
+using DumbProject.Grid;
+using DumbProject.Rooms.Data;
 
-namespace Framework.Rooms
+namespace DumbProject.Rooms
 {
     public class Room : MonoBehaviour
     {
-
         public List<Cell> RoomCells;
 
         [HideInInspector]
@@ -19,13 +19,7 @@ namespace Framework.Rooms
         public Vector3 StartPosition
         {
             get { return _startPosition; }
-            set
-            {
-                if (_startPosition == new Vector3(0, 0, 0))
-                {
-                    _startPosition = value;
-                }
-            }
+            private set { _startPosition = value; }
         }
 
         bool canRotate = true;
@@ -36,10 +30,20 @@ namespace Framework.Rooms
             RoomMovment = GetComponent<RoomMovment>();
         }
 
+        public void Setup(RoomData _data)
+        {
+
+        }
+
         public void Init()
         {
             RoomMovment.Init(this);
             StartPosition = transform.position;
+        }
+
+        public void LinkRoom()
+        {
+
         }
 
         public void Rotate()

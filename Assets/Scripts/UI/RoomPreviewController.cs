@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Framework.Grid;
+using DumbProject.Grid;
 
-public class RoomPreviewController : MonoBehaviour {
-
-    public List<Transform> RoomSpawns = new List<Transform>();
-    List<GridController> GridControllers = new List<GridController>();
-
-    public void Init()
+namespace DumbProject.Generic
+{
+    public class RoomPreviewController : MonoBehaviour
     {
-        GridControllers = GetComponentsInChildren<GridController>().ToList();
 
-        InitGrids();
-    }
+        public List<Transform> RoomSpawns = new List<Transform>();
+        List<GridController> GridControllers = new List<GridController>();
 
-    void InitGrids()
-    {
-        foreach (GridController grid in GridControllers)
-            grid.Setup();
+        public void Init()
+        {
+            GridControllers = GetComponentsInChildren<GridController>().ToList();
+
+            InitGrids();
+        }
+
+        void InitGrids()
+        {
+            foreach (GridController grid in GridControllers)
+                grid.Setup();
+        }
     }
 }

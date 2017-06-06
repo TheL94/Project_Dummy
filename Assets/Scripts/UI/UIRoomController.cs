@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Framework.Rooms;
+using DumbProject.Rooms;
 
-namespace Framework.UI
+namespace DumbProject.UI
 {
     public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler
     {
@@ -32,7 +32,7 @@ namespace Framework.UI
                 {
                     Destroy(ActualRoom.RoomMovment);
                     // crea nuova stanza visualizzata nella ui
-                    ActualRoom = GameManager.I.RoomGenertor.InstantiateRoom(Index);
+                    ActualRoom = GameManager.I.RoomGenerator.InstantiateRoom(Index);
                 }
             }
         }

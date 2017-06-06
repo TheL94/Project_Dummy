@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.UI
+namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
