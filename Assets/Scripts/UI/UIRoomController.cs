@@ -32,7 +32,6 @@ namespace DumbProject.UI
                 {
                     Destroy(ActualRoom.RoomMovment);
                     // crea nuova stanza visualizzata nella ui
-                    ActualRoom = GameManager.I.RoomGenerator.InstantiateRoom(Index);
                 }
             }
         }

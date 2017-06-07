@@ -8,14 +8,11 @@ namespace DumbProject.Generic
 {
     public class RoomPreviewController : MonoBehaviour
     {
-
-        public List<Transform> RoomSpawns = new List<Transform>();
         List<GridController> GridControllers = new List<GridController>();
 
         public void Init()
         {
             GridControllers = GetComponentsInChildren<GridController>().ToList();
-
             InitGrids();
         }
 

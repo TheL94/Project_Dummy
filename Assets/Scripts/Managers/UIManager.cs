@@ -6,7 +6,6 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
-
         [HideInInspector]
         public RoomPanelController roomPreviewController;
 
