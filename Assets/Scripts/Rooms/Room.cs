@@ -9,6 +9,7 @@ namespace DumbProject.Rooms
 {
     public class Room : MonoBehaviour
     {
+        [HideInInspector]
         public List<Cell> RoomCells;
 
         [HideInInspector]
@@ -64,18 +65,20 @@ namespace DumbProject.Rooms
 
         void TShapeRoom(GridController _grid, RoomData _data)
         {
-            Cell[] cells = new Cell[4];
+            Cell centralCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(1, 1)).WorldPosition, Quaternion.identity, transform);
+            Cell leftTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 0)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
+            Cell centralTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 1)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
+            Cell rightTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 2)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
 
-            for (int i = 0; i < cells.Length; i++)
-                cells[i] = Instantiate(_data.Cell);
+            Instantiate(_data.CellTypes.CellWallOpenFront, centralCell.transform.position, centralCell.transform.rotation, centralCell.transform);
+            Instantiate(_data.CellTypes.CellWallOpenFront, leftTopCell.transform.position, leftTopCell.transform.rotation, leftTopCell.transform);
+            Instantiate(_data.CellTypes.CellWallBack, centralTopCell.transform.position, centralTopCell.transform.rotation, centralTopCell.transform);
+            Instantiate(_data.CellTypes.CellWallOpenFront, rightTopCell.transform.position, rightTopCell.transform.rotation, rightTopCell.transform);
 
-            Instantiate(_data.CellTypes.CellWallOpenFront, _grid.GetSpecificGridNode(new GridPosition(1, 1)).WorldPosition, Quaternion.identity, cells[0].transform);
-            Instantiate(_data.CellTypes.CellWallBack, _grid.GetSpecificGridNode(new GridPosition(2, 0)).WorldPosition, Quaternion.LookRotation(cells[0].ReltiveNode.WorldPosition), cells[1].transform);
-            Instantiate(_data.CellTypes.CellWallOpenFront, _grid.GetSpecificGridNode(new GridPosition(2, 1)).WorldPosition, Quaternion.LookRotation(cells[0].ReltiveNode.WorldPosition), cells[2].transform);
-            Instantiate(_data.CellTypes.CellWallOpenFront, _grid.GetSpecificGridNode(new GridPosition(2, 2)).WorldPosition, Quaternion.LookRotation(cells[0].ReltiveNode.WorldPosition), cells[3].transform);
-        }
-    }
-
+            RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
+    }                                  
+    }                                      
+                                           
     public enum RoomShape
     {
         T_Shape

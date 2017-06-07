@@ -10,7 +10,8 @@ namespace DumbProject.Rooms.Data
     public class RoomData : ScriptableObject
     {
         public RoomShape Shape;
-        public Cell Cell;
+        public Room RoomPrefab;
+        public Cell CellPrefab;
         public CellTypes CellTypes;
     }
 }

@@ -47,6 +47,6 @@ public class GameManager : MonoBehaviour {
     public void CreateRoomPreview()
     {
         RoomPreviewCtrl = Instantiate(Resources.Load("Prefabs/RoomUIPreviews/RoomPreviewsContainer") as GameObject, transform).GetComponentInChildren<RoomPreviewController>();
-        RoomPreviewCtrl.Init();
+        RoomPreviewCtrl.Setup();
     }
 }
