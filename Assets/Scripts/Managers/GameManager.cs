@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public RoomGenerator RoomGenertorPrefab;
     public GridController GridControllerPrefab;
     public UIManager UIManagerPrefab;
+    public RoomPreviewController RoomPreviewControllerPrefab;
 
     [HideInInspector]
     public RoomGenerator RoomGenerator;
@@ -36,17 +37,13 @@ public class GameManager : MonoBehaviour {
     {
         GridCtrl = Instantiate(GridControllerPrefab);
         UIMng = Instantiate(UIManagerPrefab);
+        RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
         RoomGenerator = Instantiate(RoomGenertorPrefab);
 
-        CreateRoomPreview();
+
         GridCtrl.Setup();
         UIMng.CreateCanvasGame();
-        RoomGenerator.Setup();
-    }
-
-    public void CreateRoomPreview()
-    {
-        RoomPreviewCtrl = Instantiate(Resources.Load("Prefabs/RoomUIPreviews/RoomPreviewsContainer") as GameObject, transform).GetComponentInChildren<RoomPreviewController>();
         RoomPreviewCtrl.Setup();
+        RoomGenerator.Setup();
     }
 }

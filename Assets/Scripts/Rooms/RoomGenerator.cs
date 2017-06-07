@@ -23,7 +23,7 @@ namespace DumbProject.Rooms
 
         void NewRoom()
         {
-            foreach (RoomData roomData in RoomTypesData)
+            foreach (RoomData roomData in RoomTypesInstances)
             {
                 if (roomData.Shape == RoomShape.T_Shape)
                     InstantiateRoom(roomData);

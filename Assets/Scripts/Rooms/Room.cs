@@ -65,18 +65,19 @@ namespace DumbProject.Rooms
 
         void TShapeRoom(GridController _grid, RoomData _data)
         {
-            Cell centralCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(1, 1)).WorldPosition, Quaternion.identity, transform);
-            Cell leftTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 0)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
-            Cell centralTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 1)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
-            Cell rightTopCell = Instantiate(_data.CellPrefab, _grid.GetSpecificGridNode(new GridPosition(2, 2)).WorldPosition, Quaternion.LookRotation(centralCell.ReltiveNode.WorldPosition), transform);
+            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(1, 1)), Quaternion.identity, transform);
+            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 0)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
+            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 1)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
+            Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 2)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
+
+            RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
 
             Instantiate(_data.CellTypes.CellWallOpenFront, centralCell.transform.position, centralCell.transform.rotation, centralCell.transform);
             Instantiate(_data.CellTypes.CellWallOpenFront, leftTopCell.transform.position, leftTopCell.transform.rotation, leftTopCell.transform);
             Instantiate(_data.CellTypes.CellWallBack, centralTopCell.transform.position, centralTopCell.transform.rotation, centralTopCell.transform);
             Instantiate(_data.CellTypes.CellWallOpenFront, rightTopCell.transform.position, rightTopCell.transform.rotation, rightTopCell.transform);
 
-            RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
-    }                                  
+        }                                  
     }                                      
                                            
     public enum RoomShape

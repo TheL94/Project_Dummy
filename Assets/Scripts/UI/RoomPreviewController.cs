@@ -14,9 +14,10 @@ namespace DumbProject.Generic
         {
             foreach (GridController gridCtrl in GetComponentsInChildren<GridController>())
                 GridSpawns.Add(new GridSpawn(gridCtrl, true));
+            SetupGrids();
         }
 
-        void InitGrids()
+        void SetupGrids()
         {
             foreach (GridSpawn gridSpawn in GridSpawns)
                 gridSpawn.GridCtrl.Setup();
