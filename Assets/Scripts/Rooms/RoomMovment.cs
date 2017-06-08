@@ -19,8 +19,8 @@ namespace DumbProject.Rooms
 
         public void DragActions(PointerEventData _eventData)
         {
-            Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, 0, Camera.main.ScreenToWorldPoint(_eventData.position).z);
-            GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
+            Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, Camera.main.nearClipPlane, Camera.main.ScreenToWorldPoint(_eventData.position).z);
+            GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(objPosition);
 
             if (node != null)
                 transform.position = node.WorldPosition;
@@ -31,11 +31,11 @@ namespace DumbProject.Rooms
         public bool DropActions(PointerEventData _eventData)
         {
             Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, Camera.main.nearClipPlane, Camera.main.ScreenToWorldPoint(_eventData.position).z);
-            GridNode node = GameManager.I.GridCtrl.GetSpecificGridNode(objPosition);
+            GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(objPosition);
 
             if (node != null && node.RelativeCell == null)
             {
-                if (GameManager.I.GridCtrl.CheckAdjacentNodesRelativeCell(node))
+                if (GameManager.I.MainGridCtrl.CheckAdjacentNodesRelativeCell(node))
                 {
                     transform.position = node.WorldPosition;
                     room.transform.parent = null;

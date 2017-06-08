@@ -12,7 +12,7 @@ namespace DumbProject.UI
         public void CreateCanvasGame()
         {
             roomPreviewController = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform).GetComponentInChildren<RoomPanelController>();
-            roomPreviewController.Init();
+            roomPreviewController.Setup();
         }
 
         public void DestroyCanvasGame()

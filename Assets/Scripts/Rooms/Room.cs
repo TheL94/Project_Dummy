@@ -66,9 +66,9 @@ namespace DumbProject.Rooms
         void TShapeRoom(GridController _grid, RoomData _data)
         {
             Cell centralCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(1, 1)), Quaternion.identity, transform);
-            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 0)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
-            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 1)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
-            Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 2)), Quaternion.LookRotation(centralCell.RelativeNode.WorldPosition), transform);
+            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 0)), Quaternion.identity, transform);
+            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 1)), Quaternion.identity, transform);
+            Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 2)), Quaternion.identity, transform);
 
             RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
 

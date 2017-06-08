@@ -9,9 +9,8 @@ namespace DumbProject.UI
 {
     public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler
     {
-
+        [HideInInspector]
         public Room ActualRoom;
-        public int Index;
 
         public void OnPointerClick(PointerEventData eventData)
         {

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using DumbProject.Grid;
 
 namespace DumbProject.Generic
@@ -26,8 +25,11 @@ namespace DumbProject.Generic
         public GridController GetFirstGridAvailable()
         {
             foreach (GridSpawn gridSpawn in GridSpawns)
-                if(gridSpawn.IsAvailable)
+                if (gridSpawn.IsAvailable)
+                {
+                    gridSpawn.IsAvailable = false;
                     return gridSpawn.GridCtrl;
+                }
             return null;
         }
     }

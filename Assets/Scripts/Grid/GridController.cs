@@ -17,6 +17,9 @@ namespace DumbProject.Grid
 
         GridNode[,] Grid;
 
+        /// <summary>
+        /// Setup della gliglia
+        /// </summary>
         public void Setup()
         {
             CreateGrid(GridWidth, GridHeight, CellSize, CellOffset);
@@ -27,16 +30,30 @@ namespace DumbProject.Grid
             InitGridNodes(GridWidth, GridHeight);
         }
 
+        /// <summary>
+        /// Ritorna il nodo centrale della gliglia (Approssimato per difetto)
+        /// </summary>
+        /// <returns></returns>
         public GridNode GetGridCenter()
         {
             return Grid[GridWidth / 2, GridHeight / 2];
         }
 
+        /// <summary>
+        /// Ritorna un nodo specifico per posizione nella griglia
+        /// </summary>
+        /// <param name="_gridPosition"></param>
+        /// <returns></returns>
         public GridNode GetSpecificGridNode(GridPosition _gridPosition)
         {
             return Grid[_gridPosition.x, _gridPosition.z];
         }
 
+        /// <summary>
+        /// Ritorna un  nodo specifico per posizione nel mondo
+        /// </summary>
+        /// <param name="_worldPosition"></param>
+        /// <returns></returns>
         public GridNode GetSpecificGridNode(Vector3 _worldPosition)
         {
             for (int i = 0; i < GridWidth; i++)
@@ -50,6 +67,11 @@ namespace DumbProject.Grid
             return null;
         }
 
+        /// <summary>
+        /// Controlla la presenza di una cella su uno dei nodi adiacenti a quello passato come parametro
+        /// </summary>
+        /// <param name="_node"></param>
+        /// <returns></returns>
         public bool CheckAdjacentNodesRelativeCell(GridNode _node)
         {
             foreach (GridNode node in _node.AdjacentNodes)
@@ -62,6 +84,13 @@ namespace DumbProject.Grid
             return false;
         }
 
+        /// <summary>
+        /// Crea la griglia in base ai parametri che gli sono passati
+        /// </summary>
+        /// <param name="_gridWidth"></param>
+        /// <param name="_gridHeight"></param>
+        /// <param name="_cellSize"></param>
+        /// <param name="_cellOffset"></param>
         void CreateGrid(int _gridWidth, int _gridHeight, float _cellSize, float _cellOffset)
         {
             Grid = new GridNode[_gridWidth, _gridHeight];
@@ -75,6 +104,11 @@ namespace DumbProject.Grid
             }
         }
 
+        /// <summary>
+        /// Inizializza i nodi della gliglia assegnando loro i riferimenti ai propri nodi adiacenti
+        /// </summary>
+        /// <param name="_gridWidth"></param>
+        /// <param name="_gridHeight"></param>
         void InitGridNodes(int _gridWidth, int _gridHeight)
         {
             for (int i = 0; i < _gridWidth; i++)
@@ -86,6 +120,12 @@ namespace DumbProject.Grid
             }
         }
 
+        /// <summary>
+        /// Crea l'elemento visivo per mostrare i nodi in editor
+        /// </summary>
+        /// <param name="_cellImage"></param>
+        /// <param name="_gridWidth"></param>
+        /// <param name="_gridHeight"></param>
         void ShowGrid(GameObject _cellImage, int _gridWidth, int _gridHeight)
         {
             for (int i = 0; i < _gridWidth; i++)
@@ -97,6 +137,11 @@ namespace DumbProject.Grid
             }
         }
 
+        /// <summary>
+        /// Ritorna i nodi adiacenti al nodo passato come parametro
+        /// </summary>
+        /// <param name="_gridPosition"></param>
+        /// <returns></returns>
         List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
         {
             List<GridNode> adjacentNodes = new List<GridNode>();

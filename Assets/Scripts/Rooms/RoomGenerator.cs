@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms.Data;
+using DumbProject.Grid;
+using DumbProject.UI;
 
 namespace DumbProject.Rooms
 {
@@ -33,7 +35,10 @@ namespace DumbProject.Rooms
         void InstantiateRoom(RoomData _data)
         {
             Room newRoom = Instantiate(_data.RoomPrefab);
-            newRoom.Setup(_data, GameManager.I.RoomPreviewCtrl.GetFirstGridAvailable());
+            GridController gridSpawn = GameManager.I.RoomPreviewCtrl.GetFirstGridAvailable();
+            UIRoomController uiCtrl = GameManager.I.UIMng.roomPreviewController.GetFirstUICtrlAvailable();
+            uiCtrl.ActualRoom = newRoom;
+            newRoom.Setup(_data, gridSpawn);
         }
     }
 }

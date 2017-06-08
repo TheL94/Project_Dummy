@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public RoomGenerator RoomGenerator;
     [HideInInspector]
-    public GridController GridCtrl;
+    public GridController MainGridCtrl;
     [HideInInspector]
     public UIManager UIMng;
     [HideInInspector]
@@ -35,13 +35,13 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        GridCtrl = Instantiate(GridControllerPrefab);
+        MainGridCtrl = Instantiate(GridControllerPrefab);
         UIMng = Instantiate(UIManagerPrefab);
         RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
         RoomGenerator = Instantiate(RoomGenertorPrefab);
 
 
-        GridCtrl.Setup();
+        MainGridCtrl.Setup();
         UIMng.CreateCanvasGame();
         RoomPreviewCtrl.Setup();
         RoomGenerator.Setup();
