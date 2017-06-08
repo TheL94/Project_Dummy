@@ -20,7 +20,6 @@ namespace DumbProject.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            ActualRoom.ReleaseCell();
             ActualRoom.RoomMovment.DragActions(eventData);
         }
 

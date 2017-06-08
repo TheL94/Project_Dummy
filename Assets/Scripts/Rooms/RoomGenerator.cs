@@ -20,6 +20,7 @@ namespace DumbProject.Rooms
                 RoomTypesInstances.Add(Instantiate(roomData));
             }
 
+            InstantiateFirstRoom(RoomTypesInstances[0]);
             NewRoom();
         }
 
@@ -32,11 +33,19 @@ namespace DumbProject.Rooms
             }
         }
 
+        void InstantiateFirstRoom(RoomData _data)
+        {
+            GridController gridSpawn = GameManager.I.MainGridCtrl;
+            Room newRoom = Instantiate(_data.RoomPrefab, gridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
+            newRoom.Setup(_data, gridSpawn);
+            newRoom.ConsolidateCellPosition();
+        }
+
         void InstantiateRoom(RoomData _data)
         {
-            Room newRoom = Instantiate(_data.RoomPrefab);
             GridController gridSpawn = GameManager.I.RoomPreviewCtrl.GetFirstGridAvailable();
             UIRoomController uiCtrl = GameManager.I.UIMng.roomPreviewController.GetFirstUICtrlAvailable();
+            Room newRoom = Instantiate(_data.RoomPrefab, gridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
             uiCtrl.ActualRoom = newRoom;
             newRoom.Setup(_data, gridSpawn);
         }

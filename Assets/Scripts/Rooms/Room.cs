@@ -10,7 +10,7 @@ namespace DumbProject.Rooms
     public class Room : MonoBehaviour
     {
         [HideInInspector]
-        public List<Cell> RoomCells;
+        public List<Cell> CellsInRoom;
 
         [HideInInspector]
         public RoomMovment RoomMovment;
@@ -50,11 +50,11 @@ namespace DumbProject.Rooms
             }
         }
 
-        public void ReleaseCell()
+        public void ConsolidateCellPosition()
         {
-            foreach (Cell cell in RoomCells)
+            foreach (Cell cell in CellsInRoom)
             {
-                cell.RelativeNode = null;
+                cell.RelativeNode.RelativeCell = cell;
             }
         }
 
@@ -77,7 +77,7 @@ namespace DumbProject.Rooms
             Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(1,2)), Quaternion.identity, transform);
             Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 2)), Quaternion.identity, transform);
 
-            RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
+            CellsInRoom = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
 
             Instantiate(_data.CellTypes.CellWallOpenFront, centralCell.transform.position, centralCell.transform.rotation, centralCell.transform);
             Instantiate(_data.CellTypes.CellWallOpenFront, leftTopCell.transform.position, leftTopCell.transform.rotation, leftTopCell.transform);

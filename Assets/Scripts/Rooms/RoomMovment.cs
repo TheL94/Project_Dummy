@@ -39,7 +39,7 @@ namespace DumbProject.Rooms
                 {
                     transform.position = node.WorldPosition;
                     room.transform.parent = null;
-                    node.RelativeCell = room.RoomCells[0];
+                    node.RelativeCell = room.CellsInRoom[0];
                     return true;
                 }
             }
