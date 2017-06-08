@@ -47,7 +47,14 @@ namespace DumbProject.Rooms
             if (canRotate)
             {
                 canRotate = false;
-    
+            }
+        }
+
+        public void ReleaseCell()
+        {
+            foreach (Cell cell in RoomCells)
+            {
+                cell.RelativeNode = null;
             }
         }
 
@@ -66,8 +73,8 @@ namespace DumbProject.Rooms
         void TShapeRoom(GridController _grid, RoomData _data)
         {
             Cell centralCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(1, 1)), Quaternion.identity, transform);
-            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 0)), Quaternion.identity, transform);
-            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 1)), Quaternion.identity, transform);
+            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(0,2)), Quaternion.identity, transform);
+            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(1,2)), Quaternion.identity, transform);
             Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(2, 2)), Quaternion.identity, transform);
 
             RoomCells = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
@@ -76,8 +83,7 @@ namespace DumbProject.Rooms
             Instantiate(_data.CellTypes.CellWallOpenFront, leftTopCell.transform.position, leftTopCell.transform.rotation, leftTopCell.transform);
             Instantiate(_data.CellTypes.CellWallBack, centralTopCell.transform.position, centralTopCell.transform.rotation, centralTopCell.transform);
             Instantiate(_data.CellTypes.CellWallOpenFront, rightTopCell.transform.position, rightTopCell.transform.rotation, rightTopCell.transform);
-
-        }                                  
+        }  
     }                                      
                                            
     public enum RoomShape
