@@ -14,23 +14,25 @@ namespace DumbProject.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (!eventData.dragging)
+            if (!eventData.dragging && ActualRoom != null)
                 ActualRoom.Rotate();
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            ActualRoom.RoomMovment.DragActions(eventData);
+            if (ActualRoom != null)
+                ActualRoom.RoomMovment.DragActions(eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (eventData.dragging)
+            if (eventData.dragging && ActualRoom != null)
             {
                 if (ActualRoom.RoomMovment.DropActions(eventData))
                 {
                     Destroy(ActualRoom.RoomMovment);
-                    // crea nuova stanza visualizzata nella ui
+                    GameManager.I.RoomGenerator.ReleaseRoomSpawn(ActualRoom);
+                    GameManager.I.RoomGenerator.CreateNewRoom();
                 }
             }
         }

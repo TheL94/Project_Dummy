@@ -7,42 +7,21 @@ namespace DumbProject.Generic
 {
     public class RoomPreviewController : MonoBehaviour
     {
-        List<GridSpawn> GridSpawns = new List<GridSpawn>();
+        List<GridController> _gridCtrls = new List<GridController>();
+
+        public List<GridController> GridCtrls { get { return _gridCtrls; } }
 
         public void Setup()
         {
             foreach (GridController gridCtrl in GetComponentsInChildren<GridController>())
-                GridSpawns.Add(new GridSpawn(gridCtrl, true));
+                GridCtrls.Add(gridCtrl);
             SetupGrids();
         }
 
         void SetupGrids()
         {
-            foreach (GridSpawn gridSpawn in GridSpawns)
-                gridSpawn.GridCtrl.Setup();
-        }
-
-        public GridController GetFirstGridAvailable()
-        {
-            foreach (GridSpawn gridSpawn in GridSpawns)
-                if (gridSpawn.IsAvailable)
-                {
-                    gridSpawn.IsAvailable = false;
-                    return gridSpawn.GridCtrl;
-                }
-            return null;
-        }
-    }
-
-    public class GridSpawn
-    {
-        public GridController GridCtrl;
-        public bool IsAvailable;
-
-        public GridSpawn(GridController _gridCtrl, bool _isAvailable)
-        {
-            GridCtrl = _gridCtrl;
-            IsAvailable = _isAvailable;
+            foreach (GridController grid in GridCtrls)
+                grid.Setup();
         }
     }
 }

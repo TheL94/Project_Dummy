@@ -6,35 +6,14 @@ namespace DumbProject.UI
 {
     public class RoomPanelController : MonoBehaviour
     {
-        public List<UISpawn> UISpawns = new List<UISpawn>();
+        List<UIRoomController> _uiSpawns = new List<UIRoomController>();
+
+        public List<UIRoomController> UISpawns { get { return _uiSpawns; } }
 
         public void Setup()
         {
-            foreach (UIRoomController UICtrl in GetComponentsInChildren<UIRoomController>())
-                UISpawns.Add(new UISpawn(UICtrl, true));
-        }
-
-        public UIRoomController GetFirstUICtrlAvailable()
-        {
-            foreach (UISpawn uiSpawn in UISpawns)
-                if (uiSpawn.IsAvailable)
-                {
-                    uiSpawn.IsAvailable = false;
-                    return uiSpawn.UICtrl;
-                }
-            return null;
-        }
-    }
-
-    public class UISpawn
-    {
-        public UIRoomController UICtrl;
-        public bool IsAvailable;
-
-        public UISpawn(UIRoomController _uiCtrl, bool _isAvailable)
-        {
-            UICtrl = _uiCtrl;
-            IsAvailable = _isAvailable;
+            foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
+                _uiSpawns.Add(uiCtrl);
         }
     }
 }
