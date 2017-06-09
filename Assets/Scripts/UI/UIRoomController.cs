@@ -7,7 +7,7 @@ using DumbProject.Rooms;
 
 namespace DumbProject.UI
 {
-    public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler
+    public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler, IDropHandler
     {
         [HideInInspector]
         public Room ActualRoom;
@@ -34,6 +34,11 @@ namespace DumbProject.UI
                     GameManager.I.RoomGenerator.CreateNewRoom();
                 }
             }
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            Debug.Log("DropAction");
         }
     }
 }
