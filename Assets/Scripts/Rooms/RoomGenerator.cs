@@ -32,9 +32,11 @@ namespace DumbProject.Rooms
 
         public void CreateNewRoom()
         {
+            int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
+            RoomShape roomShape = (RoomShape)randomRoomShape;
             foreach (RoomData roomData in RoomTypesInstances)
             {
-                if (roomData.Shape == RoomShape.T_Shape)
+                if (roomData.Shape == roomShape)
                     InstantiateTShapeRoom(roomData);
             }
         }
@@ -60,10 +62,20 @@ namespace DumbProject.Rooms
             if (association != null)
             {
                 GameObject newRoomObj = Instantiate(_data.RoomPrefab, association.GridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
-                TShapeRoom Troom = newRoomObj.AddComponent<TShapeRoom>();
+                Room room = null;
+                switch (_data.Shape)
+                {
+                    case RoomShape.T_Shape:
+                        room = newRoomObj.AddComponent<TShapeRoom>();
+                        break;
+                    case RoomShape.I_Shape:
+                        room = newRoomObj.AddComponent<IShapeRoom>();
+                        break;
+                }
+
                 RoomMovment roomMovement = newRoomObj.AddComponent<RoomMovment>();
-                association.Room = Troom;
-                Troom.Setup(_data, association.GridSpawn, roomMovement);
+                association.Room = room;
+                room.Setup(_data, association.GridSpawn, roomMovement);
             }
         }
 

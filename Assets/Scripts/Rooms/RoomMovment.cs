@@ -37,7 +37,6 @@ namespace DumbProject.Rooms
                         cell.ShowInvalidPosition(true);
                     else
                         cell.ShowInvalidPosition(false);
-
                 }
             }
             else
@@ -72,7 +71,7 @@ namespace DumbProject.Rooms
                                 return false;  
                             }
                             else
-                                cell.PlaceCellInMainGrid(node);
+                                cell.ResetRelativeNode(node);
 
                         }
                         room.PlaceAction();

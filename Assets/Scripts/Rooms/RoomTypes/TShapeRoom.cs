@@ -12,7 +12,7 @@ namespace DumbProject.Rooms
         protected override void PlaceCells(RoomData _data, GridController _grid)
         {
             GridNode centerNode = _grid.GetGridCenter();
-            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCellInUI(centerNode, Quaternion.identity, transform, true);
+            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCellInUI(centerNode, Quaternion.identity, transform);
             Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCellInUI(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x - 1, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
             Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCellInUI(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
             Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCellInUI(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
@@ -28,10 +28,10 @@ namespace DumbProject.Rooms
         public override void PlaceAsMainRoom(RoomData _data, GridController _grid)
         {
             GridNode centerNode = _grid.GetGridCenter();
-            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(centerNode, true);
-            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x - 1, centerNode.GridPosition.z + 1)));
-            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x, centerNode.GridPosition.z + 1)));
-            Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z + 1)));
+            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(centerNode, Quaternion.identity, transform);
+            Cell leftTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x - 1, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
+            Cell centralTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
+            Cell rightTopCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z + 1)), Quaternion.identity, transform);
 
             CellsInRoom = new List<Cell>() { centralCell, leftTopCell, centralTopCell, rightTopCell };
 

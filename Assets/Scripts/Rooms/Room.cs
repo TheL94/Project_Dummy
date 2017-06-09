@@ -99,6 +99,7 @@ namespace DumbProject.Rooms
                                            
     public enum RoomShape
     {
-        T_Shape
+        T_Shape = 0,
+        I_Shape = 1
     }
 }

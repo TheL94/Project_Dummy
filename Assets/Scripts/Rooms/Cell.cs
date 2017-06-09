@@ -23,26 +23,25 @@ namespace DumbProject.Rooms.Cells
         }
 
         MeshRenderer[] childrenMesh;
-        public bool IsCenterCell;
 
         private void Start()
         {
             childrenMesh = GetComponentsInChildren<MeshRenderer>();
         }
 
-        public Cell PlaceCellInUI(GridNode _relativeNode, Quaternion _rotation, Transform _parent, bool _isCenterCell = false)
+        public Cell PlaceCellInUI(GridNode _relativeNode, Quaternion _rotation, Transform _parent)
         {
             RelativeNode = _relativeNode;          
             transform.rotation = _rotation;
             transform.parent = _parent;
-            IsCenterCell = _isCenterCell;
             return this;
         }
 
-        public Cell PlaceCellInMainGrid(GridNode _relativeNode, bool _isCenterCell = false)
+        public Cell PlaceCellInMainGrid(GridNode _relativeNode, Quaternion _rotation, Transform _parent)
         {
-            RelativeNode = _relativeNode;         
-            IsCenterCell = _isCenterCell;
+            RelativeNode = _relativeNode;
+            transform.rotation = _rotation;
+            transform.parent = _parent;
             return this;
         }
 
@@ -50,6 +49,11 @@ namespace DumbProject.Rooms.Cells
         {
             GridController grid = RelativeNode.MyGrid;
             RelativeNode = grid.GetSpecificGridNode(transform.position);
+        }
+
+        public void ResetRelativeNode(GridNode _relativeNode)
+        {
+            RelativeNode = _relativeNode;
         }
 
         public void ShowInvalidPosition(bool _isInvalid)
