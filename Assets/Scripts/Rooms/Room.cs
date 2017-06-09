@@ -36,9 +36,9 @@ namespace DumbProject.Rooms
             PlaceCells(_data, _grid);
         }
 
-        public void Init()
+        public void Setup(RoomData _data, GridController _grid)
         {
-
+            PlaceCells(_data, _grid);
         }
 
         public void LinkRoom()
@@ -83,13 +83,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che piazza la stanza direttamente sulla griglia principale
-        /// </summary>
-        /// <param name="_data"></param>
-        /// <param name="_grid"></param>
-        public abstract void PlaceAsMainRoom(RoomData _data, GridController _grid);
-
-        /// <summary>
         /// Funzione che piazza la stanza sulla griglia nella UI
         /// </summary>
         /// <param name="_data"></param>
@@ -100,6 +93,11 @@ namespace DumbProject.Rooms
     public enum RoomShape
     {
         T_Shape = 0,
-        I_Shape = 1
+        I_Shape = 1,
+        J_Shape = 2,
+        L_Shape = 3,
+        S_Shape = 4,
+        Z_Shape = 5,
+        O_Shape = 6,
     }
 }

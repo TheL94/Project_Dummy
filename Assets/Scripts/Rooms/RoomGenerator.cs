@@ -37,7 +37,7 @@ namespace DumbProject.Rooms
             foreach (RoomData roomData in RoomTypesInstances)
             {
                 if (roomData.Shape == roomShape)
-                    InstantiateTShapeRoom(roomData);
+                    InstantiateRoom(roomData);
             }
         }
 
@@ -52,11 +52,11 @@ namespace DumbProject.Rooms
         {
             GameObject newRoomObj = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             TShapeRoom mainRoom = newRoomObj.AddComponent<TShapeRoom>();
-            mainRoom.PlaceAsMainRoom(_data, GameManager.I.MainGridCtrl);
+            mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "MainRoom";
         }
 
-        void InstantiateTShapeRoom(RoomData _data)
+        void InstantiateRoom(RoomData _data)
         {
             SpawnsAssociation association = GetFirstSpawnsAssociationAvailable();
             if (association != null)
@@ -71,8 +71,23 @@ namespace DumbProject.Rooms
                     case RoomShape.I_Shape:
                         room = newRoomObj.AddComponent<IShapeRoom>();
                         break;
+                    case RoomShape.J_Shape:
+                        room = newRoomObj.AddComponent<JShapeRoom>();
+                        break;
+                    case RoomShape.L_Shape:
+                        room = newRoomObj.AddComponent<LShapeRoom>();
+                        break;
+                    case RoomShape.S_Shape:
+                        room = newRoomObj.AddComponent<SShapeRoom>();
+                        break;
+                    case RoomShape.Z_Shape:
+                        room = newRoomObj.AddComponent<ZShapeRoom>();
+                        break;
+                    case RoomShape.O_Shape:
+                        room = newRoomObj.AddComponent<OShapeRoom>();
+                        break;
                 }
-
+                
                 RoomMovment roomMovement = newRoomObj.AddComponent<RoomMovment>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn, roomMovement);
