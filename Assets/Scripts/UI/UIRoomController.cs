@@ -15,7 +15,7 @@ namespace DumbProject.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!eventData.dragging && ActualRoom != null)
-                ActualRoom.Rotate();
+                ActualRoom.RotateClockwise();
         }
 
         public void OnDrag(PointerEventData eventData)

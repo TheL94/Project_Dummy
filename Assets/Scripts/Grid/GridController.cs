@@ -99,7 +99,7 @@ namespace DumbProject.Grid
             {
                 for (int j = 0; j < _gridHeight; j++)
                 {
-                    Grid[i, j] = new GridNode(new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, transform.position.y, transform.position.z + j * _cellSize + _cellOffset));
+                    Grid[i, j] = new GridNode(this, new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, transform.position.y, transform.position.z + j * _cellSize + _cellOffset));
                 }
             }
         }

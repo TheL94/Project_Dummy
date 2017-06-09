@@ -18,6 +18,10 @@ namespace DumbProject.Rooms
             room = _room;
         }
 
+        /// <summary>
+        /// Azioni eseguite durante il drag della stanza
+        /// </summary>
+        /// <param name="_eventData"></param>
         public void DragActions(PointerEventData _eventData)
         {
             Vector3 mousePosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, Camera.main.nearClipPlane, Camera.main.ScreenToWorldPoint(_eventData.position).z);
@@ -40,6 +44,12 @@ namespace DumbProject.Rooms
                 transform.position = mousePosition;
         }
 
+
+        /// <summary>
+        /// Azioni eseguite al drop della stanza
+        /// </summary>
+        /// <param name="_eventData"></param>
+        /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
             GridNode nodeInGrid;
