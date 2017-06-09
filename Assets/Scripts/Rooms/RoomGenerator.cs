@@ -48,10 +48,9 @@ namespace DumbProject.Rooms
 
         void InstantiateFirstRoom(RoomData _data)
         {
-            GridController gridSpawn = GameManager.I.MainGridCtrl;
-            Room newRoom = Instantiate(_data.RoomPrefab, gridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
-            newRoom.Setup(_data, gridSpawn);
-            newRoom.ConsolidateCellPosition();
+            Room newRoom = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
+            newRoom.PlaceMainRoom(_data, GameManager.I.MainGridCtrl);
+            newRoom.name = "MainRoom";
         }
 
         void InstantiateRoom(RoomData _data)
@@ -80,7 +79,7 @@ namespace DumbProject.Rooms
         }
     }
 
-    public class SpawnsAssociation
+    class SpawnsAssociation
     {
         public GridController GridSpawn;
         public UIRoomController UICtrl;
