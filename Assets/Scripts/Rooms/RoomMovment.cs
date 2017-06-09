@@ -25,7 +25,7 @@ namespace DumbProject.Rooms
 
             if (node != null)
             {
-                transform.DOMove(node.WorldPosition, 0.1f);
+                transform.DOMove(node.WorldPosition, 0.05f);
                 foreach (Cell cell in room.CellsInRoom)
                 {
                     node = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
@@ -56,7 +56,7 @@ namespace DumbProject.Rooms
                             node = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
                             if(node == null || (node != null && node.RelativeCell != null))
                             {
-                                room.transform.position = room.StartPosition;
+                                room.ResetPositionToInitialPosition();
                                 foreach (Cell c in room.CellsInRoom)
                                     c.ShowInvalidPosition(false);
                                 return false;  
@@ -65,12 +65,12 @@ namespace DumbProject.Rooms
                                 cell.PlaceCellInMainGrid(node);
 
                         }
-                        room.transform.parent = null;
+                        room.PlaceAction();
                         return true;
                     }
                 }
             }
-            room.transform.position = room.StartPosition;
+            room.ResetPositionToInitialPosition();
             return false;
         }
     }

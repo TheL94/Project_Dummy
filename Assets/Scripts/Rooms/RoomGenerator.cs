@@ -35,7 +35,7 @@ namespace DumbProject.Rooms
             foreach (RoomData roomData in RoomTypesInstances)
             {
                 if (roomData.Shape == RoomShape.T_Shape)
-                    InstantiateRoom(roomData);
+                    InstantiateTShapeRoom(roomData);
             }
         }
 
@@ -48,19 +48,22 @@ namespace DumbProject.Rooms
 
         void InstantiateFirstRoom(RoomData _data)
         {
-            Room newRoom = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
-            newRoom.PlaceMainRoom(_data, GameManager.I.MainGridCtrl);
-            newRoom.name = "MainRoom";
+            GameObject newRoomObj = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
+            TShapeRoom mainRoom = newRoomObj.AddComponent<TShapeRoom>();
+            mainRoom.PlaceAsMainRoom(_data, GameManager.I.MainGridCtrl);
+            mainRoom.name = "MainRoom";
         }
 
-        void InstantiateRoom(RoomData _data)
+        void InstantiateTShapeRoom(RoomData _data)
         {
             SpawnsAssociation association = GetFirstSpawnsAssociationAvailable();
-            if(association != null)
+            if (association != null)
             {
-                Room newRoom = Instantiate(_data.RoomPrefab, association.GridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
-                association.Room = newRoom;
-                newRoom.Setup(_data, association.GridSpawn);
+                GameObject newRoomObj = Instantiate(_data.RoomPrefab, association.GridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
+                TShapeRoom Troom = newRoomObj.AddComponent<TShapeRoom>();
+                RoomMovment roomMovement = newRoomObj.AddComponent<RoomMovment>();
+                association.Room = Troom;
+                Troom.Setup(_data, association.GridSpawn, roomMovement);
             }
         }
 

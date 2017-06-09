@@ -30,7 +30,6 @@ namespace DumbProject.UI
             {
                 if (ActualRoom.RoomMovment.DropActions(eventData))
                 {
-                    Destroy(ActualRoom.RoomMovment);
                     GameManager.I.RoomGenerator.ReleaseRoomSpawn(ActualRoom);
                     GameManager.I.RoomGenerator.CreateNewRoom();
                 }
