@@ -38,7 +38,11 @@ namespace DumbProject.UI
 
         public void OnDrop(PointerEventData eventData)
         {
-            Debug.Log("DropAction");
+            if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)
+            {
+                Destroy(eventData.pointerDrag);
+                ActualRoom.PlaceItemInside(eventData.pointerDrag.GetComponent<IventoryItem>().ItemData);
+            }
         }
     }
 }

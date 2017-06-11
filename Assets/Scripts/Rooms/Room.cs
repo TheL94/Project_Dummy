@@ -4,6 +4,7 @@ using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Rooms.Data;
 using DumbProject.Rooms.Cells;
+using DumbProject.UI;
 using DG.Tweening;
 
 namespace DumbProject.Rooms
@@ -80,6 +81,16 @@ namespace DumbProject.Rooms
                     }
                 });
             }
+        }
+
+
+        /// <summary>
+        /// Piazza l'elemento passatogli da UIRoomController all'interno della stanza
+        /// </summary>
+        public void PlaceItemInside(ItemBaseData _item)
+        {
+            ///in base al Type dell'_item è possibile castarlo per prendere i dati necessari ad istanziare l'oggetto giusto e assegnargli i valori
+            Debug.Log("Ho piazzato l'elemento di tipo " + _item.Type);
         }
 
         /// <summary>
