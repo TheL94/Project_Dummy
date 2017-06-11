@@ -13,9 +13,9 @@ namespace DumbProject.Rooms
         protected override void PlaceCells(RoomData _data, GridController _grid)
         {
             GridNode centerNode = _grid.GetGridCenter();
-            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(centerNode, Quaternion.identity, transform);
-            Cell leftCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x - 1, centerNode.GridPosition.z)), Quaternion.identity, transform);
-            Cell rightCell = Instantiate(_data.CellPrefab).PlaceCellInMainGrid(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z)), Quaternion.identity, transform);
+            Cell centralCell = Instantiate(_data.CellPrefab).PlaceCell(centerNode, Quaternion.identity, this);
+            Cell leftCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x - 1, centerNode.GridPosition.z)), Quaternion.identity, this);
+            Cell rightCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z)), Quaternion.identity, this);
 
             CellsInRoom = new List<Cell>() { centralCell, leftCell, rightCell };
 

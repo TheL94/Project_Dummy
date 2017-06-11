@@ -8,7 +8,7 @@ namespace DumbProject.Grid
 {
     public class GridNode : ICellNode
     {
-        public GridController MyGrid;
+        public GridController RelativeGrid;
         public GridPosition GridPosition;
         public Vector3 WorldPosition;
 
@@ -18,7 +18,7 @@ namespace DumbProject.Grid
 
         public GridNode(GridController _myGrid, GridPosition _gridPosition, Vector3 _worldPosition)
         {
-            MyGrid = _myGrid;
+            RelativeGrid = _myGrid;
             GridPosition = _gridPosition;
             WorldPosition = _worldPosition;
         }
