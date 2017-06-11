@@ -51,36 +51,21 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            GridNode nodeInGrid;
             foreach (Cell cellInRoom in room.CellsInRoom)
             {
-                nodeInGrid = GameManager.I.MainGridCtrl.GetSpecificGridNode(cellInRoom.transform.position);
-                if (nodeInGrid != null && nodeInGrid.RelativeCell == null)
+                if (!cellInRoom.CheckPosition())
                 {
-                    if (GameManager.I.MainGridCtrl.CheckAdjacentNodesRelativeCell(nodeInGrid))
-                    {
-                        GridNode node;
-                        foreach (Cell cell in room.CellsInRoom)
-                        {
-                            node = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
-                            if(node == null || (node != null && node.RelativeCell != null))
-                            {
-                                room.ResetPositionToInitialPosition();
-                                foreach (Cell c in room.CellsInRoom)
-                                    c.ShowInvalidPosition(false);
-                                return false;  
-                            }
-                            else
-                                cell.ResetRelativeNode(node);
-
-                        }
-                        room.PlaceAction();
-                        return true;
-                    }
+                    room.ResetPositionToInitialPosition();
+                    return false;
                 }
             }
-            room.ResetPositionToInitialPosition();
-            return false;
+
+            foreach (Cell cellInRoom in room.CellsInRoom)
+            {
+                cellInRoom.ResetRelativeNode(cellInRoom.GetMyPositionOnGrid());
+            }
+            room.PlaceAction();
+            return true;
         }
     }
 }
