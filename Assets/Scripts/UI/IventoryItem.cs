@@ -9,7 +9,7 @@ namespace DumbProject.UI
     public class IventoryItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointerDownHandler
     {
         Vector3 _startPosition;
-        public ItemBaseData ItemData;
+        public GameObject ItemToInstantiate;
 
         public void OnPointerDown(PointerEventData eventData)
         {
