@@ -52,9 +52,9 @@ namespace DumbProject.Rooms.Cells
             return false;
         }
 
-        public GridNode GetMyPositionOnGrid()
+        public GridNode GetMyPositionOnGrid(GridController _grid)
         {
-            return GameManager.I.MainGridCtrl.GetSpecificGridNode(transform.position);
+            return _grid.GetSpecificGridNode(transform.position);
         }
 
         public void ResetRelativeNode()

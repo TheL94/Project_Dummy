@@ -57,7 +57,7 @@ namespace DumbProject.Rooms
                 {
                     foreach (Cell cell in room.CellsInRoom)
                     {
-                        cell.ResetRelativeNode(cell.GetMyPositionOnGrid());
+                        cell.ResetRelativeNode(cell.GetMyPositionOnGrid(GameManager.I.MainGridCtrl));
                     }
                     room.PlaceAction();
                     return true;
