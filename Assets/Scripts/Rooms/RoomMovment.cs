@@ -53,19 +53,19 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cellInRoom in room.CellsInRoom)
             {
-                if (!cellInRoom.CheckPosition())
+                if (cellInRoom.CheckPosition())
                 {
-                    room.ResetPositionToInitialPosition();
-                    return false;
+                    foreach (Cell cell in room.CellsInRoom)
+                    {
+                        cell.ResetRelativeNode(cell.GetMyPositionOnGrid());
+                    }
+                    room.PlaceAction();
+                    return true;
                 }
             }
 
-            foreach (Cell cellInRoom in room.CellsInRoom)
-            {
-                cellInRoom.ResetRelativeNode(cellInRoom.GetMyPositionOnGrid());
-            }
-            room.PlaceAction();
-            return true;
+            room.ResetPositionToInitialPosition();
+            return false;
         }
     }
 }
