@@ -12,6 +12,12 @@ namespace DumbProject.Grid
         public GridPosition GridPosition;
         public Vector3 WorldPosition;
 
+        Cell _relativeCell;
+        public Cell RelativeCell
+        {
+            get { return _relativeCell; }
+            set { _relativeCell = value; }
+        }
         public List<GridNode> AdjacentNodes;
 
         public GridNode() { }
@@ -23,12 +29,6 @@ namespace DumbProject.Grid
             WorldPosition = _worldPosition;
         }
 
-        Cell _relativeCell;
-        public Cell RelativeCell
-        {
-            get { return _relativeCell; }
-            set { _relativeCell = value; }
-        }
 
         public void Init(List<GridNode> _adjacentNodes)
         {

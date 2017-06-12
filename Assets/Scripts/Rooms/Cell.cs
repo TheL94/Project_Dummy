@@ -13,6 +13,9 @@ namespace DumbProject.Rooms.Cells
             get { return _relativeNode; }
             set
             {
+                if(_relativeNode != null && _relativeNode.RelativeCell != null)
+                    _relativeNode.RelativeCell = null;
+
                 _relativeNode = value;
                 if(_relativeNode != null)
                 {
@@ -39,16 +42,12 @@ namespace DumbProject.Rooms.Cells
             return this;
         }
 
-        public bool CheckPosition()
+        public bool CheckPosition(GridController _grid)
         {
-            GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(transform.position);
+            GridNode node = _grid.GetSpecificGridNode(transform.position);
             if (node != null && node.RelativeCell == null)
-            {
-                if (GameManager.I.MainGridCtrl.CheckAdjacentNodesRelativeCell(node))
-                {
-                    return true;
-                }
-            }
+                return true;
+
             return false;
         }
 

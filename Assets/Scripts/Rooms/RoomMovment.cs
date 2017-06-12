@@ -32,7 +32,6 @@ namespace DumbProject.Rooms
                 transform.DOMove(node.WorldPosition, 0.05f);
                 foreach (Cell cell in room.CellsInRoom)
                 {
-                    node = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
                     if (node == null || (node != null && node.RelativeCell != null))
                         cell.ShowInvalidPosition(true);
                     else
@@ -51,21 +50,16 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            foreach (Cell cellInRoom in room.CellsInRoom)
+            if (room.CheckPosition())
             {
-                if (cellInRoom.CheckPosition())
-                {
-                    foreach (Cell cell in room.CellsInRoom)
-                    {
-                        cell.SetRelativeNode(cell.GetMyPositionOnGrid(GameManager.I.MainGridCtrl));
-                    }
-                    room.PlaceAction();
-                    return true;
-                }
+                room.PlaceAction();
+                return true;
             }
-
-            room.ResetPositionToInitialPosition();
-            return false;
+            else
+            {
+                room.ResetPositionToInitialPosition();
+                return false;
+            }           
         }
     }
 }

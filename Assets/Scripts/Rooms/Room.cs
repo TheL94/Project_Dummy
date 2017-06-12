@@ -60,8 +60,34 @@ namespace DumbProject.Rooms
         /// </summary>
         public void PlaceAction()
         {
+            foreach (Cell cell in CellsInRoom)
+            {
+                cell.SetRelativeNode(cell.GetMyPositionOnGrid(GameManager.I.MainGridCtrl));
+            }
             transform.parent = null;
             Destroy(RoomMovment);
+        }
+
+        /// <summary>
+        /// Funzione che controlla che la posizione di ogni cella della stanza sia valida
+        /// </summary>
+        public bool CheckPosition()
+        {
+            bool IsValidPosition = false;
+            foreach (Cell cell in CellsInRoom)
+            {
+                if (!cell.CheckPosition(GameManager.I.MainGridCtrl))
+                {
+                    return false;
+                }
+                foreach (GridNode adjacentNode in cell.RelativeNode.AdjacentNodes)
+                {
+                    if (adjacentNode.RelativeCell != null)
+                        IsValidPosition = true;
+                }
+            }
+
+            return IsValidPosition;
         }
 
         /// <summary>
