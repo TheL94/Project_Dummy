@@ -133,7 +133,8 @@ namespace DumbProject.Grid
             {
                 for (int j = 0; j < _gridHeight; j++)
                 {
-                    Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
+                    GameObject obj = Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
+                    obj.name = "Node[ " + i + ", " + j + " ]";
                 }
             }
         }

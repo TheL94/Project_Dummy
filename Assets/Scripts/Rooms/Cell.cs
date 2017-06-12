@@ -63,7 +63,7 @@ namespace DumbProject.Rooms.Cells
             RelativeNode = grid.GetSpecificGridNode(transform.position);
         }
 
-        public void ResetRelativeNode(GridNode _relativeNode)
+        public void SetRelativeNode(GridNode _relativeNode)
         {
             RelativeNode = _relativeNode;
         }
