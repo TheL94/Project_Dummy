@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DumbProject.Rooms;
+using DumbProject.Generic;
+
 
 namespace DumbProject.UI
 {
