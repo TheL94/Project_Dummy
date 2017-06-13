@@ -20,7 +20,7 @@ namespace DumbProject.Rooms
         public List<Cell> CellsInRoom;
 
         [HideInInspector]
-        public RoomMovment RoomMovment;
+        public RoomMovement RoomMovment;
 
         Vector3 _initialPosition;
         public Vector3 InitialPosition
@@ -31,7 +31,7 @@ namespace DumbProject.Rooms
 
         bool canRotate = true;
 
-        public void Setup(RoomData _data, GridController _grid, RoomMovment _roomMovment)
+        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
         {
             RoomMovment = _roomMovment;        
             RoomMovment.Init(this);

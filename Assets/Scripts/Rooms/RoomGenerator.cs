@@ -101,7 +101,7 @@ namespace DumbProject.Rooms
                         break;
                 }
                 
-                RoomMovment roomMovement = newRoomObj.AddComponent<RoomMovment>();
+                RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn, roomMovement);
             }

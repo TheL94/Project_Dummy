@@ -39,7 +39,6 @@ namespace DumbProject.Rooms.Cells
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
             transform.rotation = Quaternion.LookRotation(_pointToFace.position - transform.position);
-            Debug.Log(transform.position + " / " + transform.localPosition);
             return this;
         }
 
@@ -49,7 +48,6 @@ namespace DumbProject.Rooms.Cells
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
             transform.rotation = Quaternion.LookRotation(_pointToFace - transform.position);
-            Debug.Log(transform.position + " / " + transform.localPosition);
             return this;
         }
 

@@ -11,12 +11,20 @@ using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
-    public class RoomMovment : MonoBehaviour
+    public class RoomMovement : MonoBehaviour
     {
         Room room;
+        //------------Sistem con Raycast--------
+        Ray mouseProjection;
+        Plane gridLevel;
+        //---------------------------------------
 
         public void Init(Room _room)
         {
+            //----------
+            gridLevel = new Plane(Vector3.up, GameManager.I.MainGridCtrl.transform.position.y + GameManager.I.MainGridCtrl.GridOffsetY);
+            //----------
+
             room = _room;
         }
 
@@ -26,7 +34,13 @@ namespace DumbProject.Rooms
         /// <param name="_eventData"></param>
         public void DragActions(PointerEventData _eventData)
         {
-            Vector3 mousePosition = new Vector3(Camera.main.ScreenToWorldPoint(_eventData.position).x, Camera.main.nearClipPlane, Camera.main.ScreenToWorldPoint(_eventData.position).z);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(_eventData.position);
+            //------------Sistem con Raycast--------
+            mouseProjection = Camera.main.ScreenPointToRay(_eventData.position);
+            float distance;
+            if (gridLevel.Raycast(mouseProjection, out distance))
+                mousePosition = mouseProjection.GetPoint(distance);
+            //---------------------------------------
             GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
 
             if (node != null)
