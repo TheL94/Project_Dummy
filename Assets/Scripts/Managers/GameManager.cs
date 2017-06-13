@@ -4,6 +4,7 @@ using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
+using DumbProject.Flow;
 
 namespace DumbProject.Generic
 {
@@ -11,6 +12,8 @@ namespace DumbProject.Generic
     {
 
         public static GameManager I;
+        [HideInInspector]
+        public FlowManager flowMng;
 
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
@@ -37,16 +40,30 @@ namespace DumbProject.Generic
 
         private void Start()
         {
+            flowMng = GetComponent<FlowManager>();
+            flowMng.CurrentState = FlowState.MenuState;
+
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-
-
+        }
+        
+        /// <summary>
+        /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
+        /// </summary>
+        public void EnterGameplayMode()
+        {
             MainGridCtrl.Setup();
-            UIMng.CreateCanvasGame();
             RoomPreviewCtrl.Setup();
             RoomGenerator.Setup();
+        }
+
+        public void ExitGameplayMode()
+        {
+            MainGridCtrl.DestroyGrid();
+            RoomPreviewCtrl.DestroyUIGrid();
+            RoomGenerator.Clean();
         }
     }
 }

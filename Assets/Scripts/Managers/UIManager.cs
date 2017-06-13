@@ -1,23 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [HideInInspector]
-        public RoomPanelController roomPreviewController;
+        GameObject canvasGame;
 
-        public void CreateCanvasGame()
+        [HideInInspector]
+        public MenuPanelController MenuController;
+        [HideInInspector]
+        public UIGamePlayController GamePlayCtrl;
+
+        public void Start()
         {
-            roomPreviewController = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform).GetComponentInChildren<RoomPanelController>();
-            roomPreviewController.Setup();
+            canvasGame = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform);
+
+            MenuController = GetComponentInChildren<MenuPanelController>();
+            GamePlayCtrl = GetComponentInChildren<UIGamePlayController>();
+            MenuController.Init(this);
+            GamePlayCtrl.Init(this);
         }
 
         public void DestroyCanvasGame()
         {
-            Destroy(roomPreviewController.gameObject);
+            Destroy(canvasGame);
         }
+
+        /// <summary>
+        /// Setta lo stato di gameplay nel FlowManager
+        /// </summary>
+        public void GoInGameplayMode()
+        {
+            GamePlayCtrl.gameObject.SetActive(true);
+            GameManager.I.flowMng.CurrentState = Flow.FlowState.GameplayState;
+        }
+
+
     }
 }

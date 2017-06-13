@@ -14,10 +14,45 @@ namespace DumbProject.Flow
         public FlowState CurrentState
         {
             get { return _currentState; }
-            set { _currentState = value; }
+            set {
+                _currentState = value;
+                Debug.Log(_currentState.ToString());
+                OnStateChange();
+            }
         }
 
+        
+        private void OnStateChange()
+        {
+            switch (CurrentState)
+            {
+                case FlowState.MenuState:
 
+                    break;
+                case FlowState.GameplayState:
+                    // Fa partire il gioco
+                    GameManager.I.EnterGameplayMode();
+                    
+                    break;
+                case FlowState.Pause:
+
+                    break;
+                case FlowState.ExitGameplay:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.I.UIMng.GamePlayCtrl.ActivatePause();
+                CurrentState = FlowState.Pause;
+            }
+        }
 
     }
 
@@ -25,5 +60,7 @@ namespace DumbProject.Flow
     {
         MenuState,
         GameplayState,
+        Pause,
+        ExitGameplay,
     }
 }
