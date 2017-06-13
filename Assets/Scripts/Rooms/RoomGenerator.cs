@@ -68,24 +68,31 @@ namespace DumbProject.Rooms
                 {
                     case RoomShape.T_Shape:
                         room = newRoomObj.AddComponent<TShapeRoom>();
+                        room.name = "TShapeRoom";
                         break;
                     case RoomShape.I_Shape:
                         room = newRoomObj.AddComponent<IShapeRoom>();
+                        room.name = "IShapeRoom";
                         break;
                     case RoomShape.J_Shape:
                         room = newRoomObj.AddComponent<JShapeRoom>();
+                        room.name = "JShapeRoom";
                         break;
                     case RoomShape.L_Shape:
                         room = newRoomObj.AddComponent<LShapeRoom>();
+                        room.name = "LShapeRoom";
                         break;
                     case RoomShape.S_Shape:
                         room = newRoomObj.AddComponent<SShapeRoom>();
+                        room.name = "SShapeRoom";
                         break;
                     case RoomShape.Z_Shape:
                         room = newRoomObj.AddComponent<ZShapeRoom>();
+                        room.name = "ZShapeRoom";
                         break;
                     case RoomShape.O_Shape:
                         room = newRoomObj.AddComponent<OShapeRoom>();
+                        room.name = "OShapeRoom";
                         break;
                 }
                 

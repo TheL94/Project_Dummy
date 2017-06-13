@@ -33,12 +33,23 @@ namespace DumbProject.Rooms.Cells
             childrenMesh = GetComponentsInChildren<MeshRenderer>();
         }
 
-        public Cell PlaceCell(GridNode _relativeNode, Quaternion _rotation, Room _relativeRoom)
+        public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
         {
             RelativeNode = _relativeNode;          
-            transform.rotation = _rotation;
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
+            transform.rotation = Quaternion.LookRotation(_pointToFace.position - transform.position);
+            Debug.Log(transform.position + " / " + transform.localPosition);
+            return this;
+        }
+
+        public Cell PlaceCell(GridNode _relativeNode, Vector3 _pointToFace, Room _relativeRoom)
+        {
+            RelativeNode = _relativeNode;
+            relativeRoom = _relativeRoom;
+            transform.parent = relativeRoom.transform;
+            transform.rotation = Quaternion.LookRotation(_pointToFace - transform.position);
+            Debug.Log(transform.position + " / " + transform.localPosition);
             return this;
         }
 
