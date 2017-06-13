@@ -23,5 +23,11 @@ namespace DumbProject.Generic
             foreach (GridController grid in GridCtrls)
                 grid.Setup();
         }
+
+        public void DestroyUIGrid()
+        {
+            foreach (GridController gridCtrl in GridCtrls)
+                gridCtrl.DestroyGrid();
+        }
     }
 }

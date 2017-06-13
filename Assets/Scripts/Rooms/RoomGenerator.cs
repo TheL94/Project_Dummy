@@ -31,6 +31,11 @@ namespace DumbProject.Rooms
             CreateNewRoom();
         }
 
+        public void Clean()
+        {
+            //TODO: da completare.
+        }
+
         public void CreateNewRoom()
         {
             int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
@@ -97,8 +102,8 @@ namespace DumbProject.Rooms
 
         void SetupSpawnsAssociations()
         {
-            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.roomPreviewController.UISpawns.Count; i++)
-                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.roomPreviewController.UISpawns[i]));          
+            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns.Count; i++)
+                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

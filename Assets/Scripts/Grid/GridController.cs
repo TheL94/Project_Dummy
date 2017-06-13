@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms.Cells;
+using System.Linq;
 
 namespace DumbProject.Grid
 {
@@ -83,6 +84,18 @@ namespace DumbProject.Grid
                 }
             }
             return false;
+        }
+
+        public void DestroyGrid()
+        {
+            Grid = null;
+            List<Transform> childrenTransform = GetComponentsInChildren<Transform>().ToList();
+            childrenTransform.Remove(transform);
+            foreach (Transform item in childrenTransform)
+            {
+                Destroy(item.gameObject);
+            }
+
         }
 
         /// <summary>
