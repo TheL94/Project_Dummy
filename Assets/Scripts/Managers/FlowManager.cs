@@ -39,6 +39,7 @@ namespace DumbProject.Flow
                     break;
                 case FlowState.Pause:
                     // Blocca Dummy e attiva il menu di pausa
+                    GameManager.I.ActivePauseMode();
                     break;
                 case FlowState.ExitGameplay:
                     GameManager.I.ExitGameplayMode();
@@ -53,7 +54,6 @@ namespace DumbProject.Flow
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameManager.I.UIMng.GamePlayCtrl.ActivatePause();
                 CurrentState = FlowState.Pause;
             }
         }

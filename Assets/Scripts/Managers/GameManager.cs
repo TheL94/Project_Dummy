@@ -31,6 +31,15 @@ namespace DumbProject.Generic
 
         bool IsGamePlaying;
 
+        private bool _isGamePaused;
+
+        public bool IsGamePaused
+        {
+            get { return _isGamePaused; }
+            set { _isGamePaused = value; }
+        }
+
+
         private void Awake()
         {
             //Singleton paradigm
@@ -82,5 +91,22 @@ namespace DumbProject.Generic
             RoomGenerator.Clean();
             IsGamePlaying = false;
         }
+
+        /// <summary>
+        /// Richiamata dal bottone di Resume nel pause Panel per tornare nello stato di gameplay
+        /// </summary>
+        public void DeactivatePauseMode()
+        {
+            flowMng.CurrentState = DumbProject.Flow.FlowState.GameplayState;
+        }
+
+        /// <summary>
+        /// Attiva il pannello della pausa
+        /// </summary>
+        public void ActivePauseMode()
+        {
+            UIMng.GamePlayCtrl.ActivatePause();
+        }
+
     }
 }

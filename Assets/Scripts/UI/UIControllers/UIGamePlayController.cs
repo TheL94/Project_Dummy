@@ -42,7 +42,7 @@ public class UIGamePlayController : MonoBehaviour {
     public void Resume()
     {
         DeactivatePause();
-        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.GameplayState;
+        GameManager.I.DeactivatePauseMode();
     }
 
     /// <summary>

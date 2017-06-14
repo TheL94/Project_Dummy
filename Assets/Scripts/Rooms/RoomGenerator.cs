@@ -16,6 +16,8 @@ namespace DumbProject.Rooms
 
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
+        GameObject firstRoom;
+
         public void Setup()
         {
             foreach (RoomData roomData in RoomTypesData)
@@ -25,7 +27,7 @@ namespace DumbProject.Rooms
 
             SetupSpawnsAssociations();
 
-            InstantiateFirstRoom(RoomTypesInstances[0]);
+            firstRoom = InstantiateFirstRoom(RoomTypesInstances[0]);
             CreateNewRoom();
             CreateNewRoom();
             CreateNewRoom();
@@ -38,6 +40,7 @@ namespace DumbProject.Rooms
                 Destroy(association.Room.gameObject);
             }
             SpawnsAssociations.Clear();
+            Destroy(firstRoom);
         }
 
         public void CreateNewRoom()
@@ -61,12 +64,13 @@ namespace DumbProject.Rooms
                     association.Room = null;
         }
 
-        void InstantiateFirstRoom(RoomData _data)
+        GameObject InstantiateFirstRoom(RoomData _data)
         {
             GameObject newRoomObj = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             TShapeRoom mainRoom = newRoomObj.AddComponent<TShapeRoom>();
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "MainRoom";
+            return newRoomObj;
         }
 
         void InstantiateRoom(RoomData _data)
