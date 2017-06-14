@@ -51,9 +51,9 @@ namespace DumbProject.Rooms.Cells
             return this;
         }
 
-        public bool CheckPosition(GridController _grid)
+        public bool CheckValidPosition(GridController _grid, out GridNode node)
         {
-            GridNode node = _grid.GetSpecificGridNode(transform.position);
+            node = _grid.GetSpecificGridNode(transform.position);
             if (node != null && node.RelativeCell == null)
                 return true;
 

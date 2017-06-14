@@ -14,7 +14,8 @@ namespace DumbProject.Rooms
     public class RoomMovement : MonoBehaviour
     {
         Room room;
-        //------------Sistem con Raycast--------
+        Tweener snap;
+        //------------Sistema con Raycast--------
         Ray mouseProjection;
         Plane gridLevel;
         //---------------------------------------
@@ -24,7 +25,6 @@ namespace DumbProject.Rooms
             //----------
             gridLevel = new Plane(Vector3.up, GameManager.I.MainGridCtrl.transform.position.y + GameManager.I.MainGridCtrl.GridOffsetY);
             //----------
-
             room = _room;
         }
 
@@ -42,10 +42,10 @@ namespace DumbProject.Rooms
                 mousePosition = mouseProjection.GetPoint(distance);
             //---------------------------------------
             GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
-
             if (node != null)
             {
-                transform.DOMove(node.WorldPosition, 0.05f);
+                //snap = room.transform.DOMove(node.WorldPosition, .05f);
+                room.transform.position = node.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
                     if (node == null || (node != null && node.RelativeCell != null))
@@ -66,6 +66,9 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
+            if (snap.IsPlaying())
+                snap.Complete();
+            //controlla che al drop le posizioni su cui vengono fatti i controlli "Check", siano stati assegnati con ordine e per tempo
             if (room.CheckPosition())
             {
                 room.PlaceAction();
@@ -73,9 +76,9 @@ namespace DumbProject.Rooms
             }
             else
             {
-                room.ResetPositionToInitialPosition();
+                room.ResetPositionToInitialPosition(snap);
                 return false;
-            }           
+            }
         }
     }
 }

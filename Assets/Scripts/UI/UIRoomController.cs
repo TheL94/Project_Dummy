@@ -22,7 +22,7 @@ namespace DumbProject.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (ActualRoom != null)
+            if (eventData.dragging && ActualRoom != null)
                 ActualRoom.RoomMovment.DragActions(eventData);
         }
 

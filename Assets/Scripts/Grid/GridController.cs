@@ -19,6 +19,7 @@ namespace DumbProject.Grid
 
         GridNode[,] Grid;
 
+        #region API
         /// <summary>
         /// Setup della gliglia
         /// </summary>
@@ -97,6 +98,7 @@ namespace DumbProject.Grid
             }
 
         }
+        #endregion
 
         /// <summary>
         /// Crea la griglia in base ai parametri che gli sono passati

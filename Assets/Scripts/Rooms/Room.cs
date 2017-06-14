@@ -23,6 +23,7 @@ namespace DumbProject.Rooms
         public RoomMovement RoomMovment;
 
         Vector3 _initialPosition;
+        Tweener rotationTween;
         public Vector3 InitialPosition
         {
             get { return _initialPosition; }
@@ -52,9 +53,15 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che contiene le azioni da eseguire quando la posizione in cui si vuole metere la stanza è invalida
         /// </summary>
-        public void ResetPositionToInitialPosition()
+        public void ResetPositionToInitialPosition( Tweener snap = null)
         {
-            transform.position = InitialPosition;
+            if (rotationTween != null)
+                rotationTween.Complete();
+
+            //if (snap != null)
+            //    snap.ChangeEndValue(InitialPosition);
+            //else
+                transform.position = InitialPosition;
         }
 
         /// <summary>
@@ -78,11 +85,12 @@ namespace DumbProject.Rooms
             bool IsValidPosition = false;
             foreach (Cell cell in CellsInRoom)
             {
-                if (!cell.CheckPosition(GameManager.I.MainGridCtrl))
+                GridNode node;
+                if (!cell.CheckValidPosition(GameManager.I.MainGridCtrl, out node))
                 {
                     return false;
                 }
-                foreach (GridNode adjacentNode in cell.RelativeNode.AdjacentNodes)
+                foreach (GridNode adjacentNode in node.AdjacentNodes)
                 {
                     if (adjacentNode.RelativeCell != null)
                         IsValidPosition = true;
@@ -100,7 +108,7 @@ namespace DumbProject.Rooms
             if (canRotate)
             {
                 canRotate = false;
-                transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() => 
+                rotationTween = transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() => 
                 {
                     canRotate = true;
                     foreach (Cell cell in CellsInRoom)
