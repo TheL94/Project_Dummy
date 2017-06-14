@@ -79,7 +79,7 @@ namespace DumbProject.Rooms
             if (association != null)
             {
                 GameObject newRoomObj = new GameObject();
-                newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
+                newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
                 newRoomObj.transform.parent = transform;
 
                 Room room = AddRoomShapeComponent(_data, newRoomObj);
