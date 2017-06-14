@@ -33,17 +33,20 @@ namespace DumbProject.Rooms
 
         public void Clean()
         {
-            //TODO: da completare.
+            SpawnsAssociations.Clear();
         }
 
         public void CreateNewRoom()
         {
-            int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
-            RoomShape roomShape = (RoomShape)randomRoomShape;
-            foreach (RoomData roomData in RoomTypesInstances)
+            if(GameManager.I.flowMng.CurrentState == Flow.FlowState.GameplayState)
             {
-                if (roomData.Shape == roomShape)
-                    InstantiateRoom(roomData);
+                int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
+                RoomShape roomShape = (RoomShape)randomRoomShape;
+                foreach (RoomData roomData in RoomTypesInstances)
+                {
+                    if (roomData.Shape == roomShape)
+                        InstantiateRoom(roomData);
+                }
             }
         }
 
