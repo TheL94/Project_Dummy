@@ -66,7 +66,7 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            if (snap.IsPlaying())
+            if (snap != null && snap.IsPlaying())
                 snap.Complete();
             //controlla che al drop le posizioni su cui vengono fatti i controlli "Check", siano stati assegnati con ordine e per tempo
             if (room.CheckPosition())
