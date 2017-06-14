@@ -14,7 +14,17 @@ namespace DumbProject.Rooms
     public class RoomMovement : MonoBehaviour
     {
         Room room;
-        Tweener snap;
+        Tweener _snap;
+        Tweener snap
+        {
+            get { return _snap; }
+            set
+            {
+                if (_snap != null)
+                    _snap.Complete();
+                _snap = value;
+            }
+        }
         //------------Sistema con Raycast--------
         Ray mouseProjection;
         Plane gridLevel;
@@ -41,11 +51,13 @@ namespace DumbProject.Rooms
             if (gridLevel.Raycast(mouseProjection, out distance))
                 mousePosition = mouseProjection.GetPoint(distance);
             //---------------------------------------
+
+
             GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (node != null)
             {
-                //snap = room.transform.DOMove(node.WorldPosition, .05f);
-                room.transform.position = node.WorldPosition;
+                snap = room.transform.DOMove(node.WorldPosition, .05f);
+                //room.transform.position = node.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
                     if (node == null || (node != null && node.RelativeCell != null))

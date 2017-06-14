@@ -60,7 +60,7 @@ namespace DumbProject.Rooms.Cells
 
             return false;
         }
-
+        //Usare dei Tween incatenati
         public GridNode GetMyPositionOnGrid(GridController _grid)
         {
             return _grid.GetSpecificGridNode(transform.position);

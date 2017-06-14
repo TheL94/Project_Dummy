@@ -58,9 +58,9 @@ namespace DumbProject.Rooms
             if (rotationTween != null)
                 rotationTween.Complete();
 
-            //if (snap != null)
-            //    snap.ChangeEndValue(InitialPosition);
-            //else
+            if (snap != null)
+                snap.ChangeEndValue(InitialPosition);
+            else
                 transform.position = InitialPosition;
         }
 
