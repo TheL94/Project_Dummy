@@ -33,6 +33,10 @@ namespace DumbProject.Rooms
 
         public void Clean()
         {
+            foreach (SpawnsAssociation association in SpawnsAssociations)
+            {
+                Destroy(association.Room.gameObject);
+            }
             SpawnsAssociations.Clear();
         }
 

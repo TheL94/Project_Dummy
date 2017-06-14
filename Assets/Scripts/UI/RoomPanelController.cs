@@ -13,7 +13,10 @@ namespace DumbProject.UI
         public void Setup()
         {
             foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
-                _uiSpawns.Add(uiCtrl);
+            {
+                if(!UISpawns.Contains(uiCtrl))
+                    _uiSpawns.Add(uiCtrl);
+            }
         }
     }
 }
