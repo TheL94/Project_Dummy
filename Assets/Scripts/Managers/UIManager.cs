@@ -14,14 +14,31 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIGamePlayController GamePlayCtrl;
 
-        public void Start()
+        public void Init()
         {
             canvasGame = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform);
-
             MenuController = GetComponentInChildren<MenuPanelController>();
             GamePlayCtrl = GetComponentInChildren<UIGamePlayController>();
             MenuController.Init(this);
             GamePlayCtrl.Init(this);
+        }
+
+        /// <summary>
+        /// Attiva il pannello del menu, disattiva il pannello del gameplay
+        /// </summary>
+        public void ActivateMenuPanel()
+        {
+            MenuController.gameObject.SetActive(true);
+            GamePlayCtrl.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Attiva il pannello del gameplay, disattiva il pannello del menu
+        /// </summary>
+        public void ActivateGamePlayPanel()
+        {
+            GamePlayCtrl.gameObject.SetActive(true);
+            MenuController.gameObject.SetActive(false);
         }
 
         public void DestroyCanvasGame()
