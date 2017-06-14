@@ -29,6 +29,8 @@ namespace DumbProject.Generic
         [HideInInspector]
         public RoomPreviewController RoomPreviewCtrl;
 
+        bool IsGamePlaying;
+
         private void Awake()
         {
             //Singleton paradigm
@@ -60,16 +62,25 @@ namespace DumbProject.Generic
         /// </summary>
         public void EnterGameplayMode()
         {
-            MainGridCtrl.Setup();
-            RoomPreviewCtrl.Setup();
-            RoomGenerator.Setup();
+            if (!IsGamePlaying)
+            {
+                MainGridCtrl.Setup();
+                RoomPreviewCtrl.Setup();
+                RoomGenerator.Setup();
+                IsGamePlaying = true;
+            }
+
         }
 
+        /// <summary>
+        /// Pulisce gli elementi presenti nel gameplay
+        /// </summary>
         public void ExitGameplayMode()
         {
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             RoomGenerator.Clean();
+            IsGamePlaying = false;
         }
     }
 }

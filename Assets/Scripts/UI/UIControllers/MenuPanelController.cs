@@ -42,7 +42,7 @@ namespace DumbProject
         public void QuitApplication()
         {
             //Eventuale attivazione di pannelo per conferma uscita dal gioco
-            QuitApplication();
+            Application.Quit();
         }
 
         #endregion
