@@ -42,7 +42,7 @@ public class UIGamePlayController : MonoBehaviour {
     public void Resume()
     {
         DeactivatePause();
-        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.GameplayState;
+        GameManager.I.DeactivatePauseMode();
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public class UIGamePlayController : MonoBehaviour {
     /// </summary>
     public void QuitGamePlay()
     {
-
-        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.MenuState;
+        DeactivatePause();
+        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
     }
 
 

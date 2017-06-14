@@ -26,19 +26,24 @@ namespace DumbProject.Flow
         {
             switch (CurrentState)
             {
+                case FlowState.Loading:
+                    GameManager.I.Init();
+                    break;
                 case FlowState.MenuState:
-
+                    GameManager.I.UIMng.ActivateMenuPanel();
                     break;
                 case FlowState.GameplayState:
                     // Fa partire il gioco
+                    GameManager.I.UIMng.ActivateGamePlayPanel();
                     GameManager.I.EnterGameplayMode();
-                    
                     break;
                 case FlowState.Pause:
-
+                    // Blocca Dummy e attiva il menu di pausa
+                    GameManager.I.ActivePauseMode();
                     break;
                 case FlowState.ExitGameplay:
-
+                    GameManager.I.ExitGameplayMode();
+                    CurrentState = FlowState.MenuState;
                     break;
                 default:
                     break;
@@ -49,7 +54,6 @@ namespace DumbProject.Flow
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameManager.I.UIMng.GamePlayCtrl.ActivatePause();
                 CurrentState = FlowState.Pause;
             }
         }
@@ -58,6 +62,7 @@ namespace DumbProject.Flow
 
     public enum FlowState
     {
+        Loading,
         MenuState,
         GameplayState,
         Pause,

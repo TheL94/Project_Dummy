@@ -14,7 +14,10 @@ namespace DumbProject.Generic
         public void Setup()
         {
             foreach (GridController gridCtrl in GetComponentsInChildren<GridController>())
-                GridCtrls.Add(gridCtrl);
+            {
+                if(!GridCtrls.Contains(gridCtrl))
+                    GridCtrls.Add(gridCtrl);
+            }
             SetupGrids();
         }
 

@@ -16,6 +16,8 @@ namespace DumbProject.Rooms
 
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
+        GameObject firstRoom;
+
         public void Setup()
         {
             foreach (RoomData roomData in RoomTypesData)
@@ -25,7 +27,7 @@ namespace DumbProject.Rooms
 
             SetupSpawnsAssociations();
 
-            InstantiateFirstRoom(RoomTypesInstances[0]);
+            firstRoom = InstantiateFirstRoom(RoomTypesInstances[0]);
             CreateNewRoom();
             CreateNewRoom();
             CreateNewRoom();
@@ -33,17 +35,25 @@ namespace DumbProject.Rooms
 
         public void Clean()
         {
-            //TODO: da completare.
+            foreach (SpawnsAssociation association in SpawnsAssociations)
+            {
+                Destroy(association.Room.gameObject);
+            }
+            SpawnsAssociations.Clear();
+            Destroy(firstRoom);
         }
 
         public void CreateNewRoom()
         {
-            int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
-            RoomShape roomShape = (RoomShape)randomRoomShape;
-            foreach (RoomData roomData in RoomTypesInstances)
+            if(GameManager.I.flowMng.CurrentState == Flow.FlowState.GameplayState)
             {
-                if (roomData.Shape == roomShape)
-                    InstantiateRoom(roomData);
+                int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
+                RoomShape roomShape = (RoomShape)randomRoomShape;
+                foreach (RoomData roomData in RoomTypesInstances)
+                {
+                    if (roomData.Shape == roomShape)
+                        InstantiateRoom(roomData);
+                }
             }
         }
 
@@ -54,12 +64,13 @@ namespace DumbProject.Rooms
                     association.Room = null;
         }
 
-        void InstantiateFirstRoom(RoomData _data)
+        GameObject InstantiateFirstRoom(RoomData _data)
         {
             GameObject newRoomObj = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             TShapeRoom mainRoom = newRoomObj.AddComponent<TShapeRoom>();
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "MainRoom";
+            return newRoomObj;
         }
 
         void InstantiateRoom(RoomData _data)

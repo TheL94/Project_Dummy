@@ -29,6 +29,17 @@ namespace DumbProject.Generic
         [HideInInspector]
         public RoomPreviewController RoomPreviewCtrl;
 
+        bool IsGamePlaying;
+
+        private bool _isGamePaused;
+
+        public bool IsGamePaused
+        {
+            get { return _isGamePaused; }
+            set { _isGamePaused = value; }
+        }
+
+
         private void Awake()
         {
             //Singleton paradigm
@@ -41,29 +52,61 @@ namespace DumbProject.Generic
         private void Start()
         {
             flowMng = GetComponent<FlowManager>();
-            flowMng.CurrentState = FlowState.MenuState;
-
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
+
+            flowMng.CurrentState = FlowState.Loading;
         }
         
+        public void Init()
+        {
+            UIMng.Init();
+            flowMng.CurrentState = FlowState.MenuState;
+        }
+
         /// <summary>
         /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
         /// </summary>
         public void EnterGameplayMode()
         {
-            MainGridCtrl.Setup();
-            RoomPreviewCtrl.Setup();
-            RoomGenerator.Setup();
+            if (!IsGamePlaying)
+            {
+                MainGridCtrl.Setup();
+                RoomPreviewCtrl.Setup();
+                RoomGenerator.Setup();
+                IsGamePlaying = true;
+            }
+
         }
 
+        /// <summary>
+        /// Pulisce gli elementi presenti nel gameplay
+        /// </summary>
         public void ExitGameplayMode()
         {
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             RoomGenerator.Clean();
+            IsGamePlaying = false;
         }
+
+        /// <summary>
+        /// Richiamata dal bottone di Resume nel pause Panel per tornare nello stato di gameplay
+        /// </summary>
+        public void DeactivatePauseMode()
+        {
+            flowMng.CurrentState = DumbProject.Flow.FlowState.GameplayState;
+        }
+
+        /// <summary>
+        /// Attiva il pannello della pausa
+        /// </summary>
+        public void ActivePauseMode()
+        {
+            UIMng.GamePlayCtrl.ActivatePause();
+        }
+
     }
 }
