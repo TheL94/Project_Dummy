@@ -41,14 +41,20 @@ namespace DumbProject.Generic
         private void Start()
         {
             flowMng = GetComponent<FlowManager>();
-            flowMng.CurrentState = FlowState.MenuState;
-
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
+
+            flowMng.CurrentState = FlowState.Loading;
         }
         
+        public void Init()
+        {
+            UIMng.Init();
+            flowMng.CurrentState = FlowState.MenuState;
+        }
+
         /// <summary>
         /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
         /// </summary>

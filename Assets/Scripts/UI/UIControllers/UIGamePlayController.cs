@@ -50,8 +50,7 @@ public class UIGamePlayController : MonoBehaviour {
     /// </summary>
     public void QuitGamePlay()
     {
-
-        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.MenuState;
+        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
     }
 
 
