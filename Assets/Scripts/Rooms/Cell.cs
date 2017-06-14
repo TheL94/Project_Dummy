@@ -38,7 +38,8 @@ namespace DumbProject.Rooms.Cells
             RelativeNode = _relativeNode;          
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
-            transform.rotation = Quaternion.LookRotation(_pointToFace.position - transform.position);
+            Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
+            transform.rotation = newRotation;
             return this;
         }
 
@@ -59,7 +60,7 @@ namespace DumbProject.Rooms.Cells
 
             return false;
         }
-
+        //Usare dei Tween incatenati
         public GridNode GetMyPositionOnGrid(GridController _grid)
         {
             return _grid.GetSpecificGridNode(transform.position);
