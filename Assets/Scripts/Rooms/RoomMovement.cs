@@ -20,12 +20,21 @@ namespace DumbProject.Rooms
         {
             get { return _closerNode; }
             set {
-                SafeSnap(value);
+                SafeSnap(value.WorldPosition);
                 _closerNode = value;
             }
         }
-        [HideInInspector]
-        public bool MovingToInitialPosition = false;
+        bool _movingInitialPosition;
+        public bool MovingToInitialPosition
+        {
+            get { return _movingInitialPosition; }
+            set {
+                _movingInitialPosition = value;
+                if (value)
+                    SafeSnap(room.InitialPosition);
+            }
+        }
+        
         //------------Sistema con Raycast--------
         Ray mouseProjection;
         Plane gridLevel;
@@ -57,7 +66,7 @@ namespace DumbProject.Rooms
             closerNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (closerNode != null)
             {
-                room.transform.position = closerNode.WorldPosition;
+                //room.transform.position = closerNode.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
                     if (closerNode == null || (closerNode != null && closerNode.RelativeCell != null))
@@ -84,19 +93,24 @@ namespace DumbProject.Rooms
             }
             else
             {
-                room.ResetPositionToInitialPosition();
+                MovingToInitialPosition = true;
                 return false;
             }
         }
 
-        void SafeSnap(GridNode _node)
+        void SafeSnap(Vector3 _nodePosition)
         {
-            if (_node != null && _node != _closerNode)
+            if (_nodePosition == null || closerNode == null)
+                return;
+
+            if (_nodePosition != closerNode.WorldPosition)
             {
                 if (snap != null)
                     snap.Complete();
-                if(!MovingToInitialPosition)
-                    snap = room.transform.DOMove(_node.WorldPosition, .05f);
+                if (!MovingToInitialPosition)
+                    snap = room.transform.DOMove(_nodePosition, .05f);
+                else
+                    snap = room.transform.DOMove(_nodePosition, .1f).OnComplete(() => { MovingToInitialPosition = false; });
             }
         }
     }
