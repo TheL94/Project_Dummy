@@ -47,8 +47,7 @@ namespace DumbProject.Rooms
         {
             if(GameManager.I.flowMng.CurrentState == Flow.FlowState.GameplayState)
             {
-                int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
-                RoomShape roomShape = (RoomShape)randomRoomShape;
+                RoomShape roomShape = GetRandomShape();
                 foreach (RoomData roomData in RoomTypesInstances)
                 {
                     if (roomData.Shape == roomShape)
@@ -66,8 +65,9 @@ namespace DumbProject.Rooms
 
         GameObject InstantiateFirstRoom(RoomData _data)
         {
-            GameObject newRoomObj = Instantiate(_data.RoomPrefab, GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
-            TShapeRoom mainRoom = newRoomObj.AddComponent<TShapeRoom>();
+            GameObject newRoomObj = new GameObject();
+            newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
+            Room mainRoom = AddRoomShapeComponent(_data, newRoomObj);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "MainRoom";
             return newRoomObj;
@@ -78,44 +78,59 @@ namespace DumbProject.Rooms
             SpawnsAssociation association = GetFirstSpawnsAssociationAvailable();
             if (association != null)
             {
-                GameObject newRoomObj = Instantiate(_data.RoomPrefab, association.GridSpawn.GetGridCenter().WorldPosition, Quaternion.identity, transform);
-                Room room = null;
-                switch (_data.Shape)
-                {
-                    case RoomShape.T_Shape:
-                        room = newRoomObj.AddComponent<TShapeRoom>();
-                        room.name = "TShapeRoom";
-                        break;
-                    case RoomShape.I_Shape:
-                        room = newRoomObj.AddComponent<IShapeRoom>();
-                        room.name = "IShapeRoom";
-                        break;
-                    case RoomShape.J_Shape:
-                        room = newRoomObj.AddComponent<JShapeRoom>();
-                        room.name = "JShapeRoom";
-                        break;
-                    case RoomShape.L_Shape:
-                        room = newRoomObj.AddComponent<LShapeRoom>();
-                        room.name = "LShapeRoom";
-                        break;
-                    case RoomShape.S_Shape:
-                        room = newRoomObj.AddComponent<SShapeRoom>();
-                        room.name = "SShapeRoom";
-                        break;
-                    case RoomShape.Z_Shape:
-                        room = newRoomObj.AddComponent<ZShapeRoom>();
-                        room.name = "ZShapeRoom";
-                        break;
-                    case RoomShape.O_Shape:
-                        room = newRoomObj.AddComponent<OShapeRoom>();
-                        room.name = "OShapeRoom";
-                        break;
-                }
-                
+                GameObject newRoomObj = new GameObject();
+                newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
+                newRoomObj.transform.parent = transform;
+
+                Room room = AddRoomShapeComponent(_data, newRoomObj);
+
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn, roomMovement);
             }
+        }
+
+        RoomShape GetRandomShape()
+        {
+            int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
+            return (RoomShape)randomRoomShape;
+        }
+
+        Room AddRoomShapeComponent(RoomData _data, GameObject _newRoomObj)
+        {
+            Room room = null;
+            switch (_data.Shape)
+            {
+                case RoomShape.T_Shape:
+                    room = _newRoomObj.AddComponent<TShapeRoom>();
+                    room.name = "TShapeRoom";
+                    break;
+                case RoomShape.I_Shape:
+                    room = _newRoomObj.AddComponent<IShapeRoom>();
+                    room.name = "IShapeRoom";
+                    break;
+                case RoomShape.J_Shape:
+                    room = _newRoomObj.AddComponent<JShapeRoom>();
+                    room.name = "JShapeRoom";
+                    break;
+                case RoomShape.L_Shape:
+                    room = _newRoomObj.AddComponent<LShapeRoom>();
+                    room.name = "LShapeRoom";
+                    break;
+                case RoomShape.S_Shape:
+                    room = _newRoomObj.AddComponent<SShapeRoom>();
+                    room.name = "SShapeRoom";
+                    break;
+                case RoomShape.Z_Shape:
+                    room = _newRoomObj.AddComponent<ZShapeRoom>();
+                    room.name = "ZShapeRoom";
+                    break;
+                case RoomShape.O_Shape:
+                    room = _newRoomObj.AddComponent<OShapeRoom>();
+                    room.name = "OShapeRoom";
+                    break;
+            }
+            return room;
         }
 
         void SetupSpawnsAssociations()
