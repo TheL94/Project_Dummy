@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms.Cells;
+using Framework.Pathfinding;
 using System;
 
 namespace DumbProject.Grid
 {
-    public class GridNode : ICellNode
+    public class GridNode : ICellNode, INetworkable
     {
         public GridController RelativeGrid;
         public GridPosition GridPosition;
@@ -29,11 +30,43 @@ namespace DumbProject.Grid
             WorldPosition = _worldPosition;
         }
 
-
         public void Init(List<GridNode> _adjacentNodes)
         {
             AdjacentNodes = _adjacentNodes;
         }
+
+        //Implementazione di INetworkable
+        #region INetworkable
+        List<INetworkable> _links;
+        public List<INetworkable> Links
+        {
+            get{ return _links; }
+            set { _links = value; }
+        }
+
+        public INetworkable GetNextCloser(INetworkable _target)
+        {
+            INetworkable nextStep = this;
+
+            return nextStep;
+        }
+
+        public void AddLinks(List<INetworkable> _newLinks) {
+            foreach (INetworkable _INet in _newLinks)
+            {
+                if (!Links.Contains(_INet))
+                    Links.Add(_INet);
+            }
+        }
+
+        public void RemoveLinks(List<INetworkable> _linksToRemove) {
+            foreach (INetworkable _INet in _linksToRemove)
+            {
+                if (Links.Contains(_INet))
+                    Links.Remove(_INet);
+            }
+        }
+        #endregion
     }
 
     public struct GridPosition
