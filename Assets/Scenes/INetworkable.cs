@@ -17,7 +17,7 @@ namespace Framework.Pathfinding {
         /// </summary>
         /// <param name="_target">Objective to reach</param>
         /// <returns>The closest INetworkable to _target</returns>
-        INetworkable GetNextCloser(INetworkable _target);
+        List<INetworkable> GetNextCloser(INetworkable _target);
 
         /// <summary>
         /// Add _newLinks to Links

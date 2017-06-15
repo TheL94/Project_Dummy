@@ -37,16 +37,28 @@ namespace DumbProject.Grid
 
         //Implementazione di INetworkable
         #region INetworkable
-        List<INetworkable> _links;
-        public List<INetworkable> Links
-        {
-            get{ return _links; }
-            set { _links = value; }
-        }
+        public List<INetworkable> Links { get; set; }
 
-        public INetworkable GetNextCloser(INetworkable _target)
+        public List<INetworkable> GetNextCloser(INetworkable _target)
         {
-            INetworkable nextStep = this;
+            List<INetworkable> nextStep = new List<INetworkable>();
+            float distance = Vector3.Distance(WorldPosition, (_target as GridNode).WorldPosition);
+
+            foreach (INetworkable link in Links)
+            {
+                float newDist = Vector3.Distance((link as GridNode).WorldPosition, (_target as GridNode).WorldPosition);
+                if (newDist <= distance)
+                {
+                    if(newDist < distance) {
+                        nextStep.Clear();
+                        distance = newDist;
+                    }
+                    nextStep.Add(link);
+                } 
+            }
+
+            if (nextStep.Count == 0)
+                nextStep.Add(this);
 
             return nextStep;
         }
