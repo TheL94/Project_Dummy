@@ -53,15 +53,10 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che contiene le azioni da eseguire quando la posizione in cui si vuole metere la stanza è invalida
         /// </summary>
-        public void ResetPositionToInitialPosition( Tweener snap = null)
+        public void ResetPositionToInitialPosition()
         {
-            if (rotationTween != null)
-                rotationTween.Complete();
-
-            if (snap != null)
-                snap.ChangeEndValue(InitialPosition);
-            else
-                transform.position = InitialPosition;
+            RoomMovment.MovingToInitialPosition = true;
+            transform.DOMove(InitialPosition, .05f).OnComplete(()=> { RoomMovment.MovingToInitialPosition = true; });
         }
 
         /// <summary>

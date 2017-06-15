@@ -14,17 +14,18 @@ namespace DumbProject.Rooms
     public class RoomMovement : MonoBehaviour
     {
         Room room;
-        Tweener _snap;
-        Tweener snap
+        Tweener snap;
+        GridNode _closerNode;
+        public GridNode closerNode
         {
-            get { return _snap; }
-            set
-            {
-                if (_snap != null)
-                    _snap.Complete();
-                _snap = value;
+            get { return _closerNode; }
+            set {
+                SafeSnap(value);
+                _closerNode = value;
             }
         }
+        [HideInInspector]
+        public bool MovingToInitialPosition = false;
         //------------Sistema con Raycast--------
         Ray mouseProjection;
         Plane gridLevel;
@@ -53,14 +54,13 @@ namespace DumbProject.Rooms
             //---------------------------------------
 
 
-            GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
-            if (node != null)
+            closerNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
+            if (closerNode != null)
             {
-                //snap = room.transform.DOMove(node.WorldPosition, .05f);
-                room.transform.position = node.WorldPosition;
+                room.transform.position = closerNode.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
-                    if (node == null || (node != null && node.RelativeCell != null))
+                    if (closerNode == null || (closerNode != null && closerNode.RelativeCell != null))
                         cell.ShowInvalidPosition(true);
                     else
                         cell.ShowInvalidPosition(false);
@@ -70,7 +70,6 @@ namespace DumbProject.Rooms
                 transform.position = mousePosition;
         }
 
-
         /// <summary>
         /// Azioni eseguite al drop della stanza
         /// </summary>
@@ -78,9 +77,6 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            if (snap != null && snap.IsPlaying())
-                snap.Complete();
-            //controlla che al drop le posizioni su cui vengono fatti i controlli "Check", siano stati assegnati con ordine e per tempo
             if (room.CheckPosition())
             {
                 room.PlaceAction();
@@ -88,8 +84,19 @@ namespace DumbProject.Rooms
             }
             else
             {
-                room.ResetPositionToInitialPosition(snap);
+                room.ResetPositionToInitialPosition();
                 return false;
+            }
+        }
+
+        void SafeSnap(GridNode _node)
+        {
+            if (_node != null && _node != _closerNode)
+            {
+                if (snap != null)
+                    snap.Complete();
+                if(!MovingToInitialPosition)
+                    snap = room.transform.DOMove(_node.WorldPosition, .05f);
             }
         }
     }
