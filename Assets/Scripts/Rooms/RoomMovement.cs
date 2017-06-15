@@ -56,8 +56,8 @@ namespace DumbProject.Rooms
             GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (node != null)
             {
-                snap = room.transform.DOMove(node.WorldPosition, .05f);
-                //room.transform.position = node.WorldPosition;
+                //snap = room.transform.DOMove(node.WorldPosition, .05f);
+                room.transform.position = node.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
                     if (node == null || (node != null && node.RelativeCell != null))
