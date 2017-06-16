@@ -34,10 +34,10 @@ namespace DumbProject.Grid
         {
             AdjacentNodes = _adjacentNodes;
             //Provvisoria connessione di tutti gli adiacenti come link del network
-            foreach (INetworkable node in AdjacentNodes)
-            {
-                AddLinks(new List<INetworkable>() { node });
-            }
+            //foreach (INetworkable node in AdjacentNodes)
+            //{
+            //    AddLinks(new List<INetworkable>() { node });
+            //}
         }
 
         //Implementazione di INetworkable
