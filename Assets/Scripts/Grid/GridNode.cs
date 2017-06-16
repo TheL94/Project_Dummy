@@ -33,35 +33,18 @@ namespace DumbProject.Grid
         public void Init(List<GridNode> _adjacentNodes)
         {
             AdjacentNodes = _adjacentNodes;
+            //Provvisoria connessione di tutti gli adiacenti come link del network
+            foreach (INetworkable node in AdjacentNodes)
+            {
+                AddLinks(new List<INetworkable>() { node });
+            }
         }
 
         //Implementazione di INetworkable
         #region INetworkable
+        public Vector3 spacePosition { get { return WorldPosition; } set { } }
+
         public List<INetworkable> Links { get; set; }
-
-        public List<INetworkable> GetNextCloser(INetworkable _target)
-        {
-            List<INetworkable> nextStep = new List<INetworkable>();
-            float distance = Vector3.Distance(WorldPosition, (_target as GridNode).WorldPosition);
-
-            foreach (INetworkable link in Links)
-            {
-                float newDist = Vector3.Distance((link as GridNode).WorldPosition, (_target as GridNode).WorldPosition);
-                if (newDist <= distance)
-                {
-                    if(newDist < distance) {
-                        nextStep.Clear();
-                        distance = newDist;
-                    }
-                    nextStep.Add(link);
-                } 
-            }
-
-            if (nextStep.Count == 0)
-                nextStep.Add(this);
-
-            return nextStep;
-        }
 
         public void AddLinks(List<INetworkable> _newLinks) {
             foreach (INetworkable _INet in _newLinks)
