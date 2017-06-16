@@ -42,6 +42,7 @@ namespace Framework.Pathfinding
             //Evaluate the next closer INetworkable
             foreach (INetworkable closePosition in _startingPosition)
             {
+                //bisogna valutare a parità di distanza
                 foreach (INetworkable link in closePosition.Links)
                 {
                     float newDistance = Vector3.Distance(link.spacePosition, _target.spacePosition);
