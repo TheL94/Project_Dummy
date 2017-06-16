@@ -42,8 +42,8 @@ namespace DumbProject.UI
         {
             if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)
             {
-                Destroy(eventData.pointerDrag);
                 ActualRoom.PlaceItemInside(eventData.pointerDrag.GetComponent<IventoryItem>().ItemToInstantiate);
+                eventData.pointerDrag.GetComponent<IventoryItem>().DestroyObj();
             }
         }
     }

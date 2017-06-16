@@ -3,13 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace DumbProject.UI
 {
     public class IventoryItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointerDownHandler
     {
         Vector3 _startPosition;
+        [HideInInspector]
         public GameObject ItemToInstantiate;
+        Slot mySlot;
+
+        public void Init(GameObject _itemToInstantiate, Sprite _uiItemSprite, Slot _ownSlot)
+        {
+            ItemToInstantiate = _itemToInstantiate;
+            GetComponent<Image>().sprite = _uiItemSprite;
+            mySlot = _ownSlot;
+        }
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -28,6 +38,11 @@ namespace DumbProject.UI
             GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
 
+        public void DestroyObj()
+        {
+            Destroy(gameObject);
+            mySlot.IsFree = true;
+        }
     }
        
 }

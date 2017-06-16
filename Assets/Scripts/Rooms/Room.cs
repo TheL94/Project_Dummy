@@ -111,7 +111,8 @@ namespace DumbProject.Rooms
         /// </summary>
         public void PlaceItemInside(GameObject _item)
         {
-            Instantiate(_item, new Vector3(CellsInRoom[0].transform.position.x, CellsInRoom[0].transform.position.y +2, CellsInRoom[0].transform.position.z), Quaternion.identity, transform);
+            int tempNum = Random.Range(0, CellsInRoom.Count);
+            Instantiate(_item, new Vector3(CellsInRoom[tempNum].transform.position.x, CellsInRoom[tempNum].transform.position.y +2, CellsInRoom[tempNum].transform.position.z), Quaternion.identity, transform);
             Debug.Log("Instanziata");
         }
 
