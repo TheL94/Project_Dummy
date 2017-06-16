@@ -5,5 +5,7 @@ using UnityEngine;
 public class Slot : MonoBehaviour {
 
     [HideInInspector]
-    public bool OwnObject;
+    public bool IsFree = true;
+
+
 }
