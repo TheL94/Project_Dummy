@@ -37,12 +37,15 @@ namespace DumbProject.Rooms
             RoomMovment = _roomMovment;        
             RoomMovment.Init(this);
             InitialPosition = transform.position;
-            PlaceCells(_data, _grid);
+            Setup(_data, _grid);
         }
 
         public void Setup(RoomData _data, GridController _grid)
         {
             PlaceCells(_data, _grid);
+            TrimCellWalls();
+            TrimCellPillars();
+            UpdateCellsElements();
         }
 
         public void LinkRoom()
@@ -156,6 +159,85 @@ namespace DumbProject.Rooms
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         protected abstract void PlaceCells(RoomData _data, GridController _grid);
+        
+        /// <summary>
+        /// Funzione che rimuove i muri se sono nella stessa posizione
+        /// </summary>
+        void TrimCellWalls()
+        {
+            List<GameObject> itemsToBeDestroyed = new List<GameObject>();
+            foreach (Cell cellInRoom in CellsInRoom)
+            {
+                foreach (Cell cell in CellsInRoom)
+                {
+                    if(cellInRoom != cell)
+                    {
+                        foreach (GameObject item1 in cellInRoom.Edges)
+                        {
+                            foreach (GameObject item2 in cell.Edges)
+                            {
+                                if(item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
+                                {
+                                    if (item1.transform.position == item2.transform.position)
+                                    {
+                                        itemsToBeDestroyed.Add(item1);
+                                        itemsToBeDestroyed.Add(item2);
+                                    }
+                                }
+                            }
+                        }
+                    }                       
+                }
+            }
+
+            foreach (GameObject item in itemsToBeDestroyed)
+            {
+                Destroy(item);
+            }
+        }
+
+
+        /// <summary>
+        /// Funzione che rimuove i pilastri se sono nella stessa posizione
+        /// </summary>
+        void TrimCellPillars()
+        {
+            List<GameObject> itemsToBeDestroyed = new List<GameObject>();
+            foreach (Cell cellInRoom in CellsInRoom)
+            {
+                foreach (Cell cell in CellsInRoom)
+                {
+                    if (cellInRoom != cell)
+                    {
+                        foreach (GameObject item1 in cellInRoom.Angles)
+                        {
+                            foreach (GameObject item2 in cell.Angles)
+                            {
+                                if (item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
+                                {
+                                    if (item1.transform.position == item2.transform.position)
+                                    {
+                                        itemsToBeDestroyed.Add(item2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (GameObject item in itemsToBeDestroyed)
+            {
+                Destroy(item);
+            }
+        }
+
+        void UpdateCellsElements()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.UpdateElements();
+        }
+
     }                                      
                                            
     public enum RoomShape
