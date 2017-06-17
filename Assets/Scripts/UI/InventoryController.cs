@@ -12,6 +12,8 @@ namespace DumbProject.UI {
         public List<ItemBaseData> ItemsData = new List<ItemBaseData>();
         public IventoryItem UiItemPrefab;
 
+        List<IventoryItem> itemsInInventory = new List<IventoryItem>();
+
         // Use this for initialization
         void Start() {
             slots = GetComponentsInChildren<Slot>().ToList();
@@ -37,6 +39,7 @@ namespace DumbProject.UI {
                 IventoryItem tempItem = Instantiate(UiItemPrefab, new Vector3(tempSlot.transform.position.x, tempSlot.transform.position.y, tempSlot.transform.position.z), Quaternion.identity, tempSlot.transform);
                 tempSlot.IsFree = false;
                 tempItem.Init(itemData.ItemPrefab, itemData.ItemInUI, tempSlot);
+                itemsInInventory.Add(tempItem);
             }
         }
 
@@ -62,6 +65,18 @@ namespace DumbProject.UI {
                     return slot;
             }
             return null;
+        }
+
+        #endregion
+
+        #region API
+
+        public void CleanInventory()
+        {
+            foreach (IventoryItem item in itemsInInventory)
+            {
+                item.DestroyObj();
+            }
         }
 
         #endregion

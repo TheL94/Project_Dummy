@@ -11,12 +11,15 @@ public class UIGamePlayController : MonoBehaviour {
     [HideInInspector]
     public RoomPanelController roomPreviewController;
     public GameObject PausePanel;
+    [HideInInspector]
+    public InventoryController inventoryController;
 
     public void Init(UIManager _uiManager)
     {
         uiManager = _uiManager;
         gameObject.SetActive(false);
 
+        inventoryController = GetComponentInChildren<InventoryController>();
         roomPreviewController = GetComponentInChildren<RoomPanelController>();
         roomPreviewController.Setup();
     }
