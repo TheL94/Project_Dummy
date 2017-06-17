@@ -24,25 +24,23 @@ namespace Framework.Pathfinding
 
         public List<INetworkable> FindPath(INetworkable _target, List<INetworkable> _startingPosition = null)
         {
-            if (_startingPosition == null)                          //Format to make it easier to use
+            if (_startingPosition == null)                                                                      //Format to make it easier to use
                 _startingPosition = new List<INetworkable>() { Actual };
 
             List<INetworkable> path = new List<INetworkable>();
+            if (_startingPosition.Contains(_target))                                                            //Return a empty list if the target is reached
+                return path;
 
             float distance = Vector3.Distance(Actual.spacePosition, _target.spacePosition);
-            foreach (INetworkable position in _startingPosition)
+
+            foreach (INetworkable position in _startingPosition)                                                //Reset distance with the shortest possible, due to possible iteration of this method
             {
                 if (Vector3.Distance(position.spacePosition, _target.spacePosition) < distance)
                     distance = Vector3.Distance(position.spacePosition, _target.spacePosition);
             }
 
-            if (_startingPosition.Contains(_target))      //Return a empty list if the target is reached
-                return path;
-
-            //Evaluate the next closer INetworkable
-            foreach (INetworkable closePosition in _startingPosition)
+            foreach (INetworkable closePosition in _startingPosition)                                           //Evaluate the next closer INetworkable
             {
-                //bisogna valutare a parità di distanza
                 foreach (INetworkable link in closePosition.Links)
                 {
                     float newDistance = Vector3.Distance(link.spacePosition, _target.spacePosition);
