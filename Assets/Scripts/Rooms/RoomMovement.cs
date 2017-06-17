@@ -20,7 +20,8 @@ namespace DumbProject.Rooms
         {
             get { return _closerNode; }
             set {
-                SafeSnap(value.WorldPosition);
+                if(value != null)
+                    SafeSnap(value.WorldPosition);
                 _closerNode = value;
             }
         }
