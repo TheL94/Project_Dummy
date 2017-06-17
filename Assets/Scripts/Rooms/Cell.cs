@@ -7,6 +7,18 @@ namespace DumbProject.Rooms.Cells
 {
     public class Cell : MonoBehaviour
     {
+        private bool _isFree = true;
+        /// <summary>
+        /// se la cella ha già un oggetto assegnato
+        /// </summary>
+        public bool IsFree
+        {
+            get { return _isFree; }
+            set { _isFree = value; }
+        }
+
+
+
         GridNode _relativeNode;
         public GridNode RelativeNode
         {

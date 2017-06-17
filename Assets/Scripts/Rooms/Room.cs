@@ -111,9 +111,43 @@ namespace DumbProject.Rooms
         /// </summary>
         public void PlaceItemInside(GameObject _item)
         {
+            int tempCell = ChooseFreeCell();
+            if (tempCell >= 0)
+            {
+                Instantiate(_item, new Vector3(CellsInRoom[tempCell].transform.position.x, CellsInRoom[tempCell].transform.position.y + 2, CellsInRoom[tempCell].transform.position.z), Quaternion.identity, transform);
+                CellsInRoom[tempCell].IsFree = false;
+                Debug.Log("Instanziata"); 
+            }
+        }
+
+        public bool CheckFreeCellsInRoom()
+        {
+            foreach (Cell cell in CellsInRoom)
+            {
+                if (cell.IsFree)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// sceglie una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
+        /// </summary>
+        /// <returns>Indice della cella libera</returns>
+        int ChooseFreeCell()
+        {
             int tempNum = Random.Range(0, CellsInRoom.Count);
-            Instantiate(_item, new Vector3(CellsInRoom[tempNum].transform.position.x, CellsInRoom[tempNum].transform.position.y +2, CellsInRoom[tempNum].transform.position.z), Quaternion.identity, transform);
-            Debug.Log("Instanziata");
+            if (CellsInRoom[tempNum].IsFree)
+                return tempNum;
+            else
+            {
+                for (int i = 0; i < CellsInRoom.Count; i++)
+                {
+                    if (CellsInRoom[i].IsFree)
+                        return i;
+                }
+            }
+            return -1;
         }
 
         /// <summary>

@@ -38,6 +38,17 @@ namespace DumbProject.UI
             GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
 
+        /// <summary>
+        /// Riporta l'oggetto nella posizione iniziale
+        /// </summary>
+        public void PlaceInStartPosition()
+        {
+            transform.position = _startPosition;
+        }
+
+        /// <summary>
+        /// Distrugge l'oggetto liberando lo slot a cui era assegnato
+        /// </summary>
         public void DestroyObj()
         {
             Destroy(gameObject);
