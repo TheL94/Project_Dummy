@@ -23,6 +23,9 @@ namespace DumbProject.UI {
                 InstantiateUIObject();
         }
         
+        /// <summary>
+        /// istanzia gli oggetti draggabili nella ui
+        /// </summary>
         void InstantiateUIObject()
         {
             Slot tempSlot = ChooseFreeSlot();
@@ -35,12 +38,20 @@ namespace DumbProject.UI {
             }
         }
 
+        /// <summary>
+        /// Ritorna l'item da istanziare nella ui
+        /// </summary>
+        /// <returns></returns>
         ItemBaseData ChooseItem()
         {
             int randNum = Random.Range(0, ItemsData.Count);
             return ItemsData[randNum];
         }
 
+        /// <summary>
+        /// Ritorna uno slot libero in UI
+        /// </summary>
+        /// <returns></returns>
         Slot ChooseFreeSlot()
         {
             foreach (Slot slot in slots)
