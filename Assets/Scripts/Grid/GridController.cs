@@ -59,6 +59,9 @@ namespace DumbProject.Grid
         /// <returns></returns>
         public GridNode GetSpecificGridNode(Vector3 _worldPosition)
         {
+            if (_worldPosition == null)
+                return null;
+
             for (int i = 0; i < GridWidth; i++)
             {
                 for (int j = 0; j < GridHeight; j++)

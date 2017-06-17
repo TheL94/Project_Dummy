@@ -25,11 +25,11 @@ namespace DumbProject.Rooms.Cells
             get { return _relativeNode; }
             set
             {
-                if(_relativeNode != null && _relativeNode.RelativeCell != null)
+                if (_relativeNode != null && _relativeNode.RelativeCell != null)
                     _relativeNode.RelativeCell = null;
 
                 _relativeNode = value;
-                if(_relativeNode != null)
+                if (_relativeNode != null)
                 {
                     transform.position = RelativeNode.WorldPosition;
                     RelativeNode.RelativeCell = this;
@@ -47,7 +47,7 @@ namespace DumbProject.Rooms.Cells
 
         public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
         {
-            RelativeNode = _relativeNode;          
+            RelativeNode = _relativeNode;
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
@@ -72,6 +72,7 @@ namespace DumbProject.Rooms.Cells
 
             return false;
         }
+        
         //Usare dei Tween incatenati
         public GridNode GetMyPositionOnGrid(GridController _grid)
         {
