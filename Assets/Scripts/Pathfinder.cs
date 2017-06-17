@@ -22,68 +22,48 @@ namespace Framework.Pathfinding
             Actual = positionInNetwork;
         }
 
-        public List<INetworkable> FindPath(INetworkable _target, List<INetworkable> _givenPath = null)
+        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start = null)
         {
-            if (_givenPath == null)                                                                      //Format to make it easier to use
-                _givenPath = new List<INetworkable>() { Actual };
+            List<INetworkable> foundPath = new List<INetworkable>();
 
-            List<INetworkable> path = new List<INetworkable>();
-            if (_givenPath.Contains(_target))                                                            //Return a empty list if the target is reached
-                return path;
+            return foundPath;
+        }
 
-            float distance = Vector3.Distance(Actual.spacePosition, _target.spacePosition);
+        List<PathStep> FindPath(INetworkable _target, List<PathStep> _givenPath)
+        {
+            return null;
+        }
 
-            foreach (INetworkable position in _givenPath)                                                //Reset distance with the shortest possible, due to possible iteration of this method
+        List<INetworkable> PathStepToINetworkableList( List<PathStep> _PathSteps)
+        {
+            List<INetworkable> iNetPath = new List<INetworkable>();
+            foreach (PathStep pS in _PathSteps)
             {
-                if (Vector3.Distance(position.spacePosition, _target.spacePosition) < distance)
-                    distance = Vector3.Distance(position.spacePosition, _target.spacePosition);
+                iNetPath.Add(pS.node);
             }
+            return iNetPath;
+        }
 
-            foreach (INetworkable closePosition in _givenPath)                                           //Evaluate the next closer INetworkable
+        /// <summary>
+        /// Class that identify each step of a Path
+        /// </summary>
+        class PathStep
+        {
+            public INetworkable node;
+            public float distance
             {
-                float newDistance;
-                foreach (INetworkable link in closePosition.Links)
-                {
-                    newDistance = Vector3.Distance(link.spacePosition, _target.spacePosition);
-                    if (newDistance <= distance)
-                    {
-                        if (newDistance < distance)
-                        {
-                            path.Clear();
-                            distance = newDistance;
-                        }
-                        path.Add(link);
-                    }
-                }
+                get { return originOffSet + targetOffSet; }
             }
+            public float originOffSet;
+            public float targetOffSet;
 
-            if (path.Count > 1)
+            PathStep() { }
+            public PathStep(INetworkable _node, float _originOffSet, float _targetOffSet)
             {
-                List<INetworkable> newPath = new List<INetworkable>();
-                float offSet = -1;
-                foreach (INetworkable node in path)
-                {
-                    float newOffSet = Vector3.Distance(node.spacePosition, Actual.spacePosition);
-                    if (offSet < 0 || newOffSet <= offSet)
-                    {
-                        //if (newOffSet < offSet)                                                   //Return only one possible path
-                        //{
-                            offSet = Vector3.Distance(node.spacePosition, Actual.spacePosition);
-                            newPath.Clear();
-                        //}
-                        newPath.Add(node);
-                    }
-                }
-                path.Clear();                                                                       //Do not choose between similar path
-                path.Add(newPath[0]);
+                node = _node;
+                originOffSet = _originOffSet;
+                targetOffSet = _targetOffSet;
             }
-
-
-
-            if (path.Count == 0)
-                return null;
-
-            return path;
         }
     }
 }
