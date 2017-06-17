@@ -47,7 +47,6 @@ namespace DumbProject.Rooms.Cells
             Floor.transform.localPosition = transform.position;
             Floor.transform.parent = transform;
             Floor.transform.rotation = transform.rotation;
-            Floor.tag = "Floor";
         }
 
         void InstantiateEdges()
@@ -61,7 +60,6 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
-            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("LeftEdge");
@@ -69,7 +67,6 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
-            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("UpEdge");
@@ -77,7 +74,6 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
-            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("DownEdge");
@@ -85,7 +81,6 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
-            newEdge.tag = "Edge";
             Edges.Add(newEdge);
         }
 
@@ -97,45 +92,53 @@ namespace DumbProject.Rooms.Cells
             newAngle = new GameObject("NE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
-            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("SE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
-            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("NO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
-            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("SO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
-            newAngle.tag = "Angle";
             Angles.Add(newAngle);
         }
 
         void InstantiateGraphics()
         {
-            Instantiate(FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
+            GameObject newObj;
+            newObj = Instantiate(FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
+            newObj.tag = "Floor";
 
             foreach (GameObject angle in Angles)
             {
-                Instantiate(PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
+                newObj = Instantiate(PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
+                newObj.tag = "Angle";
             }
 
             foreach (GameObject edge in Edges)
             {
                 if(edge.name == "RightEdge" || edge.name == "LeftEdge")
-                    Instantiate(WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
+                {
+                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
+                    newObj.tag = "Edge";
+                }
                 else if (edge.name == "UpEdge")
-                    Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                {
+                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj.tag = "Edge";
+                }
                 else if (edge.name == "DownEdge")
-                    Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                {
+                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj.tag = "Edge";
+                }
             }
         }
 
