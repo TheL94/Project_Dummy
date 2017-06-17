@@ -20,11 +20,6 @@ namespace DumbProject.Rooms
             Cell rightCell = Instantiate(_data.CellPrefab).PlaceCell(_grid.GetSpecificGridNode(new GridPosition(centerNode.GridPosition.x + 1, centerNode.GridPosition.z)), centralCell.transform, this);     
             
             CellsInRoom = new List<Cell>() { centralCell, leftTopCell, centralCell, rightCell };
-
-            Instantiate(_data.CellTypes.CellWallLeftRight, centralCell.transform.position, centralCell.transform.rotation, centralCell.transform);
-            Instantiate(_data.CellTypes.CellWallOpenFront, leftTopCell.transform.position, leftTopCell.transform.rotation, leftTopCell.transform);
-            Instantiate(_data.CellTypes.CellWallAngular, leftCell.transform.position, leftCell.transform.rotation, leftCell.transform);
-            Instantiate(_data.CellTypes.CellWallOpenFront, rightCell.transform.position, rightCell.transform.rotation, rightCell.transform);
         }
     }
 }
