@@ -22,7 +22,9 @@ namespace DumbProject.UI {
             if (Input.GetKeyDown(KeyCode.X))
                 InstantiateUIObject();
         }
-        
+
+        #region Item In UI
+
         /// <summary>
         /// istanzia gli oggetti draggabili nella ui
         /// </summary>
@@ -61,5 +63,7 @@ namespace DumbProject.UI {
             }
             return null;
         }
+
+        #endregion
     }
 }

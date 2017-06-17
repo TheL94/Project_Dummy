@@ -110,47 +110,23 @@ namespace DumbProject.Rooms
 
 
         /// <summary>
-        /// Piazza l'elemento passatogli da UIRoomController all'interno della stanza
+        /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
         /// </summary>
-        public void PlaceItemInside(GameObject _item)
-        {
-            int tempCell = ChooseFreeCell();
-            if (tempCell >= 0)
-            {
-                Instantiate(_item, new Vector3(CellsInRoom[tempCell].transform.position.x, CellsInRoom[tempCell].transform.position.y + 2, CellsInRoom[tempCell].transform.position.z), Quaternion.identity, transform);
-                CellsInRoom[tempCell].IsFree = false;
-                Debug.Log("Instanziata"); 
-            }
-        }
-
-        public bool CheckFreeCellsInRoom()
-        {
-            foreach (Cell cell in CellsInRoom)
-            {
-                if (cell.IsFree)
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// sceglie una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
-        /// </summary>
-        /// <returns>Indice della cella libera</returns>
-        int ChooseFreeCell()
+        /// <returns>cella libera</returns>
+        public Cell ChooseFreeCell()
         {
             int tempNum = Random.Range(0, CellsInRoom.Count);
             if (CellsInRoom[tempNum].IsFree)
-                return tempNum;
+                return CellsInRoom[tempNum];
             else
             {
                 for (int i = 0; i < CellsInRoom.Count; i++)
                 {
                     if (CellsInRoom[i].IsFree)
-                        return i;
+                        return CellsInRoom[i];
                 }
             }
-            return -1;
+            return null;
         }
 
         /// <summary>

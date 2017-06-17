@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DumbProject.Rooms;
 using DumbProject.Generic;
+using DumbProject.Rooms.Cells;
 
 
 namespace DumbProject.UI
@@ -42,15 +43,24 @@ namespace DumbProject.UI
         {
             if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)
             {
-                if(ActualRoom.CheckFreeCellsInRoom())
+                Cell tempCell = ActualRoom.ChooseFreeCell();
+                if (tempCell != null)
                 {
-                    ActualRoom.PlaceItemInside(eventData.pointerDrag.GetComponent<IventoryItem>().ItemToInstantiate);
+                    PlaceIteminRoom(eventData.pointerDrag.GetComponent<IventoryItem>().ItemToInstantiate, tempCell);
                     eventData.pointerDrag.GetComponent<IventoryItem>().DestroyObj();
-                } else
-                {
-                    eventData.pointerDrag.GetComponent<IventoryItem>().PlaceInStartPosition();
                 }
+                else 
+                    eventData.pointerDrag.GetComponent<IventoryItem>().PlaceInStartPosition();
             }
+        }
+
+        /// <summary>
+        /// Piazza l'elemento passato nella posizione della cella che gli viene passata
+        /// </summary>
+        void PlaceIteminRoom(GameObject _object, Cell _cell)
+        {
+            Instantiate(_object, new Vector3(_cell.transform.position.x, _cell.transform.position.y + 2, _cell.transform.position.z), Quaternion.identity, _cell.transform);
+            _cell.IsFree = false;
         }
     }
 }
