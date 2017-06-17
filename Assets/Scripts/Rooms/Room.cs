@@ -45,6 +45,7 @@ namespace DumbProject.Rooms
             PlaceCells(_data, _grid);
             TrimCellWalls();
             TrimCellPillars();
+            UpdateCellsElements();
         }
 
         public void LinkRoom()
@@ -128,7 +129,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che rimuove i muri se sono nella stessa posizione
         /// </summary>
-        protected void TrimCellWalls()
+        void TrimCellWalls()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
             foreach (Cell cellInRoom in CellsInRoom)
@@ -165,7 +166,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che rimuove i pilastri se sono nella stessa posizione
         /// </summary>
-        protected void TrimCellPillars()
+        void TrimCellPillars()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
             foreach (Cell cellInRoom in CellsInRoom)
@@ -195,6 +196,12 @@ namespace DumbProject.Rooms
             {
                 Destroy(item);
             }
+        }
+
+        void UpdateCellsElements()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.UpdateElements();
         }
 
     }                                      

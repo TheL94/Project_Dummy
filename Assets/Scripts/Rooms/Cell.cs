@@ -41,17 +41,13 @@ namespace DumbProject.Rooms.Cells
         MeshRenderer[] childrenMesh;
         Room relativeRoom;
 
-        private void Start()
-        {
-            childrenMesh = GetComponentsInChildren<MeshRenderer>();
-        }
-
         void InstantiateFloor()
         {
             Floor = new GameObject("Floor");
             Floor.transform.localPosition = transform.position;
             Floor.transform.parent = transform;
             Floor.transform.rotation = transform.rotation;
+            Floor.tag = "Floor";
         }
 
         void InstantiateEdges()
@@ -65,6 +61,7 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
+            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("LeftEdge");
@@ -72,6 +69,7 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
+            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("UpEdge");
@@ -79,6 +77,7 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
+            newEdge.tag = "Edge";
             Edges.Add(newEdge);
 
             newEdge = new GameObject("DownEdge");
@@ -86,6 +85,7 @@ namespace DumbProject.Rooms.Cells
             newEdge.transform.parent = transform;
             newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
             newEdge.transform.rotation = newRotation;
+            newEdge.tag = "Edge";
             Edges.Add(newEdge);
         }
 
@@ -97,21 +97,25 @@ namespace DumbProject.Rooms.Cells
             newAngle = new GameObject("NE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
+            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("SE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
+            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("NO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
+            newAngle.tag = "Angle";
             Angles.Add(newAngle);
 
             newAngle = new GameObject("SO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
+            newAngle.tag = "Angle";
             Angles.Add(newAngle);
         }
 
@@ -161,6 +165,11 @@ namespace DumbProject.Rooms.Cells
             InstantiateAngles();
             InstantiateGraphics();
             return this;
+        }
+
+        public void UpdateElements()
+        {
+            childrenMesh = GetComponentsInChildren<MeshRenderer>();
         }
 
         public bool CheckValidPosition(GridController _grid, out GridNode node)
