@@ -4,7 +4,6 @@ using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Rooms.Data;
 using DumbProject.Rooms.Cells;
-using DumbProject.UI;
 using DG.Tweening;
 using DumbProject.Generic;
 
@@ -16,6 +15,7 @@ namespace DumbProject.Rooms
     /// </summary>
     public abstract class Room : MonoBehaviour
     {
+
         [HideInInspector]
         public List<Cell> CellsInRoom;
 
@@ -30,6 +30,7 @@ namespace DumbProject.Rooms
             private set { _initialPosition = value; }
         }
 
+        float wallPenetrationOffset;
         bool canRotate = true;
 
         public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
@@ -42,6 +43,7 @@ namespace DumbProject.Rooms
 
         public void Setup(RoomData _data, GridController _grid)
         {
+            wallPenetrationOffset = _data.WallPenetrationOffset;
             PlaceCells(_data, _grid);
             TrimCellWalls();
             TrimCellPillars();
@@ -154,7 +156,8 @@ namespace DumbProject.Rooms
                             {
                                 if(item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
                                 {
-                                    if (item1.transform.position == item2.transform.position)
+                                    Debug.Log(Vector3.Distance(item1.transform.position, item2.transform.position));
+                                    if(Vector3.Distance(item1.transform.position, item2.transform.position) <= wallPenetrationOffset)
                                     {
                                         itemsToBeDestroyed.Add(item1);
                                         itemsToBeDestroyed.Add(item2);

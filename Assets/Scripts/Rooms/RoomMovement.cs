@@ -70,10 +70,11 @@ namespace DumbProject.Rooms
                 //room.transform.position = closerNode.WorldPosition;
                 foreach (Cell cell in room.CellsInRoom)
                 {
-                    if (closerNode == null || (closerNode != null && closerNode.RelativeCell != null))
-                        cell.ShowInvalidPosition(true);
-                    else
-                        cell.ShowInvalidPosition(false);
+                    // TODO : 
+                    //if (closerNode == null || (closerNode != null && closerNode.RelativeCell != null))
+                    //    cell.ShowInvalidPosition(true);
+                    //else
+                    //    cell.ShowInvalidPosition(false);
                 }
             }
             else

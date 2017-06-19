@@ -158,7 +158,7 @@ namespace DumbProject.Rooms.Cells
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
-            transform.rotation = newRotation;
+            transform.rotation = /*newRotation;*/ Quaternion.identity;
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
@@ -171,7 +171,7 @@ namespace DumbProject.Rooms.Cells
             RelativeNode = _relativeNode;
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
-            transform.rotation = Quaternion.LookRotation(_pointToFace - transform.position);
+            transform.rotation = /*Quaternion.LookRotation(_pointToFace - transform.position);*/ Quaternion.identity;
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
