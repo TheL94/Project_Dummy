@@ -7,7 +7,6 @@ using DumbProject.Rooms.Cells;
 using DG.Tweening;
 using DumbProject.Generic;
 
-
 namespace DumbProject.Rooms
 {
     /// <summary>
@@ -15,12 +14,12 @@ namespace DumbProject.Rooms
     /// </summary>
     public abstract class Room : MonoBehaviour
     {
-
         [HideInInspector]
         public List<Cell> CellsInRoom;
-
         [HideInInspector]
         public RoomMovement RoomMovment;
+        [HideInInspector]
+        public RoomData Data;
 
         Vector3 _initialPosition;
         Tweener rotationTween;
@@ -30,9 +29,15 @@ namespace DumbProject.Rooms
             private set { _initialPosition = value; }
         }
 
-        float wallPenetrationOffset;
         bool canRotate = true;
 
+        #region API
+        /// <summary>
+        /// Setup della room nella UI
+        /// </summary>
+        /// <param name="_data"></param>
+        /// <param name="_grid"></param>
+        /// <param name="_roomMovment"></param>
         public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
         {
             RoomMovment = _roomMovment;        
@@ -41,9 +46,14 @@ namespace DumbProject.Rooms
             Setup(_data, _grid);
         }
 
+        /// <summary>
+        /// Setup della room come main room
+        /// </summary>
+        /// <param name="_data"></param>
+        /// <param name="_grid"></param>
         public void Setup(RoomData _data, GridController _grid)
         {
-            wallPenetrationOffset = _data.WallPenetrationOffset;
+            Data = _data;
             PlaceCells(_data, _grid);
             TrimCellWalls();
             TrimCellPillars();
@@ -110,7 +120,6 @@ namespace DumbProject.Rooms
             }
         }
 
-
         /// <summary>
         /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
         /// </summary>
@@ -130,6 +139,7 @@ namespace DumbProject.Rooms
             }
             return null;
         }
+        #endregion
 
         /// <summary>
         /// Funzione che piazza la stanza sulla griglia nella UI
@@ -156,8 +166,7 @@ namespace DumbProject.Rooms
                             {
                                 if(item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
                                 {
-                                    Debug.Log(Vector3.Distance(item1.transform.position, item2.transform.position));
-                                    if(Vector3.Distance(item1.transform.position, item2.transform.position) <= wallPenetrationOffset)
+                                    if(Vector3.Distance(item1.transform.position, item2.transform.position) <= Data.WallPenetrationOffset)
                                     {
                                         itemsToBeDestroyed.Add(item1);
                                         itemsToBeDestroyed.Add(item2);
@@ -174,7 +183,6 @@ namespace DumbProject.Rooms
                 Destroy(item);
             }
         }
-
 
         /// <summary>
         /// Funzione che rimuove i pilastri se sono nella stessa posizione
@@ -211,12 +219,23 @@ namespace DumbProject.Rooms
             }
         }
 
+        void PlaceDoors()
+        {
+            int numberOfDoors = Random.Range(1, CellsInRoom.Count + 1);
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (GameObject item in cell.Edges)
+                {
+                    
+                }
+            }
+        }
+
         void UpdateCellsElements()
         {
             foreach (Cell cell in CellsInRoom)
                 cell.UpdateElements();
         }
-
     }                                      
                                            
     public enum RoomShape

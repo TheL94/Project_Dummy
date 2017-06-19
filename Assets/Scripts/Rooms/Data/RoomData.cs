@@ -12,5 +12,6 @@ namespace DumbProject.Rooms.Data
         public RoomShape Shape;
         public float WallPenetrationOffset;
         public Cell CellPrefab;
+        public RoomElements RoomElements;
     }
 }

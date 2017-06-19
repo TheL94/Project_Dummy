@@ -17,11 +17,6 @@ namespace DumbProject.Rooms.Cells
             set { _isFree = value; }
         }
 
-        // TODO : caricamento prefab da spostare (in scriptable probabilmente), per adesso usare questo metodo per test.
-        public GameObject FloorPrefab;
-        public GameObject WallPrefab;
-        public GameObject PillarPrefab;
-
         GridNode _relativeNode;
         public GridNode RelativeNode
         {
@@ -122,12 +117,12 @@ namespace DumbProject.Rooms.Cells
         void InstantiateGraphics()
         {
             GameObject newObj;
-            newObj = Instantiate(FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
+            newObj = Instantiate(relativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
             newObj.tag = "Floor";
 
             foreach (GameObject angle in Angles)
             {
-                newObj = Instantiate(PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
+                newObj = Instantiate(relativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
                 newObj.tag = "Angle";
             }
 
@@ -135,17 +130,17 @@ namespace DumbProject.Rooms.Cells
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
+                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
                     newObj.tag = "Edge";
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
                     newObj.tag = "Edge";
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    newObj = Instantiate(WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
                     newObj.tag = "Edge";
                 }
             }
