@@ -45,6 +45,9 @@ namespace DumbProject.Rooms.Cells
         MeshRenderer[] childrenMesh;
         Room relativeRoom;
 
+        /// <summary>
+        /// Crea il contenitore del pavimento
+        /// </summary>
         void InstantiateFloor()
         {
             Floor = new GameObject("Floor");
@@ -53,6 +56,9 @@ namespace DumbProject.Rooms.Cells
             Floor.transform.rotation = transform.rotation;
         }
 
+        /// <summary>
+        /// Crea i contenitori dei muri
+        /// </summary>
         void InstantiateEdges()
         {
             GameObject newEdge;
@@ -88,6 +94,9 @@ namespace DumbProject.Rooms.Cells
             Edges.Add(newEdge);
         }
 
+        /// <summary>
+        /// Crea il contenitore dei pilastri
+        /// </summary>
         void InstantiateAngles()
         {
             GameObject newAngle;
@@ -114,18 +123,35 @@ namespace DumbProject.Rooms.Cells
             Angles.Add(newAngle);
         }
 
-        void InstantiateGraphics()
+        /// <summary>
+        /// Istanzia l'oggeto di grafica del pavimento
+        /// </summary>
+        void InstantiateFloorElement()
         {
-            GameObject newObj;
+            GameObject newObj = null;
             newObj = Instantiate(relativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
             newObj.tag = "Floor";
+        }
 
+        /// <summary>
+        /// Istanzia l'oggeto di grafica del pilastro
+        /// </summary>
+        void InstantiatePilllarElements()
+        {
+            GameObject newObj = null;
             foreach (GameObject angle in Angles)
             {
                 newObj = Instantiate(relativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
                 newObj.tag = "Angle";
             }
+        }
 
+        /// <summary>
+        /// Istanzia l'oggeto di grafica del muro
+        /// </summary>
+        void InstantiateWallElements()
+        {
+            GameObject newObj = null;
             foreach (GameObject edge in Edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
@@ -157,7 +183,9 @@ namespace DumbProject.Rooms.Cells
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
-            InstantiateGraphics();
+            InstantiateFloorElement();
+            InstantiatePilllarElements();
+            InstantiateWallElements();
             return this;
         }
 
@@ -167,10 +195,14 @@ namespace DumbProject.Rooms.Cells
             relativeRoom = _relativeRoom;
             transform.parent = relativeRoom.transform;
             transform.rotation = /*Quaternion.LookRotation(_pointToFace - transform.position);*/ Quaternion.identity;
+            //istanzio i contenitori
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
-            InstantiateGraphics();
+            // istanzio la grafica
+            InstantiateFloorElement();
+            InstantiatePilllarElements();
+            InstantiateWallElements();
             return this;
         }
 

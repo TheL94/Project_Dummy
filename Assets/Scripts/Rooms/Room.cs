@@ -17,6 +17,8 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public List<Cell> CellsInRoom;
         [HideInInspector]
+        public List<GameObject> DoorsInRoom = new List<GameObject>();
+        [HideInInspector]
         public RoomMovement RoomMovment;
         [HideInInspector]
         public RoomData Data;
@@ -57,12 +59,8 @@ namespace DumbProject.Rooms
             PlaceCells(_data, _grid);
             TrimCellWalls();
             TrimCellPillars();
-            UpdateCellsElements();
-        }
-
-        public void LinkRoom()
-        {
-
+            PlaceDoors();
+            //UpdateCellsElements();
         }
         
         /// <summary>
@@ -154,33 +152,27 @@ namespace DumbProject.Rooms
         void TrimCellWalls()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
-            foreach (Cell cellInRoom in CellsInRoom)
-            {
-                foreach (Cell cell in CellsInRoom)
-                {
-                    if(cellInRoom != cell)
-                    {
-                        foreach (GameObject item1 in cellInRoom.Edges)
-                        {
-                            foreach (GameObject item2 in cell.Edges)
-                            {
-                                if(item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
-                                {
-                                    if(Vector3.Distance(item1.transform.position, item2.transform.position) <= Data.WallPenetrationOffset)
-                                    {
-                                        itemsToBeDestroyed.Add(item1);
-                                        itemsToBeDestroyed.Add(item2);
-                                    }
-                                }
-                            }
-                        }
-                    }                       
-                }
-            }
+            List<GameObject> listOfWalls = GetListOfWalls();
 
-            foreach (GameObject item in itemsToBeDestroyed)
+            foreach (GameObject wall1 in listOfWalls)
             {
-                Destroy(item);
+                foreach (GameObject wall2 in listOfWalls)
+                {
+                    if(wall1 != wall2 && !itemsToBeDestroyed.Contains(wall1) && !itemsToBeDestroyed.Contains(wall2))
+                    {
+                        if(Vector3.Distance(wall1.transform.position, wall2.transform.position) <= Data.WallPenetrationOffset)
+                        {
+                            itemsToBeDestroyed.Add(wall1);
+                            itemsToBeDestroyed.Add(wall2);
+                        }
+                    }
+                }
+            }                                         
+
+            foreach (GameObject wall in itemsToBeDestroyed)
+            {
+                listOfWalls.Remove(wall);
+                Destroy(wall);
             }
         }
 
@@ -190,43 +182,69 @@ namespace DumbProject.Rooms
         void TrimCellPillars()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
-            foreach (Cell cellInRoom in CellsInRoom)
+            List<GameObject> listOfPillars = GetListOfPillars();
+
+            foreach (GameObject pillar1 in listOfPillars)
             {
-                foreach (Cell cell in CellsInRoom)
+                foreach (GameObject pillar2 in listOfPillars)
                 {
-                    if (cellInRoom != cell)
+                    if (pillar1 != pillar2 && !itemsToBeDestroyed.Contains(pillar1) && !itemsToBeDestroyed.Contains(pillar2))
                     {
-                        foreach (GameObject item1 in cellInRoom.Angles)
+                        if (pillar1.transform.position == pillar2.transform.position)
                         {
-                            foreach (GameObject item2 in cell.Angles)
-                            {
-                                if (item1 != item2 && !itemsToBeDestroyed.Contains(item1) && !itemsToBeDestroyed.Contains(item2))
-                                {
-                                    if (item1.transform.position == item2.transform.position)
-                                    {
-                                        itemsToBeDestroyed.Add(item2);
-                                    }
-                                }
-                            }
+                            itemsToBeDestroyed.Add(pillar2);
                         }
                     }
                 }
             }
 
-            foreach (GameObject item in itemsToBeDestroyed)
+            foreach (GameObject pillar in itemsToBeDestroyed)
             {
-                Destroy(item);
+                listOfPillars.Remove(pillar);
+                Destroy(pillar);
             }
         }
 
         void PlaceDoors()
         {
             int numberOfDoors = Random.Range(1, CellsInRoom.Count + 1);
-            foreach (Cell cell in CellsInRoom)
+            Debug.Log(Data.Shape + " " + numberOfDoors);
+            List<GameObject> listOfWalls = GetListOfWalls();
+            while (numberOfDoors >= 0)
             {
-                foreach (GameObject item in cell.Edges)
+                int randomIndex = Random.Range(1, listOfWalls.Count);
+                GameObject newObj;
+                Cell parentCell;
+
+                if (listOfWalls[randomIndex].name == "RightEdge" || listOfWalls[randomIndex].name == "LeftEdge")
+                {         
+                    Destroy(listOfWalls[randomIndex].GetComponentInChildren<MeshRenderer>().gameObject);
+                    parentCell = listOfWalls[randomIndex].transform.parent.GetComponent<Cell>();
+                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.identity, listOfWalls[randomIndex].transform);
+                    newObj.tag = "Door";
+                    DoorsInRoom.Add(listOfWalls[randomIndex]);
+                    listOfWalls.Remove(listOfWalls[randomIndex]);
+                    numberOfDoors--;
+                }
+                else if (listOfWalls[randomIndex].name == "UpEdge")
                 {
-                    
+                    Destroy(listOfWalls[randomIndex].GetComponentInChildren<MeshRenderer>().gameObject);
+                    parentCell = listOfWalls[randomIndex].transform.parent.GetComponent<Cell>();
+                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.LookRotation(parentCell.Angles.Find(a => a.name == "NE_Angle").transform.position - listOfWalls[randomIndex].transform.position), listOfWalls[randomIndex].transform);
+                    newObj.tag = "Door";
+                    DoorsInRoom.Add(listOfWalls[randomIndex]);             
+                    listOfWalls.Remove(listOfWalls[randomIndex]);
+                    numberOfDoors--;
+                }
+                else if (listOfWalls[randomIndex].name == "DownEdge")
+                {
+                    Destroy(listOfWalls[randomIndex].GetComponentInChildren<MeshRenderer>().gameObject);
+                    parentCell = listOfWalls[randomIndex].transform.parent.GetComponent<Cell>();
+                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.LookRotation(parentCell.Angles.Find(a => a.name == "SE_Angle").transform.position - listOfWalls[randomIndex].transform.position), listOfWalls[randomIndex].transform);
+                    newObj.tag = "Door";
+                    DoorsInRoom.Add(listOfWalls[randomIndex]);
+                    listOfWalls.Remove(listOfWalls[randomIndex]);
+                    numberOfDoors--;
                 }
             }
         }
@@ -235,6 +253,32 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cell in CellsInRoom)
                 cell.UpdateElements();
+        }
+
+        List<GameObject> GetListOfWalls()
+        {
+            List<GameObject> listOfWalls = new List<GameObject>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (GameObject wall in cell.Edges)
+                {
+                    listOfWalls.Add(wall);
+                }
+            }
+            return listOfWalls;
+        }
+
+        List<GameObject> GetListOfPillars()
+        {
+            List<GameObject> listOfPillars = new List<GameObject>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (GameObject wall in cell.Angles)
+                {
+                    listOfPillars.Add(wall);
+                }
+            }
+            return listOfPillars;
         }
     }                                      
                                            

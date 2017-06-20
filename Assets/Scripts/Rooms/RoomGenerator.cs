@@ -13,32 +13,28 @@ namespace DumbProject.Rooms
         public List<RoomData> RoomTypesData = new List<RoomData>();
 
         List<RoomData> RoomTypesInstances = new List<RoomData>();
-
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
-
         GameObject firstRoom;
 
         public void Setup()
         {
             foreach (RoomData roomData in RoomTypesData)
-            {
                 RoomTypesInstances.Add(Instantiate(roomData));
-            }
 
             SetupSpawnsAssociations();
 
-            firstRoom = InstantiateFirstRoom(RoomTypesInstances[0]);
-            CreateNewRoom();
-            CreateNewRoom();
-            CreateNewRoom();
+            firstRoom = InstantiateFirstRoom();
+
+            for (int i = 0; i < SpawnsAssociations.Count; i++)
+                CreateNewRoom();
+
         }
 
         public void Clean()
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
-            {
                 Destroy(association.Room.gameObject);
-            }
+
             SpawnsAssociations.Clear();
             Destroy(firstRoom);
         }
@@ -51,7 +47,10 @@ namespace DumbProject.Rooms
                 foreach (RoomData roomData in RoomTypesInstances)
                 {
                     if (roomData.Shape == roomShape)
+                    {
                         InstantiateRoom(roomData);
+                        break;
+                    }
                 }
             }
         }
@@ -63,13 +62,26 @@ namespace DumbProject.Rooms
                     association.Room = null;
         }
 
-        GameObject InstantiateFirstRoom(RoomData _data)
+        GameObject InstantiateFirstRoom()
         {
+            RoomData _data = null;
+            Room mainRoom = null;
             GameObject newRoomObj = new GameObject();
             newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
-            Room mainRoom = AddRoomShapeComponent(_data, newRoomObj);
+
+            RoomShape roomShape = GetRandomShape();
+            foreach (RoomData roomData in RoomTypesInstances)
+            {
+                if (roomData.Shape == roomShape)
+                {
+                    _data = roomData;
+                    mainRoom = AddRoomShapeComponent(_data, newRoomObj);
+                    break;
+                }
+            }           
+
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
-            mainRoom.name = "MainRoom";
+            mainRoom.name = _data.Shape +  "_MainRoom";
             return newRoomObj;
         }
 
