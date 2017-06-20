@@ -35,12 +35,9 @@ namespace DumbProject.Rooms.Cells
             }
         }
 
-        [HideInInspector]
-        public GameObject Floor;
-        [HideInInspector]
-        public List<GameObject> Edges = new List<GameObject>();
-        [HideInInspector]
-        public List<GameObject> Angles = new List<GameObject>();
+        GameObject Floor;
+        List<GameObject> Edges = new List<GameObject>();
+        List<GameObject> Angles = new List<GameObject>();
 
         MeshRenderer[] childrenMesh;
         Room relativeRoom;
@@ -245,6 +242,18 @@ namespace DumbProject.Rooms.Cells
             else
                 foreach (MeshRenderer mesh in childrenMesh)
                     mesh.material.color = Color.white;
+        }
+
+        public List<GameObject> GetEdgesList()
+        {
+            Edges.RemoveAll(e => e == null);
+            return Edges;
+        }
+
+        public List<GameObject> GetAnglesList()
+        {
+            Angles.RemoveAll(a => a == null);
+            return Angles;
         }
         #endregion
     }
