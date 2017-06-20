@@ -177,9 +177,11 @@ namespace DumbProject.Rooms.Cells
             transform.parent = relativeRoom.transform;
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
             transform.rotation = /*newRotation;*/ Quaternion.identity;
+            //istanzio i contenitori
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
+            // istanzio la grafica
             InstantiateFloorElement();
             InstantiatePilllarElements();
             InstantiateWallElements();
@@ -201,11 +203,6 @@ namespace DumbProject.Rooms.Cells
             InstantiatePilllarElements();
             InstantiateWallElements();
             return this;
-        }
-
-        public void UpdateElements()
-        {
-            childrenMesh = GetComponentsInChildren<MeshRenderer>();
         }
 
         public bool CheckValidPosition(GridController _grid, out GridNode node)

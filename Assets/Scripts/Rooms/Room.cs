@@ -60,7 +60,6 @@ namespace DumbProject.Rooms
             TrimCellWalls();
             PlaceDoors();
             TrimCellPillars();
-            //UpdateCellsElements();
         }
         
         /// <summary>
@@ -219,10 +218,12 @@ namespace DumbProject.Rooms
             }
         }
 
+        /// <summary>
+        /// Funzione che sostiuisce a random alcuni muri con delle porte
+        /// </summary>
         void PlaceDoors()
         {
             int numberOfDoors = Random.Range(1, CellsInRoom.Count + 1);
-            Debug.Log(Data.Shape + " " + numberOfDoors);
             List<GameObject> listOfWalls = GetListOfWalls();
             while (numberOfDoors > 0)
             {
@@ -253,12 +254,10 @@ namespace DumbProject.Rooms
             }
         }
 
-        void UpdateCellsElements()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.UpdateElements();
-        }
-
+        /// <summary>
+        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
         List<GameObject> GetListOfWalls()
         {
             List<GameObject> listOfWalls = new List<GameObject>();
@@ -272,6 +271,10 @@ namespace DumbProject.Rooms
             return listOfWalls;
         }
 
+        /// <summary>
+        /// Ritorna la lista dei pilastri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
         List<GameObject> GetListOfPillars()
         {
             List<GameObject> listOfPillars = new List<GameObject>();
