@@ -16,9 +16,8 @@ public class AIPathfindingTester : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.Space))
         {
-            if (dumby != null)
-                Destroy(dumby.gameObject);
             dumby = Instantiate(dumby, Grid.GetGridCenter().WorldPosition, Quaternion.identity).GetComponent<Dumby>();
+            dumby.Init();
         }
 	}
 }

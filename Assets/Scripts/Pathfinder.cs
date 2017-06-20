@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ namespace Framework.Pathfinding
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
-            while (!CheckForTarget(_target, possiblePaths))
+            while (!CheckForNodeInPath(_target, possiblePaths))
             {
                 foreach (PathStep step in FindValidPathSteps(_target, possiblePaths))
                 {
@@ -52,7 +53,7 @@ namespace Framework.Pathfinding
                 }
             }
 
-            List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null? Actual : _start);
+            List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null ? Actual : _start);
 
             return foundPath;
         }
@@ -71,11 +72,10 @@ namespace Framework.Pathfinding
             shortestPath.Add(_target);
 
             List<PathStep> _pathInEvaluation = _validPath.OrderBy(t => t.targetOffSet).ToList();
-
             PathStep nextToAdd = _validPath[0];
             while (!shortestPath.Contains(_start))
             {
-                float distanceFromStart = Vector3.Distance(shortestPath[shortestPath.Count -1].spacePosition, _start.spacePosition);
+                float distanceFromStart = Vector3.Distance(shortestPath[shortestPath.Count - 1].spacePosition, _start.spacePosition);
                 for (int i = 0; i < _pathInEvaluation.Count; i++)
                 {
                     if (_pathInEvaluation[i].originOffSet < distanceFromStart)
@@ -101,10 +101,13 @@ namespace Framework.Pathfinding
         {
             List<PathStep> outcome = _givenPath;
             float pathDistance = -1;
-            foreach (PathStep step in _givenPath)
+            for (int i = 0; i < _givenPath.Count; i++)
             {
-                foreach (INetworkable closeNode in step.node.Links)
+                foreach (INetworkable closeNode in _givenPath[i].node.Links)
                 {
+                    if (CheckForNodeInPath(closeNode, _givenPath))
+                        continue;
+
                     if (pathDistance == -1)
                     {
                         outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
@@ -118,19 +121,36 @@ namespace Framework.Pathfinding
                     }
                 }
             }
+            //foreach (PathStep step in _givenPath)
+            //{
+            //    foreach (INetworkable closeNode in step.node.Links)
+            //    {
+            //        if (pathDistance == -1)
+            //        {
+            //            outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
+            //            pathDistance = outcome[outcome.Count - 1].distance;
+            //        }
+            //        else if (outcome[outcome.Count - 1].distance < pathDistance)
+            //        {
+            //            outcome.Remove(outcome[outcome.Count - 1]);
+            //            outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
+            //            pathDistance = outcome[outcome.Count - 1].distance;
+            //        }
+            //    }
+            //}
             return outcome;
         }
         /// <summary>
         /// Check if the _target node is already in the _givenPath list
         /// </summary>
-        /// <param name="_target"></param>
+        /// <param name="_node"></param>
         /// <param name="_givenPath"></param>
         /// <returns></returns>
-        bool CheckForTarget(INetworkable _target, List<PathStep> _givenPath)
+        bool CheckForNodeInPath(INetworkable _node, List<PathStep> _givenPath)
         {
             foreach (PathStep step in _givenPath)
             {
-                if (step.node == _target)
+                if (step.node == _node)
                     return true;
             }
             return false;
