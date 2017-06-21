@@ -4,6 +4,7 @@ using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Rooms.Data;
 using DumbProject.Rooms.Cells;
+using DumbProject.Rooms.Cells.Doors;
 using DG.Tweening;
 using DumbProject.Generic;
 
@@ -17,7 +18,7 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public List<Cell> CellsInRoom;
         [HideInInspector]
-        public List<GameObject> DoorsInRoom = new List<GameObject>();
+        public List<Door> DoorsInRoom = new List<Door>();
         [HideInInspector]
         public RoomMovement RoomMovment;
         [HideInInspector]
@@ -91,10 +92,15 @@ namespace DumbProject.Rooms
                 foreach (GridNode adjacentNode in node.AdjacentNodes)
                 {
                     if (adjacentNode.RelativeCell != null)
-                        IsValidPosition = true;
+                    {
+                        foreach (Door door in DoorsInRoom)
+                        {
+                            if (door.CheckCollisionWithOtherDoor(adjacentNode.RelativeCell))
+                                IsValidPosition = true;
+                        }
+                    }
                 }
             }
-
             return IsValidPosition;
         }
 
@@ -159,7 +165,7 @@ namespace DumbProject.Rooms
                 {
                     if(wall1 != wall2 && !itemsToBeDestroyed.Contains(wall1) && !itemsToBeDestroyed.Contains(wall2))
                     {
-                        if(Vector3.Distance(wall1.transform.position, wall2.transform.position) <= Data.WallPenetrationOffset)
+                        if(Vector3.Distance(wall1.transform.position, wall2.transform.position) <= Data.PenetrationOffset)
                         {
                             itemsToBeDestroyed.Add(wall1);
                             itemsToBeDestroyed.Add(wall2);
@@ -228,30 +234,49 @@ namespace DumbProject.Rooms
             while (numberOfDoors > 0)
             {
                 int randomIndex = Random.Range(0, listOfWalls.Count);
-                GameObject newObj = null;
-                Cell parentCell = null;
-
-                Destroy(listOfWalls[randomIndex].GetComponentInChildren<MeshRenderer>().gameObject);
-                parentCell = listOfWalls[randomIndex].transform.parent.GetComponent<Cell>();
-
-                if (listOfWalls[randomIndex].name == "RightEdge" || listOfWalls[randomIndex].name == "LeftEdge")
-                {            
-                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.identity, listOfWalls[randomIndex].transform);
-                }
-                else if (listOfWalls[randomIndex].name == "UpEdge")
-                {
-                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - listOfWalls[randomIndex].transform.position), listOfWalls[randomIndex].transform);
-                }
-                else if (listOfWalls[randomIndex].name == "DownEdge")
-                {
-                    newObj = Instantiate(Data.RoomElements.ArchPrefab, listOfWalls[randomIndex].transform.position, Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - listOfWalls[randomIndex].transform.position), listOfWalls[randomIndex].transform);
-                }
-
-                newObj.tag = "Door";
-                DoorsInRoom.Add(listOfWalls[randomIndex]);
+                DoorsInRoom.Add(ReplaceWallWithArch(listOfWalls[randomIndex]));
                 listOfWalls.Remove(listOfWalls[randomIndex]);
                 numberOfDoors--;
             }
+        }
+
+        /// <summary>
+        /// Funzione che sostituisce la grafica del muro con la grafica porta
+        /// </summary>
+        /// <param name="_edge"></param>
+        Door ReplaceWallWithArch(GameObject _edge)
+        {
+            GameObject newObj = null;
+            Cell parentCell = null;
+            Destroy(_edge.GetComponentInChildren<MeshRenderer>().gameObject);
+            parentCell = _edge.transform.parent.GetComponent<Cell>();
+            if (_edge.name == "RightEdge")
+            {
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
+                _edge.name = "RightDoor";
+            }
+            else if (_edge.name == "LeftEdge")
+            {
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
+                _edge.name = "LeftDoor";
+            }
+            else if (_edge.name == "UpEdge")
+            {
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
+                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position), _edge.transform);
+                _edge.name = "UpDoor";
+            }
+            else if (_edge.name == "DownEdge")
+            {
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
+                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position), _edge.transform);
+                _edge.name = "DownDoor";
+            }
+            newObj.tag = "Door";
+
+            Door door = _edge.AddComponent<Door>();
+            door.Setup(parentCell);
+            return door;
         }
 
         /// <summary>

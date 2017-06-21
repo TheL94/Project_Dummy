@@ -35,12 +35,18 @@ namespace DumbProject.Rooms.Cells
             }
         }
 
+        Room _relativeRoom;
+        public Room RelativeRoom
+        {
+            get { return _relativeRoom; }
+            private set { _relativeRoom = value; }
+        }
+
+        List<Cell> connectedCell = new List<Cell>();
+
         GameObject Floor;
         List<GameObject> Edges = new List<GameObject>();
         List<GameObject> Angles = new List<GameObject>();
-
-        MeshRenderer[] childrenMesh;
-        Room relativeRoom;
 
         /// <summary>
         /// Crea il contenitore del pavimento
@@ -126,7 +132,7 @@ namespace DumbProject.Rooms.Cells
         void InstantiateFloorElement()
         {
             GameObject newObj = null;
-            newObj = Instantiate(relativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
+            newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
             newObj.tag = "Floor";
         }
 
@@ -138,7 +144,7 @@ namespace DumbProject.Rooms.Cells
             GameObject newObj = null;
             foreach (GameObject angle in Angles)
             {
-                newObj = Instantiate(relativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
+                newObj = Instantiate(RelativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
                 newObj.tag = "Angle";
             }
         }
@@ -153,17 +159,17 @@ namespace DumbProject.Rooms.Cells
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
                     newObj.tag = "Edge";
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
                     newObj.tag = "Edge";
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    newObj = Instantiate(relativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
                     newObj.tag = "Edge";
                 }
             }
@@ -173,8 +179,8 @@ namespace DumbProject.Rooms.Cells
         public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
         {
             RelativeNode = _relativeNode;
-            relativeRoom = _relativeRoom;
-            transform.parent = relativeRoom.transform;
+            RelativeRoom = _relativeRoom;
+            transform.parent = RelativeRoom.transform;
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
             transform.rotation = /*newRotation;*/ Quaternion.identity;
             //istanzio i contenitori
@@ -191,8 +197,8 @@ namespace DumbProject.Rooms.Cells
         public Cell PlaceCell(GridNode _relativeNode, Vector3 _pointToFace, Room _relativeRoom)
         {
             RelativeNode = _relativeNode;
-            relativeRoom = _relativeRoom;
-            transform.parent = relativeRoom.transform;
+            RelativeRoom = _relativeRoom;
+            transform.parent = RelativeRoom.transform;
             transform.rotation = /*Quaternion.LookRotation(_pointToFace - transform.position);*/ Quaternion.identity;
             //istanzio i contenitori
             InstantiateFloor();
@@ -233,12 +239,12 @@ namespace DumbProject.Rooms.Cells
 
         public void ShowInvalidPosition(bool _isInvalid)
         {
-            if (_isInvalid)
-                foreach (MeshRenderer mesh in childrenMesh)
-                    mesh.material.color = Color.red;
-            else
-                foreach (MeshRenderer mesh in childrenMesh)
-                    mesh.material.color = Color.white;
+            //if (_isInvalid)
+            //    foreach (MeshRenderer mesh in childrenMesh)
+            //        mesh.material.color = Color.red;
+            //else
+            //    foreach (MeshRenderer mesh in childrenMesh)
+            //        mesh.material.color = Color.white;
         }
 
         public List<GameObject> GetEdgesList()
