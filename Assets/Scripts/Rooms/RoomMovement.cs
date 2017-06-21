@@ -88,7 +88,7 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            if (room.CheckPosition())
+            if (room.DropController.CheckPosition())
             {
                 room.PlaceAction();
                 return true;

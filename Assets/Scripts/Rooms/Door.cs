@@ -19,7 +19,23 @@ namespace DumbProject.Rooms.Cells.Doors
             RelativeCell = _cell;     
         }
 
-        public bool CheckCollisionWithOtherDoor(Cell _adjacentCell)
+        public bool CheckCollisionWithOtherDoors(Cell _adjacentCell)
+        {
+            bool isInValidPosition = false;
+            if (_adjacentCell != null)
+            {
+                foreach (Door door in _adjacentCell.RelativeRoom.DoorsInRoom)
+                {
+                    if (Vector3.Distance(door.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
+                    {
+                        isInValidPosition = true;
+                    }
+                }
+            }
+            return isInValidPosition;
+        }
+
+        public bool CheckCollisionWithOtherWalls(Cell _adjacentCell)
         {
             bool isInValidPosition = false;
             if (_adjacentCell != null)
