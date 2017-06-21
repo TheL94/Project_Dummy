@@ -18,7 +18,7 @@ public class Dumby : MonoBehaviour {
     }
 
     GridController grid;
-    GridNode currentNode;
+    GridNode currentNode { get { return grid.GetSpecificGridNode(transform.position); } }
 
     Pathfinder pathfinder;
     List<INetworkable> path;
@@ -27,7 +27,6 @@ public class Dumby : MonoBehaviour {
 	// Use this for initialization
 	public void Init () {
         grid = FindObjectOfType<GridController>();
-        currentNode = grid.GetSpecificGridNode(transform.position);
         pathfinder = new Pathfinder(currentNode);
         animator =  GetComponentInChildren<Animator>();
 	}	
