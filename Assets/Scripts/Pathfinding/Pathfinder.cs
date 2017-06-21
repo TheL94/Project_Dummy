@@ -51,6 +51,8 @@ namespace Framework.Pathfinding
 
             List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null ? Actual : _start);
 
+
+
             return foundPath;
         }
 
@@ -77,7 +79,7 @@ namespace Framework.Pathfinding
 
                     if (tempOutCome.distance < pathDistance)
                     {
-                        outcome = new PathStep(closeNode, _givenPath[0].node, _target);
+                        outcome = tempOutCome;
                         pathDistance = outcome.distance;
                     }
                 }
@@ -100,17 +102,20 @@ namespace Framework.Pathfinding
             PathStep nextToAdd = _validPath[0];
             while (!shortestPath.Contains(_start))
             {
-                float distanceFromStart = Vector3.Distance(shortestPath[shortestPath.Count - 1].spacePosition, _start.spacePosition);
+                float distanceFromStart = _pathInEvaluation[0].originOffSet;
                 for (int i = 0; i < _pathInEvaluation.Count; i++)
                 {
+                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_pathInEvaluation[i].node))
+                        continue;
+
                     if (_pathInEvaluation[i].originOffSet < distanceFromStart)
                     {
                         nextToAdd = _pathInEvaluation[i];
                         distanceFromStart = _pathInEvaluation[i].originOffSet;
                     }
                 }
-                shortestPath.Add(nextToAdd.node);
                 _pathInEvaluation.Remove(nextToAdd);
+                shortestPath.Add(nextToAdd.node);
             }
 
             shortestPath.Reverse();
