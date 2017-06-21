@@ -44,13 +44,14 @@ namespace DumbProject.Rooms.Cells
             private set { _relativeRoom = value; }
         }
 
-        List<Cell> connectedCell = new List<Cell>();
+        List<Cell> adjacentCells = new List<Cell>();
 
         GameObject Floor;
         List<GameObject> Edges = new List<GameObject>();
         List<GameObject> Angles = new List<GameObject>();
         List<Door> Doors = new List<Door>();
 
+        #region Cell Elements Instantiation
         /// <summary>
         /// Crea il contenitore del pavimento
         /// </summary>
@@ -177,40 +178,38 @@ namespace DumbProject.Rooms.Cells
                 }
             }
         }
+        #endregion
 
         #region API
         public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
         {
-            RelativeNode = _relativeNode;
-            RelativeRoom = _relativeRoom;
-            transform.parent = RelativeRoom.transform;
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
-            transform.rotation = /*newRotation;*/ Quaternion.identity;
-            //istanzio i contenitori
-            InstantiateFloor();
-            InstantiateEdges();
-            InstantiateAngles();
-            // istanzio la grafica
-            InstantiateFloorElement();
-            InstantiatePilllarElements();
-            InstantiateWallElements();
-            return this;
+            return PlaceCell(_relativeNode, newRotation, _relativeRoom);           
         }
 
         public Cell PlaceCell(GridNode _relativeNode, Vector3 _pointToFace, Room _relativeRoom)
         {
+            Quaternion newRotation = Quaternion.LookRotation(_pointToFace - transform.position);
+            return PlaceCell(_relativeNode, newRotation, _relativeRoom);
+        }
+
+        public Cell PlaceCell(GridNode _relativeNode, Quaternion _pointToFace, Room _relativeRoom)
+        {
             RelativeNode = _relativeNode;
             RelativeRoom = _relativeRoom;
             transform.parent = RelativeRoom.transform;
-            transform.rotation = /*Quaternion.LookRotation(_pointToFace - transform.position);*/ Quaternion.identity;
+            transform.rotation = /*_pointToFace*/ Quaternion.identity;
+
             //istanzio i contenitori
             InstantiateFloor();
             InstantiateEdges();
             InstantiateAngles();
+
             // istanzio la grafica
             InstantiateFloorElement();
             InstantiatePilllarElements();
             InstantiateWallElements();
+
             return this;
         }
 
@@ -223,21 +222,34 @@ namespace DumbProject.Rooms.Cells
             return false;
         }
 
-        //Usare dei Tween incatenati
-        public GridNode GetMyPositionOnGrid(GridController _grid)
+        public GridNode GetPositionOnGrid(GridController _grid)
         {
             return _grid.GetSpecificGridNode(transform.position);
         }
 
-        public void ResetRelativeNode()
+        public void SetRelativeNode(GridNode _relativeNode = null)
         {
-            GridController grid = RelativeNode.RelativeGrid;
-            RelativeNode = grid.GetSpecificGridNode(transform.position);
+            if(_relativeNode == null)
+            {
+                GridController grid = RelativeNode.RelativeGrid;
+                RelativeNode = grid.GetSpecificGridNode(transform.position);
+            }
+            else
+                RelativeNode = _relativeNode;
         }
 
-        public void SetRelativeNode(GridNode _relativeNode)
+        public void SetAdjacentCell()
         {
-            RelativeNode = _relativeNode;
+            foreach (Cell cellInRoom in RelativeRoom.CellsInRoom)
+            {
+                if(cellInRoom != this)
+                {
+                    if (Vector3.Distance(cellInRoom.transform.position, transform.position) <= RelativeNode.RelativeGrid.CellSize)
+                    {
+                        adjacentCells.Add(cellInRoom);
+                    }
+                }
+            }
         }
 
         public void ShowInvalidPosition(bool _isInvalid)
@@ -260,6 +272,12 @@ namespace DumbProject.Rooms.Cells
         {
             Angles.RemoveAll(a => a == null);
             return Angles;
+        }
+
+        public List<Door> GetDoorsList()
+        {
+            Doors.RemoveAll(a => a == null);
+            return Doors;
         }
 
         public void UpdateCellElements()

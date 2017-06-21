@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using DumbProject.Grid;
 using DumbProject.Rooms.Data;
 using DumbProject.Rooms.Cells;
 using DumbProject.Rooms.Cells.Doors;
-using DG.Tweening;
 using DumbProject.Generic;
 
 namespace DumbProject.Rooms
@@ -21,6 +21,8 @@ namespace DumbProject.Rooms
         public List<Door> DoorsInRoom = new List<Door>();
         [HideInInspector]
         public RoomMovement RoomMovment;
+        [HideInInspector]
+        public DropController DropController;
         [HideInInspector]
         public RoomData Data;
 
@@ -41,12 +43,12 @@ namespace DumbProject.Rooms
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         /// <param name="_roomMovment"></param>
-        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
+        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment, DropController _dropController)
         {
-            RoomMovment = _roomMovment;        
+            RoomMovment = _roomMovment;
             RoomMovment.Init(this);
             InitialPosition = transform.position;
-            Setup(_data, _grid);
+            Setup(_data, _grid, _dropController);
         }
 
         /// <summary>
@@ -54,10 +56,13 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
-        public void Setup(RoomData _data, GridController _grid)
+        public void Setup(RoomData _data, GridController _grid, DropController _dropController)
         {
             Data = _data;
+            DropController = _dropController;
+            DropController.Init(this);
             PlaceCells(_data, _grid);
+            LinkCells();
             TrimCellWalls();
             PlaceDoors();
             TrimCellPillars();
@@ -70,39 +75,10 @@ namespace DumbProject.Rooms
         public void PlaceAction()
         {
             foreach (Cell cell in CellsInRoom)
-            {
-                cell.SetRelativeNode(cell.GetMyPositionOnGrid(GameManager.I.MainGridCtrl));
-            }
+                cell.SetRelativeNode(cell.GetPositionOnGrid(GameManager.I.MainGridCtrl));
+
             transform.parent = null;
             Destroy(RoomMovment);
-        }
-
-        /// <summary>
-        /// Funzione che controlla che la posizione di ogni cella della stanza sia valida
-        /// </summary>
-        public bool CheckPosition()
-        {
-            bool IsValidPosition = false;
-            foreach (Cell cell in CellsInRoom)
-            {
-                GridNode node;
-                if (!cell.CheckValidPosition(GameManager.I.MainGridCtrl, out node))
-                {
-                    return false;
-                }
-                foreach (GridNode adjacentNode in node.AdjacentNodes)
-                {
-                    if (adjacentNode.RelativeCell != null)
-                    {
-                        foreach (Door door in DoorsInRoom)
-                        {
-                            if (door.CheckCollisionWithOtherDoor(adjacentNode.RelativeCell))
-                                IsValidPosition = true;
-                        }
-                    }
-                }
-            }
-            return IsValidPosition;
         }
 
         /// <summary>
@@ -117,13 +93,12 @@ namespace DumbProject.Rooms
                 {
                     canRotate = true;
                     foreach (Cell cell in CellsInRoom)
-                    {
-                        cell.ResetRelativeNode();
-                    }
+                        cell.SetRelativeNode();
                 });
             }
         }
 
+        #region Object Placement
         /// <summary>
         /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
         /// </summary>
@@ -144,7 +119,9 @@ namespace DumbProject.Rooms
             return null;
         }
         #endregion
+        #endregion
 
+        #region Cell Managment
         /// <summary>
         /// Funzione che piazza la stanza sulla griglia nella UI
         /// </summary>
@@ -280,6 +257,12 @@ namespace DumbProject.Rooms
             return door;
         }
 
+        void LinkCells()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.SetAdjacentCell();
+        }
+
         /// <summary>
         /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
@@ -321,8 +304,12 @@ namespace DumbProject.Rooms
                 cell.UpdateCellElements();
             }
         }
+        #endregion
     }                                      
-                                           
+       
+    /// <summary>
+    /// Tipi di stanze
+    /// </summary>
     public enum RoomShape
     {
         T_Shape = 0,

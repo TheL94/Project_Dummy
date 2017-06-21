@@ -78,9 +78,9 @@ namespace DumbProject.Rooms
                     mainRoom = AddRoomShapeComponent(_data, newRoomObj);
                     break;
                 }
-            }           
-
-            mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
+            }
+            DropController dropController = newRoomObj.AddComponent<DropController>();
+            mainRoom.Setup(_data, GameManager.I.MainGridCtrl, dropController);
             mainRoom.name = _data.Shape +  "_MainRoom";
             return newRoomObj;
         }
@@ -97,8 +97,9 @@ namespace DumbProject.Rooms
                 Room room = AddRoomShapeComponent(_data, newRoomObj);
 
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
+                DropController dropController = newRoomObj.AddComponent<DropController>();
                 association.Room = room;
-                room.Setup(_data, association.GridSpawn, roomMovement);
+                room.Setup(_data, association.GridSpawn, roomMovement, dropController);
             }
         }
 
