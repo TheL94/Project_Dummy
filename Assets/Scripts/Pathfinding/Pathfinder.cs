@@ -46,11 +46,7 @@ namespace Framework.Pathfinding
             //-----------------------------------------------------------------------
             while (!CheckForNodeInPath(_target, possiblePaths))
             {
-                foreach (PathStep step in FindValidPathSteps(_target, possiblePaths))
-                {
-                    if (!possiblePaths.Contains(step))
-                        possiblePaths.Add(step);
-                }
+                possiblePaths.Add(FinNextValidStep(_target, possiblePaths));
             }
 
             List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null ? Actual : _start);
@@ -59,6 +55,35 @@ namespace Framework.Pathfinding
         }
 
 
+        /// <summary>
+        /// Evaluate eligible nodes for pathfinding
+        /// </summary>
+        /// <param name="_target"></param>
+        /// <param name="_givenPath"></param>
+        /// <returns></returns>
+        PathStep FinNextValidStep(INetworkable _target, List<PathStep> _givenPath)
+        {
+            PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
+            float pathDistance = outcome.distance;
+
+            for (int i = 0; i < _givenPath.Count; i++)
+            {
+                foreach (INetworkable closeNode in _givenPath[i].node.Links)
+                {
+                    PathStep tempOutCome = new PathStep(closeNode, _givenPath[0].node, _target);
+
+                    if (CheckForNodeInPath(closeNode, _givenPath))
+                        continue;
+
+                    if (tempOutCome.distance < pathDistance)
+                    {
+                        outcome = new PathStep(closeNode, _givenPath[0].node, _target);
+                        pathDistance = outcome.distance;
+                    }
+                }
+            }
+            return outcome;
+        }
         /// <summary>
         /// Evaluate the actual path starting from a list of already evaluated nodes
         /// </summary>
@@ -92,55 +117,6 @@ namespace Framework.Pathfinding
             return shortestPath;
         }
         /// <summary>
-        /// Evaluate eligible nodes for pathfinding
-        /// </summary>
-        /// <param name="_target"></param>
-        /// <param name="_givenPath"></param>
-        /// <returns></returns>
-        List<PathStep> FindValidPathSteps(INetworkable _target, List<PathStep> _givenPath)
-        {
-            List<PathStep> outcome = _givenPath;
-            float pathDistance = -1;
-            for (int i = 0; i < _givenPath.Count; i++)
-            {
-                foreach (INetworkable closeNode in _givenPath[i].node.Links)
-                {
-                    if (CheckForNodeInPath(closeNode, _givenPath))
-                        continue;
-
-                    if (pathDistance == -1)
-                    {
-                        outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
-                        pathDistance = outcome[outcome.Count - 1].distance;
-                    }
-                    else if (outcome[outcome.Count - 1].distance < pathDistance)
-                    {
-                        outcome.Remove(outcome[outcome.Count - 1]);
-                        outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
-                        pathDistance = outcome[outcome.Count - 1].distance;
-                    }
-                }
-            }
-            //foreach (PathStep step in _givenPath)
-            //{
-            //    foreach (INetworkable closeNode in step.node.Links)
-            //    {
-            //        if (pathDistance == -1)
-            //        {
-            //            outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
-            //            pathDistance = outcome[outcome.Count - 1].distance;
-            //        }
-            //        else if (outcome[outcome.Count - 1].distance < pathDistance)
-            //        {
-            //            outcome.Remove(outcome[outcome.Count - 1]);
-            //            outcome.Add(new PathStep(closeNode, _givenPath[0].node, _target));
-            //            pathDistance = outcome[outcome.Count - 1].distance;
-            //        }
-            //    }
-            //}
-            return outcome;
-        }
-        /// <summary>
         /// Check if the _target node is already in the _givenPath list
         /// </summary>
         /// <param name="_node"></param>
@@ -150,7 +126,7 @@ namespace Framework.Pathfinding
         {
             foreach (PathStep step in _givenPath)
             {
-                if (step.node == _node)
+                if (step.node.spacePosition == _node.spacePosition)
                     return true;
             }
             return false;
