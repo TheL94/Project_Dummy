@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DumbProject.Grid;
+using DumbProject.Rooms.Cells.Doors;
 
 namespace DumbProject.Rooms.Cells
 {
@@ -47,6 +49,7 @@ namespace DumbProject.Rooms.Cells
         GameObject Floor;
         List<GameObject> Edges = new List<GameObject>();
         List<GameObject> Angles = new List<GameObject>();
+        List<Door> Doors = new List<Door>();
 
         /// <summary>
         /// Crea il contenitore del pavimento
@@ -257,6 +260,11 @@ namespace DumbProject.Rooms.Cells
         {
             Angles.RemoveAll(a => a == null);
             return Angles;
+        }
+
+        public void UpdateCellElements()
+        {
+            Doors = GetComponentsInChildren<Door>().ToList();
         }
         #endregion
     }

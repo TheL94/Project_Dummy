@@ -61,6 +61,7 @@ namespace DumbProject.Rooms
             TrimCellWalls();
             PlaceDoors();
             TrimCellPillars();
+            UpdateCellsElements();
         }
         
         /// <summary>
@@ -311,6 +312,14 @@ namespace DumbProject.Rooms
                 }
             }
             return listOfPillars;
+        }
+
+        void UpdateCellsElements()
+        {
+            foreach (Cell cell in CellsInRoom)
+            {
+                cell.UpdateCellElements();
+            }
         }
     }                                      
                                            
