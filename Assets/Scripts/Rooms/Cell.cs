@@ -98,6 +98,9 @@ namespace DumbProject.Rooms.Cells
             _newEdgeObj.transform.rotation = newRotation;
             BoxCollider collider = _newEdgeObj.AddComponent<BoxCollider>();
             collider.isTrigger = true;
+            Rigidbody rigid = _newEdgeObj.AddComponent<Rigidbody>();
+            rigid.isKinematic = true;
+            rigid.useGravity = false;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             Edges.Add(newEdge);
         }

@@ -22,17 +22,14 @@ namespace DumbProject.Rooms.Cells
 
         private void OnTriggerEnter(Collider other)
         {
-            
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            
+            if (other.GetComponent<Edge>() != null)
+                IsCollidingWithOtherEgdes = true;
         }
 
         private void OnTriggerExit(Collider other)
         {
-            
+            if (other.GetComponent<Edge>() != null)
+                IsCollidingWithOtherEgdes = false;
         }
     }
 

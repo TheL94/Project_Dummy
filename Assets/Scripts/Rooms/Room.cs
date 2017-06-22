@@ -166,7 +166,7 @@ namespace DumbProject.Rooms
         void TrimCellPillars()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
-            List<GameObject> listOfPillars = GetListOfPillars();
+            List<GameObject> listOfPillars = GetListOfAngles();
 
             foreach (GameObject pillar1 in listOfPillars)
             {
@@ -206,9 +206,8 @@ namespace DumbProject.Rooms
             while (numberOfDoors > 0)
             {
                 int randomIndex = Random.Range(0, listOfWalls.Count);
-                ReplaceWallWithArch(listOfWalls[randomIndex]);
-                listOfWalls.Remove(listOfWalls[randomIndex]);
-                numberOfDoors--;
+                if(ReplaceWallWithArch(listOfWalls[randomIndex]))
+                    numberOfDoors--;
             }
         }
 
@@ -216,8 +215,11 @@ namespace DumbProject.Rooms
         /// Funzione che sostituisce la grafica del muro con la grafica porta
         /// </summary>
         /// <param name="_edge"></param>
-        void ReplaceWallWithArch(Edge _edge)
+        bool ReplaceWallWithArch(Edge _edge)
         {
+            if (_edge.Type == EdgeType.Door)
+                return false;
+
             GameObject newObj = null;
             Cell parentCell = null;
             Destroy(_edge.GetComponentInChildren<MeshRenderer>().gameObject);
@@ -225,26 +227,31 @@ namespace DumbProject.Rooms
             if (_edge.name == "RightEdge")
             {
                 newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
+                _edge.Type = EdgeType.Door;
                 _edge.name = "RightDoor";
             }
             else if (_edge.name == "LeftEdge")
             {
                 newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
+                _edge.Type = EdgeType.Door;
                 _edge.name = "LeftDoor";
             }
             else if (_edge.name == "UpEdge")
             {
                 newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position), _edge.transform);
+                _edge.Type = EdgeType.Door;
                 _edge.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
                 newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position), _edge.transform);
+                _edge.Type = EdgeType.Door;
                 _edge.name = "DownDoor";
             }
             newObj.tag = "Door";
+            return true;
         }
 
         /// <summary>
@@ -276,7 +283,7 @@ namespace DumbProject.Rooms
         /// Ritorna la lista dei pilastri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        List<GameObject> GetListOfPillars()
+        List<GameObject> GetListOfAngles()
         {
             List<GameObject> listOfPillars = new List<GameObject>();
             foreach (Cell cell in CellsInRoom)
