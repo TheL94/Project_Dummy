@@ -36,12 +36,11 @@ namespace DumbProject.Rooms
                 Destroy(association.Room.gameObject);
 
             SpawnsAssociations.Clear();
-            Destroy(firstRoom);
         }
 
         public void CreateNewRoom()
         {
-            if(GameManager.I.flowMng.CurrentState == Flow.FlowState.GameplayState)
+            if(GameManager.I.FlowMng.CurrentState == Flow.FlowState.GameplayState)
             {
                 RoomShape roomShape = GetRandomShape();
                 foreach (RoomData roomData in RoomTypesInstances)
@@ -79,8 +78,8 @@ namespace DumbProject.Rooms
                     break;
                 }
             }
-            DropController dropController = newRoomObj.AddComponent<DropController>();
-            mainRoom.Setup(_data, GameManager.I.MainGridCtrl, dropController);
+            GameManager.I.DungeonMng.ParentRoom(mainRoom);
+            mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = _data.Shape +  "_MainRoom";
             return newRoomObj;
         }
@@ -97,20 +96,8 @@ namespace DumbProject.Rooms
                 Room room = AddRoomShapeComponent(_data, newRoomObj);
 
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
-                DropController dropController = newRoomObj.AddComponent<DropController>();
                 association.Room = room;
-                room.Setup(_data, association.GridSpawn, roomMovement, dropController);
-
-                float randNum = Random.Range(0f, 1f);
-
-                if (randNum >= 0.3f)
-                {
-                    Debug.Log("Istanzio oggetto");
-                    for (int i = 0; i < room.CellsInRoom.Count - Random.Range(0,2); i++)
-                    {
-                        GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
-                    } 
-                }
+                room.Setup(_data, association.GridSpawn, roomMovement);
             }
         }
 
@@ -159,8 +146,8 @@ namespace DumbProject.Rooms
 
         void SetupSpawnsAssociations()
         {
-            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.UIGamePlayCtrl.roomPreviewController.UISpawns.Count; i++)
-                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.UIGamePlayCtrl.roomPreviewController.UISpawns[i]));          
+            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns.Count; i++)
+                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

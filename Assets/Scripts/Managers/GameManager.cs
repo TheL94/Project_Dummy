@@ -12,15 +12,15 @@ namespace DumbProject.Generic
     {
 
         public static GameManager I;
-        [HideInInspector]
-        public FlowManager flowMng;
 
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
-        public ItemsManager ItemManagerPrefab;
+        public DungeonManager DungeonManagerPrefab;
 
+        [HideInInspector]
+        public FlowManager FlowMng;
         [HideInInspector]
         public RoomGenerator RoomGenerator;
         [HideInInspector]
@@ -30,7 +30,9 @@ namespace DumbProject.Generic
         [HideInInspector]
         public RoomPreviewController RoomPreviewCtrl;
         [HideInInspector]
-        public ItemsManager ItemManager;
+        public DungeonManager DungeonMng;
+        [HideInInspector]
+        public CameraController CameraController;
 
         bool IsGamePlaying;
 
@@ -54,20 +56,20 @@ namespace DumbProject.Generic
 
         private void Start()
         {
-            flowMng = GetComponent<FlowManager>();
+            FlowMng = GetComponent<FlowManager>();
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-            ItemManager = Instantiate(ItemManagerPrefab);
+            CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
 
-            flowMng.CurrentState = FlowState.Loading;
+            FlowMng.CurrentState = FlowState.Loading;
         }
         
         public void Init()
         {
             UIMng.Init();
-            flowMng.CurrentState = FlowState.MenuState;
+            FlowMng.CurrentState = FlowState.MenuState;
         }
 
         /// <summary>
@@ -77,12 +79,13 @@ namespace DumbProject.Generic
         {
             if (!IsGamePlaying)
             {
+                DungeonMng = Instantiate(DungeonManagerPrefab);
+                DungeonMng.Setup();
                 MainGridCtrl.Setup();
                 RoomPreviewCtrl.Setup();
                 RoomGenerator.Setup();
                 IsGamePlaying = true;
             }
-
         }
 
         /// <summary>
@@ -90,10 +93,12 @@ namespace DumbProject.Generic
         /// </summary>
         public void ExitGameplayMode()
         {
+            DungeonMng.Clean();
+            Destroy(DungeonMng.gameObject);
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             RoomGenerator.Clean();
-            UIMng.UIGamePlayCtrl.inventoryController.CleanInventory();
+            UIMng.GamePlayCtrl.inventoryController.CleanInventory();
             IsGamePlaying = false;
         }
 
@@ -102,7 +107,7 @@ namespace DumbProject.Generic
         /// </summary>
         public void DeactivatePauseMode()
         {
-            flowMng.CurrentState = DumbProject.Flow.FlowState.GameplayState;
+            FlowMng.CurrentState = FlowState.GameplayState;
         }
 
         /// <summary>
@@ -110,8 +115,7 @@ namespace DumbProject.Generic
         /// </summary>
         public void ActivePauseMode()
         {
-            UIMng.UIGamePlayCtrl.ActivatePause();
+            UIMng.GamePlayCtrl.ActivatePause();
         }
-
     }
 }
