@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.UI;
 using DumbProject.Generic;
+using UnityEngine.EventSystems;
+using System;
 
-public class UIGamePlayController : MonoBehaviour {
+public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     UIManager uiManager;
 
@@ -57,6 +59,14 @@ public class UIGamePlayController : MonoBehaviour {
         GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
     }
 
+    #endregion
+
+    #region Camera Movement
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        
+    }
 
     #endregion
 

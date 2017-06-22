@@ -28,6 +28,8 @@ namespace DumbProject.Generic
         public UIManager UIMng;
         [HideInInspector]
         public RoomPreviewController RoomPreviewCtrl;
+        [HideInInspector]
+        public CameraController CameraController;
 
         bool IsGamePlaying;
 
@@ -56,6 +58,8 @@ namespace DumbProject.Generic
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
+            CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+
 
             flowMng.CurrentState = FlowState.Loading;
         }
