@@ -16,9 +16,14 @@ namespace DumbProject.Rooms.Cells.Doors
 
         public void Setup(Cell _cell)
         {
-            RelativeCell = _cell;     
+            RelativeCell = _cell;
         }
 
+        /// <summary>
+        /// Funzione che controlla che la porta stia compenenetrando un'altra porta
+        /// </summary>
+        /// <param name="_adjacentCell"></param>
+        /// <returns></returns>
         public bool CheckCollisionWithOtherDoors(Cell _adjacentCell)
         {
             bool isInValidPosition = false;
@@ -35,20 +40,22 @@ namespace DumbProject.Rooms.Cells.Doors
             return isInValidPosition;
         }
 
-        public bool CheckCollisionWithOtherWalls(Cell _adjacentCell)
+        /// <summary>
+        /// Funzione che controlla che la porta non stia compenenetrando un muro
+        /// </summary>
+        /// <param name="_roomToCheck"></param>
+        /// <returns></returns>
+        public bool CheckCollisionWithOtherWalls(Room _roomToCheck)
         {
-            bool isInValidPosition = false;
-            if (_adjacentCell != null)
+            bool isInvalidPosition = true;
+            foreach (GameObject wall in _roomToCheck.GetListOfWalls())
             {
-                foreach (Door door in _adjacentCell.RelativeRoom.DoorsInRoom)
+                if (Vector3.Distance(wall.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
                 {
-                    if (Vector3.Distance(door.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
-                    {
-                        isInValidPosition = true;
-                    }
+                    isInvalidPosition = false;
                 }
             }
-            return isInValidPosition;
+            return isInvalidPosition;
         }
     }
 }

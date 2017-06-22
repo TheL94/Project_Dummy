@@ -43,12 +43,12 @@ namespace DumbProject.Rooms
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         /// <param name="_roomMovment"></param>
-        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment, DropController _dropController)
+        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
         {
             RoomMovment = _roomMovment;
             RoomMovment.Init(this);
             InitialPosition = transform.position;
-            Setup(_data, _grid, _dropController);
+            Setup(_data, _grid);
         }
 
         /// <summary>
@@ -56,11 +56,9 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
-        public void Setup(RoomData _data, GridController _grid, DropController _dropController)
+        public void Setup(RoomData _data, GridController _grid)
         {
             Data = _data;
-            DropController = _dropController;
-            DropController.Init(this);
             PlaceCells(_data, _grid);
             LinkCells();
             TrimCellWalls();
@@ -77,7 +75,7 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.SetRelativeNode(cell.GetPositionOnGrid(GameManager.I.MainGridCtrl));
 
-            transform.parent = null;
+            GameManager.I.DungeonMng.ParentRoom(this);
             Destroy(RoomMovment);
         }
 
@@ -121,14 +119,14 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
-        #region Cell Managment
         /// <summary>
         /// Funzione che piazza la stanza sulla griglia nella UI
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         protected abstract void PlaceCells(RoomData _data, GridController _grid);
-        
+
+        #region Cell Managment
         /// <summary>
         /// Funzione che rimuove i muri se sono nella stessa posizione
         /// </summary>
@@ -257,6 +255,9 @@ namespace DumbProject.Rooms
             return door;
         }
 
+        /// <summary>
+        /// Funzione che collaga fr di loro le celle adiacenti
+        /// </summary>
         void LinkCells()
         {
             foreach (Cell cell in CellsInRoom)
@@ -267,7 +268,7 @@ namespace DumbProject.Rooms
         /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        List<GameObject> GetListOfWalls()
+        public List<GameObject> GetListOfWalls()
         {
             List<GameObject> listOfWalls = new List<GameObject>();
             foreach (Cell cell in CellsInRoom)

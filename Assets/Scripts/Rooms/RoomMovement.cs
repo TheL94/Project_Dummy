@@ -8,7 +8,6 @@ using DumbProject.Rooms.Cells;
 using DG.Tweening;
 using DumbProject.Generic;
 
-
 namespace DumbProject.Rooms
 {
     public class RoomMovement : MonoBehaviour
@@ -88,7 +87,7 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            if (room.DropController.CheckPosition())
+            if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room) /*&& GameManager.I.DungeonMng.DropCtrl.CheckAdjacentRoomDoorRules()*/)
             {
                 room.PlaceAction();
                 return true;

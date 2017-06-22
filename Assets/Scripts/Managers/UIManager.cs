@@ -52,7 +52,7 @@ namespace DumbProject.UI
         public void GoInGameplayMode()
         {
             GamePlayCtrl.gameObject.SetActive(true);
-            GameManager.I.flowMng.CurrentState = Flow.FlowState.GameplayState;
+            GameManager.I.FlowMng.CurrentState = Flow.FlowState.GameplayState;
         }
 
 

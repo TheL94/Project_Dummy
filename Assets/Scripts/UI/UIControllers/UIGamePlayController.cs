@@ -54,7 +54,7 @@ public class UIGamePlayController : MonoBehaviour {
     public void QuitGamePlay()
     {
         DeactivatePause();
-        GameManager.I.flowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
+        GameManager.I.FlowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
     }
 
 
