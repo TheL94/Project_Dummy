@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DumbProject
 {
-    public class Sward : MonoBehaviour
+    public class Sward : IItem
     {
         public float Damage;
         public float Wear;

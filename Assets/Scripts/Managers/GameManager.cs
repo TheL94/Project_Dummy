@@ -18,6 +18,7 @@ namespace DumbProject.Generic
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
+        public ItemsManager ItemManagerPrefab;
 
         [HideInInspector]
         public FlowManager FlowMng;
@@ -33,6 +34,8 @@ namespace DumbProject.Generic
         public DungeonManager DungeonMng;
         [HideInInspector]
         public CameraController CameraController;
+        [HideInInspector]
+        public ItemsManager ItemManager;
 
         // Non MonoBehaviour
         [HideInInspector]
@@ -67,6 +70,7 @@ namespace DumbProject.Generic
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
             CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+            ItemManager = Instantiate(ItemManagerPrefab);
 
             FlowMng.CurrentState = FlowState.Loading;
         }
@@ -118,9 +122,9 @@ namespace DumbProject.Generic
         /// <summary>
         /// Attiva il pannello della pausa
         /// </summary>
-        public void ActivePauseMode()
-        {
-            UIMng.GamePlayCtrl.ActivatePause();
-        }
+        //public void ActivePauseMode()
+        //{
+        //    UIMng.GamePlayCtrl.ActivatePause();
+        //}
     }
 }

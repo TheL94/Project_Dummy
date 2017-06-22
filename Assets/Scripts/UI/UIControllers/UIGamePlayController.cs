@@ -32,6 +32,7 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     /// </summary>
     public void ActivatePause() {
         PausePanel.SetActive(true);
+        GameManager.I.FlowMng.CurrentState = DumbProject.Flow.FlowState.Pause;
     }
 
     /// <summary>
