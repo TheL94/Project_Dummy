@@ -36,12 +36,11 @@ namespace DumbProject.Rooms
                 Destroy(association.Room.gameObject);
 
             SpawnsAssociations.Clear();
-            Destroy(firstRoom);
         }
 
         public void CreateNewRoom()
         {
-            if(GameManager.I.flowMng.CurrentState == Flow.FlowState.GameplayState)
+            if(GameManager.I.FlowMng.CurrentState == Flow.FlowState.GameplayState)
             {
                 RoomShape roomShape = GetRandomShape();
                 foreach (RoomData roomData in RoomTypesInstances)
@@ -79,8 +78,8 @@ namespace DumbProject.Rooms
                     break;
                 }
             }
-            DropController dropController = newRoomObj.AddComponent<DropController>();
-            mainRoom.Setup(_data, GameManager.I.MainGridCtrl, dropController);
+            GameManager.I.DungeonMng.ParentRoom(mainRoom);
+            mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = _data.Shape +  "_MainRoom";
             return newRoomObj;
         }
@@ -97,9 +96,8 @@ namespace DumbProject.Rooms
                 Room room = AddRoomShapeComponent(_data, newRoomObj);
 
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
-                DropController dropController = newRoomObj.AddComponent<DropController>();
                 association.Room = room;
-                room.Setup(_data, association.GridSpawn, roomMovement, dropController);
+                room.Setup(_data, association.GridSpawn, roomMovement);
             }
         }
 
