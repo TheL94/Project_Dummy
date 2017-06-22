@@ -18,6 +18,7 @@ namespace DumbProject.Generic
             bool isValidPosition = false;
             foreach (Cell cell in _room.CellsInRoom)
             {
+                // Controllo della posizione della cella e della stanza
                 GridNode node;
                 if (!CheckCellValidPosition(cell, GameManager.I.MainGridCtrl, out node))
                     return false;
@@ -30,6 +31,7 @@ namespace DumbProject.Generic
                     }
                 }
 
+                // Controllo sulla posizione delle porte e dei muri
                 foreach (Edge edge in cell.GetEdgesList())
                 {
                     if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
@@ -37,6 +39,11 @@ namespace DumbProject.Generic
                         if(edge.CollidingEdge.Type == EdgeType.Door)
                             isValidPosition = true;
                         else
+                            isValidPosition = false;
+                    }
+                    else if(edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
+                    {
+                        if (edge.CollidingEdge.Type == EdgeType.Door)
                             isValidPosition = false;
                     }
                 }
