@@ -9,7 +9,6 @@ namespace DumbProject.UI {
     public class InventoryController : MonoBehaviour {
 
         List<Slot> slots = new List<Slot>();
-        public List<ItemBaseData> ItemsData = new List<ItemBaseData>();
         public IventoryItem UiItemPrefab;
 
         List<IventoryItem> itemsInInventory = new List<IventoryItem>();
@@ -32,26 +31,19 @@ namespace DumbProject.UI {
         /// </summary>
         void InstantiateUIObject()
         {
-            Slot tempSlot = ChooseFreeSlot();
-            ItemBaseData itemData = ChooseItem();
-            if (tempSlot != null && itemData != null)
-            {
-                IventoryItem tempItem = Instantiate(UiItemPrefab, new Vector3(tempSlot.transform.position.x, tempSlot.transform.position.y, tempSlot.transform.position.z), Quaternion.identity, tempSlot.transform);
-                tempSlot.IsFree = false;
-                tempItem.Init(itemData.ItemPrefab, itemData.ItemInUI, tempSlot);
-                itemsInInventory.Add(tempItem);
-            }
+            // Dovrà creare l'oggetto nella UI relativo all'item raccolto dallo sgherro
+
+            //Slot tempSlot = ChooseFreeSlot();
+            //ItemBaseData itemData = ChooseItem();
+            //if (tempSlot != null && itemData != null)
+            //{
+            //    IventoryItem tempItem = Instantiate(UiItemPrefab, new Vector3(tempSlot.transform.position.x, tempSlot.transform.position.y, tempSlot.transform.position.z), Quaternion.identity, tempSlot.transform);
+            //    tempSlot.IsFree = false;
+            //    tempItem.Init(itemData.ItemPrefab, itemData.ItemInUI, tempSlot);
+            //    itemsInInventory.Add(tempItem);
+            //}
         }
 
-        /// <summary>
-        /// Ritorna l'item da istanziare nella ui
-        /// </summary>
-        /// <returns></returns>
-        ItemBaseData ChooseItem()
-        {
-            int randNum = Random.Range(0, ItemsData.Count);
-            return ItemsData[randNum];
-        }
 
         /// <summary>
         /// Ritorna uno slot libero in UI
