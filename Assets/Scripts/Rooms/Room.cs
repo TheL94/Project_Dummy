@@ -5,7 +5,6 @@ using DG.Tweening;
 using DumbProject.Grid;
 using DumbProject.Rooms.Data;
 using DumbProject.Rooms.Cells;
-using DumbProject.Rooms.Cells.Doors;
 using DumbProject.Generic;
 
 namespace DumbProject.Rooms
@@ -17,8 +16,6 @@ namespace DumbProject.Rooms
     {
         [HideInInspector]
         public List<Cell> CellsInRoom;
-        [HideInInspector]
-        public List<Door> DoorsInRoom = new List<Door>();
         [HideInInspector]
         public RoomMovement RoomMovment;
         [HideInInspector]
@@ -64,7 +61,6 @@ namespace DumbProject.Rooms
             TrimCellWalls();
             PlaceDoors();
             TrimCellPillars();
-            UpdateCellsElements();
         }
         
         /// <summary>
@@ -73,7 +69,7 @@ namespace DumbProject.Rooms
         public void PlaceAction()
         {
             foreach (Cell cell in CellsInRoom)
-                cell.SetRelativeNode(cell.GetPositionOnGrid(GameManager.I.MainGridCtrl));
+                cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             GameManager.I.DungeonMng.ParentRoom(this);
             Destroy(RoomMovment);
@@ -132,19 +128,19 @@ namespace DumbProject.Rooms
         /// </summary>
         void TrimCellWalls()
         {
-            List<GameObject> itemsToBeDestroyed = new List<GameObject>();
-            List<GameObject> listOfWalls = GetListOfWalls();
+            List<Edge> itemsToBeDestroyed = new List<Edge>();
+            List<Edge> listOfWalls = GetListOfEdges();
 
-            foreach (GameObject wall1 in listOfWalls)
+            foreach (Edge edge1 in listOfWalls)
             {
-                foreach (GameObject wall2 in listOfWalls)
+                foreach (Edge edge2 in listOfWalls)
                 {
-                    if(wall1 != wall2 && !itemsToBeDestroyed.Contains(wall1) && !itemsToBeDestroyed.Contains(wall2))
+                    if(edge1 != edge2 && !itemsToBeDestroyed.Contains(edge1) && !itemsToBeDestroyed.Contains(edge2))
                     {
-                        if(Vector3.Distance(wall1.transform.position, wall2.transform.position) <= Data.PenetrationOffset)
+                        if(Vector3.Distance(edge1.transform.position, edge2.transform.position) <= Data.PenetrationOffset)
                         {
-                            itemsToBeDestroyed.Add(wall1);
-                            itemsToBeDestroyed.Add(wall2);
+                            itemsToBeDestroyed.Add(edge1);
+                            itemsToBeDestroyed.Add(edge2);
                         }
                     }
                 }
@@ -152,8 +148,8 @@ namespace DumbProject.Rooms
 
             foreach (Cell cell in CellsInRoom)
             {
-                List<GameObject> list = cell.GetEdgesList();
-                foreach (GameObject wallToRemove in itemsToBeDestroyed)
+                List<Edge> list = cell.GetEdgesList();
+                foreach (Edge wallToRemove in itemsToBeDestroyed)
                 {
                     if (list.Contains(wallToRemove))
                     {
@@ -206,11 +202,11 @@ namespace DumbProject.Rooms
         void PlaceDoors()
         {
             int numberOfDoors = Random.Range(1, CellsInRoom.Count + 1);
-            List<GameObject> listOfWalls = GetListOfWalls();
+            List<Edge> listOfWalls = GetListOfEdges();
             while (numberOfDoors > 0)
             {
                 int randomIndex = Random.Range(0, listOfWalls.Count);
-                DoorsInRoom.Add(ReplaceWallWithArch(listOfWalls[randomIndex]));
+                ReplaceWallWithArch(listOfWalls[randomIndex]);
                 listOfWalls.Remove(listOfWalls[randomIndex]);
                 numberOfDoors--;
             }
@@ -220,7 +216,7 @@ namespace DumbProject.Rooms
         /// Funzione che sostituisce la grafica del muro con la grafica porta
         /// </summary>
         /// <param name="_edge"></param>
-        Door ReplaceWallWithArch(GameObject _edge)
+        void ReplaceWallWithArch(Edge _edge)
         {
             GameObject newObj = null;
             Cell parentCell = null;
@@ -249,10 +245,6 @@ namespace DumbProject.Rooms
                 _edge.name = "DownDoor";
             }
             newObj.tag = "Door";
-
-            Door door = _edge.AddComponent<Door>();
-            door.Setup(parentCell);
-            return door;
         }
 
         /// <summary>
@@ -260,25 +252,24 @@ namespace DumbProject.Rooms
         /// </summary>
         void LinkCells()
         {
-            foreach (Cell cell in CellsInRoom)
-                cell.SetAdjacentCell();
+            
         }
 
         /// <summary>
         /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        public List<GameObject> GetListOfWalls()
+        public List<Edge> GetListOfEdges()
         {
-            List<GameObject> listOfWalls = new List<GameObject>();
+            List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
             {
-                foreach (GameObject wall in cell.GetEdgesList())
+                foreach (Edge edge in cell.GetEdgesList())
                 {
-                    listOfWalls.Add(wall);
+                    listOfEdges.Add(edge);
                 }
             }
-            return listOfWalls;
+            return listOfEdges;
         }
 
         /// <summary>
@@ -296,14 +287,6 @@ namespace DumbProject.Rooms
                 }
             }
             return listOfPillars;
-        }
-
-        void UpdateCellsElements()
-        {
-            foreach (Cell cell in CellsInRoom)
-            {
-                cell.UpdateCellElements();
-            }
         }
         #endregion
     }                                      
