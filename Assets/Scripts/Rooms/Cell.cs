@@ -96,12 +96,8 @@ namespace DumbProject.Rooms.Cells
             _newEdgeObj.transform.parent = transform;
             Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
             _newEdgeObj.transform.rotation = newRotation;
-            BoxCollider collider = _newEdgeObj.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
-            Rigidbody rigid = _newEdgeObj.AddComponent<Rigidbody>();
-            rigid.isKinematic = true;
-            rigid.useGravity = false;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
+            newEdge.Setup(this);
             Edges.Add(newEdge);
         }
 
@@ -141,7 +137,6 @@ namespace DumbProject.Rooms.Cells
         {
             GameObject newObj = null;
             newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
-            newObj.tag = "Floor";
         }
 
         /// <summary>
@@ -153,7 +148,6 @@ namespace DumbProject.Rooms.Cells
             foreach (GameObject angle in Angles)
             {
                 newObj = Instantiate(RelativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
-                newObj.tag = "Angle";
             }
         }
 
@@ -167,18 +161,18 @@ namespace DumbProject.Rooms.Cells
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.identity, edge.transform);
-                    newObj.tag = "Edge";
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
+                        Quaternion.identity, edge.transform);
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
-                    newObj.tag = "Edge";
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
+                        Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
-                    newObj.tag = "Edge";
+                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
+                        Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
                 }
             }
         }
@@ -251,6 +245,10 @@ namespace DumbProject.Rooms.Cells
                 RelativeNode = _relativeNode;
         }
 
+        /// <summary>
+        /// Funzione che mosta visivamente se il giocatore ha trascianto la stanza in una posizione invalida
+        /// </summary>
+        /// <param name="_isInvalid"></param>
         public void ShowInvalidPosition(bool _isInvalid)
         {
             //if (_isInvalid)
@@ -261,12 +259,20 @@ namespace DumbProject.Rooms.Cells
             //        mesh.material.color = Color.white;
         }
 
+        /// <summary>
+        /// Funzione che ritorna la lista degli edge di questa cella
+        /// </summary>
+        /// <returns></returns>
         public List<Edge> GetEdgesList()
         {
             Edges.RemoveAll(e => e == null);
             return Edges;
         }
 
+        /// <summary>
+        /// Funzione che ritorna la lista degli angles di questa cella
+        /// </summary>
+        /// <returns></returns>
         public List<GameObject> GetAnglesList()
         {
             Angles.RemoveAll(a => a == null);

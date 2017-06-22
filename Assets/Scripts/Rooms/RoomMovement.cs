@@ -20,7 +20,10 @@ namespace DumbProject.Rooms
             get { return _closerNode; }
             set {
                 if(value != null)
+                {
                     SafeSnap(value.WorldPosition);
+                    CheckCollisions();
+                }
                 _closerNode = value;
             }
         }
@@ -112,6 +115,17 @@ namespace DumbProject.Rooms
                     snap = room.transform.DOMove(_nodePosition, .05f);
                 else
                     snap = room.transform.DOMove(_nodePosition, .1f).OnComplete(() => { MovingToInitialPosition = false; });
+            }
+        }
+
+        void CheckCollisions()
+        {
+            foreach (Cell cell in room.CellsInRoom)
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    edge.CheckCollisionWithOtherEdges(GameManager.I.MainGridCtrl);
+                }
             }
         }
     }

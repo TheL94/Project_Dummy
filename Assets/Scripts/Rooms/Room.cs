@@ -58,7 +58,7 @@ namespace DumbProject.Rooms
             Data = _data;
             PlaceCells(_data, _grid);
             LinkCells();
-            TrimCellWalls();
+            TrimCellWalls(_grid);
             PlaceDoors();
             TrimCellPillars();
         }
@@ -126,22 +126,20 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che rimuove i muri se sono nella stessa posizione
         /// </summary>
-        void TrimCellWalls()
+        void TrimCellWalls(GridController _grid)
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
-            List<Edge> listOfWalls = GetListOfEdges();
+            List<Edge> edges = GetListOfEdges();
+            foreach (Edge edge in edges)
+                edge.CheckCollisionWithOtherEdges(_grid);
 
-            foreach (Edge edge1 in listOfWalls)
+            foreach (Edge edge in edges)
             {
-                foreach (Edge edge2 in listOfWalls)
+                if(!itemsToBeDestroyed.Contains(edge))
                 {
-                    if(edge1 != edge2 && !itemsToBeDestroyed.Contains(edge1) && !itemsToBeDestroyed.Contains(edge2))
+                    if(edge.WithWhatIsColliding == EdgeType.Wall)
                     {
-                        if(Vector3.Distance(edge1.transform.position, edge2.transform.position) <= Data.PenetrationOffset)
-                        {
-                            itemsToBeDestroyed.Add(edge1);
-                            itemsToBeDestroyed.Add(edge2);
-                        }
+                        itemsToBeDestroyed.Add(edge);
                     }
                 }
             }
@@ -154,7 +152,7 @@ namespace DumbProject.Rooms
                     if (list.Contains(wallToRemove))
                     {
                         list.Remove(wallToRemove);
-                        Destroy(wallToRemove);
+                        Destroy(wallToRemove.gameObject);
                     }
                 }
             }
@@ -250,7 +248,6 @@ namespace DumbProject.Rooms
                 _edge.Type = EdgeType.Door;
                 _edge.name = "DownDoor";
             }
-            newObj.tag = "Door";
             return true;
         }
 

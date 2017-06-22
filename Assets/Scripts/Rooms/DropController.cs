@@ -26,9 +26,16 @@ namespace DumbProject.Generic
                 {
                     if (adjacentNode.RelativeCell != null)
                     {
-                        // TODO : controllare edge
                         isValidPosition = true;
                     }
+                }
+
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    if (edge.Type == EdgeType.Door && (edge.WithWhatIsColliding == EdgeType.Door || edge.WithWhatIsColliding == EdgeType.None))
+                        isValidPosition = true;
+                    else
+                        isValidPosition = false;
                 }
             }
             return isValidPosition;
