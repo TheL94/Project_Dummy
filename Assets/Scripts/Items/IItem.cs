@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace DumbProject
 {
-
-    public class Armory : MonoBehaviour, IItem
+    public interface IItem
     {
-        public float Resistance;
-        public float Wear;
+        
     }
 }

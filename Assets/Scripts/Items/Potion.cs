@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace DumbProject
 {
-    public class Potion : MonoBehaviour
+    public class Potion : MonoBehaviour, IItem
     {
-
         public float HealtRestored;
         public float Damage;
     }
