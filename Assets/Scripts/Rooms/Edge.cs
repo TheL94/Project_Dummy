@@ -12,7 +12,7 @@ namespace DumbProject.Rooms.Cells
         [HideInInspector]
         public EdgeType Type = EdgeType.Wall;
         [HideInInspector]
-        public EdgeType WithWhatIsColliding = EdgeType.None;
+        public Edge CollidingEdge;
         [HideInInspector]
         public Cell RelativeCell;
 
@@ -23,41 +23,30 @@ namespace DumbProject.Rooms.Cells
 
         public void CheckCollisionWithOtherEdges(GridController _grid)
         {
-            GridNode node = _grid.GetSpecificGridNode(GetProbePosition());
+            GridNode nodeInFront = _grid.GetSpecificGridNode(GetNodeInFrontPosition());
             List<Edge> edgesInFrontCell = new List<Edge>();
-            if (node != null && node.RelativeCell != null)
+            if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
-                edgesInFrontCell = node.RelativeCell.GetEdgesList();
-                foreach (Edge edge in edgesInFrontCell)
+                edgesInFrontCell = nodeInFront.RelativeCell.GetEdgesList();
+                foreach (Edge edgeInFront in edgesInFrontCell)
                 {
-                    if (Vector3.Distance(edge.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
+                    if (Vector3.Distance(edgeInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
                     {
-                        if(edge.Type == EdgeType.Door)
-                        {
-                            WithWhatIsColliding = EdgeType.Door;
-                        }
-                        else if(edge.Type == EdgeType.Wall)
-                        {
-                            WithWhatIsColliding = EdgeType.Wall;
-                        }
-                        else
-                        {
-                            WithWhatIsColliding = EdgeType.None;
-                        }
+                        CollidingEdge = edgeInFront;
                     }
                 }
             }
-            else if(node != null && node.RelativeCell == null)
+            else if(nodeInFront != null && nodeInFront.RelativeCell == null)
             {
-                WithWhatIsColliding = EdgeType.None;
+                CollidingEdge = null;
             }
         }
 
-        Vector3 GetProbePosition()
+        Vector3 GetNodeInFrontPosition()
         {
             return (transform.position * 2) - RelativeCell.transform.position;
         }
     }
 
-    public enum EdgeType { None = 0, Wall = 1, Door = 2 }
+    public enum EdgeType { Wall = 0, Door = 1 }
 }

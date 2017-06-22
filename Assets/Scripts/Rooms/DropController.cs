@@ -32,10 +32,13 @@ namespace DumbProject.Generic
 
                 foreach (Edge edge in cell.GetEdgesList())
                 {
-                    if (edge.Type == EdgeType.Door && (edge.WithWhatIsColliding == EdgeType.Door || edge.WithWhatIsColliding == EdgeType.None))
-                        isValidPosition = true;
-                    else
-                        isValidPosition = false;
+                    if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    {
+                        if(edge.CollidingEdge.Type == EdgeType.Door)
+                            isValidPosition = true;
+                        else
+                            isValidPosition = false;
+                    }
                 }
             }
             return isValidPosition;

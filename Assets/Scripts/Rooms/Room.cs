@@ -137,7 +137,7 @@ namespace DumbProject.Rooms
             {
                 if(!itemsToBeDestroyed.Contains(edge))
                 {
-                    if(edge.WithWhatIsColliding == EdgeType.Wall)
+                    if(edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
                     {
                         itemsToBeDestroyed.Add(edge);
                     }
