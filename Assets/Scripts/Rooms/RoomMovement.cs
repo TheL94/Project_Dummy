@@ -87,7 +87,7 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public bool DropActions(PointerEventData _eventData)
         {
-            if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room) /*&& GameManager.I.DungeonMng.DropCtrl.CheckAdjacentRoomDoorRules()*/)
+            if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
                 room.PlaceAction();
                 return true;

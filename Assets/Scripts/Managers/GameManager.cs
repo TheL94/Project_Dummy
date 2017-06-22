@@ -5,12 +5,12 @@ using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
 using DumbProject.Flow;
+using DumbProject.Pool;
 
 namespace DumbProject.Generic
 {
     public class GameManager : MonoBehaviour
     {
-
         public static GameManager I;
 
         public RoomGenerator RoomGenertorPrefab;
@@ -31,6 +31,10 @@ namespace DumbProject.Generic
         public RoomPreviewController RoomPreviewCtrl;
         [HideInInspector]
         public DungeonManager DungeonMng;
+
+        // Non MonoBehaviour
+        [HideInInspector]
+        public PoolManager PoolMng;
 
         bool IsGamePlaying;
 
@@ -54,6 +58,7 @@ namespace DumbProject.Generic
 
         private void Start()
         {
+            PoolMng = new PoolManager();
             FlowMng = GetComponent<FlowManager>();
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);

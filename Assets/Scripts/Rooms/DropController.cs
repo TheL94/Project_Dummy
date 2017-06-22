@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DumbProject.Rooms;
 using DumbProject.Rooms.Cells;
-using DumbProject.Rooms.Cells.Doors;
 using DumbProject.Grid;
 
 namespace DumbProject.Generic
@@ -27,13 +26,8 @@ namespace DumbProject.Generic
                 {
                     if (adjacentNode.RelativeCell != null)
                     {
-                        foreach (Door door in _room.DoorsInRoom)
-                        {
-                            if (door.CheckCollisionWithOtherDoors(adjacentNode.RelativeCell))
-                                isValidPosition = true;
-                            else
-                                isValidPosition = false;
-                        }
+                        // TODO : controllare edge
+                        isValidPosition = true;
                     }
                 }
             }
@@ -54,24 +48,6 @@ namespace DumbProject.Generic
                 return true;
 
             return false;
-        }
-
-        /// <summary>
-        /// Funzione che controlla che nessuna delle porte delle stanze già piazzate venga chiusa con un muro
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckAdjacentRoomDoorRules()
-        {
-            bool areRulesValid = false;
-            foreach (Room room in GameManager.I.DungeonMng.RoomInDungeon)
-            {
-                foreach (Door door in room.DoorsInRoom)
-                {
-                    if (door.CheckCollisionWithOtherWalls(room))
-                        areRulesValid = true;
-                }
-            }
-            return areRulesValid;
         }
     }
 }

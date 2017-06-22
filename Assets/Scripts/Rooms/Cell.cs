@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DumbProject.Grid;
-using DumbProject.Rooms.Cells.Doors;
 
 namespace DumbProject.Rooms.Cells
 {
@@ -47,9 +46,8 @@ namespace DumbProject.Rooms.Cells
         List<Cell> adjacentCells = new List<Cell>();
 
         GameObject Floor;
-        List<GameObject> Edges = new List<GameObject>();
+        List<Edge> Edges = new List<Edge>();
         List<GameObject> Angles = new List<GameObject>();
-        List<Door> Doors = new List<Door>();
 
         #region Cell Elements Instantiation
         /// <summary>
@@ -68,36 +66,39 @@ namespace DumbProject.Rooms.Cells
         /// </summary>
         void InstantiateEdges()
         {
-            GameObject newEdge;
-            Quaternion newRotation;
+            GameObject newEdgeObj;
+
             int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
-            newEdge = new GameObject("RightEdge");
-            newEdge.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z);
-            newEdge.transform.parent = transform;
-            newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
-            newEdge.transform.rotation = newRotation;
-            Edges.Add(newEdge);
+            newEdgeObj = new GameObject("RightEdge");
+            newEdgeObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z);
+            SetupNewEdge(newEdgeObj);
 
-            newEdge = new GameObject("LeftEdge");
-            newEdge.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z);
-            newEdge.transform.parent = transform;
-            newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
-            newEdge.transform.rotation = newRotation;
-            Edges.Add(newEdge);
+            newEdgeObj = new GameObject("LeftEdge");
+            newEdgeObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z);
+            SetupNewEdge(newEdgeObj);
 
-            newEdge = new GameObject("UpEdge");
-            newEdge.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + distance);
-            newEdge.transform.parent = transform;
-            newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
-            newEdge.transform.rotation = newRotation;
-            Edges.Add(newEdge);
+            newEdgeObj = new GameObject("UpEdge");
+            newEdgeObj.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + distance);
+            SetupNewEdge(newEdgeObj);
 
-            newEdge = new GameObject("DownEdge");
-            newEdge.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - distance);
-            newEdge.transform.parent = transform;
-            newRotation = ((transform.position - newEdge.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - newEdge.transform.position) : Quaternion.identity;
-            newEdge.transform.rotation = newRotation;
+            newEdgeObj = new GameObject("DownEdge");
+            newEdgeObj.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - distance);
+            SetupNewEdge(newEdgeObj);
+        }
+
+        /// <summary>
+        /// Ruota e aggiunge i componenti necessari al nuovo edge; poi lo aggiunge alla lista di edge
+        /// </summary>
+        /// <param name="_newEdgeObj"></param>
+        void SetupNewEdge(GameObject _newEdgeObj)
+        {
+            _newEdgeObj.transform.parent = transform;
+            Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
+            _newEdgeObj.transform.rotation = newRotation;
+            BoxCollider collider = _newEdgeObj.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             Edges.Add(newEdge);
         }
 
@@ -131,7 +132,7 @@ namespace DumbProject.Rooms.Cells
         }
 
         /// <summary>
-        /// Istanzia l'oggeto di grafica del pavimento
+        /// Istanzia l'oggetto di grafica del pavimento
         /// </summary>
         void InstantiateFloorElement()
         {
@@ -141,7 +142,7 @@ namespace DumbProject.Rooms.Cells
         }
 
         /// <summary>
-        /// Istanzia l'oggeto di grafica del pilastro
+        /// Istanzia l'oggetto di grafica del pilastro
         /// </summary>
         void InstantiatePilllarElements()
         {
@@ -154,12 +155,12 @@ namespace DumbProject.Rooms.Cells
         }
 
         /// <summary>
-        /// Istanzia l'oggeto di grafica del muro
+        /// Istanzia l'oggetto di grafica del muro
         /// </summary>
         void InstantiateWallElements()
         {
             GameObject newObj = null;
-            foreach (GameObject edge in Edges)
+            foreach (Edge edge in Edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
@@ -181,18 +182,37 @@ namespace DumbProject.Rooms.Cells
         #endregion
 
         #region API
+        /// <summary>
+        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
+        /// </summary>
+        /// <param name="_relativeNode"></param>
+        /// <param name="_pointToFace"></param>
+        /// <param name="_relativeRoom"></param>
+        /// <returns></returns>
         public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
         {
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
             return PlaceCell(_relativeNode, newRotation, _relativeRoom);           
         }
-
+        /// <summary>
+        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
+        /// </summary>
+        /// <param name="_relativeNode"></param>
+        /// <param name="_pointToFace"></param>
+        /// <param name="_relativeRoom"></param>
+        /// <returns></returns>
         public Cell PlaceCell(GridNode _relativeNode, Vector3 _pointToFace, Room _relativeRoom)
         {
             Quaternion newRotation = Quaternion.LookRotation(_pointToFace - transform.position);
             return PlaceCell(_relativeNode, newRotation, _relativeRoom);
         }
-
+        /// <summary>
+        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
+        /// </summary>
+        /// <param name="_relativeNode"></param>
+        /// <param name="_pointToFace"></param>
+        /// <param name="_relativeRoom"></param>
+        /// <returns></returns>
         public Cell PlaceCell(GridNode _relativeNode, Quaternion _pointToFace, Room _relativeRoom)
         {
             RelativeNode = _relativeNode;
@@ -213,11 +233,10 @@ namespace DumbProject.Rooms.Cells
             return this;
         }
 
-        public GridNode GetPositionOnGrid(GridController _grid)
-        {
-            return _grid.GetSpecificGridNode(transform.position);
-        }
-
+        /// <summary>
+        /// Funzione che setta il nodo relativo della cella
+        /// </summary>
+        /// <param name="_relativeNode"></param>
         public void SetRelativeNode(GridNode _relativeNode = null)
         {
             if(_relativeNode == null)
@@ -227,20 +246,6 @@ namespace DumbProject.Rooms.Cells
             }
             else
                 RelativeNode = _relativeNode;
-        }
-
-        public void SetAdjacentCell()
-        {
-            foreach (Cell cellInRoom in RelativeRoom.CellsInRoom)
-            {
-                if(cellInRoom != this)
-                {
-                    if (Vector3.Distance(cellInRoom.transform.position, transform.position) <= RelativeNode.RelativeGrid.CellSize)
-                    {
-                        adjacentCells.Add(cellInRoom);
-                    }
-                }
-            }
         }
 
         public void ShowInvalidPosition(bool _isInvalid)
@@ -253,7 +258,7 @@ namespace DumbProject.Rooms.Cells
             //        mesh.material.color = Color.white;
         }
 
-        public List<GameObject> GetEdgesList()
+        public List<Edge> GetEdgesList()
         {
             Edges.RemoveAll(e => e == null);
             return Edges;
@@ -263,17 +268,6 @@ namespace DumbProject.Rooms.Cells
         {
             Angles.RemoveAll(a => a == null);
             return Angles;
-        }
-
-        public List<Door> GetDoorsList()
-        {
-            Doors.RemoveAll(a => a == null);
-            return Doors;
-        }
-
-        public void UpdateCellElements()
-        {
-            Doors = GetComponentsInChildren<Door>().ToList();
         }
         #endregion
     }
