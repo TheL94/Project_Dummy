@@ -19,6 +19,7 @@ namespace DumbProject.Generic
         public GridController GridControllerPrefab;
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
+        public ItemsManager ItemManagerPrefab;
 
         [HideInInspector]
         public RoomGenerator RoomGenerator;
@@ -28,6 +29,8 @@ namespace DumbProject.Generic
         public UIManager UIMng;
         [HideInInspector]
         public RoomPreviewController RoomPreviewCtrl;
+        [HideInInspector]
+        public ItemsManager ItemManager;
 
         bool IsGamePlaying;
 
@@ -56,6 +59,7 @@ namespace DumbProject.Generic
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
+            ItemManager = Instantiate(ItemManagerPrefab);
 
             flowMng.CurrentState = FlowState.Loading;
         }
@@ -89,7 +93,7 @@ namespace DumbProject.Generic
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             RoomGenerator.Clean();
-            UIMng.GamePlayCtrl.inventoryController.CleanInventory();
+            UIMng.UIGamePlayCtrl.inventoryController.CleanInventory();
             IsGamePlaying = false;
         }
 
@@ -106,7 +110,7 @@ namespace DumbProject.Generic
         /// </summary>
         public void ActivePauseMode()
         {
-            UIMng.GamePlayCtrl.ActivatePause();
+            UIMng.UIGamePlayCtrl.ActivatePause();
         }
 
     }

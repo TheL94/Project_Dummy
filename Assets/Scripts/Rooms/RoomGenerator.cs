@@ -100,6 +100,17 @@ namespace DumbProject.Rooms
                 DropController dropController = newRoomObj.AddComponent<DropController>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn, roomMovement, dropController);
+
+                float randNum = Random.Range(0f, 1f);
+
+                if (randNum >= 0.3f)
+                {
+                    Debug.Log("Istanzio oggetto");
+                    for (int i = 0; i < room.CellsInRoom.Count - Random.Range(0,2); i++)
+                    {
+                        GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
+                    } 
+                }
             }
         }
 
@@ -148,8 +159,8 @@ namespace DumbProject.Rooms
 
         void SetupSpawnsAssociations()
         {
-            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns.Count; i++)
-                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.GamePlayCtrl.roomPreviewController.UISpawns[i]));          
+            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.UIGamePlayCtrl.roomPreviewController.UISpawns.Count; i++)
+                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.UIGamePlayCtrl.roomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

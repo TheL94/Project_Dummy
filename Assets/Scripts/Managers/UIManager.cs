@@ -12,15 +12,15 @@ namespace DumbProject.UI
         [HideInInspector]
         public MenuPanelController MenuController;
         [HideInInspector]
-        public UIGamePlayController GamePlayCtrl;
+        public UIGamePlayController UIGamePlayCtrl;
 
         public void Init()
         {
             canvasGame = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform);
             MenuController = GetComponentInChildren<MenuPanelController>();
-            GamePlayCtrl = GetComponentInChildren<UIGamePlayController>();
+            UIGamePlayCtrl = GetComponentInChildren<UIGamePlayController>();
             MenuController.Init(this);
-            GamePlayCtrl.Init(this);
+            UIGamePlayCtrl.Init(this);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace DumbProject.UI
         public void ActivateMenuPanel()
         {
             MenuController.gameObject.SetActive(true);
-            GamePlayCtrl.gameObject.SetActive(false);
+            UIGamePlayCtrl.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DumbProject.UI
         /// </summary>
         public void ActivateGamePlayPanel()
         {
-            GamePlayCtrl.gameObject.SetActive(true);
+            UIGamePlayCtrl.gameObject.SetActive(true);
             MenuController.gameObject.SetActive(false);
         }
 
@@ -51,7 +51,7 @@ namespace DumbProject.UI
         /// </summary>
         public void GoInGameplayMode()
         {
-            GamePlayCtrl.gameObject.SetActive(true);
+            UIGamePlayCtrl.gameObject.SetActive(true);
             GameManager.I.flowMng.CurrentState = Flow.FlowState.GameplayState;
         }
 
