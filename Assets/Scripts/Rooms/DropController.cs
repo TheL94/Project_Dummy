@@ -51,9 +51,9 @@ namespace DumbProject.Generic
                             isValidPosition = false;
                             foreach (Edge eg in cell.GetEdgesList())
                             {
-                                if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                                if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
                                 {
-                                    if (edge.CollidingEdge.Type == EdgeType.Door)
+                                    if (eg.CollidingEdge.Type == EdgeType.Door)
                                         isValidPosition = true;
                                 }
                             }
