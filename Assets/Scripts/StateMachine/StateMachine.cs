@@ -13,43 +13,56 @@ namespace Framework.StateMachine {
 
         public void AddState(StateBehaviour _behaviour)
         {
-            foreach (State state in States)
-            {
-                if (state.Behaviour == _behaviour)
-                    return;
-            }
-
-            States.Add(new State(_behaviour));
+            State stateToAdd = GetStateByBehaviour(_behaviour);
+            if(stateToAdd == null)
+                States.Add(new State(_behaviour));
         }
+
         public void AddState(StateBehaviour _behaviour, StateBehaviour _nextBehaviour)
         {
-            foreach (State state in States)
-            {
-                if (state.Behaviour == _behaviour)
-                {
-                    if (state.NextState.Behaviour == _nextBehaviour)
-                        return;
-                    else
-                    {
-                        State stateOfNext = GetStateByBehaviour(_nextBehaviour);
-                        state.SetNextState(stateOfNext != null ? stateOfNext : new State(_nextBehaviour));
-                    }
-                }
-            }
-            States.Add(new State(_behaviour));
+            AddState(_behaviour);
+            State behaviourState = GetStateByBehaviour(_behaviour);
+            State stateOfNext = GetStateByBehaviour(_nextBehaviour);
+            if (stateOfNext == null)
+                AddState(_nextBehaviour);
+
+            stateOfNext = GetStateByBehaviour(_nextBehaviour);
+
+            behaviourState.SetNextState(stateOfNext);
         }
+
         public void AddState(StateBehaviour _behaviour, List<StateBehaviour> _behaviours)
         {
-            foreach (State state in States)
-            {
-                if (state.Behaviour == _behaviour)
-                    return;
-            }
-
-            States.Add(new State(_behaviour));
+            AddState(_behaviour);
+            SetLinkedStates(GetStateByBehaviour(_behaviour), _behaviours);
         }
 
-        //SetLinkedStates(State _stateToSet, )
+        void SetLinkedStates(State _stateToSet, List<StateBehaviour> _behaviours)
+        {
+            List<StateBehaviour> behaviourToAdd = new List<StateBehaviour>();
+
+            foreach (State behaviourState in _stateToSet.RoutableStates)
+            {
+                foreach (StateBehaviour behaviourLogic in _behaviours)
+                {
+                    if (behaviourState.Behaviour == behaviourLogic)
+                        behaviourToAdd.Add(behaviourLogic);
+                }
+            }
+
+            State newToAdd;
+            foreach(StateBehaviour newRoute in behaviourToAdd)
+            {
+                newToAdd = GetStateByBehaviour(newRoute);
+                if (newToAdd == null)
+                {
+                    AddState(newRoute);
+                    newToAdd = GetStateByBehaviour(newRoute);
+                }
+                _stateToSet.RoutableStates.Add(newToAdd);
+            }
+        }
+
         State GetStateByBehaviour(StateBehaviour _behavour)
         {
             foreach (State state in States)
