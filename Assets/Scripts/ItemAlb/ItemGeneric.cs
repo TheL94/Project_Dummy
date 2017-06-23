@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Items {
+namespace DumbProject.Items.ALB
+{
     //classe da cui fai derivare le classi dei vari item. Come "Sward" e "Gattini"
     public class ItemGeneric : MonoBehaviour
     {

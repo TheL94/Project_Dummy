@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Items {
+namespace DumbProject.Items.ALB
+{
     public class ItemManager : MonoBehaviour
     {
         //Puoi riempire questa lista a mano da editor o creare una funzione che carica gli script di Tipo ItemGeneric direttamente da risorse al setup

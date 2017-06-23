@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
-    [CreateAssetMenu(fileName = "Sward", menuName = "Items/NewSward", order = 2)]
-    public class SwardData : ItemBaseData
+    [CreateAssetMenu(fileName = "ItemData", menuName = "ItemData/NewSward", order = 1)]
+    public class SwardData : ItemData
     {
         public float Damage;
-        public float Wear;
     }
 }

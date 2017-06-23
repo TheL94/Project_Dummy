@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
-    [CreateAssetMenu(fileName = "Potion", menuName = "Items/NewPotion", order = 1)]
-    public class PotionData : ItemBaseData
+    [CreateAssetMenu(fileName = "ItemData", menuName = "ItemData/NewPotion", order = 2)]
+    public class PotionData : ItemData
     {
-        public float HealtRestore;
-        public float DamageHero;
+        public float Heal;
     }
 }
