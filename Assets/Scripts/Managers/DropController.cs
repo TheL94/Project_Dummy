@@ -15,6 +15,35 @@ namespace DumbProject.Generic
         /// </summary>
         public bool CheckRoomValidPosition(Room _room)
         {
+            if (CheckRoomPlacemnet(_room) && CheckDoorCollsions(_room))
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Funzione che controlla che la posizione della cella sia valida
+        /// </summary>
+        /// <param name="_cell"></param>
+        /// <param name="_grid"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public bool CheckCellValidPosition(Cell _cell, GridController _grid, out GridNode node)
+        {
+            node = _grid.GetSpecificGridNode(_cell.transform.position);
+            if (node != null && node.RelativeCell == null)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Funzione che controlla che la stanza sia piazzata correttamanete sulla griglia
+        /// </summary>
+        /// <param name="_room"></param>
+        /// <returns></returns>
+        bool CheckRoomPlacemnet(Room _room)
+        {
             bool isValidPosition = false;
             foreach (Cell cell in _room.CellsInRoom)
             {
@@ -31,12 +60,20 @@ namespace DumbProject.Generic
                     }
                 }
             }
+            return isValidPosition;
+        }
 
+        /// <summary>
+        /// Funzione che controlla che le porte collidano in modo corretto
+        /// </summary>
+        /// <param name="_room"></param>
+        /// <returns></returns>
+        bool CheckDoorCollsions(Room _room)
+        {
+            bool isValidPosition = false;
             List<Edge> roomEdges = new List<Edge>();
             foreach (Cell cell in _room.CellsInRoom)
-            {
                 roomEdges.AddRange(cell.GetEdgesList());
-            }
 
             // Controllo sulla posizione delle porte e dei muri
             foreach (Edge edge in roomEdges)
@@ -71,22 +108,6 @@ namespace DumbProject.Generic
             }
 
             return isValidPosition;
-        }
-
-        /// <summary>
-        /// Funzione che controlla che la posizione della cella sia valida
-        /// </summary>
-        /// <param name="_cell"></param>
-        /// <param name="_grid"></param>
-        /// <param name="node"></param>
-        /// <returns></returns>
-        public bool CheckCellValidPosition(Cell _cell, GridController _grid, out GridNode node)
-        {
-            node = _grid.GetSpecificGridNode(_cell.transform.position);
-            if (node != null && node.RelativeCell == null)
-                return true;
-
-            return false;
         }
     }
 }
