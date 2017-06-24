@@ -30,40 +30,46 @@ namespace DumbProject.Generic
                         isValidPosition = true;
                     }
                 }
+            }
 
-                // Controllo sulla posizione delle porte e dei muri
-                foreach (Edge edge in cell.GetEdgesList())
+            List<Edge> roomEdges = new List<Edge>();
+            foreach (Cell cell in _room.CellsInRoom)
+            {
+                roomEdges.AddRange(cell.GetEdgesList());
+            }
+
+            // Controllo sulla posizione delle porte e dei muri
+            foreach (Edge edge in roomEdges)
+            {
+                if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
                 {
-                    if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    if (edge.CollidingEdge.Type == EdgeType.Door)
+                        isValidPosition = true;
+                    else
+                        isValidPosition = false;
+                }
+                else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
+                {
+                    if (edge.CollidingEdge.Type == EdgeType.Door)
+                        isValidPosition = false;
+                    else
                     {
-                        if(edge.CollidingEdge.Type == EdgeType.Door)
-                            isValidPosition = true;
-                        else
-                            isValidPosition = false;
-                    }
-                    else if(edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
-                    {
-                        if (edge.CollidingEdge.Type == EdgeType.Door)
-                            isValidPosition = false;
-                        else
+                        // Controllo che la stanza non sia collegata solo per muri
+                        isValidPosition = false;
+                        foreach (Edge eg in roomEdges)
                         {
-                            // Controllo che la stanza non sia collegata solo per muri
-                            isValidPosition = false;
-                            foreach (Edge eg in cell.GetEdgesList())
+                            if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
                             {
-                                if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
+                                if (eg.CollidingEdge.Type == EdgeType.Door)
                                 {
-                                    if (eg.CollidingEdge.Type == EdgeType.Door)
-                                    {
-                                        isValidPosition = true;
-                                        break;
-                                    }
+                                    isValidPosition = true;
                                 }
                             }
                         }
                     }
                 }
             }
+
             return isValidPosition;
         }
 
