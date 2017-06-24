@@ -54,7 +54,10 @@ namespace DumbProject.Generic
                                 if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
                                 {
                                     if (eg.CollidingEdge.Type == EdgeType.Door)
+                                    {
                                         isValidPosition = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
