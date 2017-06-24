@@ -5,7 +5,13 @@ using UnityEngine;
 namespace DumbProject
 {
     [CreateAssetMenu(fileName = "Armory", menuName = "Items/NewArmory", order = 3)]
-    public class ArmoryData : ItemBaseData
+    public class ArmoryData : BaseData
+    {
+        public ArmoryValues DataValues;
+    }
+
+    [System.Serializable]
+    public struct ArmoryValues
     {
         public float Protection;
         public float Wear;

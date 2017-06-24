@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace DumbProject
 {
-    public interface IItem
+    public interface IDroppable
     {
-        
+        void GetMyData(BaseData _data);
     }
 }

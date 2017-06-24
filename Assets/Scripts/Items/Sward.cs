@@ -4,9 +4,13 @@ using UnityEngine;
 
 namespace DumbProject
 {
-    public class Sward : IItem
+    public class Sward : MonoBehaviour, IDroppable
     {
-        public float Damage;
-        public float Wear;
+        SwardValues values;
+
+        public void GetMyData(BaseData _data)
+        {
+            values = (_data as SwardData).DataValues;
+        }
     }
 }

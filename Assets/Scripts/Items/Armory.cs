@@ -1,13 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DumbProject
 {
 
-    public class Armory : MonoBehaviour, IItem
+    public class Armory : MonoBehaviour, IDroppable
     {
-        public float Resistance;
-        public float Wear;
+        ArmoryValues values;
+
+        public void GetMyData(BaseData _data)
+        {
+            values = (_data as ArmoryData).DataValues;
+        }
     }
 }

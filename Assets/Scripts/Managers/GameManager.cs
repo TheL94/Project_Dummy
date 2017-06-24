@@ -71,6 +71,7 @@ namespace DumbProject.Generic
             RoomGenerator = Instantiate(RoomGenertorPrefab);
             CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
             ItemManager = Instantiate(ItemManagerPrefab);
+            ItemManager.Init();
 
             FlowMng.CurrentState = FlowState.Loading;
         }

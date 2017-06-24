@@ -102,13 +102,12 @@ namespace DumbProject.Rooms
                 //Istanzia casualmente degli oggetti nella room
                 float randNum = Random.Range(0f, 1f);
 
-                if (randNum >= 0.5f)
+                if (randNum >= 0.1f)
                 {
-                    Debug.Log("Istanzio oggetto");
-                    for (int i = 0; i < Random.Range(0, 2); i++)
-                    {
+                    //for (int i = 0; i < Random.Range(0, 2); i++)
+                    //{
                         GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
-                    }
+                    //}
                 }
             }
         }

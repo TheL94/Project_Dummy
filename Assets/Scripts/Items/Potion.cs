@@ -1,12 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DumbProject
 {
-    public class Potion : MonoBehaviour, IItem
+    public class Potion : MonoBehaviour, IDroppable
     {
-        public float HealtRestored;
-        public float Damage;
+        PotionValues values;
+
+        public void GetMyData(BaseData _data)
+        {
+            values = (_data as PotionData).DataValues;
+        }
     }
 }
