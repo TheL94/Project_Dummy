@@ -57,10 +57,10 @@ namespace DumbProject.Rooms
         {
             Data = _data;
             PlaceCells(_data, _grid);
-            LinkCells();
-            TrimCellWalls(_grid);
+            LinkCellsInsideRoom();
+            TrimCellEdges(_grid);
             PlaceDoors();
-            TrimCellPillars();
+            TrimCellAngles();
         }
         
         /// <summary>
@@ -72,6 +72,8 @@ namespace DumbProject.Rooms
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             GameManager.I.DungeonMng.ParentRoom(this);
+            TrimCollidingEdges(GameManager.I.MainGridCtrl);
+            LinkCellsToOtherRooms();
             Destroy(RoomMovment);
         }
 
@@ -90,6 +92,23 @@ namespace DumbProject.Rooms
                         cell.SetRelativeNode();
                 });
             }
+        }
+
+        /// <summary>
+        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        public List<Edge> GetListOfEdges()
+        {
+            List<Edge> listOfEdges = new List<Edge>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    listOfEdges.Add(edge);
+                }
+            }
+            return listOfEdges;
         }
 
         #region Object Placement
@@ -126,7 +145,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che rimuove i muri se sono nella stessa posizione
         /// </summary>
-        void TrimCellWalls(GridController _grid)
+        void TrimCellEdges(GridController _grid)
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
             List<Edge> edges = GetListOfEdges();
@@ -161,7 +180,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che rimuove i pilastri se sono nella stessa posizione
         /// </summary>
-        void TrimCellPillars()
+        void TrimCellAngles()
         {
             List<GameObject> itemsToBeDestroyed = new List<GameObject>();
             List<GameObject> listOfPillars = GetListOfAngles();
@@ -192,6 +211,49 @@ namespace DumbProject.Rooms
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Funzione che distrugge 
+        /// </summary>
+        /// <param name="_grid"></param>
+        void TrimCollidingEdges(GridController _grid)
+        {
+            List<Edge> itemsToBeDestroyed = new List<Edge>();
+            List<Edge> edges = GetListOfEdges();
+
+            foreach (Edge edge in edges)
+            {
+                if (!itemsToBeDestroyed.Contains(edge.CollidingEdge))
+                {
+                    if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    {
+                        itemsToBeDestroyed.Add(edge.CollidingEdge);
+                    }
+                    else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Door)
+                    {
+                        itemsToBeDestroyed.Add(edge);
+                    }
+
+                    //###################################
+                    // CONTROLLO DA NON CANCELLARE !
+                    // serve per distruggere i muri che collidono fra di loro quando piazzo la stanza, da usare o meno in funzione della grafica.
+                    //else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
+                    //{
+                    //    itemsToBeDestroyed.Add(edge);
+                    //}
+                    //###################################
+                }
+            }
+
+            foreach (Edge egdeToDestroy in itemsToBeDestroyed)
+            {
+                if (egdeToDestroy.RelativeCell.GetEdgesList().Contains(egdeToDestroy))
+                {
+                    egdeToDestroy.RelativeCell.GetEdgesList().Remove(egdeToDestroy);
+                    Destroy(egdeToDestroy.gameObject);
+                }        
+            }          
         }
 
         /// <summary>
@@ -252,28 +314,21 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collaga fr di loro le celle adiacenti
+        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
         /// </summary>
-        void LinkCells()
+        void LinkCellsToOtherRooms()
         {
-            
+            foreach (Cell cell in CellsInRoom)
+                cell.LinkCellToOtherRoomsCells();
         }
 
         /// <summary>
-        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// Funzione che collaga fra di loro le celle adiacenti della stessa stanza
         /// </summary>
-        /// <returns></returns>
-        public List<Edge> GetListOfEdges()
+        void LinkCellsInsideRoom()
         {
-            List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.GetEdgesList())
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
-            return listOfEdges;
+                cell.LinkCellToRelativeRoomCells();
         }
 
         /// <summary>

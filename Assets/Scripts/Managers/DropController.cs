@@ -47,7 +47,6 @@ namespace DumbProject.Generic
             bool isValidPosition = false;
             foreach (Cell cell in _room.CellsInRoom)
             {
-                // Controllo della posizione della cella e della stanza
                 GridNode node;
                 if (!CheckCellValidPosition(cell, GameManager.I.MainGridCtrl, out node))
                     return false;
@@ -75,38 +74,20 @@ namespace DumbProject.Generic
             foreach (Cell cell in _room.CellsInRoom)
                 roomEdges.AddRange(cell.GetEdgesList());
 
-            // Controllo sulla posizione delle porte e dei muri
             foreach (Edge edge in roomEdges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
                 {
-                    if (edge.CollidingEdge.Type == EdgeType.Door)
-                        isValidPosition = true;
-                    else
-                        isValidPosition = false;
+                    isValidPosition = true;
                 }
                 else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
                 {
                     if (edge.CollidingEdge.Type == EdgeType.Door)
-                        isValidPosition = false;
-                    else
                     {
-                        // Controllo che la stanza non sia collegata solo per muri
-                        isValidPosition = false;
-                        foreach (Edge eg in roomEdges)
-                        {
-                            if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
-                            {
-                                if (eg.CollidingEdge.Type == EdgeType.Door)
-                                {
-                                    isValidPosition = true;
-                                }
-                            }
-                        }
+                        isValidPosition = true;
                     }
                 }
             }
-
             return isValidPosition;
         }
     }
