@@ -80,33 +80,16 @@ namespace DumbProject.Generic
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
                 {
-                    if (edge.CollidingEdge.Type == EdgeType.Door)
-                        isValidPosition = true;
-                    else
-                        isValidPosition = false;
+                    isValidPosition = true;
                 }
                 else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
                 {
                     if (edge.CollidingEdge.Type == EdgeType.Door)
-                        isValidPosition = false;
-                    else
                     {
-                        // Controllo che la stanza non sia collegata solo per muri
-                        isValidPosition = false;
-                        foreach (Edge eg in roomEdges)
-                        {
-                            if (eg.Type == EdgeType.Door && eg.CollidingEdge != null)
-                            {
-                                if (eg.CollidingEdge.Type == EdgeType.Door)
-                                {
-                                    isValidPosition = true;
-                                }
-                            }
-                        }
+                        isValidPosition = true;
                     }
                 }
             }
-
             return isValidPosition;
         }
     }
