@@ -27,7 +27,6 @@ namespace DumbProject.Rooms
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 CreateNewRoom();
-
         }
 
         public void Clean()

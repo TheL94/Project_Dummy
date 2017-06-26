@@ -278,6 +278,30 @@ namespace DumbProject.Rooms.Cells
             Angles.RemoveAll(a => a == null);
             return Angles;
         }
+
+        /// <summary>
+        /// Funzione che collega la cella con le celle di altre stanze che sitrovano di fronte alle porte della cella
+        /// </summary>
+        public void LinkCellToOtherRoomsCells()
+        {           
+            foreach (Edge edge in Edges)
+            {
+                if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    adjacentCells.Add(edge.CollidingEdge.RelativeCell);
+            }
+        }
+
+        /// <summary>
+        /// Funzione che collega la cella con le celle delle stessa stanza
+        /// </summary>
+        public void LinkCellToRelativeRoomCells()
+        {
+            foreach (GridNode node in RelativeNode.AdjacentNodes)
+            {
+                if (RelativeRoom.CellsInRoom.Contains(node.RelativeCell))
+                    adjacentCells.Add(node.RelativeCell);
+            }
+        }
         #endregion
     }
 }
