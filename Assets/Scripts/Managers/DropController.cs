@@ -47,7 +47,6 @@ namespace DumbProject.Generic
             bool isValidPosition = false;
             foreach (Cell cell in _room.CellsInRoom)
             {
-                // Controllo della posizione della cella e della stanza
                 GridNode node;
                 if (!CheckCellValidPosition(cell, GameManager.I.MainGridCtrl, out node))
                     return false;
@@ -75,7 +74,6 @@ namespace DumbProject.Generic
             foreach (Cell cell in _room.CellsInRoom)
                 roomEdges.AddRange(cell.GetEdgesList());
 
-            // Controllo sulla posizione delle porte e dei muri
             foreach (Edge edge in roomEdges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)

@@ -72,6 +72,7 @@ namespace DumbProject.Rooms
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             GameManager.I.DungeonMng.ParentRoom(this);
+            TrimCollidingWalls(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
         }
 
@@ -192,6 +193,49 @@ namespace DumbProject.Rooms
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Funzione che distrugge 
+        /// </summary>
+        /// <param name="_grid"></param>
+        void TrimCollidingWalls(GridController _grid)
+        {
+            List<Edge> itemsToBeDestroyed = new List<Edge>();
+            List<Edge> edges = GetListOfEdges();
+
+            foreach (Edge edge in edges)
+            {
+                if (!itemsToBeDestroyed.Contains(edge.CollidingEdge))
+                {
+                    if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    {
+                        itemsToBeDestroyed.Add(edge.CollidingEdge);
+                    }
+                    else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Door)
+                    {
+                        itemsToBeDestroyed.Add(edge);
+                    }
+
+                    //###################################
+                    // CONTROLLO DA NON CANCELLARE !
+                    // serve per distruggere i muri che collidono fra di loro quando piazzo la stanza, da usare o meno in funzione della grafica.
+                    //else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
+                    //{
+                    //    itemsToBeDestroyed.Add(edge);
+                    //}
+                    //###################################
+                }
+            }
+
+            foreach (Edge egdeToDestroy in itemsToBeDestroyed)
+            {
+                if (egdeToDestroy.RelativeCell.GetEdgesList().Contains(egdeToDestroy))
+                {
+                    egdeToDestroy.RelativeCell.GetEdgesList().Remove(egdeToDestroy);
+                    Destroy(egdeToDestroy.gameObject);
+                }        
+            }          
         }
 
         /// <summary>
