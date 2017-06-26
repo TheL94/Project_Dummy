@@ -9,9 +9,25 @@ namespace Framework.StateMachine
         /// <summary>
         /// List of state in the StateMachine
         /// </summary>
-        List<State> States;
+        List<State> states;
+        State _currentState;
+        State currentState
+        {
+            get { return _currentState; }
+            set
+            {
+                OnCurrentStateSet(_currentState, value);
+                _currentState = value;
+            }
+        }
 
         #region API
+
+        public void Run()
+        {
+            currentState.Behaviour.Run();
+        }
+
         /// <summary>
         /// Add a State to the StateMachine as Default
         /// </summary>
@@ -45,8 +61,8 @@ namespace Framework.StateMachine
         public void RemoveState(StateBehaviour _behaviour)
         {
             State stateToRemove = GetStateByBehaviour(_behaviour);
-            States.Remove(stateToRemove);
-            foreach (State state in States)
+            states.Remove(stateToRemove);
+            foreach (State state in states)
             {
                 if (state.RoutableStates.Contains(stateToRemove))
                     state.RoutableStates.Remove(stateToRemove);
@@ -81,11 +97,13 @@ namespace Framework.StateMachine
         #endregion
 
         #region Statemachine Setup and Init
+
+
         State AddNewState(StateBehaviour _behaviour)
         {
             State stateToAdd = GetStateByBehaviour(_behaviour);
             if (stateToAdd == null)
-                States.Add(new State(_behaviour));
+                states.Add(new State(_behaviour));
             return stateToAdd;
         }
 
@@ -139,7 +157,7 @@ namespace Framework.StateMachine
                 if (stateToAdd == null)
                 {
                     stateToAdd = AddNewState(sB);
-                    States.Add(stateToAdd);
+                    states.Add(stateToAdd);
                 }
                 statesToSet.Add(stateToAdd); 
             }
@@ -148,9 +166,17 @@ namespace Framework.StateMachine
         }
         #endregion
 
+        void OnCurrentStateSet(State _oldState, State _newState)
+        {
+            if (_oldState != null)
+                _oldState.Behaviour.End();
+            if (_newState != null)
+                _newState.Behaviour.Start();
+        }
+
         State GetStateByBehaviour(StateBehaviour _behavour)
         {
-            foreach (State state in States)
+            foreach (State state in states)
             {
                 if (state.Behaviour == _behavour)
                     return state;
