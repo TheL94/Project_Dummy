@@ -11,10 +11,11 @@ namespace DumbProject.Rooms
     public class RoomGenerator : MonoBehaviour
     {
         public List<RoomData> RoomTypesData = new List<RoomData>();
+        [HideInInspector]
+        public Room FirstRoom;
 
         List<RoomData> RoomTypesInstances = new List<RoomData>();
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
-        GameObject firstRoom;
 
         public void Setup()
         {
@@ -23,7 +24,7 @@ namespace DumbProject.Rooms
 
             SetupSpawnsAssociations();
 
-            firstRoom = InstantiateFirstRoom();
+            FirstRoom = InstantiateFirstRoom();
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 CreateNewRoom();
@@ -60,7 +61,7 @@ namespace DumbProject.Rooms
                     association.Room = null;
         }
 
-        GameObject InstantiateFirstRoom()
+        Room InstantiateFirstRoom()
         {
             RoomData _data = null;
             Room mainRoom = null;
@@ -80,7 +81,7 @@ namespace DumbProject.Rooms
             GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = _data.Shape +  "_MainRoom";
-            return newRoomObj;
+            return mainRoom;
         }
 
         void InstantiateRoom(RoomData _data)

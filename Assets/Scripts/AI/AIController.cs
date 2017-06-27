@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace Framework.AI
 {
     public class AIController : MonoBehaviour
     {
         public State CurrentState;
+        [HideInInspector]
+        public Dumby dumby;
         public bool IsInDebugMode;
         bool isActive;
 
-        public void Setup(bool _setActive = true)
+        public void Setup(Dumby _dumby, bool _setActive = true)
         {
+            dumby = _dumby;
             isActive = _setActive;
         }
 
