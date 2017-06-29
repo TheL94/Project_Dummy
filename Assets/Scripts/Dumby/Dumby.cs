@@ -3,11 +3,12 @@ using Framework.Pathfinding;
 using UnityEngine;
 using System.Collections.Generic;
 using Framework.AI;
+using System;
 
 namespace DumbProject.Generic
 {
     [RequireComponent(typeof(AIController))]
-    public class Dumby : MonoBehaviour
+    public class Dumby : MonoBehaviour, IAIControllable
     {
         Animator animator;
         AnimationState _animState = AnimationState.Idle;
@@ -24,9 +25,19 @@ namespace DumbProject.Generic
         GridController grid;
         public GridNode currentNode { get { return grid.GetSpecificGridNode(transform.position); } }
 
+        public Vector3 position
+        {
+            get
+            {
+                return transform.position;
+            }
+        }
+
         AIController aiController;
         public Pathfinder pathFinder;
         public List<INetworkable> nodePath = new List<INetworkable>();
+
+        
 
         public void Setup(GridController _grid)
         {

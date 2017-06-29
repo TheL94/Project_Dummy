@@ -104,7 +104,6 @@ namespace DumbProject.Generic
                 MainGridCtrl.Setup();
                 RoomPreviewCtrl.Setup();
                 RoomGenerator.Setup();
-                DungeonMng.PlaceDumby(RoomGenerator.FirstRoom.CellsInRoom[0].RelativeNode);
                 IsGamePlaying = true;
             }
         }
