@@ -44,14 +44,20 @@ namespace Framework.Pathfinding
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
+            PathStep nextStep;
             while (!CheckForNodeInPath(_target, possiblePaths))
             {
-                possiblePaths.Add(FinNextValidStep(_target, possiblePaths));
+                nextStep = FinNextValidStep(_target, possiblePaths);
+                if (nextStep != null)
+                    possiblePaths.Add(nextStep);
+                else
+                {
+                    Debug.LogWarningFormat("Pathfinder stuck at {0}", possiblePaths[possiblePaths.Count - 1].node.spacePosition);
+                    return null;
+                }
             }
 
             List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null ? Actual : _start);
-
-
 
             return foundPath;
         }
@@ -84,6 +90,10 @@ namespace Framework.Pathfinding
                     }
                 }
             }
+            //Prevent search for impossible path
+            if (CheckForNodeInPath(outcome.node,_givenPath))
+                return null;
+
             return outcome;
         }
         /// <summary>

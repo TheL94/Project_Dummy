@@ -19,7 +19,7 @@ namespace DumbProject.AI
 
         void Move(AIController _controller)
         {
-            if (!_controller.CanPathfind || _controller.nodePath.Count == 0)
+            if (!_controller.CanPathfind || _controller.nodePath == null || _controller.nodePath.Count == 0)
                 return;
 
             INetworkable headingNode = _controller.nodePath[0];

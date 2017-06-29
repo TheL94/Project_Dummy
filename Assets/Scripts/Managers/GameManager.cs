@@ -12,7 +12,7 @@ namespace DumbProject.Generic
     public class GameManager : MonoBehaviour
     {
         public static GameManager I;
-
+        public Dumby DumbyToTest;
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
         public UIManager UIManagerPrefab;
@@ -85,7 +85,16 @@ namespace DumbProject.Generic
 
             FlowMng.CurrentState = FlowState.Loading;
         }
-        
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
+                DumbyToTest.Setup();
+            }
+        }
+
         public void Init()
         {
             UIMng.Init();

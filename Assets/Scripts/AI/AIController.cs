@@ -12,7 +12,7 @@ namespace Framework.AI
         public bool DebugMode;
         bool isActive;
 
-        public void Setup(bool _setActive = true)
+        public virtual void Setup(bool _setActive = true)
         {
             CanPathfind = PathfinderSetup();
             isActive = _setActive;

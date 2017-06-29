@@ -81,6 +81,7 @@ namespace DumbProject.Rooms
             GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = _data.Shape +  "_MainRoom";
+            GameManager.I.DungeonMng.UpdateRoomConnections();
             return mainRoom;
         }
 

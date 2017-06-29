@@ -274,6 +274,20 @@ namespace DumbProject.Rooms.Cells
         }
 
         /// <summary>
+        /// Funzione che collega la cella con le celle delle stessa stanza
+        /// </summary>
+        public void LinkCellToRelativeRoomCells()
+        {
+            foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
+            {
+                if (adjacentNode.RelativeCell != null)
+                {
+                    adjacentCells.Add(adjacentNode.RelativeCell);
+                }
+            }
+        }
+
+        /// <summary>
         /// Funzione che riempe la lista di punti di caduta
         /// </summary>
         public void LinkDoorsToFallingPoint()
@@ -287,21 +301,6 @@ namespace DumbProject.Rooms.Cells
                     GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
                     if (nodeInFront != null && nodeInFront.RelativeCell == null)
                         fallingPoints.Add(nodeInFront);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Funzione che collega la cella con le celle delle stessa stanza
-        /// </summary>
-        public void LinkCellToRelativeRoomCells()
-        {
-            foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
-            {
-                if (adjacentNode.RelativeCell != null)
-                {
-                    adjacentCells.Add(adjacentNode.RelativeCell);
-                    adjacentNode.RelativeCell.LinkDoorsToFallingPoint();
                 }
             }
         }

@@ -22,8 +22,8 @@ namespace DumbProject.AI
             if (pathfinder == null)
                 pathfinder = _controller.pathFinder;
 
-            if(_controller.nodePath.Count == 0 && _controller.CurrentNode != objectiveNode)
-                _controller.nodePath= pathfinder.FindPath(objectiveNode);
+            if((_controller.nodePath == null || _controller.nodePath.Count == 0) && _controller.CurrentNode != objectiveNode)
+                _controller.nodePath = pathfinder.FindPath(objectiveNode);
         }
     }
 }
