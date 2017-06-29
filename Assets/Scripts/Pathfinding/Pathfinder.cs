@@ -52,12 +52,7 @@ namespace Framework.Pathfinding
                     possiblePaths.Add(nextStep);
                 else
                 {
-                    Debug.LogWarningFormat("Pathfinder stuck at {0}", possiblePaths[possiblePaths.Count - 1]);
-                    return null;
-                }
-
-                if(possiblePaths.Count >= 100)
-                {
+                    Debug.LogWarningFormat("Pathfinder stuck at {0}", possiblePaths[possiblePaths.Count - 1].node.spacePosition);
                     return null;
                 }
             }
@@ -96,7 +91,7 @@ namespace Framework.Pathfinding
                 }
             }
             //Prevent search for impossible path
-            if (_givenPath.Contains(outcome))
+            if (CheckForNodeInPath(outcome.node,_givenPath))
                 return null;
 
             return outcome;
