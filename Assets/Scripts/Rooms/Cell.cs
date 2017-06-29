@@ -298,7 +298,7 @@ namespace DumbProject.Rooms.Cells
         {
             foreach (GridNode node in RelativeNode.AdjacentNodes)
             {
-                if (RelativeRoom.CellsInRoom.Contains(node.RelativeCell))
+                if (!RelativeRoom.CellsInRoom.Contains(node.RelativeCell))
                     adjacentCells.Add(node.RelativeCell);
             }
         }
