@@ -10,11 +10,17 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     UIManager uiManager;
 
+    bool isVertical;
+
+    
+
     [HideInInspector]
     public RoomPanelController roomPreviewController;
     public GameObject PausePanel;
     [HideInInspector]
     public InventoryController inventoryController;
+
+    #region API
 
     public void Init(UIManager _uiManager)
     {
@@ -24,6 +30,14 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
         inventoryController = GetComponentInChildren<InventoryController>();
         roomPreviewController = GetComponentInChildren<RoomPanelController>();
         roomPreviewController.Setup();
+    }
+
+    public void SetVerticalGameUI(bool _isVertical)
+    {
+        if (_isVertical)
+        {
+
+        }
     }
 
     #region PauseRegion
@@ -71,4 +85,5 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     #endregion
 
+    #endregion
 }

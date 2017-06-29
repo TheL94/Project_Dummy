@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.UI;
+using UnityEngine.UI;
 
 namespace DumbProject
 {
     public class MenuPanelController : MonoBehaviour
     {
+        bool isVertical;
+
         public GameObject MainMenuPanel;
+        public GameObject VerticalMainMenuPanel;
+
         public GameObject CreditsPanel;
+        public GameObject VerticalCreditsPanel;
 
         UIManager uiManager;
 
@@ -17,6 +23,37 @@ namespace DumbProject
         public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
+        }
+
+        public void SetVerticalUI(bool _IsVertical)
+        {
+            isVertical = _IsVertical;
+            if (MainMenuPanel.activeInHierarchy || VerticalMainMenuPanel.activeInHierarchy)
+            {
+                if (isVertical)
+                {
+                    MainMenuPanel.SetActive(false);
+                    VerticalMainMenuPanel.SetActive(true);
+                }
+                else
+                {
+                    MainMenuPanel.SetActive(true);
+                    VerticalMainMenuPanel.SetActive(false);
+                }
+            }
+            if (CreditsPanel.activeInHierarchy || VerticalCreditsPanel.activeInHierarchy)
+            {
+                if (isVertical)
+                {
+                    CreditsPanel.SetActive(false);
+                    VerticalCreditsPanel.SetActive(true); 
+                }
+                else
+                {
+                    CreditsPanel.SetActive(true);
+                    VerticalCreditsPanel.SetActive(false);
+                }
+            }
         }
 
         #region MainMenuAPI
@@ -35,8 +72,16 @@ namespace DumbProject
         /// </summary>
         public void ActivateCreditPanel()
         {
-            CreditsPanel.SetActive(true);
-            MainMenuPanel.SetActive(false);
+            if (!isVertical)
+            {
+                CreditsPanel.SetActive(true);
+                MainMenuPanel.SetActive(false); 
+            }
+            else
+            {
+                VerticalCreditsPanel.SetActive(true);
+                VerticalMainMenuPanel.SetActive(false);
+            }
         }
 
         public void QuitApplication()
@@ -55,8 +100,16 @@ namespace DumbProject
         /// </summary>
         public void ActivateMenuPanel()
         {
-            CreditsPanel.SetActive(false);
-            MainMenuPanel.SetActive(true);
+            if (!isVertical)
+            {
+                CreditsPanel.SetActive(false);
+                MainMenuPanel.SetActive(true); 
+            }
+            else
+            {
+                VerticalCreditsPanel.SetActive(false);
+                VerticalMainMenuPanel.SetActive(true);
+            }
         }
 
         #endregion

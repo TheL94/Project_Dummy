@@ -9,6 +9,10 @@ namespace DumbProject.UI
     {
         GameObject canvasGame;
 
+        public bool _isVertical = false;
+
+        public bool IsVertical { get { return _isVertical; } set { _isVertical = value; } }
+
         [HideInInspector]
         public MenuPanelController MenuController;
         [HideInInspector]
@@ -46,6 +50,25 @@ namespace DumbProject.UI
             Destroy(canvasGame);
         }
 
+        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (_isVertical)
+                {
+                    MenuController.SetVerticalUI(false);
+                    _isVertical = false;
+                }
+                else
+                {
+                    MenuController.SetVerticalUI(true);
+                    _isVertical = true;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Setta lo stato di gameplay nel FlowManager
         /// </summary>
@@ -55,6 +78,24 @@ namespace DumbProject.UI
             GameManager.I.FlowMng.CurrentState = Flow.FlowState.GameplayState;
         }
 
-
+        void AdaptTheUI()
+        {
+            if (Screen.orientation == ScreenOrientation.Portrait)
+            {
+                // La UI deve essere orientata per l'utilizzo verticale;
+                if (MenuController.gameObject.activeInHierarchy)
+                    MenuController.SetVerticalUI(true); 
+                if (GamePlayCtrl.gameObject.activeInHierarchy)
+                    GamePlayCtrl.SetVerticalGameUI(true); 
+            }
+            else
+            {
+                // Gli altri orientamenti
+                if (MenuController.gameObject.activeInHierarchy)
+                    MenuController.SetVerticalUI(false);
+                if (GamePlayCtrl.gameObject.activeInHierarchy)
+                    GamePlayCtrl.SetVerticalGameUI(false);
+            }
+        }
     }
 }
