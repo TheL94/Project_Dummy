@@ -1,14 +1,13 @@
 ﻿using DumbProject.Grid;
-using Framework.Pathfinding;
 using UnityEngine;
 using System.Collections.Generic;
 using Framework.AI;
 using System;
+using Framework.Pathfinding;
 
 namespace DumbProject.Generic
 {
-    [RequireComponent(typeof(AIController))]
-    public class Dumby : MonoBehaviour, IAIControllable
+    public class Dumby : AIController
     {
         Animator animator;
         AnimationState _animState = AnimationState.Idle;
@@ -21,30 +20,26 @@ namespace DumbProject.Generic
                 animator.SetInteger("AnimationState", (int)animState);
             }
         }
-
-        GridController grid;
-        public GridNode currentNode { get { return grid.GetSpecificGridNode(transform.position); } }
-
-        public Vector3 position
+        /// <summary>
+        /// Actual position onto the INetworkable grid. 
+        /// Can't be Set. Any try will change nothing.
+        /// </summary>
+        public override INetworkable CurrentNode
         {
             get
             {
-                return transform.position;
+                return grid.GetSpecificGridNode(transform.position);
             }
+            set {
+                Debug.LogWarning("Can't Set CurrentNode fild in Dumby");
+                return; }
         }
 
-        AIController aiController;
-        public Pathfinder pathFinder;
-        public List<INetworkable> nodePath = new List<INetworkable>();
-
-        
-
+        GridController grid;
         public void Setup(GridController _grid)
         {
+            base.Setup();
             grid = _grid;
-            pathFinder = new Pathfinder(currentNode);
-            aiController = GetComponent<AIController>();
-            aiController.Setup(this);
             animator = GetComponentInChildren<Animator>();
         }
 

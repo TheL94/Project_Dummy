@@ -1,21 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Generic;
+using Framework.Pathfinding;
 
 namespace Framework.AI
 {
     public class AIController : MonoBehaviour
     {
         public State CurrentState;
-        [HideInInspector]
-        public Dumby dumby;
-        public bool IsInDebugMode;
+
+        public bool DebugMode;
         bool isActive;
 
-        public void Setup(Dumby _dumby, bool _setActive = true)
+        public void Setup(bool _setActive = true)
         {
-            dumby = _dumby;
+            CanPathfind = PathfinderSetup();
             isActive = _setActive;
         }
 
@@ -36,13 +35,32 @@ namespace Framework.AI
 
         private void OnDrawGizmos()
         {
-            if (!IsInDebugMode)
+            if (!DebugMode)
                 return;
-            if(CurrentState != null)
+            if (CurrentState != null)
             {
                 Gizmos.color = CurrentState.StateColor;
                 Gizmos.DrawSphere(transform.position, 2f);
             }
         }
+
+
+        #region Pathfinder
+        public bool CanPathfind { get; protected set; }
+        public virtual INetworkable CurrentNode { get; set; }
+        public Pathfinder pathFinder;
+        public List<INetworkable> nodePath = new List<INetworkable>();
+
+        public bool PathfinderSetup()
+        {
+            if (CurrentNode != null)
+            {
+                pathFinder = new Pathfinder(CurrentNode);
+                return true;
+            }
+            else
+                return false;
+        }
+        #endregion
     }
 }

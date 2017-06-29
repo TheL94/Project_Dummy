@@ -20,10 +20,10 @@ namespace DumbProject.AI
         void Evaluate(AIController _controller)
         {
             if (pathfinder == null)
-                pathfinder = _controller.dumby.pathFinder;
+                pathfinder = _controller.pathFinder;
 
-            if(_controller.dumby.nodePath.Count == 0 && _controller.dumby.currentNode != objectiveNode)
-                _controller.dumby.nodePath= pathfinder.FindPath(objectiveNode);
+            if(_controller.nodePath.Count == 0 && _controller.CurrentNode != objectiveNode)
+                _controller.nodePath= pathfinder.FindPath(objectiveNode);
         }
     }
 }
