@@ -278,6 +278,8 @@ namespace DumbProject.Rooms.Cells
         /// </summary>
         public void LinkDoorsToFallingPoint()
         {
+            if (fallingPoints.Count > 0)
+                fallingPoints.Clear();
             foreach (Edge edge in edges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
@@ -299,6 +301,7 @@ namespace DumbProject.Rooms.Cells
                 if (adjacentNode.RelativeCell != null)
                 {
                     adjacentCells.Add(adjacentNode.RelativeCell);
+                    adjacentNode.RelativeCell.LinkDoorsToFallingPoint();
                 }
             }
         }
