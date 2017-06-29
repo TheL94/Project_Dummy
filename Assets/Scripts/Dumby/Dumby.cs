@@ -36,11 +36,12 @@ namespace DumbProject.Generic
         }
 
         GridController grid;
-        public void Setup(GridController _grid)
+
+        public override void Setup(bool _setActive = true)
         {
-            base.Setup();
-            grid = _grid;
+            grid = GameManager.I.MainGridCtrl; ;
             animator = GetComponentInChildren<Animator>();
+            base.Setup(_setActive);
         }
 
         public enum AnimationState
