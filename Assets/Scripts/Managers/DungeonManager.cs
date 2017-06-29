@@ -30,17 +30,18 @@ namespace DumbProject.Generic
         {
             _room.transform.parent = transform;
             RoomInDungeon.Add(_room);
-            if(RoomInDungeon.Count > 1)
-                UpdateRoomConnections();
         }
         #endregion
 
-        void UpdateRoomConnections()
+        public void UpdateRoomConnections()
         {
-            foreach (Room room in RoomInDungeon)
+            if (RoomInDungeon.Count > 1)
             {
-                room.LinkCellsToOtherRooms();
-                room.LinkCellsDoorsToFallingPoints();
+                foreach (Room room in RoomInDungeon)
+                {
+                    room.LinkCellsToOtherRooms();
+                    room.LinkCellsDoorsToFallingPoints();
+                }
             }
         }
 

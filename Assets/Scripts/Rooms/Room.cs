@@ -58,10 +58,10 @@ namespace DumbProject.Rooms
             Data = _data;
             PlaceCells(_data, _grid);
             LinkCellsInsideRoom();
+            LinkCellsDoorsToFallingPoints();
             TrimCellEdges(_grid);
             PlaceDoors();
             TrimCellAngles();
-            LinkCellsDoorsToFallingPoints();
         }
         
         /// <summary>
@@ -73,9 +73,10 @@ namespace DumbProject.Rooms
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             GameManager.I.DungeonMng.ParentRoom(this);
-            TrimCollidingEdges(GameManager.I.MainGridCtrl);
             LinkCellsToOtherRooms();
             LinkCellsDoorsToFallingPoints();
+            GameManager.I.DungeonMng.UpdateRoomConnections();
+            TrimCollidingEdges(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
         }
 
