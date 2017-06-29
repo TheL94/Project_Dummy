@@ -58,10 +58,10 @@ namespace DumbProject.Rooms
             Data = _data;
             PlaceCells(_data, _grid);
             LinkCellsInsideRoom();
+            LinkCellsDoorsToFallingPoints();
             TrimCellEdges(_grid);
             PlaceDoors();
             TrimCellAngles();
-            LinkCellsDoorsToFallingPoints();
         }
         
         /// <summary>
@@ -73,9 +73,10 @@ namespace DumbProject.Rooms
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             GameManager.I.DungeonMng.ParentRoom(this);
-            TrimCollidingEdges(GameManager.I.MainGridCtrl);
             LinkCellsToOtherRooms();
             LinkCellsDoorsToFallingPoints();
+            GameManager.I.DungeonMng.UpdateRoomConnections();
+            TrimCollidingEdges(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
         }
 
@@ -97,22 +98,22 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
         /// </summary>
-        /// <returns></returns>
-        public List<Edge> GetListOfEdges()
+        public void LinkCellsToOtherRooms()
         {
-            List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.GetEdgesList())
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
-            return listOfEdges;
+                cell.LinkCellToOtherRoomsCells();
         }
 
+        /// <summary>
+        /// Funzione che collega celle e punti di caduta
+        /// </summary>
+        public void LinkCellsDoorsToFallingPoints()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.LinkDoorsToFallingPoint();
+        }
         #region Object Placement
         /// <summary>
         /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
@@ -316,24 +317,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
-        /// </summary>
-        void LinkCellsToOtherRooms()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToOtherRoomsCells();
-        }
-
-        /// <summary>
-        /// Funzione che collega celle e punti di caduta
-        /// </summary>
-        void LinkCellsDoorsToFallingPoints()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkDoorsToFallingPoint();
-        }
-
-        /// <summary>
         /// Funzione che collaga fra di loro le celle adiacenti della stessa stanza
         /// </summary>
         void LinkCellsInsideRoom()
@@ -357,6 +340,23 @@ namespace DumbProject.Rooms
                 }
             }
             return listOfPillars;
+        }
+
+        /// <summary>
+        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        List<Edge> GetListOfEdges()
+        {
+            List<Edge> listOfEdges = new List<Edge>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    listOfEdges.Add(edge);
+                }
+            }
+            return listOfEdges;
         }
         #endregion
     }                                      

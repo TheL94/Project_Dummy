@@ -33,6 +33,18 @@ namespace DumbProject.Generic
         }
         #endregion
 
+        public void UpdateRoomConnections()
+        {
+            if (RoomInDungeon.Count > 1)
+            {
+                foreach (Room room in RoomInDungeon)
+                {
+                    room.LinkCellsToOtherRooms();
+                    room.LinkCellsDoorsToFallingPoints();
+                }
+            }
+        }
+
         #endregion
     }
 }
