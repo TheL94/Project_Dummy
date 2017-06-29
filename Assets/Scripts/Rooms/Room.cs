@@ -113,6 +113,23 @@ namespace DumbProject.Rooms
             return listOfEdges;
         }
 
+        /// <summary>
+        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
+        /// </summary>
+        public void LinkCellsToOtherRooms()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.LinkCellToOtherRoomsCells();
+        }
+
+        /// <summary>
+        /// Funzione che collega celle e punti di caduta
+        /// </summary>
+        public void LinkCellsDoorsToFallingPoints()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.LinkDoorsToFallingPoint();
+        }
         #region Object Placement
         /// <summary>
         /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
@@ -313,24 +330,6 @@ namespace DumbProject.Rooms
                 _edge.name = "DownDoor";
             }
             return true;
-        }
-
-        /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
-        /// </summary>
-        void LinkCellsToOtherRooms()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToOtherRoomsCells();
-        }
-
-        /// <summary>
-        /// Funzione che collega celle e punti di caduta
-        /// </summary>
-        void LinkCellsDoorsToFallingPoints()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkDoorsToFallingPoint();
         }
 
         /// <summary>
