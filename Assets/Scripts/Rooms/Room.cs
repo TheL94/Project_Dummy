@@ -97,23 +97,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Ritorna la lista dei muri contenuti in tutte le celle
-        /// </summary>
-        /// <returns></returns>
-        public List<Edge> GetListOfEdges()
-        {
-            List<Edge> listOfEdges = new List<Edge>();
-            foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.GetEdgesList())
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
-            return listOfEdges;
-        }
-
-        /// <summary>
         /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
         /// </summary>
         public void LinkCellsToOtherRooms()
@@ -356,6 +339,23 @@ namespace DumbProject.Rooms
                 }
             }
             return listOfPillars;
+        }
+
+        /// <summary>
+        /// Ritorna la lista dei muri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        List<Edge> GetListOfEdges()
+        {
+            List<Edge> listOfEdges = new List<Edge>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    listOfEdges.Add(edge);
+                }
+            }
+            return listOfEdges;
         }
         #endregion
     }                                      
