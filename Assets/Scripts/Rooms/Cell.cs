@@ -44,7 +44,7 @@ namespace DumbProject.Rooms.Cells
         }
 
         List<Cell> adjacentCells = new List<Cell>();
-
+        List<GridNode> fallingPoints = new List<GridNode>();
         GameObject Floor;
         List<Edge> Edges = new List<Edge>();
         List<GameObject> Angles = new List<GameObject>();
@@ -287,7 +287,25 @@ namespace DumbProject.Rooms.Cells
             foreach (Edge edge in Edges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                {
                     adjacentCells.Add(edge.CollidingEdge.RelativeCell);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Funzione che riempe la lista di punti di caduta
+        /// </summary>
+        public void LinkDoorsToFallingPoint()
+        {
+            foreach (Edge edge in Edges)
+            {
+                if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
+                {
+                    GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
+                    if (nodeInFront != null && nodeInFront.RelativeCell == null)
+                        fallingPoints.Add(nodeInFront);
+                }
             }
         }
 
@@ -296,12 +314,30 @@ namespace DumbProject.Rooms.Cells
         /// </summary>
         public void LinkCellToRelativeRoomCells()
         {
-            foreach (GridNode node in RelativeNode.AdjacentNodes)
+            foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
             {
-                if (!RelativeRoom.CellsInRoom.Contains(node.RelativeCell))
-                    adjacentCells.Add(node.RelativeCell);
+                if (adjacentNode.RelativeCell != null)
+                {
+                    adjacentCells.Add(adjacentNode.RelativeCell);
+                }
             }
         }
         #endregion
+
+        private void OnDrawGizmos()
+        {
+            foreach (Cell cell in adjacentCells)
+            {
+                if (cell.RelativeNode != null)
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(transform.position, cell.RelativeNode.WorldPosition);
+            }
+
+            foreach (GridNode node in fallingPoints)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, node.WorldPosition);
+            }
+        }
     }
 }

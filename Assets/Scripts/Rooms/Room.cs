@@ -61,6 +61,7 @@ namespace DumbProject.Rooms
             TrimCellEdges(_grid);
             PlaceDoors();
             TrimCellAngles();
+            LinkCellsDoorsToFallingPoints();
         }
         
         /// <summary>
@@ -74,6 +75,7 @@ namespace DumbProject.Rooms
             GameManager.I.DungeonMng.ParentRoom(this);
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             LinkCellsToOtherRooms();
+            LinkCellsDoorsToFallingPoints();
             Destroy(RoomMovment);
         }
 
@@ -320,6 +322,15 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cell in CellsInRoom)
                 cell.LinkCellToOtherRoomsCells();
+        }
+
+        /// <summary>
+        /// Funzione che collega celle e punti di caduta
+        /// </summary>
+        void LinkCellsDoorsToFallingPoints()
+        {
+            foreach (Cell cell in CellsInRoom)
+                cell.LinkDoorsToFallingPoint();
         }
 
         /// <summary>

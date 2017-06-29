@@ -42,7 +42,7 @@ namespace DumbProject.Rooms.Cells
             }
         }
 
-        Vector3 GetNodeInFrontPosition()
+        public Vector3 GetNodeInFrontPosition()
         {
             return (transform.position * 2) - RelativeCell.transform.position;
         }
