@@ -45,9 +45,9 @@ namespace DumbProject.Rooms.Cells
 
         List<Cell> adjacentCells = new List<Cell>();
         List<GridNode> fallingPoints = new List<GridNode>();
-        GameObject Floor;
-        List<Edge> Edges = new List<Edge>();
-        List<GameObject> Angles = new List<GameObject>();
+        GameObject floor;
+        List<Edge> edges = new List<Edge>();
+        List<GameObject> angles = new List<GameObject>();
 
         #region Cell Elements Instantiation
         /// <summary>
@@ -55,10 +55,10 @@ namespace DumbProject.Rooms.Cells
         /// </summary>
         void InstantiateFloor()
         {
-            Floor = new GameObject("Floor");
-            Floor.transform.localPosition = transform.position;
-            Floor.transform.parent = transform;
-            Floor.transform.rotation = transform.rotation;
+            floor = new GameObject("Floor");
+            floor.transform.localPosition = transform.position;
+            floor.transform.parent = transform;
+            floor.transform.rotation = transform.rotation;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace DumbProject.Rooms.Cells
             _newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
-            Edges.Add(newEdge);
+            edges.Add(newEdge);
         }
 
         /// <summary>
@@ -112,22 +112,22 @@ namespace DumbProject.Rooms.Cells
             newAngle = new GameObject("NE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
-            Angles.Add(newAngle);
+            angles.Add(newAngle);
 
             newAngle = new GameObject("SE_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
-            Angles.Add(newAngle);
+            angles.Add(newAngle);
 
             newAngle = new GameObject("NO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
             newAngle.transform.parent = transform;
-            Angles.Add(newAngle);
+            angles.Add(newAngle);
 
             newAngle = new GameObject("SO_Angle");
             newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
             newAngle.transform.parent = transform;
-            Angles.Add(newAngle);
+            angles.Add(newAngle);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace DumbProject.Rooms.Cells
         void InstantiateFloorElement()
         {
             GameObject newObj = null;
-            newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, Floor.transform.position, Floor.transform.rotation, Floor.transform);
+            newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, floor.transform.position, floor.transform.rotation, floor.transform);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace DumbProject.Rooms.Cells
         void InstantiatePilllarElements()
         {
             GameObject newObj = null;
-            foreach (GameObject angle in Angles)
+            foreach (GameObject angle in angles)
             {
                 newObj = Instantiate(RelativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
             }
@@ -157,7 +157,7 @@ namespace DumbProject.Rooms.Cells
         void InstantiateWallElements()
         {
             GameObject newObj = null;
-            foreach (Edge edge in Edges)
+            foreach (Edge edge in edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
@@ -167,12 +167,12 @@ namespace DumbProject.Rooms.Cells
                 else if (edge.name == "UpEdge")
                 {
                     newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
                 }
                 else if (edge.name == "DownEdge")
                 {
                     newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
                 }
             }
         }
@@ -260,31 +260,11 @@ namespace DumbProject.Rooms.Cells
         }
 
         /// <summary>
-        /// Funzione che ritorna la lista degli edge di questa cella
-        /// </summary>
-        /// <returns></returns>
-        public List<Edge> GetEdgesList()
-        {
-            Edges.RemoveAll(e => e == null);
-            return Edges;
-        }
-
-        /// <summary>
-        /// Funzione che ritorna la lista degli angles di questa cella
-        /// </summary>
-        /// <returns></returns>
-        public List<GameObject> GetAnglesList()
-        {
-            Angles.RemoveAll(a => a == null);
-            return Angles;
-        }
-
-        /// <summary>
         /// Funzione che collega la cella con le celle di altre stanze che sitrovano di fronte alle porte della cella
         /// </summary>
         public void LinkCellToOtherRoomsCells()
         {           
-            foreach (Edge edge in Edges)
+            foreach (Edge edge in edges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
                 {
@@ -298,7 +278,7 @@ namespace DumbProject.Rooms.Cells
         /// </summary>
         public void LinkDoorsToFallingPoint()
         {
-            foreach (Edge edge in Edges)
+            foreach (Edge edge in edges)
             {
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
                 {
@@ -321,6 +301,44 @@ namespace DumbProject.Rooms.Cells
                     adjacentCells.Add(adjacentNode.RelativeCell);
                 }
             }
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la lista degli edge di questa cella
+        /// </summary>
+        /// <returns></returns>
+        public List<Edge> GetEdgesList()
+        {
+            edges.RemoveAll(e => e == null);
+            return edges;
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la lista degli angles di questa cella
+        /// </summary>
+        /// <returns></returns>
+        public List<GameObject> GetAnglesList()
+        {
+            angles.RemoveAll(a => a == null);
+            return angles;
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la lista delle celle adiacenti
+        /// </summary>
+        /// <returns></returns>
+        public List<Cell> GetAdjacentCellsList()
+        {
+            return adjacentCells;
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la lista dei punti di caduta
+        /// </summary>
+        /// <returns></returns>
+        public List<GridNode> GetFallingPointsList()
+        {
+            return fallingPoints;
         }
         #endregion
 
