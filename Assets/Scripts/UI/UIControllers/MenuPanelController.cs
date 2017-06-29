@@ -8,7 +8,7 @@ namespace DumbProject
 {
     public class MenuPanelController : MonoBehaviour
     {
-        bool isVertical;
+        bool isVertical { get { return uiManager.IsVertical; } }
 
         public GameObject MainMenuPanel;
         public GameObject VerticalMainMenuPanel;
@@ -17,6 +17,11 @@ namespace DumbProject
         public GameObject VerticalCreditsPanel;
 
         UIManager uiManager;
+
+        private void OnEnable()
+        {
+            SetVerticalUI(isVertical);
+        }
 
         #region API
 
@@ -27,10 +32,9 @@ namespace DumbProject
 
         public void SetVerticalUI(bool _IsVertical)
         {
-            isVertical = _IsVertical;
             if (MainMenuPanel.activeInHierarchy || VerticalMainMenuPanel.activeInHierarchy)
             {
-                if (isVertical)
+                if (_IsVertical)
                 {
                     MainMenuPanel.SetActive(false);
                     VerticalMainMenuPanel.SetActive(true);
@@ -43,7 +47,7 @@ namespace DumbProject
             }
             if (CreditsPanel.activeInHierarchy || VerticalCreditsPanel.activeInHierarchy)
             {
-                if (isVertical)
+                if (_IsVertical)
                 {
                     CreditsPanel.SetActive(false);
                     VerticalCreditsPanel.SetActive(true); 

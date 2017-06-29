@@ -10,33 +10,51 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     UIManager uiManager;
 
-    bool isVertical;
+    bool isVertical { get { return uiManager.IsVertical; } }
 
-    
-
-    [HideInInspector]
-    public RoomPanelController roomPreviewController;
     public GameObject PausePanel;
+
     [HideInInspector]
-    public InventoryController inventoryController;
+    public GamePlayUIElements GamePlayElements;
+
+    public InventoryContainer InventoryContainer;
+    public InventoryContainer VerticalInventoryContainer;
+
+    //[HideInInspector]
+    //public RoomPanelController roomPreviewController;
+    //[HideInInspector]
+    //public InventoryController inventoryController;
+
+    private void OnEnable()
+    {
+        SetVerticalGameUI(isVertical);
+    }
 
     #region API
 
     public void Init(UIManager _uiManager)
     {
         uiManager = _uiManager;
-        gameObject.SetActive(false);
 
-        inventoryController = GetComponentInChildren<InventoryController>();
-        roomPreviewController = GetComponentInChildren<RoomPanelController>();
-        roomPreviewController.Setup();
+        InventoryContainer.Init();
+        VerticalInventoryContainer.Init();
+        SetVerticalGameUI(isVertical);
+        gameObject.SetActive(false);
     }
 
     public void SetVerticalGameUI(bool _isVertical)
     {
         if (_isVertical)
         {
-
+            InventoryContainer.gameObject.SetActive(false);
+            VerticalInventoryContainer.gameObject.SetActive(true);
+            GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
+        }
+        else
+        {
+            InventoryContainer.gameObject.SetActive(true);
+            VerticalInventoryContainer.gameObject.SetActive(false);
+            GamePlayElements = InventoryContainer.GetGamePlayElements();
         }
     }
 

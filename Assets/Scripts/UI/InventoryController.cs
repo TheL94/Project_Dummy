@@ -13,15 +13,10 @@ namespace DumbProject.UI {
 
         List<IventoryItem> itemsInInventory = new List<IventoryItem>();
 
+
         // Use this for initialization
         void Start() {
             slots = GetComponentsInChildren<Slot>().ToList();
-        }
-
-        // Update is called once per frame
-        void Update() {
-            if (Input.GetKeyDown(KeyCode.X))
-                InstantiateUIObject();
         }
 
         #region Item In UI

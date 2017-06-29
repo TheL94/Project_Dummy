@@ -55,15 +55,15 @@ namespace DumbProject.UI
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (_isVertical)
+                if (IsVertical)
                 {
                     MenuController.SetVerticalUI(false);
-                    _isVertical = false;
+                    IsVertical = false;
                 }
                 else
                 {
                     MenuController.SetVerticalUI(true);
-                    _isVertical = true;
+                    IsVertical = true;
                 }
             }
         }
@@ -83,14 +83,16 @@ namespace DumbProject.UI
             if (Screen.orientation == ScreenOrientation.Portrait)
             {
                 // La UI deve essere orientata per l'utilizzo verticale;
+                IsVertical = true;
                 if (MenuController.gameObject.activeInHierarchy)
                     MenuController.SetVerticalUI(true); 
                 if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(true); 
+                    GamePlayCtrl.SetVerticalGameUI(true);
             }
             else
             {
                 // Gli altri orientamenti
+                IsVertical = false;
                 if (MenuController.gameObject.activeInHierarchy)
                     MenuController.SetVerticalUI(false);
                 if (GamePlayCtrl.gameObject.activeInHierarchy)

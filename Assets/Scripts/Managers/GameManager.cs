@@ -127,7 +127,7 @@ namespace DumbProject.Generic
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             RoomGenerator.Clean();
-            UIMng.GamePlayCtrl.inventoryController.CleanInventory();
+            UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
             IsGamePlaying = false;
         }
 
