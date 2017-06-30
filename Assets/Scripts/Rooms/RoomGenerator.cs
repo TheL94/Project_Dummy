@@ -10,21 +10,18 @@ namespace DumbProject.Rooms
 {
     public class RoomGenerator : MonoBehaviour
     {
-        public List<RoomData> RoomTypesData = new List<RoomData>();
+        public RoomData RoomTypesData;
         [HideInInspector]
         public Room FirstRoom;
 
-        List<RoomData> RoomTypesInstances = new List<RoomData>();
+        RoomData RoomTypesInstances;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
         public void Setup()
         {
-            foreach (RoomData roomData in RoomTypesData)
-                RoomTypesInstances.Add(Instantiate(roomData));
-
+            RoomTypesInstances = Instantiate(RoomTypesData);
             SetupSpawnsAssociations();
-
-            FirstRoom = InstantiateFirstRoom();
+            FirstRoom = InstantiateFirstRoom(RoomTypesInstances);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 CreateNewRoom();
@@ -42,15 +39,7 @@ namespace DumbProject.Rooms
         {
             if(GameManager.I.FlowMng.CurrentState == Flow.FlowState.GameplayState)
             {
-                RoomShape roomShape = GetRandomShape();
-                foreach (RoomData roomData in RoomTypesInstances)
-                {
-                    if (roomData.Shape == roomShape)
-                    {
-                        InstantiateRoom(roomData);
-                        break;
-                    }
-                }
+                InstantiateRoom(RoomTypesInstances);
             }
         }
 
@@ -61,26 +50,14 @@ namespace DumbProject.Rooms
                     association.Room = null;
         }
 
-        Room InstantiateFirstRoom()
+        Room InstantiateFirstRoom(RoomData _data)
         {
-            RoomData _data = null;
-            Room mainRoom = null;
             GameObject newRoomObj = new GameObject();
             newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
-
-            RoomShape roomShape = GetRandomShape();
-            foreach (RoomData roomData in RoomTypesInstances)
-            {
-                if (roomData.Shape == roomShape)
-                {
-                    _data = roomData;
-                    mainRoom = AddRoomShapeComponent(_data, newRoomObj);
-                    break;
-                }
-            }
+            Room mainRoom = newRoomObj.AddComponent<Room>();
             GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
-            mainRoom.name = _data.Shape +  "_MainRoom";
+            mainRoom.name = "_MainRoom";
             GameManager.I.DungeonMng.UpdateRoomConnections();
             return mainRoom;
         }
@@ -93,9 +70,7 @@ namespace DumbProject.Rooms
                 GameObject newRoomObj = new GameObject();
                 newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
                 newRoomObj.transform.parent = transform;
-
-                Room room = AddRoomShapeComponent(_data, newRoomObj);
-
+                Room room = newRoomObj.AddComponent<Room>();
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn, roomMovement);
@@ -111,49 +86,6 @@ namespace DumbProject.Rooms
                     //}
                 }
             }
-        }
-
-        RoomShape GetRandomShape()
-        {
-            int randomRoomShape = (int)Random.Range(0f, RoomTypesData.Count);
-            return (RoomShape)randomRoomShape;
-        }
-
-        Room AddRoomShapeComponent(RoomData _data, GameObject _newRoomObj)
-        {
-            Room room = null;
-            switch (_data.Shape)
-            {
-                case RoomShape.T_Shape:
-                    room = _newRoomObj.AddComponent<TShapeRoom>();
-                    room.name = "TShapeRoom";
-                    break;
-                case RoomShape.I_Shape:
-                    room = _newRoomObj.AddComponent<IShapeRoom>();
-                    room.name = "IShapeRoom";
-                    break;
-                case RoomShape.J_Shape:
-                    room = _newRoomObj.AddComponent<JShapeRoom>();
-                    room.name = "JShapeRoom";
-                    break;
-                case RoomShape.L_Shape:
-                    room = _newRoomObj.AddComponent<LShapeRoom>();
-                    room.name = "LShapeRoom";
-                    break;
-                case RoomShape.S_Shape:
-                    room = _newRoomObj.AddComponent<SShapeRoom>();
-                    room.name = "SShapeRoom";
-                    break;
-                case RoomShape.Z_Shape:
-                    room = _newRoomObj.AddComponent<ZShapeRoom>();
-                    room.name = "ZShapeRoom";
-                    break;
-                case RoomShape.O_Shape:
-                    room = _newRoomObj.AddComponent<OShapeRoom>();
-                    room.name = "OShapeRoom";
-                    break;
-            }
-            return room;
         }
 
         void SetupSpawnsAssociations()
