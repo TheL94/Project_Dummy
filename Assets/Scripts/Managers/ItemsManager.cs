@@ -59,6 +59,7 @@ namespace DumbProject
             i++;
             Debug.Log("Oggetto istanziato " + i);
             BaseData tempData = ChooseItem();
+            _cell.ChangeFloorColor(tempData.ShowMateriaInRoom);
             IDroppable itemDropped = Instantiate(tempData.ItemPrefab, _cell.RelativeNode.WorldPosition + new Vector3(0, 2, 0), Quaternion.identity, _cell.transform).GetComponent<IDroppable>();
             itemDropped.GetMyData(tempData);
             _cell.IsFree = false;

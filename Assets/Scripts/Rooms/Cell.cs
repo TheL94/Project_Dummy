@@ -365,7 +365,7 @@ namespace DumbProject.Rooms.Cells
 
         public void ChangeFloorColor(Material _newMaterial)
         {
-            floor.GetComponent<MeshRenderer>().materials[0] = _newMaterial;
+            floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
         }
 
         #endregion

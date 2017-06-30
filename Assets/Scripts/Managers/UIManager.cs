@@ -53,19 +53,7 @@ namespace DumbProject.UI
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (IsVertical)
-                {
-                    MenuController.SetVerticalUI(false);
-                    IsVertical = false;
-                }
-                else
-                {
-                    MenuController.SetVerticalUI(true);
-                    IsVertical = true;
-                }
-            }
+            AdaptTheUI();
         }
 
 
