@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State")]
+    [CreateAssetMenu(menuName = "AI/State/NewState")]
     public class State : ScriptableObject
     {
         public Color StateColor = Color.gray;
