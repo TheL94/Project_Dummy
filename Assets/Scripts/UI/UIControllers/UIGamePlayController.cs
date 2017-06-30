@@ -12,8 +12,6 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     bool isVertical { get { return uiManager.IsVertical; } }
 
-    public GameObject PausePanel;
-
     public GameObject ChildPanel;
 
     [HideInInspector]
@@ -47,18 +45,22 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     public void SetVerticalGameUI(bool _isVertical)
     {
-        if (_isVertical)
+        if (InventoryContainer.gameObject.activeInHierarchy || VerticalInventoryContainer.gameObject.activeInHierarchy)
         {
-            InventoryContainer.gameObject.SetActive(false);
-            VerticalInventoryContainer.gameObject.SetActive(true);
-            GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
+            if (_isVertical)
+            {
+                InventoryContainer.gameObject.SetActive(false);
+                VerticalInventoryContainer.gameObject.SetActive(true);
+                GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
+            }
+            else
+            {
+                InventoryContainer.gameObject.SetActive(true);
+                VerticalInventoryContainer.gameObject.SetActive(false);
+                GamePlayElements = InventoryContainer.GetGamePlayElements();
+            } 
         }
-        else
-        {
-            InventoryContainer.gameObject.SetActive(true);
-            VerticalInventoryContainer.gameObject.SetActive(false);
-            GamePlayElements = InventoryContainer.GetGamePlayElements();
-        }
+
     }
 
     #region PauseRegion
@@ -66,7 +68,7 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     /// Attiva il pannello della pausa
     /// </summary>
     public void ActivatePause() {
-        PausePanel.SetActive(true);
+        GamePlayElements.PausePanel.SetActive(true);
         GameManager.I.FlowMng.CurrentState = DumbProject.Flow.FlowState.Pause;
     }
 
@@ -74,7 +76,7 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     /// disattiva il pannello della pausa
     /// </summary>
     public void DeactivatePause() {
-        PausePanel.SetActive(false);
+        GamePlayElements.PausePanel.SetActive(false);
     }
 
     /// <summary>
