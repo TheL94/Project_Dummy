@@ -32,8 +32,8 @@ namespace DumbProject.UI
         /// </summary>
         public void ActivateMenuPanel()
         {
-            MenuController.gameObject.SetActive(true);
-            GamePlayCtrl.gameObject.SetActive(false);
+            MenuController.Setup();
+            GamePlayCtrl.ChildPanel.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace DumbProject.UI
         /// </summary>
         public void ActivateGamePlayPanel()
         {
-            GamePlayCtrl.gameObject.SetActive(true);
-            MenuController.gameObject.SetActive(false);
+            GamePlayCtrl.Setup();
+            MenuController.ChildPanel.gameObject.SetActive(false);
         }
 
         public void DestroyCanvasGame()

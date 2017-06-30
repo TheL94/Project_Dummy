@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace DumbProject
 {
-    public interface IDroppable
+
+    public interface IChangeColor
     {
-        void GetMyData(BaseData _data);
+
+        void ChangeFloorColor(Material _newMaterial);
+
     }
 }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DumbProject.Grid;
+using System;
 
 namespace DumbProject.Rooms.Cells
 {
-    public class Cell : MonoBehaviour
+    public class Cell : MonoBehaviour, IChangeColor
     {
         private bool _isFree = true;
         /// <summary>
@@ -359,5 +360,14 @@ namespace DumbProject.Rooms.Cells
                 Gizmos.DrawLine(transform.position, node.WorldPosition);
             }
         }
+
+        #region IChangeColor Interface
+
+        public void ChangeFloorColor(Material _newMaterial)
+        {
+            floor.GetComponent<MeshRenderer>().materials[0] = _newMaterial;
+        }
+
+        #endregion
     }
 }

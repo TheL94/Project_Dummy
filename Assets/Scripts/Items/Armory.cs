@@ -10,6 +10,14 @@ namespace DumbProject
     {
         ArmoryValues values;
 
+        public Transform position
+        {
+            get
+            {
+                return transform;
+            }
+        }
+
         public void GetMyData(BaseData _data)
         {
             values = (_data as ArmoryData).DataValues;

@@ -14,6 +14,8 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     public GameObject PausePanel;
 
+    public GameObject ChildPanel;
+
     [HideInInspector]
     public GamePlayUIElements GamePlayElements;
 
@@ -25,11 +27,6 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     //[HideInInspector]
     //public InventoryController inventoryController;
 
-    private void OnEnable()
-    {
-        SetVerticalGameUI(isVertical);
-    }
-
     #region API
 
     public void Init(UIManager _uiManager)
@@ -38,8 +35,14 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
         InventoryContainer.Init();
         VerticalInventoryContainer.Init();
+        ChildPanel.SetActive(false);
+
+    }
+
+    public void Setup()
+    {
+        ChildPanel.SetActive(true);
         SetVerticalGameUI(isVertical);
-        gameObject.SetActive(false);
     }
 
     public void SetVerticalGameUI(bool _isVertical)

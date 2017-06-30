@@ -58,9 +58,9 @@ namespace DumbProject
         {
             i++;
             Debug.Log("Oggetto istanziato " + i);
-            BaseData temData = ChooseItem();
-            IDroppable itemDropped = Instantiate(temData.ItemPrefab, _cell.RelativeNode.WorldPosition + new Vector3(0, 2, 0), Quaternion.identity, _cell.transform).GetComponent<IDroppable>();
-            itemDropped.GetMyData(temData);
+            BaseData tempData = ChooseItem();
+            IDroppable itemDropped = Instantiate(tempData.ItemPrefab, _cell.RelativeNode.WorldPosition + new Vector3(0, 2, 0), Quaternion.identity, _cell.transform).GetComponent<IDroppable>();
+            itemDropped.GetMyData(tempData);
             _cell.IsFree = false;
         }
     }
