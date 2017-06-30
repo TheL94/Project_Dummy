@@ -9,6 +9,7 @@ namespace DumbProject
         public ItemType Type;
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
+        public Material ShowMateriaInRoom;
     }
         public enum ItemType
         {
