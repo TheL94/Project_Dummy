@@ -267,9 +267,11 @@ namespace DumbProject.Rooms.Cells
         {           
             foreach (Edge edge in edges)
             {
-                if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                if (edge.Type == EdgeType.Door)
                 {
-                    adjacentCells.Add(edge.CollidingEdge.RelativeCell);
+                    GridNode node = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
+                    if(node.RelativeCell != null)
+                    adjacentCells.Add(node.RelativeCell);
                 }
             }
         }
