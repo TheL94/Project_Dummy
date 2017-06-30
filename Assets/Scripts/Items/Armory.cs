@@ -10,11 +10,11 @@ namespace DumbProject
     {
         ArmoryValues values;
 
-        public Transform position
+        public Transform transform
         {
             get
             {
-                return transform;
+                return base.transform;
             }
         }
 

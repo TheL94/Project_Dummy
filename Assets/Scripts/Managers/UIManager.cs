@@ -9,7 +9,7 @@ namespace DumbProject.UI
     {
         GameObject canvasGame;
 
-        public bool _isVertical = false;
+        public bool _isVertical = true;
 
         public bool IsVertical { get { return _isVertical; } set { _isVertical = value; } }
 
@@ -53,7 +53,21 @@ namespace DumbProject.UI
         
         private void Update()
         {
-            AdaptTheUI();
+            //AdaptTheUI();
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (IsVertical)
+                {
+                    IsVertical = false;
+                    AdaptTheUI(IsVertical);
+                }
+                else
+                {
+                    IsVertical = true;
+                    AdaptTheUI(IsVertical);
+                } 
+            }
         }
 
 
@@ -74,6 +88,28 @@ namespace DumbProject.UI
                 IsVertical = true;
                 if (MenuController.gameObject.activeInHierarchy)
                     MenuController.SetVerticalUI(true); 
+                if (GamePlayCtrl.gameObject.activeInHierarchy)
+                    GamePlayCtrl.SetVerticalGameUI(true);
+            }
+            else
+            {
+                // Gli altri orientamenti
+                IsVertical = false;
+                if (MenuController.gameObject.activeInHierarchy)
+                    MenuController.SetVerticalUI(false);
+                if (GamePlayCtrl.gameObject.activeInHierarchy)
+                    GamePlayCtrl.SetVerticalGameUI(false);
+            }
+        }
+
+        void AdaptTheUI(bool _isVertical)
+        {
+            if (_isVertical)
+            {
+                // La UI deve essere orientata per l'utilizzo verticale;
+                IsVertical = true;
+                if (MenuController.gameObject.activeInHierarchy)
+                    MenuController.SetVerticalUI(true);
                 if (GamePlayCtrl.gameObject.activeInHierarchy)
                     GamePlayCtrl.SetVerticalGameUI(true);
             }
