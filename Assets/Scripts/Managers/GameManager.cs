@@ -21,16 +21,6 @@ namespace DumbProject.Generic
         public ItemsManager ItemManagerPrefab;
 
         [HideInInspector]
-        public GridNode TestNode
-        {
-            get
-            {
-                return MainGridCtrl.GetSpecificGridNode(TestPosition.position);
-            }
-        }
-        public Transform TestPosition;
-
-        [HideInInspector]
         public FlowManager FlowMng;
         [HideInInspector]
         public RoomGenerator RoomGenerator;

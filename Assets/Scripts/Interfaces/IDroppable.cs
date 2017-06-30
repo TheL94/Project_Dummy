@@ -6,7 +6,7 @@ namespace DumbProject
 {
     public interface IDroppable
     {
-        Transform position { get; }
+        Transform transform { get; }
 
         void GetMyData(BaseData _data);
     }
