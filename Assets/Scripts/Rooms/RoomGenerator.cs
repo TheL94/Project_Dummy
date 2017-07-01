@@ -159,7 +159,9 @@ namespace DumbProject.Rooms
         void SetupSpawnsAssociations()
         {
             for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.GamePlayElements.RoomPreviewController.UISpawns.Count; i++)
-                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], GameManager.I.UIMng.GamePlayCtrl.GamePlayElements.RoomPreviewController.UISpawns[i]));          
+                SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], 
+                    GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i], 
+                    GameManager.I.UIMng.GamePlayCtrl.VerticalInventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()
@@ -175,6 +177,8 @@ namespace DumbProject.Rooms
     {
         public GridController GridSpawn;
         public UIRoomController UICtrl;
+        public UIRoomController VerticalUICtrl;
+
         Room _room;
 
         public Room Room
@@ -184,6 +188,7 @@ namespace DumbProject.Rooms
             {
                 _room = value;
                 UICtrl.ActualRoom = _room;
+                VerticalUICtrl.ActualRoom = _room;
                 if (_room != null)
                     IsAvailable = false;
                 else
@@ -198,10 +203,11 @@ namespace DumbProject.Rooms
             private set { _isAvailable = value; }
         }
 
-        public SpawnsAssociation(GridController _gridSpawn, UIRoomController _uiCtrl)
+        public SpawnsAssociation(GridController _gridSpawn, UIRoomController _uiCtrl, UIRoomController _verticalUiCtrl)
         {
             GridSpawn = _gridSpawn;
             UICtrl = _uiCtrl;
+            VerticalUICtrl = _verticalUiCtrl;
         }
     }
 }
