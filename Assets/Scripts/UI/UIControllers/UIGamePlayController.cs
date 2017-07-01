@@ -27,6 +27,11 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
 
     #region API
 
+    public void GetRoomPanelControllers()
+    {
+
+    }
+
     public void Init(UIManager _uiManager)
     {
         uiManager = _uiManager;
@@ -47,17 +52,32 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     {
         if (InventoryContainer.gameObject.activeInHierarchy || VerticalInventoryContainer.gameObject.activeInHierarchy)
         {
+            bool isPauseActive = false;
             if (_isVertical)
             {
-                InventoryContainer.gameObject.SetActive(false);
                 VerticalInventoryContainer.gameObject.SetActive(true);
+                if (GamePlayElements.PausePanel.activeInHierarchy)
+                {
+                    isPauseActive = true;
+                    GamePlayElements.PausePanel.SetActive(false);
+                }
                 GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
+                InventoryContainer.gameObject.SetActive(false);
+                if (isPauseActive)                                          // Se il pannello di pausa è
+                    GamePlayElements.PausePanel.SetActive(true);
             }
             else
             {
                 InventoryContainer.gameObject.SetActive(true);
-                VerticalInventoryContainer.gameObject.SetActive(false);
+                if (GamePlayElements.PausePanel.activeInHierarchy)
+                {
+                    isPauseActive = true;
+                    GamePlayElements.PausePanel.SetActive(false);
+                }
                 GamePlayElements = InventoryContainer.GetGamePlayElements();
+                VerticalInventoryContainer.gameObject.SetActive(false);
+                if (isPauseActive)
+                    GamePlayElements.PausePanel.SetActive(true);
             } 
         }
 
