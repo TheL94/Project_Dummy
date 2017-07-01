@@ -56,10 +56,13 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
             if (_isVertical)
             {
                 VerticalInventoryContainer.gameObject.SetActive(true);
-                if (GamePlayElements.PausePanel.activeInHierarchy)
+                if (GamePlayElements.PausePanel != null)
                 {
-                    isPauseActive = true;
-                    GamePlayElements.PausePanel.SetActive(false);
+                    if (GamePlayElements.PausePanel.activeInHierarchy)
+                    {
+                        isPauseActive = true;
+                        GamePlayElements.PausePanel.SetActive(false);
+                    } 
                 }
                 GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
                 InventoryContainer.gameObject.SetActive(false);
@@ -69,16 +72,19 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
             else
             {
                 InventoryContainer.gameObject.SetActive(true);
-                if (GamePlayElements.PausePanel.activeInHierarchy)
+                if (GamePlayElements.PausePanel != null)
                 {
-                    isPauseActive = true;
-                    GamePlayElements.PausePanel.SetActive(false);
+                    if (GamePlayElements.PausePanel.activeInHierarchy)
+                    {
+                        isPauseActive = true;
+                        GamePlayElements.PausePanel.SetActive(false);
+                    } 
                 }
                 GamePlayElements = InventoryContainer.GetGamePlayElements();
                 VerticalInventoryContainer.gameObject.SetActive(false);
                 if (isPauseActive)
                     GamePlayElements.PausePanel.SetActive(true);
-            } 
+            }
         }
 
     }
