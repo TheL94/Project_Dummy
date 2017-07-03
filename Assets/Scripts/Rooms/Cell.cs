@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using DumbProject.Grid;
-using System;
 
 namespace DumbProject.Rooms
 {

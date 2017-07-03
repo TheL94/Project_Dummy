@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using DumbProject.Grid;
-using DumbProject.Rooms;
 using DumbProject.Generic;
 
 namespace DumbProject.Rooms
@@ -61,7 +60,7 @@ namespace DumbProject.Rooms
             LinkCellsInsideRoom();
             LinkCellsDoorsToFallingPoints();
             TrimCellEdges(_grid);
-            PlaceDoors();
+            PlaceDoors(_data);
             TrimCellAngles();
         }
         
@@ -172,15 +171,28 @@ namespace DumbProject.Rooms
                 nodeToReturn = centerNode;
             else
             {
-                List<GridNode> adjacentNodes = centerNode.AdjacentNodes.Where(a => a.RelativeCell == null).ToList();
-                if(adjacentNodes.Count > 0)
+                List<GridNode> adjacentNodes = GetEmptyGridNodes();
+                if (adjacentNodes.Count > 0)
                     nodeToReturn = adjacentNodes[Random.Range(0, adjacentNodes.Count)];
             }
             return nodeToReturn;
         }
 
+        List<GridNode> GetEmptyGridNodes()
+        {
+            List<GridNode> adjacentNodes = new List<GridNode>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                adjacentNodes.AddRange(cell.RelativeNode.AdjacentNodes.Where(a => a.RelativeCell == null).ToList());
+            }
+            return adjacentNodes;
+        }
+
         bool EvaluateCellProbability(RoomData _data, GridController _grid)
         {
+            if (_data.MinNumberOfCells > CellsInRoom.Count)
+                return true;
+
             float randomProbabaility = Random.Range(0f, 1f);
             if (cellProbability >= randomProbabaility)
                 return true;
@@ -306,9 +318,13 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che sostiuisce a random alcuni muri con delle porte
         /// </summary>
-        void PlaceDoors()
+        void PlaceDoors(RoomData _data)
         {
-            int numberOfDoors = Random.Range(1, CellsInRoom.Count + 1);
+            float maxAmountOfDoors = _data.SelfDoorTrim ? CellsInRoom.Count + 1 : _data.DoorNumberPercentage * CellsInRoom.Count;
+            if (maxAmountOfDoors < 1)
+                maxAmountOfDoors = 1;
+            int numberOfDoors = Mathf.RoundToInt(Random.Range(1f,maxAmountOfDoors));
+
             List<Edge> listOfWalls = GetListOfEdges();
             while (numberOfDoors > 0)
             {
