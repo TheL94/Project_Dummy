@@ -20,6 +20,8 @@ namespace DumbProject.Generic
         public DungeonManager DungeonManagerPrefab;
         public ItemsManager ItemManagerPrefab;
 
+        public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
+
         [HideInInspector]
         public FlowManager FlowMng;
         [HideInInspector]
