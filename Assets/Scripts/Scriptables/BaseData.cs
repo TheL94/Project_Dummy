@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     public class BaseData : ScriptableObject
     {

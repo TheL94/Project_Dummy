@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
 
     public class Armory : MonoBehaviour, IDroppable
     {
         ArmoryValues values;
 
-        public Transform transform
+        public Transform transF
         {
             get
             {

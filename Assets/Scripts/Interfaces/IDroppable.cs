@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     public interface IDroppable
     {
-        Transform transform { get; }
+        Transform transF { get; }
 
         void GetMyData(BaseData _data);
     }

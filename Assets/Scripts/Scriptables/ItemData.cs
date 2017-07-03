@@ -8,10 +8,4 @@ namespace DumbProject.Items
     {
         public ItemType SpecificType;
     }
-
-    public enum ItemType
-    {
-        Sward,
-        Potion
-    }
 }

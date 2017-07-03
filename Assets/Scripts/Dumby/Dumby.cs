@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Rooms;
-using DumbProject.Rooms.Cells;
 using Framework.AI;
 using Framework.Pathfinding;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Sward", menuName = "Items/NewSward", order = 2)]
     public class SwardData : BaseData
