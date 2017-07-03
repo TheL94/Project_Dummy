@@ -76,21 +76,25 @@ namespace DumbProject.UI
         
         private void Update()
         {
-            AdaptTheUI();
+            if(GameManager.I.DeviceEnviroment == DeviceType.Handheld)
+                AdaptTheUI();
 
-            //if (Input.GetKeyDown(KeyCode.X))
-            //{
-            //    if (IsVertical)
-            //    {
-            //        IsVertical = false;
-            //        AdaptTheUI(IsVertical);
-            //    }
-            //    else
-            //    {
-            //        IsVertical = true;
-            //        AdaptTheUI(IsVertical);
-            //    } 
-            //}
+            if(GameManager.I.DeviceEnviroment == DeviceType.Desktop)
+            {
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    if (IsVertical)
+                    {
+                        IsVertical = false;
+                        AdaptTheUI(IsVertical);
+                    }
+                    else
+                    {
+                        IsVertical = true;
+                        AdaptTheUI(IsVertical);
+                    }
+                }
+            }
         }
 
 
@@ -110,18 +114,18 @@ namespace DumbProject.UI
                 // La UI deve essere orientata per l'utilizzo verticale;
                 IsVertical = true;
                 if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(false); 
+                    MenuController.SetVerticalUI(true); 
                 if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(false);
+                    GamePlayCtrl.SetVerticalGameUI(true);
             }
             else
             {
                 // Gli altri orientamenti
                 IsVertical = false;
                 if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(true);
+                    MenuController.SetVerticalUI(false);
                 if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(true);
+                    GamePlayCtrl.SetVerticalGameUI(false);
             }
         }
 
