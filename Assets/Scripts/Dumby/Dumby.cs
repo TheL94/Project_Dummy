@@ -1,8 +1,8 @@
-﻿using DumbProject.Grid;
-using UnityEngine;
-using System.Collections.Generic;
+﻿using UnityEngine;
+using DumbProject.Grid;
+using DumbProject.Rooms;
+using DumbProject.Rooms.Cells;
 using Framework.AI;
-using System;
 using Framework.Pathfinding;
 
 namespace DumbProject.Generic
@@ -36,6 +36,9 @@ namespace DumbProject.Generic
         }
 
         GridController grid;
+        public Cell CurrentCell { get { return grid.GetSpecificGridNode(transform.position).RelativeCell; } }
+        public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
+
 
         public override void Setup(bool _setActive = true)
         {
