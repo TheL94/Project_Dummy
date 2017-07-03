@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Rooms.Cells
+namespace DumbProject.Rooms
 {
     public interface ICellNode
     {

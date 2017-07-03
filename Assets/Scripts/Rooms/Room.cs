@@ -4,8 +4,7 @@ using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using DumbProject.Grid;
-using DumbProject.Rooms.Data;
-using DumbProject.Rooms.Cells;
+using DumbProject.Rooms;
 using DumbProject.Generic;
 
 namespace DumbProject.Rooms
@@ -158,7 +157,10 @@ namespace DumbProject.Rooms
             GameObject newCellObj = new GameObject("Cell_" + CellsInRoom.Count);
             Cell newCell = newCellObj.AddComponent<Cell>();
             newCell.PlaceCell(_node, this);
-            cellProbability -= _data.RoomExpansionPercentageDecay;
+            if (_data.SelfTrimming)
+                cellProbability -= 1f / 9f;
+            else
+                cellProbability -= _data.RoomExpansionPercentageDecay;
             return newCell;
         }
 

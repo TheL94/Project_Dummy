@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Rooms.Cells;
+using DumbProject.Rooms;
 using Framework.Pathfinding;
 using System;
 

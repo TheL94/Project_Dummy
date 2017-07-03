@@ -5,7 +5,7 @@ using UnityEngine;
 using DumbProject.Grid;
 using System;
 
-namespace DumbProject.Rooms.Cells
+namespace DumbProject.Rooms
 {
     public class Cell : MonoBehaviour, IChangeColor
     {
