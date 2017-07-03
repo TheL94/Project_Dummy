@@ -38,8 +38,6 @@ namespace DumbProject.Generic
         public CameraController CameraController;
         [HideInInspector]
         public ItemsManager ItemManager;
-
-        // Non MonoBehaviour
         [HideInInspector]
         public PoolManager PoolMng;
 
@@ -65,7 +63,6 @@ namespace DumbProject.Generic
 
         private void Start()
         {
-            PoolMng = new PoolManager();
             FlowMng = GetComponent<FlowManager>();
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
