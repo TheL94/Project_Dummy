@@ -4,7 +4,7 @@ using UnityEngine;
 using DumbProject.Rooms;
 
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     public class ItemsManager : MonoBehaviour
     {

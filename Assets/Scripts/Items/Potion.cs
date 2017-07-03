@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     public class Potion : MonoBehaviour, IDroppable
     {
         PotionValues values;
 
-        public Transform transform
+        public Transform transF
         {
             get
             {

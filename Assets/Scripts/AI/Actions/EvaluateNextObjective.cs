@@ -9,7 +9,7 @@ namespace DumbProject.AI
     [CreateAssetMenu(menuName = "AI/State/Action/EvaluateNextObjective")]
     public class EvaluateNextObjective : Action
     {
-        public IDroppable IdroppableToInteract;
+        public Items.IDroppable IdroppableToInteract;
 
         INetworkable objectiveNode
         {
@@ -40,7 +40,7 @@ namespace DumbProject.AI
         INetworkable ChooseBetweenPossibilities()
         {
             if (IdroppableToInteract != null)
-                return Generic.GameManager.I.MainGridCtrl.GetSpecificGridNode(IdroppableToInteract.transform.position);
+                return Generic.GameManager.I.MainGridCtrl.GetSpecificGridNode(IdroppableToInteract.transF.position);
             else
                 return null;
         }

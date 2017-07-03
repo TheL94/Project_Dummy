@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Armory", menuName = "Items/NewArmory", order = 3)]
     public class ArmoryData : BaseData

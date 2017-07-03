@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject
+namespace DumbProject.Items
 {
     public class Sward : MonoBehaviour, IDroppable
     {
         SwardValues values;
 
-        public Transform transform
+        public Transform transF
         {
             get
             {
