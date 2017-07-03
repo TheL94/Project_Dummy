@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Pool
+namespace DumbProject.Generic
 {
     public class PoolManager
     {

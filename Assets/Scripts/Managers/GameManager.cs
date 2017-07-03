@@ -5,7 +5,6 @@ using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
 using DumbProject.Flow;
-using DumbProject.Pool;
 using DumbProject.Items;
 
 namespace DumbProject.Generic
