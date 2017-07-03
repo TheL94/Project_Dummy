@@ -59,11 +59,11 @@ namespace DumbProject.Rooms
         {
             Data = _data;
             PlaceCells(_data, _grid);
-            //LinkCellsInsideRoom();
-            //LinkCellsDoorsToFallingPoints();
-            //TrimCellEdges(_grid);
-            //PlaceDoors();
-            //TrimCellAngles();
+            LinkCellsInsideRoom();
+            LinkCellsDoorsToFallingPoints();
+            TrimCellEdges(_grid);
+            PlaceDoors();
+            TrimCellAngles();
         }
         
         /// <summary>
@@ -149,13 +149,13 @@ namespace DumbProject.Rooms
         {
             while (EvaluateCellProbability(_data, _grid))
             {
-                PlaceSingleCell(_data, EvaluateGridPosition(_grid));
+                CellsInRoom.Add(PlaceSingleCell(_data, EvaluateGridPosition(_grid)));
             }
         }
 
         Cell PlaceSingleCell(RoomData _data, GridNode _node)
         {
-            GameObject newCellObj = new GameObject();
+            GameObject newCellObj = new GameObject("Cell_" + CellsInRoom.Count);
             Cell newCell = newCellObj.AddComponent<Cell>();
             newCell.PlaceCell(_node, this);
             cellProbability -= _data.RoomExpansionPercentageDecay;
@@ -180,7 +180,7 @@ namespace DumbProject.Rooms
         bool EvaluateCellProbability(RoomData _data, GridController _grid)
         {
             float randomProbabaility = Random.Range(0f, 1f);
-            if (cellProbability <= randomProbabaility)
+            if (cellProbability >= randomProbabaility)
                 return true;
             else
                 return false;

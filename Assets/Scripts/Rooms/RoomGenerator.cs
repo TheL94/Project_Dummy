@@ -57,7 +57,7 @@ namespace DumbProject.Rooms
             Room mainRoom = newRoomObj.AddComponent<Room>();
             GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
-            mainRoom.name = "_MainRoom";
+            mainRoom.name = "FirstRoom";
             GameManager.I.DungeonMng.UpdateRoomConnections();
             return mainRoom;
         }
@@ -67,7 +67,7 @@ namespace DumbProject.Rooms
             SpawnsAssociation association = GetFirstSpawnsAssociationAvailable();
             if (association != null)
             {
-                GameObject newRoomObj = new GameObject();
+                GameObject newRoomObj = new GameObject("Room_" + GameManager.I.DungeonMng.RoomInDungeon.Count);
                 newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
                 newRoomObj.transform.parent = transform;
                 Room room = newRoomObj.AddComponent<Room>();
@@ -82,7 +82,7 @@ namespace DumbProject.Rooms
                 {
                     //for (int i = 0; i < Random.Range(0, 2); i++)
                     //{
-                        GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
+                        //GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
                     //}
                 }
             }
