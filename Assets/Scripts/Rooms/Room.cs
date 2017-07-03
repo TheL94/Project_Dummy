@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using DumbProject.Grid;
-using DumbProject.Rooms.Data;
-using DumbProject.Rooms.Cells;
+using DumbProject.Rooms;
 using DumbProject.Generic;
 
 namespace DumbProject.Rooms
@@ -12,10 +12,10 @@ namespace DumbProject.Rooms
     /// <summary>
     /// Classe astatta padre di ogni tipo di stanza
     /// </summary>
-    public abstract class Room : MonoBehaviour
+    public class Room : MonoBehaviour
     {
         [HideInInspector]
-        public List<Cell> CellsInRoom;
+        public List<Cell> CellsInRoom = new List<Cell>();
         [HideInInspector]
         public RoomMovement RoomMovment;
         [HideInInspector]
@@ -32,6 +32,7 @@ namespace DumbProject.Rooms
         }
 
         bool canRotate = true;
+        float cellProbability = 1f;
 
         #region API
         /// <summary>
@@ -114,6 +115,7 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.LinkDoorsToFallingPoint();
         }
+
         #region Object Placement
         /// <summary>
         /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
@@ -142,7 +144,49 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
-        protected abstract void PlaceCells(RoomData _data, GridController _grid);
+        void PlaceCells(RoomData _data, GridController _grid)
+        {
+            while (EvaluateCellProbability(_data, _grid))
+            {
+                CellsInRoom.Add(PlaceSingleCell(_data, EvaluateGridPosition(_grid)));
+            }
+        }
+
+        Cell PlaceSingleCell(RoomData _data, GridNode _node)
+        {
+            GameObject newCellObj = new GameObject("Cell_" + CellsInRoom.Count);
+            Cell newCell = newCellObj.AddComponent<Cell>();
+            newCell.PlaceCell(_node, this);
+            if (_data.SelfTrimming)
+                cellProbability -= 1f / 9f;
+            else
+                cellProbability -= _data.RoomExpansionPercentageDecay;
+            return newCell;
+        }
+
+        GridNode EvaluateGridPosition(GridController _grid)
+        {
+            GridNode nodeToReturn = null;
+            GridNode centerNode = _grid.GetGridCenter();
+            if (CellsInRoom.Count == 0)
+                nodeToReturn = centerNode;
+            else
+            {
+                List<GridNode> adjacentNodes = centerNode.AdjacentNodes.Where(a => a.RelativeCell == null).ToList();
+                if(adjacentNodes.Count > 0)
+                    nodeToReturn = adjacentNodes[Random.Range(0, adjacentNodes.Count)];
+            }
+            return nodeToReturn;
+        }
+
+        bool EvaluateCellProbability(RoomData _data, GridController _grid)
+        {
+            float randomProbabaility = Random.Range(0f, 1f);
+            if (cellProbability >= randomProbabaility)
+                return true;
+            else
+                return false;
+        }
 
         #region Cell Managment
         /// <summary>
@@ -360,18 +404,4 @@ namespace DumbProject.Rooms
         }
         #endregion
     }                                      
-       
-    /// <summary>
-    /// Tipi di stanze
-    /// </summary>
-    public enum RoomShape
-    {
-        T_Shape = 0,
-        I_Shape = 1,
-        J_Shape = 2,
-        L_Shape = 3,
-        S_Shape = 4,
-        Z_Shape = 5,
-        O_Shape = 6,
-    }
 }

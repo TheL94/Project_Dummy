@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Rooms.Data
+namespace DumbProject.Rooms
 {
     [CreateAssetMenu(fileName = "RoomElements", menuName = "Room/NewRoomElements", order = 2)]
     public class RoomElements : ScriptableObject

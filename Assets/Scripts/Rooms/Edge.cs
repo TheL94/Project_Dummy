@@ -5,7 +5,7 @@ using DumbProject.Generic;
 using DumbProject.Grid;
 
 
-namespace DumbProject.Rooms.Cells
+namespace DumbProject.Rooms
 {
     public class Edge : MonoBehaviour
     {

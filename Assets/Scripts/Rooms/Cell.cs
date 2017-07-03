@@ -5,7 +5,7 @@ using UnityEngine;
 using DumbProject.Grid;
 using System;
 
-namespace DumbProject.Rooms.Cells
+namespace DumbProject.Rooms
 {
     public class Cell : MonoBehaviour, IChangeColor
     {
@@ -192,6 +192,7 @@ namespace DumbProject.Rooms.Cells
             Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
             return PlaceCell(_relativeNode, newRotation, _relativeRoom);           
         }
+
         /// <summary>
         /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
         /// </summary>
@@ -204,6 +205,20 @@ namespace DumbProject.Rooms.Cells
             Quaternion newRotation = Quaternion.LookRotation(_pointToFace - transform.position);
             return PlaceCell(_relativeNode, newRotation, _relativeRoom);
         }
+
+        /// <summary>
+        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
+        /// </summary>
+        /// <param name="_relativeNode"></param>
+        /// <param name="_pointToFace"></param>
+        /// <param name="_relativeRoom"></param>
+        /// <returns></returns>
+        public Cell PlaceCell(GridNode _relativeNode, Room _relativeRoom)
+        {
+            PlaceCell(_relativeNode, Quaternion.identity, _relativeRoom);
+            return this;
+        }
+
         /// <summary>
         /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
         /// </summary>
