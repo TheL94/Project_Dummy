@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using DumbProject.Items;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,13 +11,13 @@ namespace DumbProject.UI
     {
         Vector3 _startPosition;
         [HideInInspector]
-        public GameObject ItemToInstantiate;
+        public DroppableBaseData DroppableData;
         Slot mySlot;
 
-        public void Init(GameObject _itemToInstantiate, Sprite _uiItemSprite, Slot _ownSlot)
+        public void Init(DroppableBaseData _droppableData, Slot _ownSlot)
         {
-            ItemToInstantiate = _itemToInstantiate;
-            GetComponent<Image>().sprite = _uiItemSprite;
+            DroppableData = _droppableData;
+            GetComponent<Image>().sprite = _droppableData.ItemInUI;
             mySlot = _ownSlot;
         }
 

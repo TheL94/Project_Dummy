@@ -81,7 +81,7 @@ namespace DumbProject.Rooms
                 {
                     //for (int i = 0; i < Random.Range(0, 2); i++)
                     //{
-                        GameManager.I.ItemManager.InstantiateItemInRoom(room.ChooseFreeCell());
+                        GameManager.I.ItemManager.InstantiateItemInRoom(room);
                     //}
                 }
             }

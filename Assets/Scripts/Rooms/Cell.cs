@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using DumbProject.Items;
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
@@ -7,16 +7,6 @@ namespace DumbProject.Rooms
 {
     public class Cell : MonoBehaviour, IChangeColor
     {
-        private bool _isFree = true;
-        /// <summary>
-        /// se la cella ha già un oggetto assegnato
-        /// </summary>
-        public bool IsFree
-        {
-            get { return _isFree; }
-            set { _isFree = value; }
-        }
-
         GridNode _relativeNode;
         public GridNode RelativeNode
         {
@@ -47,6 +37,8 @@ namespace DumbProject.Rooms
         GameObject floor;
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
+
+        public IDroppable actualDroppable;
 
         #region Cell Elements Instantiation
         /// <summary>
@@ -358,6 +350,15 @@ namespace DumbProject.Rooms
         {
             return fallingPoints;
         }
+
+        #region IChangeColor Interface
+
+        public void ChangeFloorColor(Material _newMaterial)
+        {
+            floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
+        }
+
+        #endregion
         #endregion
 
         private void OnDrawGizmos()
@@ -375,14 +376,5 @@ namespace DumbProject.Rooms
                 Gizmos.DrawLine(transform.position, node.WorldPosition);
             }
         }
-
-        #region IChangeColor Interface
-
-        public void ChangeFloorColor(Material _newMaterial)
-        {
-            floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
-        }
-
-        #endregion
     }
 }

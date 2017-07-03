@@ -17,7 +17,7 @@ namespace DumbProject.Items
             }
         }
 
-        public void GetMyData(BaseData _data)
+        public void GetMyData(DroppableBaseData _data)
         {
             values = (_data as PotionData).DataValues;
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Potion", menuName = "Items/NewPotion", order = 1)]
-    public class PotionData : BaseData
+    public class PotionData : DroppableBaseData
     {
         public PotionValues DataValues;
     }

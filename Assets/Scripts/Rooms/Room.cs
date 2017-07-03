@@ -5,13 +5,15 @@ using UnityEngine;
 using DG.Tweening;
 using DumbProject.Grid;
 using DumbProject.Generic;
+using DumbProject.Items;
+using System;
 
 namespace DumbProject.Rooms
 {
     /// <summary>
     /// Classe astatta padre di ogni tipo di stanza
     /// </summary>
-    public class Room : MonoBehaviour
+    public class Room : MonoBehaviour, IDroppableHolder
     {
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
@@ -21,6 +23,16 @@ namespace DumbProject.Rooms
         public DropController DropController;
         [HideInInspector]
         public RoomData Data;
+
+        List<Cell> _freeCells = new List<Cell>();
+        List<Cell> freeCells
+        {
+            get
+            {
+                _freeCells = CellsInRoom.Where(c => c.actualDroppable == null).ToList();
+                return _freeCells;
+            }
+        }
 
         Vector3 _initialPosition;
         Tweener rotationTween;
@@ -63,7 +75,7 @@ namespace DumbProject.Rooms
             PlaceDoors(_data);
             TrimCellAngles();
         }
-        
+
         /// <summary>
         /// Funzione che contiene le azioni da eseguire quando la posizione in cui si vuole metere la stanza è valida e la stanza viene piazzata
         /// </summary>
@@ -88,7 +100,7 @@ namespace DumbProject.Rooms
             if (canRotate)
             {
                 canRotate = false;
-                rotationTween = transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() => 
+                rotationTween = transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() =>
                 {
                     canRotate = true;
                     foreach (Cell cell in CellsInRoom)
@@ -115,25 +127,49 @@ namespace DumbProject.Rooms
                 cell.LinkDoorsToFallingPoint();
         }
 
-        #region Object Placement
-        /// <summary>
-        /// Ritorna una cella random dove istanziare l'item, se la cella è occupata, ne cerca una libera.
-        /// </summary>
-        /// <returns>cella libera</returns>
-        public Cell ChooseFreeCell()
+        #region IDroppableHolder
+        List<IDroppable> _droppableList = new List<IDroppable>();
+        public List<IDroppable> DroppableList
         {
-            int tempNum = Random.Range(0, CellsInRoom.Count);
-            if (CellsInRoom[tempNum].IsFree)
-                return CellsInRoom[tempNum];
-            else
+            get
             {
-                for (int i = 0; i < CellsInRoom.Count; i++)
+                return _droppableList;
+            }
+
+            set
+            {
+                _droppableList = value;
+            }
+        }
+        public void AddDroppable(DroppableBaseData _droppableToAdd)
+        {
+            Cell freeCell = freeCells[UnityEngine.Random.Range(0, freeCells.Count)];
+            IDroppable dropToAdd = Instantiate(_droppableToAdd.ItemPrefab, freeCell.RelativeNode.WorldPosition, Quaternion.identity, transform).GetComponent<IDroppable>();
+            freeCell.ChangeFloorColor(_droppableToAdd.ShowMateriaInRoom);
+            freeCell.actualDroppable = dropToAdd;
+            DroppableList.Add(dropToAdd);
+        }
+
+        public void RemoveDroppable(IDroppable _droppableToRemove)
+        {
+            Cell cell = null;
+            foreach (Cell _cell in CellsInRoom)
+            {
+                if (_cell.actualDroppable == _droppableToRemove)
                 {
-                    if (CellsInRoom[i].IsFree)
-                        return CellsInRoom[i];
+                    cell = _cell;
+                    break;
                 }
             }
-            return null;
+            if(cell != null)
+            {
+                cell.actualDroppable = null;
+                //_______
+                //TODO: ricolorare pavimento?
+                //__________
+            }
+
+            DroppableList.Remove(_droppableToRemove);
         }
         #endregion
         #endregion
@@ -173,7 +209,7 @@ namespace DumbProject.Rooms
             {
                 List<GridNode> adjacentNodes = GetEmptyGridNodes();
                 if (adjacentNodes.Count > 0)
-                    nodeToReturn = adjacentNodes[Random.Range(0, adjacentNodes.Count)];
+                    nodeToReturn = adjacentNodes[UnityEngine.Random.Range(0, adjacentNodes.Count)];
             }
             return nodeToReturn;
         }
@@ -193,7 +229,7 @@ namespace DumbProject.Rooms
             if (_data.MinNumberOfCells > CellsInRoom.Count)
                 return true;
 
-            float randomProbabaility = Random.Range(0f, 1f);
+            float randomProbabaility = UnityEngine.Random.Range(0f, 1f);
             if (cellProbability >= randomProbabaility)
                 return true;
             else
@@ -213,9 +249,9 @@ namespace DumbProject.Rooms
 
             foreach (Edge edge in edges)
             {
-                if(!itemsToBeDestroyed.Contains(edge))
+                if (!itemsToBeDestroyed.Contains(edge))
                 {
-                    if(edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
+                    if (edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
                     {
                         itemsToBeDestroyed.Add(edge);
                     }
@@ -311,8 +347,8 @@ namespace DumbProject.Rooms
                 {
                     egdeToDestroy.RelativeCell.GetEdgesList().Remove(egdeToDestroy);
                     Destroy(egdeToDestroy.gameObject);
-                }        
-            }          
+                }
+            }
         }
 
         /// <summary>
@@ -323,13 +359,13 @@ namespace DumbProject.Rooms
             float maxAmountOfDoors = _data.SelfDoorTrim ? CellsInRoom.Count + 1 : _data.DoorNumberPercentage * CellsInRoom.Count;
             if (maxAmountOfDoors < 1)
                 maxAmountOfDoors = 1;
-            int numberOfDoors = Mathf.RoundToInt(Random.Range(1f,maxAmountOfDoors));
+            int numberOfDoors = Mathf.RoundToInt(UnityEngine.Random.Range(1f, maxAmountOfDoors));
 
             List<Edge> listOfWalls = GetListOfEdges();
             while (numberOfDoors > 0)
             {
-                int randomIndex = Random.Range(0, listOfWalls.Count);
-                if(ReplaceWallWithArch(listOfWalls[randomIndex]))
+                int randomIndex = UnityEngine.Random.Range(0, listOfWalls.Count);
+                if (ReplaceWallWithArch(listOfWalls[randomIndex]))
                     numberOfDoors--;
             }
         }
@@ -361,14 +397,14 @@ namespace DumbProject.Rooms
             }
             else if (_edge.name == "UpEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position,
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position), _edge.transform);
                 _edge.Type = EdgeType.Door;
                 _edge.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, 
+                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position,
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position), _edge.transform);
                 _edge.Type = EdgeType.Door;
                 _edge.name = "DownDoor";
@@ -418,6 +454,7 @@ namespace DumbProject.Rooms
             }
             return listOfEdges;
         }
+
         #endregion
-    }                                      
+    }
 }

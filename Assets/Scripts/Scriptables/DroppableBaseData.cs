@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class BaseData : ScriptableObject
+    public class DroppableBaseData : ScriptableObject
     {
         public ItemType Type;
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
         public Material ShowMateriaInRoom;
     }
-        public enum ItemType
-        {
-            Item,
-            Ememy,
-            Trap,
-            Gattini,
-        }
+
+    public enum ItemType
+    {
+        Item,
+        Ememy,
+        Trap,
+        Gattini,
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Sward", menuName = "Items/NewSward", order = 2)]
-    public class SwardData : BaseData
+    public class SwardData : DroppableBaseData
     {
         public SwardValues DataValues;
     }

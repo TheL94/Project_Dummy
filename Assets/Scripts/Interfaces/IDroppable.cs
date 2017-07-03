@@ -8,6 +8,6 @@ namespace DumbProject.Items
     {
         Transform transF { get; }
 
-        void GetMyData(BaseData _data);
+        void GetMyData(DroppableBaseData _data);
     }
 }

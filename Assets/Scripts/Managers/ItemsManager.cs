@@ -8,16 +8,16 @@ namespace DumbProject.Items
 {
     public class ItemsManager : MonoBehaviour
     {
-        public List<BaseData> AllDatas = new List<BaseData>();
+        public List<DroppableBaseData> AllDatas = new List<DroppableBaseData>();
 
-        List<BaseData> itemDatas = new List<BaseData>();
-        List<BaseData> enemyDatas = new List<BaseData>();
-        List<BaseData> trapDatas = new List<BaseData>();
-        List<BaseData> gattiniDatas = new List<BaseData>();
+        List<DroppableBaseData> itemDatas = new List<DroppableBaseData>();
+        List<DroppableBaseData> enemyDatas = new List<DroppableBaseData>();
+        List<DroppableBaseData> trapDatas = new List<DroppableBaseData>();
+        List<DroppableBaseData> gattiniDatas = new List<DroppableBaseData>();
 
         public void Init()
         {
-            foreach (BaseData _data in AllDatas)
+            foreach (DroppableBaseData _data in AllDatas)
             {
                 switch (_data.Type)
                 {
@@ -47,22 +47,30 @@ namespace DumbProject.Items
         /// Ritorna l'item da istanziare nella ui
         /// </summary>
         /// <returns></returns>
-        BaseData ChooseItem()
+        DroppableBaseData ChooseItem()
         {
             int randNum = Random.Range(0, itemDatas.Count);
             return itemDatas[randNum];
         }
 
-        int i = 0;
-        public void InstantiateItemInRoom(Cell _cell)
+        /*
+         Qui funzione che chiama funzione in Room "inserisci oggetto", richiamabile tramite interfaccia ("Item Placer")
+         In interfaccia capacità di inserire oggetti e tenerne traccia
+
+        public void Place(IINTERFACCIA _pippo)
         {
-            i++;
-            Debug.Log("Oggetto istanziato " + i);
-            BaseData tempData = ChooseItem();
-            _cell.ChangeFloorColor(tempData.ShowMateriaInRoom);
-            IDroppable itemDropped = Instantiate(tempData.ItemPrefab, _cell.RelativeNode.WorldPosition + new Vector3(0, 2, 0), Quaternion.identity, _cell.transform).GetComponent<IDroppable>();
-            itemDropped.GetMyData(tempData);
-            _cell.IsFree = false;
+            _pippo.piazzaOggetto();
+        }
+        
+             */
+
+        public void InstantiateItemInRoom(Room _room)
+        {
+            DroppableBaseData tempData = ChooseItem();
+            if(tempData.ItemPrefab.GetComponent<IDroppable>() != null)
+            {
+                _room.AddDroppable(tempData);
+            }
         }
     }
 }

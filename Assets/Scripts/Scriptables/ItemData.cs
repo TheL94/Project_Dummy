@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class ItemData : BaseData
+    public class ItemData : DroppableBaseData
     {
         public ItemType SpecificType;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Armory", menuName = "Items/NewArmory", order = 3)]
-    public class ArmoryData : BaseData
+    public class ArmoryData : DroppableBaseData
     {
         public ArmoryValues DataValues;
     }

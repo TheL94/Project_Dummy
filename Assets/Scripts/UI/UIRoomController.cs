@@ -8,7 +8,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler, IDropHandler
+    public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler/* IDropHandler*/
     {
         [HideInInspector]
         public Room ActualRoom;
@@ -36,29 +36,19 @@ namespace DumbProject.UI
                 }
             }
         }
-
-        public void OnDrop(PointerEventData eventData)
-        {
-            if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)
-            {
-                Cell tempCell = ActualRoom.ChooseFreeCell();
-                if (tempCell != null)
-                {
-                    PlaceIteminRoom(eventData.pointerDrag.GetComponent<IventoryItem>().ItemToInstantiate, tempCell);
-                    eventData.pointerDrag.GetComponent<IventoryItem>().DestroyObj();
-                }
-                else 
-                    eventData.pointerDrag.GetComponent<IventoryItem>().PlaceInStartPosition();
-            }
-        }
-
-        /// <summary>
-        /// Piazza l'elemento passato nella posizione della cella che gli viene passata
-        /// </summary>
-        void PlaceIteminRoom(GameObject _object, Cell _cell)
-        {
-            Instantiate(_object, new Vector3(_cell.transform.position.x, _cell.transform.position.y + 2, _cell.transform.position.z), Quaternion.identity, _cell.transform);
-            _cell.IsFree = false;
-        }
+        //TODO: metti apposto ALberto
+        //public void OnDrop(PointerEventData eventData)
+        //{
+        //    if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)
+        //    {
+        //        if (tempCell != null)
+        //        {
+        //            PlaceItemInRoom(eventData.pointerDrag.GetComponent<IventoryItem>().ItemToInstantiate, tempCell);
+        //            eventData.pointerDrag.GetComponent<IventoryItem>().DestroyObj();
+        //        }
+        //        else 
+        //            eventData.pointerDrag.GetComponent<IventoryItem>().PlaceInStartPosition();
+        //    }
+        //}
     }
 }
