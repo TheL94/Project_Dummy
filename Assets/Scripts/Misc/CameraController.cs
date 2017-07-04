@@ -7,22 +7,28 @@ namespace DumbProject
 {
     public class CameraController : MonoBehaviour
     {
-        public float MovementSpeed = 10f;
+        float MovementSpeed = 10f;
         /// <summary>
         /// Muove la transform della camera
         /// </summary>
         /// <param name="_target">La direzione in cui si deve muovere</param>
-        public void MoveCamera(Vector2 _target)
+        public void MoveCamera(Vector3 _target)
         {
-            transform.position = transform.position + new Vector3(_target.x, 0, _target.y) * MovementSpeed * Time.deltaTime;
+            transform.position = transform.position + _target * MovementSpeed * Time.deltaTime;
+            //transform.Translate(new Vector3(_target.x, _target.y, 0 ).normalized * MovementSpeed * Time.deltaTime);
         }
 
         /// <summary>
         /// Ruota la camera
         /// </summary>
-        public void RotateCamera()
+        public void RotateCamera(Quaternion _rotation)
         {
+            transform.rotation = _rotation;
+        }
 
+        public void ZoomTheCamera(float _direction)
+        {
+            transform.Translate(Vector3.forward * _direction * MovementSpeed * Time.deltaTime);
         }
     }
 }

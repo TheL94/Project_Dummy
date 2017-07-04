@@ -64,7 +64,6 @@ namespace DumbProject.Rooms
                 mousePosition = mouseProjection.GetPoint(distance);
             //---------------------------------------
 
-
             closerNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (closerNode != null)
             {
