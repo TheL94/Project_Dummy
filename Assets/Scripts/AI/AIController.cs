@@ -10,7 +10,7 @@ namespace Framework.AI
         public State CurrentState;
 
         public bool DebugMode;
-        bool isActive;
+        public bool isActive =false;
 
         public virtual void Setup(bool _setActive = true)
         {
@@ -23,7 +23,10 @@ namespace Framework.AI
             if (!isActive)
                 return;
             CurrentState.UpdateState(this);
+            OnUpdate();
         }
+
+        protected virtual void OnUpdate() { }
 
         public void TransitionToState(State _nextState)
         {

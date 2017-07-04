@@ -14,8 +14,8 @@ namespace DumbProject.Items
 
     public enum ItemType
     {
+        Ememy = 0,
         Item,
-        Ememy,
         Trap,
         Gattini,
     }
