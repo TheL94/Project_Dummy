@@ -69,8 +69,17 @@ namespace DumbProject.Items
             DroppableBaseData tempData = ChooseItem();
             if(tempData.ItemPrefab.GetComponent<IDroppable>() != null)
             {
-                _room.AddDroppable(tempData);
+                _room.AddDroppable(tempData).InitIDroppable(tempData);
             }
         }
+
+        public void InstantiateItemInRoom(Room _room, DroppableBaseData _data)
+        {
+            if (_data.ItemPrefab.GetComponent<IDroppable>() != null)
+            {
+                _room.AddDroppable(_data);
+            }
+        }
+
     }
 }

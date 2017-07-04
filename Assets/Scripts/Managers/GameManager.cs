@@ -20,6 +20,7 @@ namespace DumbProject.Generic
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
         public ItemsManager ItemManagerPrefab;
+        public float CameraVelocity = 0.02f;
 
         public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
 
