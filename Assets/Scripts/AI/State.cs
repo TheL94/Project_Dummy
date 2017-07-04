@@ -9,6 +9,7 @@ namespace Framework.AI
     {
         public Color StateColor = Color.gray;
         public Action[] Actions;
+        [Tooltip("Per un loop, inserire lo stesso stato come primo della lista di uscita dalla decision.")]
         public Transition[] Transitions;
 
         public void UpdateState(AIController _controller)
@@ -30,7 +31,8 @@ namespace Framework.AI
             for (int i = 0; i < Transitions.Length; i++)
             {
                 // seleziona come stato successivo quello con l'indice pari al risultato di Decision.Decide().
-                _controller.TransitionToState(Transitions[i].NextPosiibleStates[Transitions[i].Decision.Decide(_controller)]);
+                int index = Transitions[i].Decision.Decide(_controller);
+                _controller.TransitionToState(Transitions[i].NextPosiibleStates[index]);
             }
         }
     }
