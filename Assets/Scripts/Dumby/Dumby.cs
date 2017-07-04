@@ -10,13 +10,13 @@ namespace DumbProject.Generic
     {
         Animator animator;
         AnimationState _animState = AnimationState.Idle;
-        AnimationState animState
+        public AnimationState AnimState
         {
             get { return _animState; }
             set
             {
                 _animState = value;
-                animator.SetInteger("AnimationState", (int)animState);
+                animator.SetInteger("AnimationState", (int)AnimState);
             }
         }
         /// <summary>
