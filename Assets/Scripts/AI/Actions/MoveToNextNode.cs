@@ -19,18 +19,7 @@ namespace DumbProject.AI
 
         void Move(AIController _controller)
         {
-            if (!_controller.CanPathfind || _controller.nodePath == null || _controller.nodePath.Count == 0)
-                return;
-
-            INetworkable headingNode = _controller.nodePath[0];
-
-            if(_controller.CurrentNode == headingNode)
-            {
-                _controller.nodePath.Remove(headingNode);
-                return;
-            }
-            //_controller.transform.DORotateQuaternion(Quaternion.LookRotation(headingNode.spacePosition), RotationTime);
-            _controller.transform.DOMove(headingNode.spacePosition, TranslationTime);
+            (_controller as Generic.AIActor).FollowPath();
         }
     }
 }

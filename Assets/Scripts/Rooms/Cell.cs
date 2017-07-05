@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
+using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
@@ -38,7 +39,7 @@ namespace DumbProject.Rooms
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
 
-        public IDroppable actualDroppable;
+        public IDroppable ActualDroppable;
 
         #region Cell Elements Instantiation
         /// <summary>
@@ -58,7 +59,6 @@ namespace DumbProject.Rooms
         void InstantiateEdges()
         {
             GameObject newEdgeObj;
-
             int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newEdgeObj = new GameObject("RightEdge");
@@ -126,8 +126,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateFloorElement()
         {
-            GameObject newObj = null;
-            newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, floor.transform.position, floor.transform.rotation, floor.transform);
+            PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Floor), floor.transform);
         }
 
         /// <summary>
@@ -135,11 +134,8 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiatePilllarElements()
         {
-            GameObject newObj = null;
             foreach (GameObject angle in angles)
-            {
-                newObj = Instantiate(RelativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
-            }
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Pillar), angle.transform);
         }
 
         /// <summary>
@@ -147,25 +143,35 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateWallElements()
         {
-            GameObject newObj = null;
             foreach (Edge edge in edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.identity, edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform);
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform, 
+                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform,
+                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
                 }
             }
+        }
+
+        void PlaceGameObj(GameObject _obj, Transform _transF)
+        {
+            PlaceGameObj(_obj, _transF, Quaternion.identity);
+        }
+
+        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
+        {
+            _obj.transform.position = _transF.position;
+            _obj.transform.rotation = _rotation;
+            _obj.transform.parent = _transF;
         }
         #endregion
 
@@ -279,6 +285,7 @@ namespace DumbProject.Rooms
                     adjacentCells.Add(node.RelativeCell);
                 }
             }
+            UpdateNodeLinks();
         }
 
         /// <summary>
@@ -304,14 +311,38 @@ namespace DumbProject.Rooms
                 fallingPoints.Clear();
             foreach (Edge edge in edges)
             {
+                GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
                 {
-                    GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
-                    if (nodeInFront != null && nodeInFront.RelativeCell == null)
+                    if (nodeInFront != null && nodeInFront.RelativeCell == null && !fallingPoints.Contains(nodeInFront))
                         fallingPoints.Add(nodeInFront);
                 }
+                else if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                {
+                    if(fallingPoints.Contains(nodeInFront))
+                        fallingPoints.Remove(nodeInFront);
+                }
             }
+            UpdateNodeLinks();
         }
+
+        /// <summary>
+        /// Funzione che aggiunge le celle colegate e i punti di caduta ai links del proprio nodo
+        /// </summary>
+        public void UpdateNodeLinks()
+        {
+            foreach (Cell adjacentCell in adjacentCells)
+            {
+                if(!RelativeNode.Links.Contains(adjacentCell.RelativeNode))
+                    RelativeNode.Links.Add(adjacentCell.RelativeNode);
+            }
+
+            foreach (GridNode fallingPonint in fallingPoints)
+            {
+                if (!RelativeNode.Links.Contains(fallingPonint))
+                    RelativeNode.Links.Add(fallingPonint);
+            }
+        } 
 
         /// <summary>
         /// Funzione che ritorna la lista degli edge di questa cella
@@ -363,17 +394,10 @@ namespace DumbProject.Rooms
 
         private void OnDrawGizmos()
         {
-            foreach (Cell cell in adjacentCells)
+            foreach (GridNode node in RelativeNode.Links)
             {
-                if (cell.RelativeNode != null)
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(transform.position, cell.RelativeNode.WorldPosition);
-            }
-
-            foreach (GridNode node in fallingPoints)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(transform.position, node.WorldPosition);
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(RelativeNode.WorldPosition, node.WorldPosition);
             }
         }
     }

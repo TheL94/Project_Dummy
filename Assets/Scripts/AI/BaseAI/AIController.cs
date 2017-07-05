@@ -10,7 +10,7 @@ namespace Framework.AI
         public State CurrentState;
 
         public bool DebugMode;
-        public bool isActive =false;
+        public bool isActive = false;
 
         public virtual void Setup(bool _setActive = true)
         {
@@ -43,7 +43,7 @@ namespace Framework.AI
             if (CurrentState != null)
             {
                 Gizmos.color = CurrentState.StateColor;
-                Gizmos.DrawSphere(transform.position, 2f);
+                Gizmos.DrawSphere(transform.position, 0.2f);
             }
         }
 
@@ -65,5 +65,14 @@ namespace Framework.AI
                 return false;
         }
         #endregion
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.magenta;
+            foreach (INetworkable node in nodePath)
+            {
+                Gizmos.DrawCube(node.spacePosition, Vector3.one);
+            }
+        }
     }
 }

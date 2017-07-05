@@ -57,6 +57,7 @@ namespace DumbProject.Rooms
             GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "FirstRoom";
+            mainRoom.LinkCellsDoorsToFallingPoints();
 
             GameManager.I.ItemManager.InstantiateItemInRoom(mainRoom);
 
