@@ -13,7 +13,8 @@ namespace DumbProject.Generic {
         public float MoveDuration;
         public float InteractionRadius;
 
-        public Tweener pathTracking { get; protected set; }
+        Sequence _pathTracking = DOTween.Sequence();
+        public Sequence pathTracking { get { return _pathTracking; } protected set { _pathTracking = value; } }
         /// <summary>
         /// Actual position onto the INetworkable grid. 
         /// Can't be Set. Any try will change nothing.
@@ -54,29 +55,22 @@ namespace DumbProject.Generic {
             AnimState = AnimationState.Running;
             if (nodePath == null || nodePath.Count <= 0)
                 return;
-            if (Vector3.Distance(nodePath[0].spacePosition, transform.position) <= InteractionRadius)
-                nodePath.Remove(nodePath[0]);
-            if (nodePath.Count == 0)
-                return;
+            //if (Vector3.Distance(nodePath[0].spacePosition, transform.position) <= InteractionRadius)
+            //    nodePath.Remove(nodePath[0]);
+            //if (nodePath.Count == 0)
+            //    return;
+            for (int i = 0; i < nodePath.Count; i++)
+            {
+                pathTracking.Append(transform.DOLookAt(nodePath[i].spacePosition, LookDuration));
+                pathTracking.Append(transform.DOMove(nodePath[i].spacePosition, MoveDuration));
+            }
 
-            if (pathTracking == null)
+            pathTracking.SetSpeedBased(true).OnComplete(() =>
             {
-                pathTracking = transform.DOLookAt(nodePath[0].spacePosition, LookDuration).OnComplete(() =>
-                {
-                    pathTracking = transform.DOMove(nodePath[0].spacePosition, MoveDuration);
-                });
-            }
-            else
-            {
-                if (Vector3.Distance(transform.position, nodePath[0].spacePosition) <= InteractionRadius)
-                {
-                    nodePath.Remove(nodePath[0]);
-                    pathTracking.Complete();
-                    pathTracking = null;
-                }
-            }
+                pathTracking.Kill();
+                nodePath.Clear();
+            });
         }
-
     }
 
     public enum AnimationState

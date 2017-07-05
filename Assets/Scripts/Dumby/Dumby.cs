@@ -19,7 +19,7 @@ namespace DumbProject.Generic
 
         protected override void OnUpdate()
         {
-            FollowPath();
+            //FollowPath();
         }
     }
 }
