@@ -10,7 +10,7 @@ namespace Framework.AI
         public State CurrentState;
 
         public bool DebugMode;
-        public bool isActive =false;
+        public bool isActive = false;
 
         public virtual void Setup(bool _setActive = true)
         {
