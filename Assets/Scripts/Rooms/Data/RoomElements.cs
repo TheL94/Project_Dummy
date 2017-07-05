@@ -7,9 +7,16 @@ namespace DumbProject.Rooms
     [CreateAssetMenu(fileName = "RoomElements", menuName = "Room/NewRoomElements", order = 2)]
     public class RoomElements : ScriptableObject
     {
-        public GameObject FloorPrefab;
-        public GameObject WallPrefab;
-        public GameObject PillarPrefab;
-        public GameObject ArchPrefab;
+        public PoolPrefab Floor;
+        public PoolPrefab Wall;
+        public PoolPrefab Pillar;
+        public PoolPrefab Arch;
+    }
+
+    [System.Serializable]
+    public struct PoolPrefab
+    {
+        public GameObject ObjPrefab;
+        public int NumberOfObj;
     }
 }

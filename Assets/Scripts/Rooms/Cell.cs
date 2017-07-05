@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
+using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
@@ -58,7 +59,6 @@ namespace DumbProject.Rooms
         void InstantiateEdges()
         {
             GameObject newEdgeObj;
-
             int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newEdgeObj = new GameObject("RightEdge");
@@ -126,8 +126,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateFloorElement()
         {
-            GameObject newObj = null;
-            newObj = Instantiate(RelativeRoom.Data.RoomElements.FloorPrefab, floor.transform.position, floor.transform.rotation, floor.transform);
+            PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Floor), floor.transform);
         }
 
         /// <summary>
@@ -135,11 +134,8 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiatePilllarElements()
         {
-            GameObject newObj = null;
             foreach (GameObject angle in angles)
-            {
-                newObj = Instantiate(RelativeRoom.Data.RoomElements.PillarPrefab, angle.transform.position, Quaternion.identity, angle.transform);
-            }
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Pillar), angle.transform);
         }
 
         /// <summary>
@@ -147,25 +143,35 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateWallElements()
         {
-            GameObject newObj = null;
             foreach (Edge edge in edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.identity, edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform);
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position), edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform, 
+                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    newObj = Instantiate(RelativeRoom.Data.RoomElements.WallPrefab, edge.transform.position, 
-                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position), edge.transform);
+                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform,
+                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
                 }
             }
+        }
+
+        void PlaceGameObj(GameObject _obj, Transform _transF)
+        {
+            PlaceGameObj(_obj, _transF, Quaternion.identity);
+        }
+
+        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
+        {
+            _obj.transform.position = _transF.position;
+            _obj.transform.rotation = _rotation;
+            _obj.transform.parent = _transF;
         }
         #endregion
 

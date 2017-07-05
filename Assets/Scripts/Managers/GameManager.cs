@@ -5,7 +5,6 @@ using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
 using DumbProject.Flow;
-using DumbProject.Pool;
 using DumbProject.Items;
 
 namespace DumbProject.Generic
@@ -20,7 +19,7 @@ namespace DumbProject.Generic
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
         public ItemsManager ItemManagerPrefab;
-        public float CameraVelocity = 0.02f;
+        public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
 
@@ -40,8 +39,6 @@ namespace DumbProject.Generic
         public CameraController CameraController;
         [HideInInspector]
         public ItemsManager ItemManager;
-
-        // Non MonoBehaviour
         [HideInInspector]
         public PoolManager PoolMng;
 
@@ -67,13 +64,14 @@ namespace DumbProject.Generic
 
         private void Start()
         {
-            PoolMng = new PoolManager();
+            PoolMng = Instantiate(PoolManagerPrefab);
+            PoolMng.Setup();
             FlowMng = GetComponent<FlowManager>();
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-            CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+            CameraController = Camera.main.GetComponent<CameraController>();
             ItemManager = Instantiate(ItemManagerPrefab);
             ItemManager.Init();
 

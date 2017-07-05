@@ -2,75 +2,80 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class Pool<PoolType>
+namespace Framework.PoolSystem
 {
-
-    protected List<PoolType> inactivePool = new List<PoolType>();
-    protected List<PoolType> activePool = new List<PoolType>();
-
-    protected GameObject prefabReference;
-    protected Transform parentObject;
-
-    public void InitializeObjectPool(GameObject prefabReference, int initialQuantity)
+    public abstract class Pool<PoolType>
     {
-        parentObject = new GameObject().transform;
-        parentObject.name = "Parent: " + prefabReference.name;
 
-        this.prefabReference = prefabReference;
-        for (int i = 0; i < initialQuantity; i++)
+        protected List<PoolType> inactivePool = new List<PoolType>();
+        protected List<PoolType> activePool = new List<PoolType>();
+
+        protected GameObject prefabReference;
+        protected Transform parentObject;
+
+        public void InitializeObjectPool(GameObject _prefabReference, Vector3 _containerPosition, int _initialQuantity)
         {
-            PoolType item = InstantiateInstance();
-            inactivePool.Add(item);
-            ChangeObjectState(item, false);
+            GameObject obj = new GameObject();
+            obj.transform.position = _containerPosition;
+            parentObject = obj.transform;              
+            parentObject.name = "Parent: " + _prefabReference.name;
+
+            prefabReference = _prefabReference;
+            for (int i = 0; i < _initialQuantity; i++)
+            {
+                PoolType item = InstantiateInstance();
+                inactivePool.Add(item);
+                ChangeObjectState(item, false);
+            }
         }
-    }
 
-    public virtual PoolType Get()
-    {
-        UpdatePools();
-
-        if (inactivePool.Count > 0)
-            return GetInactiveObject();
-        else
+        public virtual PoolType Get()
         {
-            PoolType item = InstantiateInstance();
+            UpdatePools();
+
+            if (inactivePool.Count > 0)
+                return GetInactiveObject();
+            else
+            {
+                PoolType item = InstantiateInstance();
+                activePool.Add(item);
+                return item;
+            }
+
+        }
+
+        protected virtual void UpdatePools()
+        {
+            for (int i = 0; i < activePool.Count; i++)
+            {
+                PoolType item = activePool[i];
+                if (!IsObjectActive(item))
+                {
+                    activePool.RemoveAt(i);
+                    inactivePool.Add(item);
+                }
+            }
+        }
+
+        protected PoolType GetInactiveObject()
+        {
+            PoolType item = inactivePool[0];
+            inactivePool.RemoveAt(0);
             activePool.Add(item);
+            ChangeObjectState(item, true);
             return item;
         }
 
-    }
-
-    protected virtual void UpdatePools()
-    {
-        for (int i = 0; i < activePool.Count; i++)
+        PoolType InstantiateInstance()
         {
-            PoolType item = activePool[i];
-            if (!IsObjectActive(item))
-            {
-                activePool.RemoveAt(i);
-                inactivePool.Add(item);
-            }
+            GameObject instantiatedObject = GameObject.Instantiate(prefabReference);
+            instantiatedObject.transform.parent = parentObject;
+            PoolType typeInstance = GetPoolType(instantiatedObject);
+            return typeInstance;
         }
-    }
 
-    protected PoolType GetInactiveObject()
-    {
-        PoolType item = inactivePool[0];
-        inactivePool.RemoveAt(0);
-        activePool.Add(item);
-        ChangeObjectState(item, true);
-        return item;
+        protected abstract void ChangeObjectState(PoolType item, bool toState);
+        protected abstract bool IsObjectActive(PoolType item);
+        protected abstract PoolType GetPoolType(GameObject gameObject);
     }
-
-    PoolType InstantiateInstance()
-    {
-        GameObject instantiatedObject = (GameObject)MonoBehaviour.Instantiate(prefabReference);
-        instantiatedObject.transform.parent = parentObject;
-        PoolType typeInstance = GetPoolType(instantiatedObject);
-        return typeInstance;
-    }
-
-    protected abstract void ChangeObjectState(PoolType item, bool toState);
-    protected abstract bool IsObjectActive(PoolType item);
-    protected abstract PoolType GetPoolType(GameObject gameObject);
 }
