@@ -36,9 +36,11 @@ namespace DumbProject.Generic
             {
                 return grid.GetSpecificGridNode(transform.position);
             }
-            set {
+            set
+            {
                 Debug.LogWarning("Can't Set CurrentNode fild in Dumby");
-                return; }
+                return;
+            }
         }
 
         GridController grid;
@@ -61,6 +63,7 @@ namespace DumbProject.Generic
 
         public void FollowPath()
         {
+            AnimState = AnimationState.Running;
             if (nodePath == null || nodePath.Count <= 0)
                 return;
             if (Vector3.Distance(nodePath[0].spacePosition, transform.position) <= InteractionRadius)
@@ -68,12 +71,21 @@ namespace DumbProject.Generic
             if (nodePath.Count == 0)
                 return;
 
-            if (!pathTracking.IsActive())
+            if (pathTracking == null)
             {
-                pathTracking = transform.DOLookAt(nodePath[0].spacePosition, LookDuration).OnComplete(()=> 
+                pathTracking = transform.DOLookAt(nodePath[0].spacePosition, LookDuration).OnComplete(() =>
                 {
                     pathTracking = transform.DOMove(nodePath[0].spacePosition, MoveDuration);
                 });
+            }
+            else
+            {
+                if (Vector3.Distance(transform.position, nodePath[0].spacePosition) <= InteractionRadius)
+                {
+                    nodePath.Remove(nodePath[0]);
+                    pathTracking.Complete();
+                    pathTracking = null;
+                }
             }
         }
 

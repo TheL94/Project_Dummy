@@ -43,7 +43,7 @@ namespace Framework.AI
             if (CurrentState != null)
             {
                 Gizmos.color = CurrentState.StateColor;
-                Gizmos.DrawSphere(transform.position, 2f);
+                Gizmos.DrawSphere(transform.position, 0.2f);
             }
         }
 
