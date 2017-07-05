@@ -11,10 +11,10 @@ namespace DumbProject.AI
     {
         public override void Act(AIController _controller)
         {
-            if((_controller as Dumby).nextRoomObjective != null)
+            if((_controller as AIActor).nextRoomObjective != null)
             {
-                Destroy((_controller as Dumby).nextRoomObjective.transF.gameObject);
-                (_controller as Dumby).nextRoomObjective = null;
+                Destroy((_controller as AIActor).nextRoomObjective.transF.gameObject);
+                (_controller as AIActor).nextRoomObjective = null;
             }
         }
     }

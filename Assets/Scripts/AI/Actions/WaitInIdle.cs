@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using DumbProject.Generic;
 using Framework.AI;
 
@@ -11,7 +9,7 @@ namespace DumbProject.AI
     {
         public override void Act(AIController _controller)
         {
-            (_controller as Dumby).AnimState = Dumby.AnimationState.Idle;
+            (_controller as AIActor).AnimState = Generic.AnimationState.Idle;
         }
     }
 }

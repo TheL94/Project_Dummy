@@ -20,14 +20,14 @@ namespace DumbProject.AI
 
         void Evaluate(AIController _controller)
         {
-            if ((_controller as Dumby).nextRoomObjective == null)
+            if ((_controller as AIActor).nextRoomObjective == null)
                 return;
 
             if (pathfinder == null)
                 pathfinder = _controller.pathFinder;
 
-            if ((_controller.nodePath == null || _controller.nodePath.Count == 0) && _controller.CurrentNode != (_controller as Dumby).nextRoomObjective)
-                _controller.nodePath = pathfinder.FindPath(grid.GetSpecificGridNode((_controller as Dumby).nextRoomObjective.transF.position));
+            if ((_controller.nodePath == null || _controller.nodePath.Count == 0) && _controller.CurrentNode != (_controller as AIActor).nextRoomObjective)
+                _controller.nodePath = pathfinder.FindPath(grid.GetSpecificGridNode((_controller as AIActor).nextRoomObjective.transF.position));
         }
     }
 }

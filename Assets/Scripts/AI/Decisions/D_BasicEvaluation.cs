@@ -16,7 +16,7 @@ namespace DumbProject.AI {
 
         int ChooseWhatToDo(AIController _controller)
         {
-            Room actualRoom = (_controller as Dumby).CurrentRoom;
+            Room actualRoom = (_controller as AIActor).CurrentRoom;
             List<IDroppable> droppablesInRoom = actualRoom.DroppableList;
             int returnValue = 0;
             IDroppable objective = null;
@@ -49,7 +49,7 @@ namespace DumbProject.AI {
                 }
             }
             if (objective != null)
-                (_controller as Dumby).nextRoomObjective = objective;
+                (_controller as AIActor).nextRoomObjective = objective;
 
             returnValue = returnValue > 0 ? 1 : 0;
             return returnValue;
