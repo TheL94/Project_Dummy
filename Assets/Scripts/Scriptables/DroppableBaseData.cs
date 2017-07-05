@@ -6,17 +6,19 @@ namespace DumbProject.Items
 {
     public class DroppableBaseData : ScriptableObject
     {
-        public ItemType Type;
+        public GenericType Type;
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
         public Material ShowMateriaInRoom;
+
     }
 
-    public enum ItemType
+    public enum GenericType
     {
         Ememy = 0,
         Item,
         Trap,
         Gattini,
     }
+    
 }

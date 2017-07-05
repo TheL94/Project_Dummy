@@ -21,19 +21,19 @@ namespace DumbProject.Items
             {
                 switch (_data.Type)
                 {
-                    case ItemType.Item:
+                    case GenericType.Item:
                         itemDatas.Add(Instantiate(_data));
                         break;
 
-                    case ItemType.Ememy:
+                    case GenericType.Ememy:
                         enemyDatas.Add(Instantiate(_data));
                         break;
 
-                    case ItemType.Trap:
+                    case GenericType.Trap:
                         trapDatas.Add(Instantiate(_data));
                         break;
 
-                    case ItemType.Gattini:
+                    case GenericType.Gattini:
                         gattiniDatas.Add(Instantiate(_data));
                         break;
                     default:
@@ -53,16 +53,16 @@ namespace DumbProject.Items
             return itemDatas[randNum];
         }
 
-        /*
-         Qui funzione che chiama funzione in Room "inserisci oggetto", richiamabile tramite interfaccia ("Item Placer")
-         In interfaccia capacità di inserire oggetti e tenerne traccia
-
-        public void Place(IINTERFACCIA _pippo)
+        /// <summary>
+        /// Sceglie il tipo di oggetto da istanziare nella stanza
+        /// </summary>
+        GenericType ChoseTypeToSpawn()
         {
-            _pippo.piazzaOggetto();
+
+
+            return GenericType.Item;
         }
-        
-             */
+
 
         public void InstantiateItemInRoom(Room _room)
         {
