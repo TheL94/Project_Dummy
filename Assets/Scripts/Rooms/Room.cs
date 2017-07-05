@@ -29,7 +29,7 @@ namespace DumbProject.Rooms
         {
             get
             {
-                _freeCells = CellsInRoom.Where(c => c.actualDroppable == null).ToList();
+                _freeCells = CellsInRoom.Where(c => c.ActualDroppable == null).ToList();
                 return _freeCells;
             }
         }
@@ -146,7 +146,7 @@ namespace DumbProject.Rooms
             Cell freeCell = freeCells[UnityEngine.Random.Range(0, freeCells.Count)];
             IDroppable dropToAdd = Instantiate(_droppableToAdd.ItemPrefab, freeCell.RelativeNode.WorldPosition, Quaternion.identity, transform).GetComponent<IDroppable>();
             freeCell.ChangeFloorColor(_droppableToAdd.ShowMateriaInRoom);
-            freeCell.actualDroppable = dropToAdd;
+            freeCell.ActualDroppable = dropToAdd;
             DroppableList.Add(dropToAdd);
             return dropToAdd;
         }
@@ -156,7 +156,7 @@ namespace DumbProject.Rooms
             Cell cell = null;
             foreach (Cell _cell in CellsInRoom)
             {
-                if (_cell.actualDroppable == _droppableToRemove)
+                if (_cell.ActualDroppable == _droppableToRemove)
                 {
                     cell = _cell;
                     break;
@@ -164,7 +164,7 @@ namespace DumbProject.Rooms
             }
             if(cell != null)
             {
-                cell.actualDroppable = null;
+                cell.ActualDroppable = null;
                 //_______
                 //TODO: ricolorare pavimento?
                 //__________
