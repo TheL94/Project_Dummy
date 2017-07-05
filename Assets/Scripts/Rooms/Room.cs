@@ -266,7 +266,7 @@ namespace DumbProject.Rooms
                     if (list.Contains(wallToRemove))
                     {
                         list.Remove(wallToRemove);
-                        Destroy(wallToRemove.gameObject);
+                        wallToRemove.gameObject.SetActive(false);
                     }
                 }
             }
@@ -302,7 +302,7 @@ namespace DumbProject.Rooms
                     if (list.Contains(pillarToRemove))
                     {
                         list.Remove(pillarToRemove);
-                        Destroy(pillarToRemove);
+                        pillarToRemove.SetActive(false);
                     }
                 }
             }
@@ -346,7 +346,7 @@ namespace DumbProject.Rooms
                 if (egdeToDestroy.RelativeCell.GetEdgesList().Contains(egdeToDestroy))
                 {
                     egdeToDestroy.RelativeCell.GetEdgesList().Remove(egdeToDestroy);
-                    Destroy(egdeToDestroy.gameObject);
+                    egdeToDestroy.gameObject.SetActive(false);
                 }
             }
         }
@@ -361,11 +361,11 @@ namespace DumbProject.Rooms
                 maxAmountOfDoors = 1;
             int numberOfDoors = Mathf.RoundToInt(UnityEngine.Random.Range(1f, maxAmountOfDoors));
 
-            List<Edge> listOfWalls = GetListOfEdges();
+            List<Edge> listOfEdges = GetListOfEdges();
             while (numberOfDoors > 0)
             {
-                int randomIndex = UnityEngine.Random.Range(0, listOfWalls.Count);
-                if (ReplaceWallWithArch(listOfWalls[randomIndex]))
+                int randomIndex = UnityEngine.Random.Range(0, listOfEdges.Count);
+                if (ReplaceWallWithArch(listOfEdges[randomIndex]))
                     numberOfDoors--;
             }
         }
@@ -379,37 +379,40 @@ namespace DumbProject.Rooms
             if (_edge.Type == EdgeType.Door)
                 return false;
 
-            GameObject newObj = null;
             Cell parentCell = null;
-            Destroy(_edge.GetComponentInChildren<MeshRenderer>().gameObject);
+            _edge.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
             parentCell = _edge.transform.parent.GetComponent<Cell>();
             if (_edge.name == "RightEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
-                _edge.Type = EdgeType.Door;
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
                 _edge.name = "RightDoor";
             }
             else if (_edge.name == "LeftEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position, Quaternion.identity, _edge.transform);
-                _edge.Type = EdgeType.Door;
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
                 _edge.name = "LeftDoor";
             }
             else if (_edge.name == "UpEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position,
-                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position), _edge.transform);
-                _edge.Type = EdgeType.Door;
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, 
+                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
-                newObj = Instantiate(Data.RoomElements.ArchPrefab, _edge.transform.position,
-                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position), _edge.transform);
-                _edge.Type = EdgeType.Door;
+                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform,
+                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "DownDoor";
             }
+            _edge.Type = EdgeType.Door;
             return true;
+        }
+
+        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
+        {
+            _obj.transform.position = _transF.position;
+            _obj.transform.rotation = _rotation;
+            _obj.transform.parent = _transF;
         }
 
         /// <summary>

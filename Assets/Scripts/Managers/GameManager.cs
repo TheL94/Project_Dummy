@@ -19,6 +19,7 @@ namespace DumbProject.Generic
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
         public ItemsManager ItemManagerPrefab;
+        public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
 
@@ -63,12 +64,14 @@ namespace DumbProject.Generic
 
         private void Start()
         {
+            PoolMng = Instantiate(PoolManagerPrefab);
+            PoolMng.Setup();
             FlowMng = GetComponent<FlowManager>();
             MainGridCtrl = Instantiate(GridControllerPrefab);
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-            CameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+            CameraController = Camera.main.GetComponent<CameraController>();
             ItemManager = Instantiate(ItemManagerPrefab);
             ItemManager.Init();
 
