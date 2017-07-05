@@ -33,15 +33,6 @@ namespace DumbProject.Grid
         public void Init(List<GridNode> _adjacentNodes)
         {
             AdjacentNodes = _adjacentNodes;
-
-            //Provvisoria connessione di tutti gli adiacenti come link del network
-            List<INetworkable> effectiveLinks = new List<INetworkable>();
-            foreach (INetworkable node in AdjacentNodes)
-            {
-                effectiveLinks.Add(node);
-            }
-            if (effectiveLinks != null)
-                AddLinks(effectiveLinks);
         }
 
         //Implementazione di INetworkable

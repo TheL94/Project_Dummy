@@ -39,7 +39,7 @@ namespace DumbProject.Rooms
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
 
-        public IDroppable actualDroppable;
+        public IDroppable ActualDroppable;
 
         #region Cell Elements Instantiation
         /// <summary>
@@ -285,6 +285,7 @@ namespace DumbProject.Rooms
                     adjacentCells.Add(node.RelativeCell);
                 }
             }
+            UpdateNodeLinks();
         }
 
         /// <summary>
@@ -310,14 +311,38 @@ namespace DumbProject.Rooms
                 fallingPoints.Clear();
             foreach (Edge edge in edges)
             {
+                GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
                 if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
                 {
-                    GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
-                    if (nodeInFront != null && nodeInFront.RelativeCell == null)
+                    if (nodeInFront != null && nodeInFront.RelativeCell == null && !fallingPoints.Contains(nodeInFront))
                         fallingPoints.Add(nodeInFront);
                 }
+                else if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                {
+                    if(fallingPoints.Contains(nodeInFront))
+                        fallingPoints.Remove(nodeInFront);
+                }
             }
+            UpdateNodeLinks();
         }
+
+        /// <summary>
+        /// Funzione che aggiunge le celle colegate e i punti di caduta ai links del proprio nodo
+        /// </summary>
+        public void UpdateNodeLinks()
+        {
+            foreach (Cell adjacentCell in adjacentCells)
+            {
+                if(!RelativeNode.Links.Contains(adjacentCell.RelativeNode))
+                    RelativeNode.Links.Add(adjacentCell.RelativeNode);
+            }
+
+            foreach (GridNode fallingPonint in fallingPoints)
+            {
+                if (!RelativeNode.Links.Contains(fallingPonint))
+                    RelativeNode.Links.Add(fallingPonint);
+            }
+        } 
 
         /// <summary>
         /// Funzione che ritorna la lista degli edge di questa cella
@@ -369,17 +394,10 @@ namespace DumbProject.Rooms
 
         private void OnDrawGizmos()
         {
-            foreach (Cell cell in adjacentCells)
+            foreach (GridNode node in RelativeNode.Links)
             {
-                if (cell.RelativeNode != null)
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(transform.position, cell.RelativeNode.WorldPosition);
-            }
-
-            foreach (GridNode node in fallingPoints)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(transform.position, node.WorldPosition);
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(RelativeNode.WorldPosition, node.WorldPosition);
             }
         }
     }
