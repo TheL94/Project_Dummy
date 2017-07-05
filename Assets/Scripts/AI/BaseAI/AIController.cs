@@ -65,5 +65,14 @@ namespace Framework.AI
                 return false;
         }
         #endregion
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.magenta;
+            foreach (INetworkable node in nodePath)
+            {
+                Gizmos.DrawCube(node.spacePosition, Vector3.one);
+            }
+        }
     }
 }
