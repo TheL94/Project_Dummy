@@ -6,8 +6,8 @@ namespace DumbProject.Items
 {
     public interface IDroppable
     {
+        DroppableBaseData Data { get; set; }
         Transform transF { get; }
-
-        void GetMyData(DroppableBaseData _data);
+        void InitIDroppable(DroppableBaseData _data);
     }
 }

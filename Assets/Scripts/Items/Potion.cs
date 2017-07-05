@@ -7,8 +7,7 @@ namespace DumbProject.Items
 {
     public class Potion : MonoBehaviour, IDroppable
     {
-        PotionValues values;
-
+        public PotionData SpecificValues { get { return Data as PotionData; } }
         public Transform transF
         {
             get
@@ -17,9 +16,17 @@ namespace DumbProject.Items
             }
         }
 
-        public void GetMyData(DroppableBaseData _data)
+        DroppableBaseData _data;
+
+        public DroppableBaseData Data
         {
-            values = (_data as PotionData).DataValues;
+            get { return _data; }
+            set { _data = value; }
+        }
+
+        public void InitIDroppable(DroppableBaseData _data)
+        {
+            Data = _data;
         }
     }
 }

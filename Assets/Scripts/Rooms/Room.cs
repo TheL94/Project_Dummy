@@ -141,13 +141,14 @@ namespace DumbProject.Rooms
                 _droppableList = value;
             }
         }
-        public void AddDroppable(DroppableBaseData _droppableToAdd)
+        public IDroppable AddDroppable(DroppableBaseData _droppableToAdd)
         {
             Cell freeCell = freeCells[UnityEngine.Random.Range(0, freeCells.Count)];
             IDroppable dropToAdd = Instantiate(_droppableToAdd.ItemPrefab, freeCell.RelativeNode.WorldPosition, Quaternion.identity, transform).GetComponent<IDroppable>();
             freeCell.ChangeFloorColor(_droppableToAdd.ShowMateriaInRoom);
             freeCell.actualDroppable = dropToAdd;
             DroppableList.Add(dropToAdd);
+            return dropToAdd;
         }
 
         public void RemoveDroppable(IDroppable _droppableToRemove)

@@ -13,7 +13,7 @@ namespace DumbProject.Items {
         /// Add a IDroppable
         /// </summary>
         /// <param name="_droppableToAdd"></param>
-        void AddDroppable(DroppableBaseData _droppableToAdd);
+        IDroppable AddDroppable(DroppableBaseData _droppableToAdd);
         /// <summary>
         /// Remove a held IDroppable
         /// </summary>

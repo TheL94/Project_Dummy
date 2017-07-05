@@ -8,7 +8,7 @@ namespace DumbProject.Items
 
     public class Armory : MonoBehaviour, IDroppable
     {
-        ArmoryValues values;
+        public ArmoryData SpecificValues { get { return Data as ArmoryData; } }
 
         public Transform transF
         {
@@ -18,9 +18,17 @@ namespace DumbProject.Items
             }
         }
 
-        public void GetMyData(DroppableBaseData _data)
+        DroppableBaseData _data;
+
+        public DroppableBaseData Data
         {
-            values = (_data as ArmoryData).DataValues;
+            get { return _data; }
+            set { _data = value; }
+        }
+
+        public void InitIDroppable(DroppableBaseData _data)
+        {
+            Data = _data;
         }
     }
 }
