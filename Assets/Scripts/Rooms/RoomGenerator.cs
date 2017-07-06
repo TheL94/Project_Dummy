@@ -9,18 +9,23 @@ namespace DumbProject.Rooms
 {
     public class RoomGenerator : MonoBehaviour
     {
+        public RoomData MainRoomTypesData;
         public RoomData RoomTypesData;
         [HideInInspector]
         public Room FirstRoom;
 
+        RoomData MainRoomTypesInstances;
         RoomData RoomTypesInstances;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
         public void Setup()
         {
+            MainRoomTypesInstances = Instantiate(MainRoomTypesData);
             RoomTypesInstances = Instantiate(RoomTypesData);
+
             SetupSpawnsAssociations();
-            FirstRoom = InstantiateFirstRoom(RoomTypesInstances);
+
+            FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 CreateNewRoom();
