@@ -9,9 +9,12 @@ namespace DumbProject.Rooms
     {
         public bool SelfTrimming;
         public bool SelfDoorTrim;
+        [Range(1, 9)]
         public int MinNumberOfCells;
         public float PenetrationOffset;
+        [Range(0f, 1f)]
         public float RoomExpansionPercentageDecay;
+        [Range(0f, 4f)]
         public float DoorNumberPercentage;
         public RoomElements RoomElements;
     }

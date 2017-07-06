@@ -9,18 +9,23 @@ namespace DumbProject.Rooms
 {
     public class RoomGenerator : MonoBehaviour
     {
+        public RoomData MainRoomTypesData;
         public RoomData RoomTypesData;
         [HideInInspector]
         public Room FirstRoom;
 
+        RoomData MainRoomTypesInstances;
         RoomData RoomTypesInstances;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
         public void Setup()
         {
+            MainRoomTypesInstances = Instantiate(MainRoomTypesData);
             RoomTypesInstances = Instantiate(RoomTypesData);
+
             SetupSpawnsAssociations();
-            FirstRoom = InstantiateFirstRoom(RoomTypesInstances);
+
+            FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 CreateNewRoom();
@@ -54,14 +59,11 @@ namespace DumbProject.Rooms
             GameObject newRoomObj = new GameObject();
             newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
             Room mainRoom = newRoomObj.AddComponent<Room>();
-            GameManager.I.DungeonMng.ParentRoom(mainRoom);
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "FirstRoom";
-            mainRoom.LinkCellsDoorsToFallingPoints();
+            GameManager.I.DungeonMng.ParentRoom(mainRoom, ExplorationStatus.Explored);
 
             GameManager.I.ItemManager.InstantiateItemInRoom(mainRoom);
-
-            GameManager.I.DungeonMng.UpdateRoomConnections();
             return mainRoom;
         }
 

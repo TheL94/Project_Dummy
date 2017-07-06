@@ -15,6 +15,17 @@ namespace DumbProject.Rooms
     /// </summary>
     public class Room : MonoBehaviour, IDroppableHolder
     {
+        ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
+        public ExplorationStatus StatusOfExploration
+        {
+            get { return _statusOfExploration; }
+            set
+            {
+                _statusOfExploration = value;
+                GameManager.I.DungeonMng.SetRoomStausBasedOnCloseRoomsStatus(this);
+            }
+        }
+
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
         [HideInInspector]
@@ -69,8 +80,6 @@ namespace DumbProject.Rooms
         {
             Data = _data;
             PlaceCells(_data, _grid);
-            LinkCellsInsideRoom();
-            LinkCellsDoorsToFallingPoints();
             TrimCellEdges(_grid);
             PlaceDoors(_data);
             TrimCellAngles();
@@ -84,10 +93,8 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
+
             GameManager.I.DungeonMng.ParentRoom(this);
-            LinkCellsToOtherRooms();
-            LinkCellsDoorsToFallingPoints();
-            GameManager.I.DungeonMng.UpdateRoomConnections();
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
         }
@@ -110,21 +117,29 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
+        /// Funzione che collega tra di loro le stanze
         /// </summary>
-        public void LinkCellsToOtherRooms()
+        public void LinkCells()
         {
             foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToOtherRoomsCells();
+                cell.UpdateRelativeNodeLinks();
         }
 
         /// <summary>
-        /// Funzione che collega celle e punti di caduta
+        /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
-        public void LinkCellsDoorsToFallingPoints()
+        /// <returns></returns>
+        public List<Edge> GetListOfEdges()
         {
+            List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
-                cell.LinkDoorsToFallingPoint();
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    listOfEdges.Add(edge);
+                }
+            }
+            return listOfEdges;
         }
 
         #region IDroppableHolder
@@ -385,44 +400,28 @@ namespace DumbProject.Rooms
             parentCell = _edge.transform.parent.GetComponent<Cell>();
             if (_edge.name == "RightEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 _edge.name = "RightDoor";
             }
             else if (_edge.name == "LeftEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 _edge.name = "LeftDoor";
             }
             else if (_edge.name == "UpEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, 
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform,
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "DownDoor";
             }
             _edge.Type = EdgeType.Door;
             return true;
-        }
-
-        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
-        {
-            _obj.transform.position = _transF.position;
-            _obj.transform.rotation = _rotation;
-            _obj.transform.parent = _transF;
-        }
-
-        /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti della stessa stanza
-        /// </summary>
-        void LinkCellsInsideRoom()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToRelativeRoomCells();
         }
 
         /// <summary>
@@ -441,24 +440,8 @@ namespace DumbProject.Rooms
             }
             return listOfPillars;
         }
-
-        /// <summary>
-        /// Ritorna la lista dei muri contenuti in tutte le celle
-        /// </summary>
-        /// <returns></returns>
-        List<Edge> GetListOfEdges()
-        {
-            List<Edge> listOfEdges = new List<Edge>();
-            foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.GetEdgesList())
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
-            return listOfEdges;
-        }
-
         #endregion
     }
+
+    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, Explored = 2 }
 }

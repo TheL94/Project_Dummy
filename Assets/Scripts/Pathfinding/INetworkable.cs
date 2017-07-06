@@ -30,4 +30,19 @@ namespace Framework.Pathfinding {
         /// <param name="_linksToRemove"> INetworkable to remove from Links</param>
         void RemoveLinks(List<INetworkable> _linksToRemove);
     }
+
+    public static class INetworkableExtetion
+    {
+        public static Vector3[] ToVector3Array(this List<INetworkable> INet)
+        {
+            Vector3[] arrayToReturn = new Vector3[INet.Count];
+
+            for (int i = 0; i < INet.Count; i++)
+            {
+                arrayToReturn[i] = INet[i].spacePosition;
+            }
+
+            return arrayToReturn;
+        }
+    }
 }
