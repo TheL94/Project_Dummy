@@ -15,13 +15,13 @@ namespace DumbProject.Rooms
     /// </summary>
     public class Room : MonoBehaviour, IDroppableHolder
     {
-        ExplorationStatus _status = ExplorationStatus.NotInGame;
-        public ExplorationStatus Status
+        ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
+        public ExplorationStatus StatusOfExploration
         {
-            get { return _status; }
+            get { return _statusOfExploration; }
             set
             {
-                _status = value;
+                _statusOfExploration = value;
                 GameManager.I.DungeonMng.SetRoomStausBasedOnCloseRoomsStatus(this);
             }
         }
