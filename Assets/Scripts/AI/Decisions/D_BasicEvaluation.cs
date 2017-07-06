@@ -24,20 +24,20 @@ namespace DumbProject.AI {
             {
                 switch (drop.Data.Type)
                 {
-                    case ItemType.Ememy:
+                    case GenericType.Ememy:
                         returnValue = 1;
                         objective = drop;
                         break;
-                    case ItemType.Item:
+                    case GenericType.Item:
                         if (returnValue == 0 || returnValue > 1)
                         {
                             returnValue = 2;
                             objective = drop;
                         }
                         break;
-                    case ItemType.Trap:
+                    case GenericType.Trap:
                         break;
-                    case ItemType.Gattini:
+                    case GenericType.Gattini:
                         if(returnValue > 2)
                         {
                             returnValue = 3;

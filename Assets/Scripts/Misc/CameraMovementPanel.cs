@@ -95,25 +95,42 @@ namespace DumbProject
             if (!isPointerHeading)
                 return;
 
-            /*(pointerData.position - pointerData.pressPosition) * GameManager.I.CameraVelocity*/;
+            /*(pointerData.position - pointerData.pressPosition) * GameManager.I.CameraVelocity;*/
             if (positiontoHead.x != 0 || positiontoHead.y != 0)
             {
-                Vector3 temp = new Vector3((positiontoHead.x - pointerData.position.x), 0, (positiontoHead.y - pointerData.position.y));
-                GameManager.I.CameraController.MoveCamera(temp.normalized); 
+                float distance = CalculateDistanceInWorld();
+
+
+                //Vector3 temp = new Vector3((positiontoHead.x - pointerData.position.x), 0, (positiontoHead.y - pointerData.position.y));
+                //GameManager.I.CameraController.MoveCamera(temp.normalized); 
             }
+        }
+
+        float CalculateDistanceInWorld()
+        {
+            float ScreenDistance = Vector2.Distance(positiontoHead, pointerData.position);
+
+            Vector2 A1;
+            Vector2 A2;
+
+            A1.x = pointerData.position.x * 776 / 294;
+            A1.y = pointerData.position.y * 598 / 294;
+
+            A2.x = positiontoHead.x * 776 / 294;
+            A2.y = positiontoHead.y * 598 / 294;
+
+            return Vector2.Distance(A1, A2);
         }
 
         public void OnScroll(PointerEventData eventData)
         {
             if(eventData.scrollDelta.y > 0)
             {
-                Debug.Log("Sroll In");
                 GameManager.I.CameraController.ZoomTheCamera(eventData.scrollDelta.y);
             }
 
             if (eventData.scrollDelta.y < 0)
             {
-                Debug.Log("Sroll Out");
                 GameManager.I.CameraController.ZoomTheCamera(eventData.scrollDelta.y);
             }
 
@@ -123,7 +140,6 @@ namespace DumbProject
         {
             isPointerHeading = true;
             pointerData = eventData;
-            Debug.Log(pointerData.position);
         }
 
         public void OnPointerUp(PointerEventData eventData)

@@ -385,35 +385,28 @@ namespace DumbProject.Rooms
             parentCell = _edge.transform.parent.GetComponent<Cell>();
             if (_edge.name == "RightEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 _edge.name = "RightDoor";
             }
             else if (_edge.name == "LeftEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, Quaternion.identity);
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 _edge.name = "LeftDoor";
             }
             else if (_edge.name == "UpEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform, 
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), _edge.transform,
+                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
                     Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position));
                 _edge.name = "DownDoor";
             }
             _edge.Type = EdgeType.Door;
             return true;
-        }
-
-        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
-        {
-            _obj.transform.position = _transF.position;
-            _obj.transform.rotation = _rotation;
-            _obj.transform.parent = _transF;
         }
 
         /// <summary>

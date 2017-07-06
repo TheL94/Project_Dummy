@@ -147,16 +147,16 @@ namespace DumbProject.Rooms
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
-                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform);
+                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), Quaternion.identity);
                 }
                 else if (edge.name == "UpEdge")
                 {
-                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform, 
+                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), 
                         Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
                 }
                 else if (edge.name == "DownEdge")
                 {
-                    PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), edge.transform,
+                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall),
                         Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
                 }
             }
@@ -164,13 +164,8 @@ namespace DumbProject.Rooms
 
         void PlaceGameObj(GameObject _obj, Transform _transF)
         {
-            PlaceGameObj(_obj, _transF, Quaternion.identity);
-        }
-
-        void PlaceGameObj(GameObject _obj, Transform _transF, Quaternion _rotation)
-        {
             _obj.transform.position = _transF.position;
-            _obj.transform.rotation = _rotation;
+            _obj.transform.rotation = _transF.rotation;
             _obj.transform.parent = _transF;
         }
         #endregion

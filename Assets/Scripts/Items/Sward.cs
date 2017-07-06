@@ -5,17 +5,14 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class Sward : MonoBehaviour, IDroppable
+    public class Sward : ItemBase, IDroppable, IInteractabile
     {
         public SwardData SpecificValues { get { return (Data as SwardData); } }
         //SwardValues values { get { return data.DataValues; } }
 
         public Transform transF
         {
-            get
-            {
-                return base.transform;
-            }
+            get { return base.transform; }
         }
         DroppableBaseData _data;
 
@@ -28,6 +25,11 @@ namespace DumbProject.Items
         public void InitIDroppable(DroppableBaseData _data)
         {
             Data = _data;
+        }
+
+        public void Interact()
+        {
+            
         }
     }
 }

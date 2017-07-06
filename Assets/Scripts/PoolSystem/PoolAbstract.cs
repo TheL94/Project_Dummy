@@ -53,9 +53,13 @@ namespace Framework.PoolSystem
                 {
                     activePool.RemoveAt(i);
                     inactivePool.Add(item);
+                    ResetPool(item);
                 }
             }
         }
+
+        protected virtual void ResetPool(PoolType _item) { }
+
 
         protected PoolType GetInactiveObject()
         {
