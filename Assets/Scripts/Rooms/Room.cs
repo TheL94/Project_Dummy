@@ -15,6 +15,17 @@ namespace DumbProject.Rooms
     /// </summary>
     public class Room : MonoBehaviour, IDroppableHolder
     {
+        ExplorationStatus _status = ExplorationStatus.NotInGame;
+        public ExplorationStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                GameManager.I.DungeonMng.SetRoomStausBasedOnCloseRoomsStatus(this);
+            }
+        }
+
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
         [HideInInspector]
@@ -69,8 +80,6 @@ namespace DumbProject.Rooms
         {
             Data = _data;
             PlaceCells(_data, _grid);
-            LinkCellsInsideRoom();
-            LinkCellsDoorsToFallingPoints();
             TrimCellEdges(_grid);
             PlaceDoors(_data);
             TrimCellAngles();
@@ -84,10 +93,8 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
+
             GameManager.I.DungeonMng.ParentRoom(this);
-            LinkCellsToOtherRooms();
-            LinkCellsDoorsToFallingPoints();
-            GameManager.I.DungeonMng.UpdateRoomConnections();
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
         }
@@ -110,21 +117,29 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti di stanze diverse
+        /// Funzione che collega tra di loro le stanze
         /// </summary>
-        public void LinkCellsToOtherRooms()
+        public void LinkCells()
         {
             foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToOtherRoomsCells();
+                cell.UpdateRelativeNodeLinks();
         }
 
         /// <summary>
-        /// Funzione che collega celle e punti di caduta
+        /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
-        public void LinkCellsDoorsToFallingPoints()
+        /// <returns></returns>
+        public List<Edge> GetListOfEdges()
         {
+            List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
-                cell.LinkDoorsToFallingPoint();
+            {
+                foreach (Edge edge in cell.GetEdgesList())
+                {
+                    listOfEdges.Add(edge);
+                }
+            }
+            return listOfEdges;
         }
 
         #region IDroppableHolder
@@ -410,15 +425,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collaga fra di loro le celle adiacenti della stessa stanza
-        /// </summary>
-        void LinkCellsInsideRoom()
-        {
-            foreach (Cell cell in CellsInRoom)
-                cell.LinkCellToRelativeRoomCells();
-        }
-
-        /// <summary>
         /// Ritorna la lista dei pilastri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
@@ -434,24 +440,8 @@ namespace DumbProject.Rooms
             }
             return listOfPillars;
         }
-
-        /// <summary>
-        /// Ritorna la lista dei muri contenuti in tutte le celle
-        /// </summary>
-        /// <returns></returns>
-        List<Edge> GetListOfEdges()
-        {
-            List<Edge> listOfEdges = new List<Edge>();
-            foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.GetEdgesList())
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
-            return listOfEdges;
-        }
-
         #endregion
     }
+
+    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, Explored = 2 }
 }

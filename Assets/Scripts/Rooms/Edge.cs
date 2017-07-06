@@ -3,26 +3,94 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Generic;
+using Framework.Pathfinding;
+using System;
 
 namespace DumbProject.Rooms
 {
-    public class Edge : MonoBehaviour
+    public class Edge : MonoBehaviour, INetworkable
     {
-        EdgeType _type = EdgeType.Wall;
-        public EdgeType Type
+        [HideInInspector]
+        public EdgeType Type = EdgeType.Wall;
+
+        ExplorationStatus _status = ExplorationStatus.NotInGame;
+        public ExplorationStatus Status
         {
-            get { return _type; }
+            get { return _status; }
             set
             {
-                _type = value;
+                _status = value;
+                if (_status != ExplorationStatus.NotInGame)
+                    UpdateLinks();
             }
         }
+
         [HideInInspector]
         public Edge CollidingEdge;
         [HideInInspector]
         public Cell RelativeCell;
 
         GameObject graphic;
+
+        //Implementazione di INetworkable
+        #region INetworkable
+        public Vector3 spacePosition { get { return transform.position; } set { } }
+        List<INetworkable> _links = new List<INetworkable>();
+        public List<INetworkable> Links
+        {
+            get { return _links; }
+            set { _links = value; }
+        }
+
+        public void AddLinks(List<INetworkable> _newLinks)
+        {
+            foreach (INetworkable _INet in _newLinks)
+            {
+                if (!Links.Contains(_INet))
+                    Links.Add(_INet);
+            }
+        }
+
+        public void RemoveLinks(List<INetworkable> _linksToRemove)
+        {
+            foreach (INetworkable _INet in _linksToRemove)
+            {
+                if (Links.Contains(_INet))
+                    Links.Remove(_INet);
+            }
+        }
+
+        public void UpdateLinks()
+        {
+            if (Status != ExplorationStatus.NotInGame)
+            {
+                GridNode node = null;
+                node = RelativeCell.RelativeNode;
+                if (!Links.Contains(node))
+                {
+                    Links.Add(node);
+                    node.AddLinks(new List<INetworkable>() { this });
+                }
+
+                node = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetNodeInFrontPosition());
+                if (node != null)
+                {
+                    if (!Links.Contains(node))
+                    {
+                        Links.Add(node);
+                        node.AddLinks(new List<INetworkable>() { this });
+                    }
+                }
+            }
+            else
+            {
+                foreach (INetworkable INet in Links)
+                {
+                    INet.RemoveLinks(new List<INetworkable>() { this });
+                }
+            }
+        }
+        #endregion
 
         public void Setup(Cell _relativeCell)
         {
@@ -67,6 +135,38 @@ namespace DumbProject.Rooms
         {
             graphic.SetActive(false);
             graphic = null;
+            Status = ExplorationStatus.NotInGame;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if(Type == EdgeType.Door)
+            {
+                switch (Status)
+                {
+                    case ExplorationStatus.NotInGame:
+                        Gizmos.color = Color.white;
+                        break;
+                    case ExplorationStatus.Unavailable:
+                        Gizmos.color = Color.red;
+                        break;
+                    case ExplorationStatus.Unexplored:
+                        Gizmos.color = Color.yellow;
+                        break;
+                    case ExplorationStatus.Explored:
+                        Gizmos.color = Color.red;
+                        break;
+                    default:
+                        break;
+                }               
+                Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
+            }
+
+            foreach (Framework.Pathfinding.INetworkable node in Links)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(spacePosition, node.spacePosition);
+            }
         }
     }
 

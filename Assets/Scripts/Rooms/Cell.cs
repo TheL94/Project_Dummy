@@ -33,8 +33,6 @@ namespace DumbProject.Rooms
             private set { _relativeRoom = value; }
         }
 
-        List<Cell> adjacentCells = new List<Cell>();
-        List<GridNode> fallingPoints = new List<GridNode>();
         GameObject floor;
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
@@ -267,75 +265,20 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che collega la cella con le celle di altre stanze che sitrovano di fronte alle porte della cella
+        /// Funzione che aggiorna i links del nodo relativo della cella
         /// </summary>
-        public void LinkCellToOtherRoomsCells()
-        {           
+        public void UpdateRelativeNodeLinks()
+        {
+            // Aggiungo ai links del nodo relativo le celle delle stanza relativa adiacenti
+            foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
+                if (adjacentNode.RelativeCell != null && adjacentNode.RelativeCell.RelativeRoom == RelativeRoom)
+                    RelativeNode.Links.Add(adjacentNode);
+
+            // Aggiungo ai links del nodo relativo le mie porte
             foreach (Edge edge in edges)
             {
                 if (edge.Type == EdgeType.Door)
-                {
-                    GridNode node = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
-                    if(node.RelativeCell != null)
-                    adjacentCells.Add(node.RelativeCell);
-                }
-            }
-            UpdateNodeLinks();
-        }
-
-        /// <summary>
-        /// Funzione che collega la cella con le celle delle stessa stanza
-        /// </summary>
-        public void LinkCellToRelativeRoomCells()
-        {
-            foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
-            {
-                if (adjacentNode.RelativeCell != null)
-                {
-                    adjacentCells.Add(adjacentNode.RelativeCell);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Funzione che riempe la lista di punti di caduta
-        /// </summary>
-        public void LinkDoorsToFallingPoint()
-        {
-            if (fallingPoints.Count > 0)
-                fallingPoints.Clear();
-            foreach (Edge edge in edges)
-            {
-                GridNode nodeInFront = RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
-                if (edge.Type == EdgeType.Door && edge.CollidingEdge == null)
-                {
-                    if (nodeInFront != null && nodeInFront.RelativeCell == null && !fallingPoints.Contains(nodeInFront))
-                        fallingPoints.Add(nodeInFront);
-                }
-                else if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
-                {
-                    if(fallingPoints.Contains(nodeInFront))
-                        fallingPoints.Remove(nodeInFront);
-                }
-            }
-            UpdateNodeLinks();
-        }
-
-        /// <summary>
-        /// Funzione che aggiunge le celle colegate e i punti di caduta ai links del proprio nodo
-        /// </summary>
-        public void UpdateNodeLinks()
-        {
-            foreach (Cell adjacentCell in adjacentCells)
-            {
-                if(!RelativeNode.Links.Contains(adjacentCell.RelativeNode))
-                    RelativeNode.Links.Add(adjacentCell.RelativeNode);
-            }
-
-            foreach (GridNode fallingPonint in fallingPoints)
-            {
-                if (!RelativeNode.Links.Contains(fallingPonint))
-                    RelativeNode.Links.Add(fallingPonint);
+                    edge.UpdateLinks();
             }
         } 
 
@@ -359,24 +302,6 @@ namespace DumbProject.Rooms
             return angles;
         }
 
-        /// <summary>
-        /// Funzione che ritorna la lista delle celle adiacenti
-        /// </summary>
-        /// <returns></returns>
-        public List<Cell> GetAdjacentCellsList()
-        {
-            return adjacentCells;
-        }
-
-        /// <summary>
-        /// Funzione che ritorna la lista dei punti di caduta
-        /// </summary>
-        /// <returns></returns>
-        public List<GridNode> GetFallingPointsList()
-        {
-            return fallingPoints;
-        }
-
         #region IChangeColor Interface
 
         public void ChangeFloorColor(Material _newMaterial)
@@ -389,10 +314,10 @@ namespace DumbProject.Rooms
 
         private void OnDrawGizmos()
         {
-            foreach (GridNode node in RelativeNode.Links)
+            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawLine(RelativeNode.WorldPosition, node.WorldPosition);
+                Gizmos.DrawLine(RelativeNode.WorldPosition, node.spacePosition);
             }
         }
     }
