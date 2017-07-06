@@ -30,14 +30,14 @@ namespace DumbProject.Items
 
     public enum EnemyType
     {
-        Drago,
-        Goblin,
+        Drago = 0,
+        Goblin = 1,
     }
 
     public enum TrapType
     {
-        Tagliola,
-        Catapulta,
+        Tagliola = 0,
+        Catapulta = 1,
     }
     
 }

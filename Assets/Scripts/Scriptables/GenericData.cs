@@ -16,7 +16,21 @@ namespace DumbProject.Items
 
         // Potion Parameters
         public PotionValues PotionDataValues;
+
+        // Dragon Parameters
+        public DragonValues DragonDataValues;
+
+        // Goblin Parameters
+        public GoblinValues GoblinDataValues;
+
+        // Tagliola Parameters
+        public TagliolaValues TagliolaValues;
+
+        // Catapulta Parameters
+        public CatapultaValues CatapultaValues;
+
     }
+
 
     [SerializeField]
     public struct SwordValues
@@ -37,5 +51,33 @@ namespace DumbProject.Items
     {
         public float HealtRestore;
         public float DamageHero;
+    }
+
+    [SerializeField]
+    public struct DragonValues
+    {
+        public float Damage;
+        public float Life;
+    }
+
+    [SerializeField]
+    public struct GoblinValues
+    {
+        public float Damage;
+        public float Life;
+    }
+
+    [SerializeField]
+    public struct TagliolaValues
+    {
+        public float Damage;
+        public float TimeToLeave;
+    }
+
+    [SerializeField]
+    public struct CatapultaValues
+    {
+        public float Damage;
+        public float TimeToLeave;
     }
 }
