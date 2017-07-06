@@ -27,7 +27,7 @@ namespace DumbProject.AI
                 pathfinder = _controller.pathFinder;
 
             if ((_controller.nodePath == null || _controller.nodePath.Count == 0) && _controller.CurrentNode != (_controller as AIActor).nextRoomObjective)
-                _controller.nodePath = pathfinder.FindPath(grid.GetSpecificGridNode((_controller as AIActor).nextRoomObjective.transF.position));
+                _controller.nodePath = pathfinder.FindPath(grid.GetSpecificGridNode((_controller as AIActor).nextRoomObjective.transF.position), (_controller as AIActor).CurrentNode);
         }
     }
 }

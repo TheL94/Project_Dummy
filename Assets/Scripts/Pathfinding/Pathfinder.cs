@@ -33,14 +33,11 @@ namespace Framework.Pathfinding
         /// <param name="_target"> Point to head to</param>
         /// <param name="_start"> Starting position of the path to find</param>
         /// <returns> An ordered list of node to be used as position for the pathfinding</returns>
-        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start = null)
+        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start)
         {
             PathStep startingStep;
-            //------Format to set Actual as defoult of this method's _start parameter
-            if (_start == null)
-                startingStep = new PathStep(Actual, Actual, _target);
-            else
-                startingStep = new PathStep(_start, _start, _target);
+            Actual = _start;
+            startingStep = new PathStep(Actual, Actual, _target);
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
