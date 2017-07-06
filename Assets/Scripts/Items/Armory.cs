@@ -6,29 +6,18 @@ using UnityEngine;
 namespace DumbProject.Items
 {
 
-    public class Armory : MonoBehaviour, IDroppable
+    public class Armory : MonoBehaviour, IInteractabile
     {
-        public ArmoryData SpecificValues { get { return Data as ArmoryData; } }
+        public ArmoryValues ArmoryValues;
 
-        public Transform transF
+        public void Init(ArmoryValues _values)
         {
-            get
-            {
-                return base.transform;
-            }
+            ArmoryValues = _values;
         }
 
-        DroppableBaseData _data;
-
-        public DroppableBaseData Data
+        public void Interact()
         {
-            get { return _data; }
-            set { _data = value; }
-        }
 
-        public void InitIDroppable(DroppableBaseData _data)
-        {
-            Data = _data;
         }
     }
 }
