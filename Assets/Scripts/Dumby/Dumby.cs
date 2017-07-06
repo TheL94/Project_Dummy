@@ -16,10 +16,5 @@ namespace DumbProject.Generic
             animator = GetComponentInChildren<Animator>();
             base.Setup(_setActive);
         }
-
-        protected override void OnUpdate()
-        {
-            FollowPath();
-        }
     }
 }

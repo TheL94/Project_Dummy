@@ -13,7 +13,7 @@ namespace DumbProject.Generic {
         public float MoveDuration;
         public float InteractionRadius;
 
-        public Tweener pathTracking { get; protected set; }
+        Tweener pathTrack;
         /// <summary>
         /// Actual position onto the INetworkable grid. 
         /// Can't be Set. Any try will change nothing.
@@ -32,8 +32,8 @@ namespace DumbProject.Generic {
         }
 
         protected Animator animator;
-        AnimationState _animState = AnimationState.Idle;
-        public AnimationState AnimState
+        AnimationStatus _animState = AnimationStatus.Idle;
+        public AnimationStatus AnimState
         {
             get { return _animState; }
             set
@@ -49,37 +49,28 @@ namespace DumbProject.Generic {
 
         public IDroppable nextRoomObjective;
 
-        public void FollowPath()
+        public void FollowPath(bool forceNew = false)
         {
-            AnimState = AnimationState.Running;
+            AnimState = AnimationStatus.Running;
             if (nodePath == null || nodePath.Count <= 0)
                 return;
-            if (Vector3.Distance(nodePath[0].spacePosition, transform.position) <= InteractionRadius)
-                nodePath.Remove(nodePath[0]);
-            if (nodePath.Count == 0)
-                return;
 
-            if (pathTracking == null)
+            Vector3[] wayPoints = nodePath.ToVector3Array();
+
+            for (int i = 0; i < wayPoints.Length; i++)
             {
-                pathTracking = transform.DOLookAt(nodePath[0].spacePosition, LookDuration).OnComplete(() =>
-                {
-                    pathTracking = transform.DOMove(nodePath[0].spacePosition, MoveDuration);
-                });
+                Debug.Log(wayPoints[i]);
             }
-            else
-            {
-                if (Vector3.Distance(transform.position, nodePath[0].spacePosition) <= InteractionRadius)
-                {
-                    nodePath.Remove(nodePath[0]);
-                    pathTracking.Complete();
-                    pathTracking = null;
-                }
-            }
+            if(pathTrack == null)
+                pathTrack = transform.DOPath(wayPoints, MoveDuration * nodePath.Count, PathType.Linear, PathMode.Full3D, 0, Color.magenta);
+            else if(!pathTrack.IsPlaying() || forceNew)
+                pathTrack = transform.DOPath(wayPoints, MoveDuration * nodePath.Count, PathType.Linear, PathMode.Full3D, 0, Color.magenta);
+            pathTrack.OnComplete(() => { nodePath.Clear(); });
+            pathTrack.SetSpeedBased();
         }
-
     }
 
-    public enum AnimationState
+    public enum AnimationStatus
     {
         Fallen = 0,
         Idle = 1,

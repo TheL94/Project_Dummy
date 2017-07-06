@@ -33,14 +33,11 @@ namespace Framework.Pathfinding
         /// <param name="_target"> Point to head to</param>
         /// <param name="_start"> Starting position of the path to find</param>
         /// <returns> An ordered list of node to be used as position for the pathfinding</returns>
-        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start = null)
+        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start)
         {
             PathStep startingStep;
-            //------Format to set Actual as defoult of this method's _start parameter
-            if (_start == null)
-                startingStep = new PathStep(Actual, Actual, _target);
-            else
-                startingStep = new PathStep(_start, _start, _target);
+            Actual = _start;
+            startingStep = new PathStep(Actual, Actual, _target);
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
@@ -71,6 +68,7 @@ namespace Framework.Pathfinding
         /// <returns></returns>
         PathStep FinNextValidStep(INetworkable _target, List<PathStep> _givenPath)
         {
+            List<PathStep> possibleOutcomes = new List<PathStep>();
             PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
             float pathDistance = outcome.distance;
 
@@ -83,15 +81,33 @@ namespace Framework.Pathfinding
                     if (CheckForNodeInPath(closeNode, _givenPath))
                         continue;
 
-                    if (tempOutCome.distance < pathDistance)
+                    if (tempOutCome.distance <= pathDistance)
                     {
-                        outcome = tempOutCome;
-                        pathDistance = outcome.distance;
+                        if(tempOutCome.distance < pathDistance)
+                        {
+                            possibleOutcomes.Clear();
+                            possibleOutcomes.Add(tempOutCome);
+                            outcome = tempOutCome;
+                            pathDistance = outcome.distance;
+                        }
+                        else
+                        {
+                            possibleOutcomes.Add(tempOutCome);
+                            outcome = tempOutCome;
+                        }
                     }
                 }
             }
+
             //Prevent search for impossible path
-            if (CheckForNodeInPath(outcome.node,_givenPath))
+            if(possibleOutcomes.Count > 1)
+            {
+                foreach (PathStep step in possibleOutcomes)
+                {
+                    if (CheckForNodeInPath(step.node, _givenPath))
+                        return null;
+                }
+            }else if (CheckForNodeInPath(outcome.node,_givenPath))
                 return null;
 
             return outcome;
@@ -141,7 +157,7 @@ namespace Framework.Pathfinding
         {
             foreach (PathStep step in _givenPath)
             {
-                if (step.node.spacePosition == _node.spacePosition)
+                if (step.node == _node)
                     return true;
             }
             return false;
