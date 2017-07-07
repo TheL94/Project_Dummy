@@ -30,10 +30,10 @@ namespace DumbProject.Editors
         private List<string> _trapCategoryLabels;
 
 
-        int _genericCategorySelected = 0;
-        int _itemCategorySelected = 0;
-        int _enemyCategorySelected = 0;
-        int _trapCategorySelected = 0;
+        int _genericCategorySelected { get { return (int)Data.Type; } set { Data.Type = (GenericType)value; } }
+        int _itemCategorySelected { get { return (int)Data.SpecificItemType; } set { Data.SpecificItemType = (ItemType)value; } }
+        int _enemyCategorySelected { get { return (int)Data.SpecificEnemyType; } set { Data.SpecificEnemyType = (EnemyType)value; } }
+        int _trapCategorySelected { get { return (int)Data.SpecificTrapType; } set { Data.SpecificTrapType = (TrapType)value; } }
 
 
         private void InitCategories() { 
@@ -92,8 +92,8 @@ namespace DumbProject.Editors
             if(_genericCategorySelected == 0)
             {
                 DrawEnemyTabs();
-
-                if (_enemyCategorySelected == 0)
+                //_genericCategorySelected = 0;
+                if (_enemyCategorySelected == 1)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
@@ -108,7 +108,7 @@ namespace DumbProject.Editors
                     GUILayout.EndHorizontal();
                 }
 
-                if (_enemyCategorySelected == 1)
+                if (_enemyCategorySelected == 2)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
@@ -128,7 +128,8 @@ namespace DumbProject.Editors
             if (_genericCategorySelected == 1)
             {
                 DrawItemTabs();
-                if(_itemCategorySelected == 0)
+                //_genericCategorySelected = 1;
+                if (_itemCategorySelected == 1)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
@@ -143,7 +144,7 @@ namespace DumbProject.Editors
                     GUILayout.EndHorizontal();
                 }
 
-                if (_itemCategorySelected == 1)
+                if (_itemCategorySelected == 2)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage Hero");
@@ -158,7 +159,7 @@ namespace DumbProject.Editors
                     GUILayout.EndHorizontal();
                 }
 
-                if (_itemCategorySelected == 2)
+                if (_itemCategorySelected == 3)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Protection");
@@ -180,7 +181,9 @@ namespace DumbProject.Editors
             {
                 DrawTrapsTabs();
 
-                if (_enemyCategorySelected == 0)
+                //_genericCategorySelected = 2;
+
+                if (_enemyCategorySelected == 1)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
@@ -195,7 +198,7 @@ namespace DumbProject.Editors
                     GUILayout.EndHorizontal();
                 }
 
-                if (_enemyCategorySelected == 1)
+                if (_enemyCategorySelected == 2)
                 {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
@@ -228,7 +231,6 @@ namespace DumbProject.Editors
             Data.ShowMateriaInRoom = (Material)EditorGUILayout.ObjectField("Material For Room", Data.ShowMateriaInRoom, typeof(Material), false);
             GUILayout.EndHorizontal();
 
-            //base.OnInspectorGUI();
         }
 
         private void DrawGenericTabs() {
@@ -242,24 +244,24 @@ namespace DumbProject.Editors
         void DrawItemTabs()
         {
             int index = (int)_itemCategorySelected;
-            Data.SpecificType = (DumbProject.Items.ItemType)GUILayout.Toolbar(index, _itemCategoryLabels.ToArray());
-            index = (int)Data.SpecificType;
+            Data.SpecificItemType = (DumbProject.Items.ItemType)GUILayout.Toolbar(index, _itemCategoryLabels.ToArray());
+            index = (int)Data.SpecificItemType;
             _itemCategorySelected = (int)_itemCategory[index];
         }
 
         void DrawEnemyTabs()
         {
             int index = (int)_enemyCategorySelected;
-            Data.SpecificType = (DumbProject.Items.ItemType)GUILayout.Toolbar(index, _enemyCategoryLabels.ToArray());
-            index = (int)Data.SpecificType;
+            Data.SpecificEnemyType = (DumbProject.Items.EnemyType)GUILayout.Toolbar(index, _enemyCategoryLabels.ToArray());
+            index = (int)Data.SpecificEnemyType;
             _enemyCategorySelected = (int)_enemyCategory[index];
         }
 
         void DrawTrapsTabs()
         {
             int index = (int)_trapCategorySelected;
-            Data.SpecificType = (DumbProject.Items.ItemType)GUILayout.Toolbar(index, _trapCategoryLabels.ToArray());
-            index = (int)Data.SpecificType;
+            Data.SpecificTrapType = (DumbProject.Items.TrapType)GUILayout.Toolbar(index, _trapCategoryLabels.ToArray());
+            index = (int)Data.SpecificTrapType;
             _trapCategorySelected = (int)_trapCategory[index];
         }
     }

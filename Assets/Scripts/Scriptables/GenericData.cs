@@ -7,7 +7,9 @@ namespace DumbProject.Items
     [CreateAssetMenu(fileName = "Item", menuName = "Items/GenericData", order = 0)]
     public class GenericData : DroppableBaseData
     {
-        public ItemType SpecificType;
+        public ItemType SpecificItemType;
+        public EnemyType SpecificEnemyType;
+        public TrapType SpecificTrapType;
         // Sward Parameters
         public SwordValues SwordDataValues;
 

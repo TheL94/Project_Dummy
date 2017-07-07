@@ -33,7 +33,7 @@ namespace DumbProject.Items
                     break;
                 case GenericType.Item:
 
-                    switch ((Data as GenericData).SpecificType)
+                    switch ((Data as GenericData).SpecificItemType)
                     {
                         case ItemType.Sword:
                             swordValues = (Data as GenericData).SwordDataValues;

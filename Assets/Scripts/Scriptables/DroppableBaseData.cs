@@ -16,28 +16,31 @@ namespace DumbProject.Items
     public enum GenericType
     {
         Ememy = 0,
-        Item,
-        Trap,
-        Gattini,
+        Item = 1,
+        Trap = 2,
+        Gattini = 3,
     }
     
     public enum ItemType
     {
-        Sword = 0,
-        Potion = 1,
-        Armory = 2,
+        None = 0,
+        Sword = 1,
+        Potion = 2,
+        Armory = 3,
     }
 
     public enum EnemyType
     {
-        Drago = 0,
-        Goblin = 1,
+        None = 0,
+        Drago = 1,
+        Goblin = 2,
     }
 
     public enum TrapType
     {
-        Tagliola = 0,
-        Catapulta = 1,
+        None = 0,
+        Tagliola = 1,
+        Catapulta = 2,
     }
     
 }
