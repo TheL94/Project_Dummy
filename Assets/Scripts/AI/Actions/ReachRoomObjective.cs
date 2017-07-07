@@ -16,7 +16,7 @@ namespace DumbProject.AI
 
         void Move(AIController _controller)
         {
-            (_controller as AIActor).FollowPath();
+            (_controller as AIActor).MoveToNextPathNode();
         }
     }
 }

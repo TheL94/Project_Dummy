@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class Sword : MonoBehaviour, IInteractabile
+    public class Sword : MonoBehaviour, IInteractable
     {
 
         public SwordValues SwordValues;
@@ -14,6 +14,9 @@ namespace DumbProject.Items
         {
             SwordValues = _values;
         }
+
+        bool _isInteractable = true;
+        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         public void Interact()
         {

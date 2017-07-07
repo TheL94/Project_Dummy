@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
 
-    public class Armory : MonoBehaviour, IInteractabile
+    public class Armory : MonoBehaviour, IInteractable
     {
         public ArmoryValues ArmoryValues;
 
@@ -14,6 +14,9 @@ namespace DumbProject.Items
         {
             ArmoryValues = _values;
         }
+
+        bool _isInteractable = true;
+        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         public void Interact()
         {

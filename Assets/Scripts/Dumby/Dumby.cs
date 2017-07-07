@@ -12,7 +12,7 @@ namespace DumbProject.Generic
     {
         public override void Setup(bool _setActive = true)
         {
-            grid = GameManager.I.MainGridCtrl; ;
+            Grid = GameManager.I.MainGridCtrl; ;
             animator = GetComponentInChildren<Animator>();
             base.Setup(_setActive);
         }

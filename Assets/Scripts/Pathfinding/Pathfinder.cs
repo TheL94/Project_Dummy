@@ -8,36 +8,18 @@ namespace Framework.Pathfinding
     /// <summary>
     /// Componen used to navigate onto a INetworkable network
     /// </summary>
-    public class Pathfinder
+    public static class Pathfinder
     {
-        INetworkable _actual = null;
-        //Current INetworkable that enstablish position in network
-        public INetworkable Actual
-        {
-            get { return _actual; }
-            private set { _actual = value; }
-        }
-
-        Pathfinder() { }
-        /// <summary>
-        /// Constructor suggested to be used
-        /// </summary>
-        /// <param name="positionInNetwork"></param>
-        public Pathfinder(INetworkable positionInNetwork)
-        {
-            Actual = positionInNetwork;
-        }
         /// <summary>
         /// Find a path from _start to _target
         /// </summary>
         /// <param name="_target"> Point to head to</param>
         /// <param name="_start"> Starting position of the path to find</param>
         /// <returns> An ordered list of node to be used as position for the pathfinding</returns>
-        public List<INetworkable> FindPath(INetworkable _target, INetworkable _start)
+        public static List<INetworkable> FindPath(INetworkable _target, INetworkable _start)
         {
             PathStep startingStep;
-            Actual = _start;
-            startingStep = new PathStep(Actual, Actual, _target);
+            startingStep = new PathStep(_start, _start, _target);
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
@@ -54,7 +36,7 @@ namespace Framework.Pathfinding
                 }
             }
 
-            List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start == null ? Actual : _start);
+            List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start);
 
             return foundPath;
         }
@@ -66,7 +48,7 @@ namespace Framework.Pathfinding
         /// <param name="_target"></param>
         /// <param name="_givenPath"></param>
         /// <returns></returns>
-        PathStep FinNextValidStep(INetworkable _target, List<PathStep> _givenPath)
+        static PathStep FinNextValidStep(INetworkable _target, List<PathStep> _givenPath)
         {
             List<PathStep> possibleOutcomes = new List<PathStep>();
             PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
@@ -119,7 +101,7 @@ namespace Framework.Pathfinding
         /// <param name="_target"></param>
         /// <param name="_start"></param>
         /// <returns></returns>
-        List<INetworkable> RetrackPath(List<PathStep> _validPath, INetworkable _target, INetworkable _start)
+        static List<INetworkable> RetrackPath(List<PathStep> _validPath, INetworkable _target, INetworkable _start)
         {
             List<INetworkable> shortestPath = new List<INetworkable>();
             shortestPath.Add(_target);
@@ -153,7 +135,7 @@ namespace Framework.Pathfinding
         /// <param name="_node"></param>
         /// <param name="_givenPath"></param>
         /// <returns></returns>
-        bool CheckForNodeInPath(INetworkable _node, List<PathStep> _givenPath)
+        static bool CheckForNodeInPath(INetworkable _node, List<PathStep> _givenPath)
         {
             foreach (PathStep step in _givenPath)
             {
@@ -167,7 +149,7 @@ namespace Framework.Pathfinding
         /// </summary>
         /// <param name="_PathSteps"></param>
         /// <returns></returns>
-        List<INetworkable> PathStepToINetworkableList(List<PathStep> _PathSteps)
+        static List<INetworkable> PathStepToINetworkableList(List<PathStep> _PathSteps)
         {
             List<INetworkable> iNetPath = new List<INetworkable>();
             foreach (PathStep pS in _PathSteps)

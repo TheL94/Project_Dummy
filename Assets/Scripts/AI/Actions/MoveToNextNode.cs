@@ -9,9 +9,6 @@ namespace DumbProject.AI
     [CreateAssetMenu(menuName = "AI/State/Action/MoveToNextNode")]
     public class MoveToNextNode : Action
     {
-        public float RotationTime = 0.2f;
-        public float TranslationTime = .4f;
-
         public override void Act(AIController _controller)
         {
             Move(_controller);
@@ -19,7 +16,7 @@ namespace DumbProject.AI
 
         void Move(AIController _controller)
         {
-            (_controller as Generic.AIActor).FollowPath();
+            (_controller as Generic.AIActor).MoveToNextPathNode();
         }
     }
 }

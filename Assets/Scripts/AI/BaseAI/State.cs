@@ -14,7 +14,6 @@ namespace Framework.AI
 
         public void UpdateState(AIController _controller)
         {
-            Debug.Log(this.name);
             DoActions(_controller);
             CheckTransitions(_controller);
         }

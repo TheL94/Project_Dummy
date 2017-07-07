@@ -7,14 +7,27 @@ namespace Framework.AI
 {
     public class AIController : MonoBehaviour
     {
-        public State CurrentState;
-
+        State _currentState;
+        public State CurrentState
+        {
+            get
+            {
+                if (_currentState == null)
+                    _currentState = InitialState;
+                return _currentState;
+            }
+            set
+            {
+                _currentState = value;
+                Debug.Log(CurrentState.name);
+            }
+        }
+        public State InitialState;
         public bool DebugMode;
         public bool isActive = false;
 
         public virtual void Setup(bool _setActive = true)
         {
-            CanPathfind = PathfinderSetup();
             isActive = _setActive;
         }
 
@@ -49,21 +62,8 @@ namespace Framework.AI
 
 
         #region Pathfinder
-        public bool CanPathfind { get; protected set; }
         public virtual INetworkable CurrentNode { get; set; }
-        public Pathfinder pathFinder;
         public List<INetworkable> nodePath = new List<INetworkable>();
-
-        public bool PathfinderSetup()
-        {
-            if (CurrentNode != null)
-            {
-                pathFinder = new Pathfinder(CurrentNode);
-                return true;
-            }
-            else
-                return false;
-        }
         #endregion
 
         private void OnDrawGizmosSelected()

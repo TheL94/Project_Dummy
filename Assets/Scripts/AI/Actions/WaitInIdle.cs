@@ -9,7 +9,7 @@ namespace DumbProject.AI
     {
         public override void Act(AIController _controller)
         {
-            (_controller as AIActor).AnimState = Generic.AnimationStatus.Idle;
+            (_controller as AIActor).AnimState = AnimationStatus.Idle;
         }
     }
 }

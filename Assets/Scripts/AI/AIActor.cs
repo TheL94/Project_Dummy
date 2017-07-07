@@ -6,7 +6,8 @@ using DumbProject.Items;
 using UnityEngine;
 using DG.Tweening;
 
-namespace DumbProject.Generic {
+namespace DumbProject.Generic
+{
     public class AIActor : AIController
     {
         public float LookDuration;
@@ -22,7 +23,7 @@ namespace DumbProject.Generic {
         {
             get
             {
-                return grid.GetSpecificGridNode(transform.position);
+                return Grid.GetSpecificGridNode(transform.position);
             }
             set
             {
@@ -43,30 +44,52 @@ namespace DumbProject.Generic {
             }
         }
 
-        protected GridController grid;
-        public Cell CurrentCell { get { return grid.GetSpecificGridNode(transform.position).RelativeCell; } }
+        public GridController Grid { get; protected set; }
+        public Cell CurrentCell { get { return Grid.GetSpecificGridNode(transform.position).RelativeCell; } }
         public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
 
-        public IDroppable nextRoomObjective;
+        IDroppable _nextRoomObjective;
+        public IDroppable NextRoomObjective
+        {
+            get { return _nextRoomObjective; }
+            set
+            {
+                _nextRoomObjective = value;
+                NextObjectivePosition = Grid.GetSpecificGridNode(_nextRoomObjective.transF.position);
+            }
+        }
+        public INetworkable NextObjectivePosition; //TODO: Marcare il bersaglio
 
-        public void FollowPath(bool forceNew = false)
+        /// <summary>
+        /// Va muovere Dumby di un passo alla volta di nodo in nodo
+        /// </summary>
+        /// <param name="forceNew"></param>
+        public void MoveToNextPathNode(bool forceNew = false)
         {
             AnimState = AnimationStatus.Running;
             if (nodePath == null || nodePath.Count <= 0)
-                return;
-
-            Vector3[] wayPoints = nodePath.ToVector3Array();
-
-            for (int i = 0; i < wayPoints.Length; i++)
             {
-                Debug.Log(wayPoints[i]);
+                AnimState = AnimationStatus.Idle;
+                return;
             }
-            if(pathTrack == null)
-                pathTrack = transform.DOPath(wayPoints, MoveDuration * nodePath.Count, PathType.Linear, PathMode.Full3D, 0, Color.magenta);
-            else if(!pathTrack.IsPlaying() || forceNew)
-                pathTrack = transform.DOPath(wayPoints, MoveDuration * nodePath.Count, PathType.Linear, PathMode.Full3D, 0, Color.magenta);
-            pathTrack.OnComplete(() => { nodePath.Clear(); });
-            pathTrack.SetSpeedBased();
+
+            Vector3 wayPoint = nodePath[0].spacePosition;
+
+
+            if (pathTrack == null)
+            {
+                pathTrack = transform.DOLookAt(wayPoint, LookDuration).OnComplete(() =>
+                {
+                    Debug.Log("Finished looking at: " + wayPoint);
+                    pathTrack = transform.DOMove(wayPoint, MoveDuration).OnComplete(() =>
+                    {
+                        Debug.Log("Finished moving to: " + wayPoint);
+                        INetworkable nodeToRemove = nodePath[0];
+                        nodePath.Remove(nodeToRemove);
+                        pathTrack = null;
+                    });
+                });
+            }
         }
     }
 

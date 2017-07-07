@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class Potion : MonoBehaviour, IInteractabile
+    public class Potion : MonoBehaviour, IInteractable
     {
         public PotionValues PotionValues;
 
@@ -13,6 +13,9 @@ namespace DumbProject.Items
         {
             PotionValues = _values;
         }
+
+        bool _isInteractable = true;
+        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         public void Interact()
         {
