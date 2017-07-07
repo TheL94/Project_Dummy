@@ -58,9 +58,6 @@ namespace Framework.PoolSystem
             }
         }
 
-        protected virtual void ResetPool(PoolType _item) { }
-
-
         protected PoolType GetInactiveObject()
         {
             PoolType item = inactivePool[0];
@@ -77,6 +74,8 @@ namespace Framework.PoolSystem
             PoolType typeInstance = GetPoolType(instantiatedObject);
             return typeInstance;
         }
+
+        protected virtual void ResetPool(PoolType _item) { }
 
         protected abstract void ChangeObjectState(PoolType item, bool toState);
         protected abstract bool IsObjectActive(PoolType item);

@@ -93,7 +93,6 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
-
             GameManager.I.DungeonMng.ParentRoom(this);
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             Destroy(RoomMovment);
@@ -144,18 +143,7 @@ namespace DumbProject.Rooms
 
         #region IDroppableHolder
         List<IDroppable> _droppableList = new List<IDroppable>();
-        public List<IDroppable> DroppableList
-        {
-            get
-            {
-                return _droppableList;
-            }
-
-            set
-            {
-                _droppableList = value;
-            }
-        }
+        public List<IDroppable> DroppableList { get { return _droppableList; } set { _droppableList = value; } }
         public IDroppable AddDroppable(DroppableBaseData _droppableToAdd)
         {
             Cell freeCell = freeCells[UnityEngine.Random.Range(0, freeCells.Count)];
@@ -190,6 +178,7 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
+        #region Cell Managment
         /// <summary>
         /// Funzione che piazza la stanza sulla griglia nella UI
         /// </summary>
@@ -203,6 +192,12 @@ namespace DumbProject.Rooms
             }
         }
 
+        /// <summary>
+        /// Funzione che crea e piazza una cella
+        /// </summary>
+        /// <param name="_data"></param>
+        /// <param name="_node"></param>
+        /// <returns></returns>
         Cell PlaceSingleCell(RoomData _data, GridNode _node)
         {
             GameObject newCellObj = new GameObject("Cell_" + CellsInRoom.Count);
@@ -215,6 +210,11 @@ namespace DumbProject.Rooms
             return newCell;
         }
 
+        /// <summary>
+        /// Funzione che ritorna un nodo vicino a una cella appena piazzata
+        /// </summary>
+        /// <param name="_grid"></param>
+        /// <returns></returns>
         GridNode EvaluateGridPosition(GridController _grid)
         {
             GridNode nodeToReturn = null;
@@ -230,6 +230,10 @@ namespace DumbProject.Rooms
             return nodeToReturn;
         }
 
+        /// <summary>
+        /// Funzione che ritorna una lista di nodi liberi
+        /// </summary>
+        /// <returns></returns>
         List<GridNode> GetEmptyGridNodes()
         {
             List<GridNode> adjacentNodes = new List<GridNode>();
@@ -240,6 +244,12 @@ namespace DumbProject.Rooms
             return adjacentNodes;
         }
 
+        /// <summary>
+        /// Funzione che valuta la probabiltà di piazzare una cella aggiuntiva
+        /// </summary>
+        /// <param name="_data"></param>
+        /// <param name="_grid"></param>
+        /// <returns></returns>
         bool EvaluateCellProbability(RoomData _data, GridController _grid)
         {
             if (_data.MinNumberOfCells > CellsInRoom.Count)
@@ -252,7 +262,6 @@ namespace DumbProject.Rooms
                 return false;
         }
 
-        #region Cell Managment
         /// <summary>
         /// Funzione che rimuove i muri se sono nella stessa posizione
         /// </summary>
@@ -398,6 +407,7 @@ namespace DumbProject.Rooms
             Cell parentCell = null;
             _edge.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
             parentCell = _edge.transform.parent.GetComponent<Cell>();
+
             if (_edge.name == "RightEdge")
             {
                 _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
