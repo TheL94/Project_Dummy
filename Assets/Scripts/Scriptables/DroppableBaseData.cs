@@ -21,4 +21,23 @@ namespace DumbProject.Items
         Gattini,
     }
     
+    public enum ItemType
+    {
+        Sword = 0,
+        Potion = 1,
+        Armory = 2,
+    }
+
+    public enum EnemyType
+    {
+        Drago = 0,
+        Goblin = 1,
+    }
+
+    public enum TrapType
+    {
+        Tagliola = 0,
+        Catapulta = 1,
+    }
+    
 }

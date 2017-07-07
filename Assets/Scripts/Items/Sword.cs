@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class Potion : MonoBehaviour, IInteractabile
+    public class Sword : MonoBehaviour, IInteractabile
     {
-        public PotionValues PotionValues;
 
-        public void Init(PotionValues _values)
+        public SwordValues SwordValues;
+
+        public void Init(SwordValues _values)
         {
-            PotionValues = _values;
+            SwordValues = _values;
         }
 
         public void Interact()

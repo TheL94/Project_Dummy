@@ -13,14 +13,14 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public EdgeType Type = EdgeType.Wall;
 
-        ExplorationStatus _status = ExplorationStatus.NotInGame;
-        public ExplorationStatus Status
+        ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
+        public ExplorationStatus StatusOfExploration
         {
-            get { return _status; }
+            get { return _statusOfExploration; }
             set
             {
-                _status = value;
-                if (_status != ExplorationStatus.NotInGame)
+                _statusOfExploration = value;
+                if (_statusOfExploration != ExplorationStatus.NotInGame)
                     UpdateLinks();
             }
         }
@@ -62,7 +62,7 @@ namespace DumbProject.Rooms
 
         public void UpdateLinks()
         {
-            if (Status != ExplorationStatus.NotInGame)
+            if (StatusOfExploration != ExplorationStatus.NotInGame)
             {
                 GridNode node = null;
                 node = RelativeCell.RelativeNode;
@@ -135,14 +135,14 @@ namespace DumbProject.Rooms
         {
             graphic.SetActive(false);
             graphic = null;
-            Status = ExplorationStatus.NotInGame;
+            StatusOfExploration = ExplorationStatus.NotInGame;
         }
 
         private void OnDrawGizmos()
         {
             if(Type == EdgeType.Door)
             {
-                switch (Status)
+                switch (StatusOfExploration)
                 {
                     case ExplorationStatus.NotInGame:
                         Gizmos.color = Color.white;
