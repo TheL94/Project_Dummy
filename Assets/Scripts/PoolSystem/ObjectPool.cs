@@ -21,6 +21,13 @@ namespace Framework.PoolSystem
             return type;
         }
 
+        protected override void ResetPool(PoolType _item)
+        {
+            _item.transform.position = parentObject.transform.position;
+            _item.transform.rotation = Quaternion.identity;
+            _item.transform.parent = parentObject.transform;
+        }
+
         protected override void ChangeObjectState(PoolType item, bool toState)
         {
             item.gameObject.SetActive(toState);
