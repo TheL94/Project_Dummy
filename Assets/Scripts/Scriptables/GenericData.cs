@@ -34,49 +34,49 @@ namespace DumbProject.Items
     }
 
 
-    [SerializeField]
+    [System.Serializable]
     public struct SwordValues
     {
         public float Damage;
         public float Wear;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct ArmoryValues
     {
         public float Protection;
         public float Wear;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct PotionValues
     {
         public float HealtRestore;
         public float DamageHero;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct DragonValues
     {
         public float Damage;
         public float Life;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct GoblinValues
     {
         public float Damage;
         public float Life;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct TagliolaValues
     {
         public float Damage;
         public float TimeToLeave;
     }
 
-    [SerializeField]
+    [System.Serializable]
     public struct CatapultaValues
     {
         public float Damage;

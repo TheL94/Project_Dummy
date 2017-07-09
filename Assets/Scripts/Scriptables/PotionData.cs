@@ -8,6 +8,11 @@ namespace DumbProject.Items
     public class PotionData : DroppableBaseData
     {
         public ItemType SpecificType;
+        public values values;
+    }
+    [System.Serializable]
+    public struct values
+    {
         public float HealtRestore;
         public float DamageHero;
     }

@@ -6,6 +6,7 @@ using DumbProject.Items;
 
 namespace DumbProject.Editors
 {
+    [System.Serializable]
     [CanEditMultipleObjects]
     [CustomEditor(typeof(GenericData))]
     public class CustomDataTypeEditor : Editor
@@ -231,6 +232,9 @@ namespace DumbProject.Editors
             Data.ShowMateriaInRoom = (Material)EditorGUILayout.ObjectField("Material For Room", Data.ShowMateriaInRoom, typeof(Material), false);
             GUILayout.EndHorizontal();
 
+            if (GUI.changed)
+                EditorUtility.SetDirty(target);
+            
         }
 
         private void DrawGenericTabs() {
