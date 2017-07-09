@@ -28,7 +28,10 @@ namespace DumbProject
 
         public void ZoomTheCamera(float _direction)
         {
-            transform.Translate(Vector3.forward * _direction * MovementSpeed * Time.deltaTime);
+            if (transform.position.y <= 150 && transform.position.y >= 100)
+            {
+                transform.Translate(Vector3.forward * _direction * Time.deltaTime); 
+            }
         }
     }
 }

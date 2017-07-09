@@ -10,8 +10,7 @@ namespace DumbProject
     {
         bool isPointerHeading = false;
         PointerEventData pointerData;
-        Vector2 positiontoHead;
-
+        PointerEventData positiontoHead;
         float touchesDistance;
 
         #region Rotation Option
@@ -49,10 +48,10 @@ namespace DumbProject
 
         #endregion
 
+
         public void OnDrag(PointerEventData eventData)
         {
-
-            positiontoHead = eventData.pressPosition;
+            positiontoHead = eventData;
             //HeadPointer(eventData.pressPosition);
             Debug.Log("sto draggando");
             //Vector2 direction = (eventData.position - eventData.pressPosition) * GameManager.I.CameraVelocity;
@@ -96,7 +95,7 @@ namespace DumbProject
                 return;
 
             /*(pointerData.position - pointerData.pressPosition) * GameManager.I.CameraVelocity;*/
-            if (positiontoHead.x != 0 || positiontoHead.y != 0)
+            if (positiontoHead.position.x != 0 || positiontoHead.position.y != 0)
             {
                 float distance = CalculateDistanceInWorld();
 
@@ -108,7 +107,7 @@ namespace DumbProject
 
         float CalculateDistanceInWorld()
         {
-            float ScreenDistance = Vector2.Distance(positiontoHead, pointerData.position);
+            float ScreenDistance = Vector2.Distance(positiontoHead.position, pointerData.position);
 
             Vector2 A1;
             Vector2 A2;
@@ -116,8 +115,8 @@ namespace DumbProject
             A1.x = pointerData.position.x * 776 / 294;
             A1.y = pointerData.position.y * 598 / 294;
 
-            A2.x = positiontoHead.x * 776 / 294;
-            A2.y = positiontoHead.y * 598 / 294;
+            A2.x = positiontoHead.position.x * 776 / 294;
+            A2.y = positiontoHead.position.y * 598 / 294;
 
             return Vector2.Distance(A1, A2);
         }
@@ -146,5 +145,6 @@ namespace DumbProject
         {
             isPointerHeading = false;
         }
+
     }
 }
