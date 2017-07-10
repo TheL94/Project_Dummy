@@ -53,7 +53,7 @@ namespace Framework.Pathfinding
             List<PathStep> possibleOutcomes = new List<PathStep>();
             PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
             float pathDistance = -1f;
-
+            //Search all the Inetworkables close to _givenPath
             for (int i = 0; i < _givenPath.Count; i++)
             {
                 foreach (INetworkable closeNode in _givenPath[i].node.Links)
@@ -64,26 +64,21 @@ namespace Framework.Pathfinding
                         continue;
 
                     possibleOutcomes.Add(tempOutCome);
-                    //if (tempOutCome.distance <= pathDistance)
-                    //{
-                    //    outcome = tempOutCome;
-                    //    pathDistance = outcome.distance;
-                    //}
                 }
             }
-
+            //Choose the closest between the Inetworkables in the closest
             foreach (PathStep step in possibleOutcomes)
             {
                 if (pathDistance == -1)
                     pathDistance = step.distance;
 
-                if (step.distance < pathDistance)
+                if (step.distance <= pathDistance)
                     outcome = step;
             }
-
+            //Return null if there are no possible path found
             if (CheckForNodeInPath(outcome.node,_givenPath))
                 return null;
-
+            //Return the next closest INetworkable to the target
             return outcome;
         }
         /// <summary>
