@@ -8,7 +8,7 @@ namespace DumbProject.Editors
 {
     [System.Serializable]
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(GenericItemData))]
+    [CustomEditor(typeof(GenericItemData), true)]
     public class CustomDataTypeEditor : Editor
     {
         GenericItemData Data;
@@ -45,7 +45,6 @@ namespace DumbProject.Editors
             _enemyCategoryLabels = new List<string>();
             _trapCategoryLabels = new List<string>();
             SaveCategories();
-
         }
 
         void SaveCategories()
@@ -82,136 +81,68 @@ namespace DumbProject.Editors
         public override void OnInspectorGUI()
         {
             InitCategories();
-            DrawGenericTabs();
+            //DrawGenericTabs();
 
-            //data.Type = (DumbProject.Items.GenericType)EditorGUILayout.EnumPopup("Generic Type", data.Type);
-
-            ///Enemies
-            if(_genericCategorySelected == 0)
+            if(Data.GetType() == typeof(EnemyData))
             {
                 DrawEnemyTabs();
-                //_genericCategorySelected = 0;
-                if (_enemyCategorySelected == 1)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage");
-                    GUILayout.Space(100);
-                    (Data as EnemyData).Damage = EditorGUILayout.FloatField((Data as EnemyData).Damage);
-                    GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Damage");
+                GUILayout.Space(100);
+                (Data as EnemyData).Damage = EditorGUILayout.FloatField((Data as EnemyData).Damage);
+                GUILayout.EndHorizontal();
 
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Life");
-                    GUILayout.Space(100);
-                    (Data as EnemyData).Life = EditorGUILayout.FloatField((Data as EnemyData).Life);
-                    GUILayout.EndHorizontal();
-                }
-
-                if (_enemyCategorySelected == 2)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage");
-                    GUILayout.Space(100);
-                    (Data as EnemyData).Damage = EditorGUILayout.FloatField((Data as EnemyData).Damage);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Life");
-                    GUILayout.Space(100);
-                    (Data as EnemyData).Life = EditorGUILayout.FloatField((Data as EnemyData).Life);
-                    GUILayout.EndHorizontal();
-                }
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Life");
+                GUILayout.Space(100);
+                (Data as EnemyData).Life = EditorGUILayout.FloatField((Data as EnemyData).Life);
+                GUILayout.EndHorizontal();
             }
 
-            ///Items
-            if (_genericCategorySelected == 1)
+            if (Data.GetType() == typeof(WeaponData))
             {
-                DrawItemTabs();
-                //_genericCategorySelected = 1;
-                if (_itemCategorySelected == 1)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage");
-                    GUILayout.Space(100);
-                    (Data as WeaponData).Damage = EditorGUILayout.FloatField((Data as WeaponData).Damage);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Wear");
-                    GUILayout.Space(100);
-                    (Data as WeaponData).Wear = EditorGUILayout.FloatField((Data as WeaponData).Wear);
-                    GUILayout.EndHorizontal();
-                }
-
-                if (_itemCategorySelected == 2)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage Hero");
-                    GUILayout.Space(100);
-                    (Data as PotionData).DamageHero = EditorGUILayout.FloatField((Data as PotionData).DamageHero);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Healt Restore");
-                    GUILayout.Space(100);
-                    (Data as PotionData).HealtRestore = EditorGUILayout.FloatField((Data as PotionData).HealtRestore);
-                    GUILayout.EndHorizontal();
-                }
-
-                if (_itemCategorySelected == 3)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Protection");
-                    GUILayout.Space(100);
-                    (Data as ArmorData).Protection = EditorGUILayout.FloatField((Data as ArmorData).Protection);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Wear");
-                    GUILayout.Space(100);
-                    (Data as ArmorData).Wear = EditorGUILayout.FloatField((Data as ArmorData).Wear);
-                    GUILayout.EndHorizontal();
-                }
-
+                //DrawItemTabs();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Damage");
+                GUILayout.Space(100);
+                (Data as WeaponData).Damage = EditorGUILayout.FloatField((Data as WeaponData).Damage);
+                GUILayout.EndHorizontal();
             }
 
-            ///Traps
-            if(_genericCategorySelected == 2)
+            if (Data.GetType() == typeof(PotionData))
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Healt Restore");
+                GUILayout.Space(100);
+                (Data as PotionData).HealtRestore = EditorGUILayout.FloatField((Data as PotionData).HealtRestore);
+                GUILayout.EndHorizontal();
+            }
+
+            if (Data.GetType() == typeof(ArmorData))
+            {
+                //DrawItemTabs();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Protection");
+                GUILayout.Space(100);
+                (Data as ArmorData).Protection = EditorGUILayout.FloatField((Data as ArmorData).Protection);
+                GUILayout.EndHorizontal();
+            }            
+
+            if(Data.GetType() == typeof(TrapData))
             {
                 DrawTrapsTabs();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Damage");
+                GUILayout.Space(100);
+                (Data as TrapData).Damage = EditorGUILayout.FloatField((Data as TrapData).Damage);
+                GUILayout.EndHorizontal();
 
-                //_genericCategorySelected = 2;
-
-                if (_enemyCategorySelected == 1)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage");
-                    GUILayout.Space(100);
-                    (Data as TrapData).Damage = EditorGUILayout.FloatField((Data as TrapData).Damage);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Time To Leave");
-                    GUILayout.Space(100);
-                    (Data as TrapData).TimeToLeave = EditorGUILayout.FloatField((Data as TrapData).TimeToLeave);
-                    GUILayout.EndHorizontal();
-                }
-
-                if (_enemyCategorySelected == 2)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Damage");
-                    GUILayout.Space(100);
-                    (Data as TrapData).Damage = EditorGUILayout.FloatField((Data as TrapData).Damage);
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Time To Leave");
-                    GUILayout.Space(100);
-                    (Data as TrapData).TimeToLeave = EditorGUILayout.FloatField((Data as TrapData).TimeToLeave);
-                    GUILayout.EndHorizontal();
-                }
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Time To Leave");
+                GUILayout.Space(100);
+                (Data as TrapData).TimeToLeave = EditorGUILayout.FloatField((Data as TrapData).TimeToLeave);
+                GUILayout.EndHorizontal();
             }
-
 
             GUILayout.Space(15);
             //The sprite to show in the Inventory
@@ -234,12 +165,12 @@ namespace DumbProject.Editors
             
         }
 
-        private void DrawGenericTabs() {
+        private void DrawGenericTabs()
+        {
             int index = (int)_genericCategorySelected;
             Data.Type = (GenericType)GUILayout.Toolbar(index, _genericCategoryLabels.ToArray());
             index = (int)Data.Type;
-            _genericCategorySelected = (int)_genericCategories[index];
-            
+            _genericCategorySelected = (int)_genericCategories[index];         
         }
 
         void DrawItemTabs()

@@ -13,32 +13,29 @@ namespace DumbProject.Items
         List<GenericItemData> itemDatas = new List<GenericItemData>();
         List<GenericItemData> enemyDatas = new List<GenericItemData>();
         List<GenericItemData> trapDatas = new List<GenericItemData>();
-        List<GenericItemData> gattiniDatas = new List<GenericItemData>();
+        List<GenericItemData> timeWasterDatas = new List<GenericItemData>();
 
         public void Init()
         {
             foreach (GenericItemData _data in AllDatas)
             {
-                switch (_data.Type)
+
+                if (_data.GetType() == typeof(EnemyData))
                 {
-                    case GenericType.Item:
-                        itemDatas.Add(Instantiate(_data));
-                        break;
+                    enemyDatas.Add(Instantiate(_data));
 
-                    case GenericType.Ememy:
-                        enemyDatas.Add(Instantiate(_data));
-                        break;
-
-                    case GenericType.Trap:
-                        trapDatas.Add(Instantiate(_data));
-                        break;
-
-                    case GenericType.TimeWaster:
-                        gattiniDatas.Add(Instantiate(_data));
-                        break;
-                    default:
-                        itemDatas.Add(Instantiate(_data));
-                        break;
+                }
+                else if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
+                {
+                    itemDatas.Add(Instantiate(_data));
+                }
+                else if (_data.GetType() == typeof(TrapData))
+                {
+                    trapDatas.Add(Instantiate(_data));
+                }
+                else if (_data.GetType() == typeof(TimeWasterData))
+                {
+                    timeWasterDatas.Add(Instantiate(_data));
                 }
             }
         }
@@ -64,7 +61,9 @@ namespace DumbProject.Items
         public void InstantiateItemInRoom(Room _room)
         {
             GenericItemData data = ChooseItem();
-            _room.AddInteractable(CreateIDroppable(data));
+            IDroppable droppable = CreateIDroppable(data);
+            droppable.Data = data;
+            _room.AddInteractable(droppable);
         }
 
         /// <summary>
@@ -76,56 +75,53 @@ namespace DumbProject.Items
         {
             GameObject newObj = new GameObject();
             ItemGeneric item = null;
-            switch (_data.Type)
+
+            if (_data.GetType() == typeof(EnemyData))
             {
-                /// Da completare con l'aggiunta del component corrispondente e la chiamata all'init passando i Values del data
-                case GenericType.Ememy:
-                    switch ((_data as GenericItemData).SpecificEnemyType)
-                    {
-                        case EnemyType.None:
-                            break;
-                        case EnemyType.Dragon:
-                            // AddComponente<Drago>().Init((Data as GenericData).DragonDataValues)
-                            break;
-                        case EnemyType.Goblin:
-                            break;
-                    }
-                    break;
-                case GenericType.Item:
-                    switch ((_data as GenericItemData).SpecificItemType)
-                    {
-                        case ItemType.None:
-                            break;
-                        case ItemType.Weapon:
-                            item = newObj.AddComponent<Weapon>();
-                            item.name = "Weapon";
-                            break;
-                        case ItemType.Potion:
-                            item = newObj.AddComponent<Potion>();
-                            item.name = "Potion";
-                            break;
-                        case ItemType.Armor:
-                            item = newObj.AddComponent<Weapon>();
-                            item.name = "Armor";
-                            break;
-                    }
-                    break;
-                /// Da completare con l'aggiunta del component corrispondente e la chiamata all'init passando i Values del data
-                case GenericType.Trap:
-                    switch ((_data as GenericItemData).SpecificTrapType)
-                    {
-                        case TrapType.None:
-                            break;
-                        case TrapType.Type1:
-                            break;
-                        case TrapType.Type2:
-                            break;
-                    }
-                    break;
-                case GenericType.TimeWaster:
-                    break;
+                switch ((_data as GenericItemData).SpecificEnemyType)
+                {
+                    case EnemyType.None:
+                        break;
+                    case EnemyType.Dragon:
+                        // AddComponente<Drago>().Init((Data as GenericData).DragonDataValues)
+                        break;
+                    case EnemyType.Goblin:
+                        break;
+                }
             }
-            Instantiate(_data.ItemPrefab, item.Transf);
+            else if (_data.GetType() == typeof(WeaponData))
+            {
+                item = newObj.AddComponent<Weapon>();
+                item.name = "Weapon";
+            }
+            else if (_data.GetType() == typeof(PotionData))
+            {
+                item = newObj.AddComponent<Potion>();
+                item.name = "Potion";
+            }
+            else if (_data.GetType() == typeof(ArmorData))
+            {
+                item = newObj.AddComponent<Armor>();
+                item.name = "Armor";
+            }
+            else if (_data.GetType() == typeof(TrapData))
+            {
+                
+            }
+            else if (_data.GetType() == typeof(TimeWasterData))
+            {
+                switch ((_data as GenericItemData).SpecificTrapType)
+                {
+                    case TrapType.None:
+                        break;
+                    case TrapType.Type1:
+                        break;
+                    case TrapType.Type2:
+                        break;
+                }
+            }
+
+            Instantiate(_data.ItemPrefab, item.Transf.position, item.Transf.rotation, item.Transf);
             item.Init(_data);
             return item;
         }

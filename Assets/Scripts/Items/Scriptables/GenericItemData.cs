@@ -14,26 +14,24 @@ namespace DumbProject.Items
         public ItemType SpecificItemType;
         public EnemyType SpecificEnemyType;
         public TrapType SpecificTrapType;
-
     }
 
+    // TODO : da spostare in file separati per evitare Warning
+
+    [CreateAssetMenu(fileName = "Potion", menuName = "Items/Potion Data", order = 0)]
+    public class PotionData : GenericItemData
+    {
+        public float HealtRestore;
+    }
     [CreateAssetMenu(fileName = "Weapon", menuName = "Items/Weapon Data", order = 1)]
     public class WeaponData: GenericItemData
     {
         public float Damage;
-        public float Wear;
     }
     [CreateAssetMenu(fileName = "Armor", menuName = "Items/Armor Data", order = 2)]
     public class ArmorData : GenericItemData
     {
         public float Protection;
-        public float Wear;
-    }
-    [CreateAssetMenu(fileName = "Potion", menuName = "Items/Potion Data", order = 0)]
-    public class PotionData: GenericItemData
-    {
-        public float HealtRestore;
-        public float DamageHero;
     }
     [CreateAssetMenu(fileName = "Enemy", menuName = "Items/Enemy Data", order = 3)]
     public class EnemyData: GenericItemData

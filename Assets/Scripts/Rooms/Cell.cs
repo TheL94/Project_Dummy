@@ -37,7 +37,19 @@ namespace DumbProject.Rooms
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
 
-        public IInteractable ActualInteractable;
+        IInteractable _actualInteractable;
+        public IInteractable ActualInteractable
+        {
+            get { return _actualInteractable; }
+            set
+            {
+                // TODO : posizionare bene l'oggetto
+                _actualInteractable = value;
+                _actualInteractable.Transf.parent = RelativeRoom.transform;
+                _actualInteractable.Transf.position = transform.position + Vector3.one;
+                _actualInteractable.Transf.rotation = transform.rotation;
+            }
+        }
 
         #region Cell Elements Instantiation
         /// <summary>
