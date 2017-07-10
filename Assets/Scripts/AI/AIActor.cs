@@ -48,17 +48,7 @@ namespace DumbProject.Generic
         public Cell CurrentCell { get { return Grid.GetSpecificGridNode(transform.position).RelativeCell; } }
         public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
 
-        IDroppable _nextRoomObjective;
-        public IDroppable NextRoomObjective
-        {
-            get { return _nextRoomObjective; }
-            set
-            {
-                _nextRoomObjective = value;
-                NextObjectivePosition = Grid.GetSpecificGridNode(_nextRoomObjective.transF.position);
-            }
-        }
-        public INetworkable NextObjectivePosition; //TODO: Marcare il bersaglio
+        public IInteractable InteractableObjective;
 
         /// <summary>
         /// Va muovere Dumby di un passo alla volta di nodo in nodo
