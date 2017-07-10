@@ -4,11 +4,12 @@ using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Generic;
 using Framework.Pathfinding;
+using DumbProject.Items;
 using System;
 
 namespace DumbProject.Rooms
 {
-    public class Edge : MonoBehaviour, INetworkable
+    public class Edge : MonoBehaviour, INetworkable, IInteractable
     {
         [HideInInspector]
         public EdgeType Type = EdgeType.Wall;
@@ -36,11 +37,7 @@ namespace DumbProject.Rooms
         #region INetworkable
         public Vector3 spacePosition { get { return transform.position; } set { } }
         List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links
-        {
-            get { return _links; }
-            set { _links = value; }
-        }
+        public List<INetworkable> Links { get { return _links; } set { _links = value; } }
 
         public void AddLinks(List<INetworkable> _newLinks)
         {
@@ -64,23 +61,7 @@ namespace DumbProject.Rooms
         {
             if (StatusOfExploration != ExplorationStatus.NotInGame)
             {
-                GridNode node = null;
-                node = RelativeCell.RelativeNode;
-                if (!Links.Contains(node))
-                {
-                    Links.Add(node);
-                    node.AddLinks(new List<INetworkable>() { this });
-                }
-
-                node = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetNodeInFrontPosition());
-                if (node != null)
-                {
-                    if (!Links.Contains(node))
-                    {
-                        Links.Add(node);
-                        node.AddLinks(new List<INetworkable>() { this });
-                    }
-                }
+                CheckIfConnectionIsAvailable();
             }
             else
             {
@@ -89,6 +70,40 @@ namespace DumbProject.Rooms
                     INet.RemoveLinks(new List<INetworkable>() { this });
                 }
             }
+        }
+
+        void CheckIfConnectionIsAvailable()
+        {
+            // relative node
+            GridNode node = RelativeCell.RelativeNode;
+            if((int)RelativeCell.RelativeRoom.StatusOfExploration > 1)
+            {
+                Links.Add(node);
+                node.AddLinks(new List<INetworkable>() { this });
+            }
+
+            //node in front
+            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetNodeInFrontPosition());
+            if (nodeInFront != null && nodeInFront.RelativeCell != null)
+            {
+                // se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
+                if ((int)nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration > 1)
+                {
+                    Links.Add(nodeInFront);
+                    nodeInFront.AddLinks(new List<INetworkable>() { this });
+                }
+            }
+        }
+        #endregion
+
+        //Implementazione di IInteractable
+        #region IInteractable
+        bool _isInteractable;
+        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
+
+        public void Interact()
+        {
+
         }
         #endregion
 
@@ -120,7 +135,7 @@ namespace DumbProject.Rooms
                     }
                 }
             }
-            else if(nodeInFront != null && nodeInFront.RelativeCell == null)
+            else if (nodeInFront != null && nodeInFront.RelativeCell == null)
             {
                 CollidingEdge = null;
             }
@@ -140,7 +155,7 @@ namespace DumbProject.Rooms
 
         private void OnDrawGizmos()
         {
-            if(Type == EdgeType.Door)
+            if (Type == EdgeType.Door)
             {
                 switch (StatusOfExploration)
                 {
@@ -158,7 +173,7 @@ namespace DumbProject.Rooms
                         break;
                     default:
                         break;
-                }               
+                }
                 Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
             }
 
