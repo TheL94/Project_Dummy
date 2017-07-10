@@ -453,5 +453,5 @@ namespace DumbProject.Rooms
         #endregion
     }
 
-    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, Explored = 2 }
+    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, InExploration = 2, Explored = 3 }
 }
