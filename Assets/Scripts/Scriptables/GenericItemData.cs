@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Item", menuName = "Items/GenericData", order = 0)]
-    public class GenericData : DroppableBaseData
+    public class GenericItemData : DroppableBaseData
     {
         public ItemType SpecificItemType;
         public EnemyType SpecificEnemyType;

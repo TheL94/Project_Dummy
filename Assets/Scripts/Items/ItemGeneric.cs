@@ -33,7 +33,7 @@ namespace DumbProject.Items
                 /// Da completare con l'aggiunta del component corrispondente e la chiamata all'init passando i Values del data
                 case GenericType.Ememy:
 
-                    switch ((Data as GenericData).SpecificEnemyType)
+                    switch ((Data as GenericItemData).SpecificEnemyType)
                     {
                         case EnemyType.None:
                             break;
@@ -50,18 +50,18 @@ namespace DumbProject.Items
 
                 case GenericType.Item:
 
-                    switch ((Data as GenericData).SpecificItemType)
+                    switch ((Data as GenericItemData).SpecificItemType)
                     {
                         case ItemType.None:
                             break;
                         case ItemType.Sword:
-                            gameObject.AddComponent<Sword>().Init((Data as GenericData).SwordDataValues);
+                            gameObject.AddComponent<Sword>().Init((Data as GenericItemData).SwordDataValues);
                             break;
                         case ItemType.Potion:
-                            gameObject.AddComponent<Potion>().Init((Data as GenericData).PotionDataValues);
+                            gameObject.AddComponent<Potion>().Init((Data as GenericItemData).PotionDataValues);
                             break;
                         case ItemType.Armory:
-                            gameObject.AddComponent<Armory>().Init((Data as GenericData).ArmoryDataValues);
+                            gameObject.AddComponent<Armory>().Init((Data as GenericItemData).ArmoryDataValues);
                             break;
                         default:
                             break;
@@ -70,7 +70,7 @@ namespace DumbProject.Items
                     
                     /// Da completare con l'aggiunta del component corrispondente e la chiamata all'init passando i Values del data
                 case GenericType.Trap:
-                    switch ((Data as GenericData).SpecificTrapType)
+                    switch ((Data as GenericItemData).SpecificTrapType)
                     {
                         case TrapType.None:
                             break;

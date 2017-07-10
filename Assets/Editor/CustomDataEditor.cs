@@ -8,15 +8,15 @@ namespace DumbProject.Editors
 {
     [System.Serializable]
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(GenericData))]
+    [CustomEditor(typeof(GenericItemData))]
     public class CustomDataTypeEditor : Editor
     {
-        GenericData Data;
+        GenericItemData Data;
         
 
         private void OnEnable()
         {
-            Data = (GenericData)target;
+            Data = (GenericItemData)target;
         }
 
         List<GenericType> _genericCategories;
