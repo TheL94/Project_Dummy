@@ -52,7 +52,7 @@ namespace Framework.Pathfinding
         {
             List<PathStep> possibleOutcomes = new List<PathStep>();
             PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
-            float pathDistance = outcome.distance;
+            float pathDistance = -1f;
 
             for (int i = 0; i < _givenPath.Count; i++)
             {
@@ -63,33 +63,25 @@ namespace Framework.Pathfinding
                     if (CheckForNodeInPath(closeNode, _givenPath))
                         continue;
 
-                    if (tempOutCome.distance <= pathDistance)
-                    {
-                        if(tempOutCome.distance < pathDistance)
-                        {
-                            possibleOutcomes.Clear();
-                            possibleOutcomes.Add(tempOutCome);
-                            outcome = tempOutCome;
-                            pathDistance = outcome.distance;
-                        }
-                        else
-                        {
-                            possibleOutcomes.Add(tempOutCome);
-                            outcome = tempOutCome;
-                        }
-                    }
+                    possibleOutcomes.Add(tempOutCome);
+                    //if (tempOutCome.distance <= pathDistance)
+                    //{
+                    //    outcome = tempOutCome;
+                    //    pathDistance = outcome.distance;
+                    //}
                 }
             }
 
-            //Prevent search for impossible path
-            if(possibleOutcomes.Count > 1)
+            foreach (PathStep step in possibleOutcomes)
             {
-                foreach (PathStep step in possibleOutcomes)
-                {
-                    if (CheckForNodeInPath(step.node, _givenPath))
-                        return null;
-                }
-            }else if (CheckForNodeInPath(outcome.node,_givenPath))
+                if (pathDistance == -1)
+                    pathDistance = step.distance;
+
+                if (step.distance < pathDistance)
+                    outcome = step;
+            }
+
+            if (CheckForNodeInPath(outcome.node,_givenPath))
                 return null;
 
             return outcome;
@@ -139,7 +131,7 @@ namespace Framework.Pathfinding
         {
             foreach (PathStep step in _givenPath)
             {
-                if (step.node == _node)
+                if (step.node.spacePosition == _node.spacePosition)
                     return true;
             }
             return false;
