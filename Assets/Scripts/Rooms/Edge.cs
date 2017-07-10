@@ -57,11 +57,14 @@ namespace DumbProject.Rooms
             }
         }
 
+        /// <summary>
+        /// Funzione che aggiorna i links
+        /// </summary>
         public void UpdateLinks()
         {
             if (StatusOfExploration != ExplorationStatus.NotInGame)
             {
-                CheckIfConnectionIsAvailable();
+                LinkIfConnectionIsAvailable();
             }
             else
             {
@@ -72,7 +75,10 @@ namespace DumbProject.Rooms
             }
         }
 
-        void CheckIfConnectionIsAvailable()
+        /// <summary>
+        /// Collega, se possibile e se valido per ogni nodo, la stanza con i due nodi vicini
+        /// </summary>
+        void LinkIfConnectionIsAvailable()
         {
             // relative node
             GridNode node = RelativeCell.RelativeNode;
@@ -83,7 +89,7 @@ namespace DumbProject.Rooms
             }
 
             //node in front
-            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetNodeInFrontPosition());
+            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
                 // se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
@@ -103,7 +109,20 @@ namespace DumbProject.Rooms
 
         public void Interact()
         {
+            if (Type == EdgeType.Wall)
+                return; 
 
+            Room room = RelativeCell.RelativeRoom;
+            if ((int)room.StatusOfExploration < 2)
+                room.StatusOfExploration = ExplorationStatus.InExploration;
+
+            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
+            Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
+            if(nodeInFront != null && nodeInFront.RelativeCell != null)
+            {
+                if ((int)roomInFront.StatusOfExploration < 2)
+                    roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
+            }
         }
         #endregion
 
@@ -112,6 +131,11 @@ namespace DumbProject.Rooms
             RelativeCell = _relativeCell;
         }
 
+        /// <summary>
+        /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio dell'edge
+        /// </summary>
+        /// <param name="_graphic"></param>
+        /// <param name="_rotation"></param>
         public void SetGraphic(GameObject _graphic, Quaternion _rotation)
         {
             graphic = _graphic;
@@ -120,9 +144,13 @@ namespace DumbProject.Rooms
             graphic.transform.parent = transform;
         }
 
+        /// <summary>
+        /// Funzione che controlla la collisione con altri edge
+        /// </summary>
+        /// <param name="_grid"></param>
         public void CheckCollisionWithOtherEdges(GridController _grid)
         {
-            GridNode nodeInFront = _grid.GetSpecificGridNode(GetNodeInFrontPosition());
+            GridNode nodeInFront = _grid.GetSpecificGridNode(GetFrontPosition());
             List<Edge> edgesInFrontCell = new List<Edge>();
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
@@ -141,15 +169,25 @@ namespace DumbProject.Rooms
             }
         }
 
-        public Vector3 GetNodeInFrontPosition()
+        /// <summary>
+        /// Funzione che ritorna la posizione che sta di fronte a se stesso
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetFrontPosition()
         {
             return (transform.position * 2) - RelativeCell.transform.position;
         }
 
-        private void OnDisable()
+        /// <summary>
+        /// Funzione che continene
+        /// </summary>
+        public void DisableActions()
         {
-            graphic.SetActive(false);
-            graphic = null;
+            if (graphic != null)
+            {
+                graphic.SetActive(false);
+                graphic = null;
+            }
             StatusOfExploration = ExplorationStatus.NotInGame;
         }
 
