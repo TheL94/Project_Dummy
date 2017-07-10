@@ -78,7 +78,7 @@ namespace DumbProject.Rooms
             GridNode node = RelativeCell.RelativeNode;
             if((int)RelativeCell.RelativeRoom.StatusOfExploration > 1)
             {
-                Links.Add(node);
+                AddLinks(new List<INetworkable>() { node });
                 node.AddLinks(new List<INetworkable>() { this });
             }
 
@@ -89,7 +89,7 @@ namespace DumbProject.Rooms
                 // se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
                 if ((int)nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration > 1)
                 {
-                    Links.Add(nodeInFront);
+                    AddLinks(new List<INetworkable>() { nodeInFront });
                     nodeInFront.AddLinks(new List<INetworkable>() { this });
                 }
             }
@@ -175,12 +175,12 @@ namespace DumbProject.Rooms
                         break;
                 }
                 Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
-            }
 
-            foreach (Framework.Pathfinding.INetworkable node in Links)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(spacePosition, node.spacePosition);
+                foreach (Framework.Pathfinding.INetworkable node in Links)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(spacePosition, node.spacePosition);
+                }
             }
         }
     }
