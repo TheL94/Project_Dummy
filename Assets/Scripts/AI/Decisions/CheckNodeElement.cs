@@ -10,9 +10,13 @@ namespace DumbProject.AI {
     {
         public override int Decide(AIController _controller)
         {
-            IDroppable cellElement = (_controller as AIActor).Grid.GetSpecificGridNode(_controller.transform.position).RelativeCell.ActualDroppable;
-            if (cellElement != null && Vector3.Distance(cellElement.transF.position, _controller.transform.position) <= (_controller as AIActor).InteractionRadius)
+            IInteractable cellElement = (_controller as AIActor).Grid.GetSpecificGridNode(_controller.transform.position).RelativeCell.ActualInteractable;
+            if (cellElement != null && cellElement.IsInteractable
+                && Vector3.Distance(cellElement.Transf.position, _controller.transform.position) <= (_controller as AIActor).InteractionRadius)
+            {
+                (_controller as AIActor).InteractableObjective = cellElement;
                 return 1;
+            }
             else
                 return 0;
         }

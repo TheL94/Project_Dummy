@@ -18,12 +18,12 @@ namespace DumbProject.AI
 
         int FindNextUnexploredDoor(AIController _controller)
         {
-            List<INetworkable> unexploredDoors = GameManager.I.DungeonMng.GetAllUnexploredDoors().ConvertAll(e => e as INetworkable);
+            List<IInteractable> unexploredDoors = GameManager.I.DungeonMng.GetAllUnexploredDoors().ConvertAll(e => e as IInteractable);
 
             if (unexploredDoors == null || unexploredDoors.Count <= 0)
                 return 1;
             
-            (_controller as AIActor).NextObjectivePosition = unexploredDoors[Random.Range(0, unexploredDoors.Count)];
+            (_controller as AIActor).InteractableObjective = unexploredDoors[Random.Range(0, unexploredDoors.Count)];
             return 0;
         }
     }

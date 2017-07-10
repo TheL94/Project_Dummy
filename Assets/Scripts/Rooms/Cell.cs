@@ -37,7 +37,7 @@ namespace DumbProject.Rooms
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
 
-        public IDroppable ActualDroppable;
+        public IInteractable ActualInteractable;
 
         #region Cell Elements Instantiation
         /// <summary>

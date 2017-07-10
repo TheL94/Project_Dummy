@@ -11,10 +11,10 @@ namespace DumbProject.UI
     {
         Vector3 _startPosition;
         [HideInInspector]
-        public DroppableBaseData DroppableData;
+        public GenericItemData DroppableData;
         Slot mySlot;
 
-        public void Init(DroppableBaseData _droppableData, Slot _ownSlot)
+        public void Init(GenericItemData _droppableData, Slot _ownSlot)
         {
             DroppableData = _droppableData;
             GetComponent<Image>().sprite = _droppableData.ItemInUI;

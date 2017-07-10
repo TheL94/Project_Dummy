@@ -12,8 +12,7 @@ namespace DumbProject.Editors
     public class CustomDataTypeEditor : Editor
     {
         GenericItemData Data;
-        
-
+       
         private void OnEnable()
         {
             Data = (GenericItemData)target;
@@ -24,12 +23,10 @@ namespace DumbProject.Editors
         List<EnemyType> _enemyCategory;
         List<TrapType> _trapCategory;
 
-
         private List<string> _genericCategoryLabels;
         private List<string> _itemCategoryLabels;
         private List<string> _enemyCategoryLabels;
         private List<string> _trapCategoryLabels;
-
 
         int _genericCategorySelected { get { return (int)Data.Type; } set { Data.Type = (GenericType)value; } }
         int _itemCategorySelected { get { return (int)Data.SpecificItemType; } set { Data.SpecificItemType = (ItemType)value; } }
@@ -99,13 +96,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
                     GUILayout.Space(100);
-                    Data.DragonDataValues.Damage = EditorGUILayout.FloatField(Data.DragonDataValues.Damage);
+                    (Data as EnemyData).Damage = EditorGUILayout.FloatField((Data as EnemyData).Damage);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Life");
                     GUILayout.Space(100);
-                    Data.DragonDataValues.Life = EditorGUILayout.FloatField(Data.DragonDataValues.Life);
+                    (Data as EnemyData).Life = EditorGUILayout.FloatField((Data as EnemyData).Life);
                     GUILayout.EndHorizontal();
                 }
 
@@ -114,13 +111,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
                     GUILayout.Space(100);
-                    Data.GoblinDataValues.Damage = EditorGUILayout.FloatField(Data.GoblinDataValues.Damage);
+                    (Data as EnemyData).Damage = EditorGUILayout.FloatField((Data as EnemyData).Damage);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Life");
                     GUILayout.Space(100);
-                    Data.GoblinDataValues.Life = EditorGUILayout.FloatField(Data.GoblinDataValues.Life);
+                    (Data as EnemyData).Life = EditorGUILayout.FloatField((Data as EnemyData).Life);
                     GUILayout.EndHorizontal();
                 }
             }
@@ -135,13 +132,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
                     GUILayout.Space(100);
-                    Data.SwordDataValues.Damage = EditorGUILayout.FloatField(Data.SwordDataValues.Damage);
+                    (Data as WeaponData).Damage = EditorGUILayout.FloatField((Data as WeaponData).Damage);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Wear");
                     GUILayout.Space(100);
-                    Data.SwordDataValues.Wear = EditorGUILayout.FloatField(Data.SwordDataValues.Wear);
+                    (Data as WeaponData).Wear = EditorGUILayout.FloatField((Data as WeaponData).Wear);
                     GUILayout.EndHorizontal();
                 }
 
@@ -150,13 +147,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage Hero");
                     GUILayout.Space(100);
-                    Data.PotionDataValues.DamageHero = EditorGUILayout.FloatField(Data.PotionDataValues.DamageHero);
+                    (Data as PotionData).DamageHero = EditorGUILayout.FloatField((Data as PotionData).DamageHero);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Healt Restore");
                     GUILayout.Space(100);
-                    Data.PotionDataValues.HealtRestore = EditorGUILayout.FloatField(Data.PotionDataValues.HealtRestore);
+                    (Data as PotionData).HealtRestore = EditorGUILayout.FloatField((Data as PotionData).HealtRestore);
                     GUILayout.EndHorizontal();
                 }
 
@@ -165,13 +162,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Protection");
                     GUILayout.Space(100);
-                    Data.ArmoryDataValues.Protection = EditorGUILayout.FloatField(Data.ArmoryDataValues.Protection);
+                    (Data as ArmorData).Protection = EditorGUILayout.FloatField((Data as ArmorData).Protection);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Wear");
                     GUILayout.Space(100);
-                    Data.ArmoryDataValues.Wear = EditorGUILayout.FloatField(Data.ArmoryDataValues.Wear);
+                    (Data as ArmorData).Wear = EditorGUILayout.FloatField((Data as ArmorData).Wear);
                     GUILayout.EndHorizontal();
                 }
 
@@ -189,13 +186,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
                     GUILayout.Space(100);
-                    Data.TagliolaValues.Damage = EditorGUILayout.FloatField(Data.TagliolaValues.Damage);
+                    (Data as TrapData).Damage = EditorGUILayout.FloatField((Data as TrapData).Damage);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Time To Leave");
                     GUILayout.Space(100);
-                    Data.TagliolaValues.TimeToLeave = EditorGUILayout.FloatField(Data.TagliolaValues.TimeToLeave);
+                    (Data as TrapData).TimeToLeave = EditorGUILayout.FloatField((Data as TrapData).TimeToLeave);
                     GUILayout.EndHorizontal();
                 }
 
@@ -204,13 +201,13 @@ namespace DumbProject.Editors
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Damage");
                     GUILayout.Space(100);
-                    Data.CatapultaValues.Damage = EditorGUILayout.FloatField(Data.CatapultaValues.Damage);
+                    (Data as TrapData).Damage = EditorGUILayout.FloatField((Data as TrapData).Damage);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Time To Leave");
                     GUILayout.Space(100);
-                    Data.CatapultaValues.TimeToLeave = EditorGUILayout.FloatField(Data.CatapultaValues.TimeToLeave);
+                    (Data as TrapData).TimeToLeave = EditorGUILayout.FloatField((Data as TrapData).TimeToLeave);
                     GUILayout.EndHorizontal();
                 }
             }
@@ -239,7 +236,7 @@ namespace DumbProject.Editors
 
         private void DrawGenericTabs() {
             int index = (int)_genericCategorySelected;
-            Data.Type = (DumbProject.Items.GenericType)GUILayout.Toolbar(index, _genericCategoryLabels.ToArray());
+            Data.Type = (GenericType)GUILayout.Toolbar(index, _genericCategoryLabels.ToArray());
             index = (int)Data.Type;
             _genericCategorySelected = (int)_genericCategories[index];
             

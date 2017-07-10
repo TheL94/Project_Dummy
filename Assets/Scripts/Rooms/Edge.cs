@@ -104,13 +104,17 @@ namespace DumbProject.Rooms
 
         //Implementazione di IInteractable
         #region IInteractable
-        bool _isInteractable;
+        public Transform Transf { get { return transform; } }
+        bool _isInteractable = true;
         public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         public void Interact()
         {
             if (Type == EdgeType.Wall)
+            {
+                IsInteractable = false;
                 return; 
+            }
 
             Room room = RelativeCell.RelativeRoom;
             if ((int)room.StatusOfExploration < 2)
@@ -123,6 +127,8 @@ namespace DumbProject.Rooms
                 if ((int)roomInFront.StatusOfExploration < 2)
                     roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
             }
+
+            IsInteractable = false;
         }
         #endregion
 

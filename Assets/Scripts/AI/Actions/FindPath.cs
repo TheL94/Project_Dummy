@@ -27,7 +27,7 @@ namespace DumbProject.AI
         /// <param name="_controller"></param>
         void Evaluate(AIController _controller)
         {
-            INetworkable objectivePosition = (_controller as AIActor).NextObjectivePosition;
+            INetworkable objectivePosition = grid.GetSpecificGridNode((_controller as AIActor).InteractableObjective.Transf.position);
             if(objectivePosition == null)
             {
                 Debug.LogWarning("Trying to find a path on a null NextObjectivePosition");

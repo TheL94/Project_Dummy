@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public interface IDroppable
+    public interface IDroppable : IInteractable
     {
-        DroppableBaseData Data { get; set; }
-        Transform transF { get; }
-        void InitIDroppable(DroppableBaseData _data);
+        GenericItemData Data { get; set; }
+        void Init(GenericItemData _data);
     }
 }

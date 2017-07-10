@@ -1,19 +1,17 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using DumbProject.Grid;
 using DumbProject.Generic;
 using DumbProject.Items;
-using System;
 
 namespace DumbProject.Rooms
 {
     /// <summary>
     /// Classe astatta padre di ogni tipo di stanza
     /// </summary>
-    public class Room : MonoBehaviour, IDroppableHolder
+    public class Room : MonoBehaviour, IInteractableHolder
     {
         ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
         public ExplorationStatus StatusOfExploration
@@ -40,7 +38,7 @@ namespace DumbProject.Rooms
         {
             get
             {
-                _freeCells = CellsInRoom.Where(c => c.ActualDroppable == null).ToList();
+                _freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
                 return _freeCells;
             }
         }
@@ -142,24 +140,32 @@ namespace DumbProject.Rooms
         }
 
         #region IDroppableHolder
-        List<IDroppable> _droppableList = new List<IDroppable>();
-        public List<IDroppable> DroppableList { get { return _droppableList; } set { _droppableList = value; } }
-        public IDroppable AddDroppable(DroppableBaseData _droppableToAdd)
+        List<IInteractable> _interactableList = new List<IInteractable>();
+        public List<IInteractable> InteractableAvailable
         {
-            Cell freeCell = freeCells[UnityEngine.Random.Range(0, freeCells.Count)];
-            IDroppable dropToAdd = Instantiate(_droppableToAdd.ItemPrefab, freeCell.RelativeNode.WorldPosition, Quaternion.identity, transform).GetComponent<IDroppable>();
-            freeCell.ChangeFloorColor(_droppableToAdd.ShowMateriaInRoom);
-            freeCell.ActualDroppable = dropToAdd;
-            DroppableList.Add(dropToAdd);
-            return dropToAdd;
+            get { return _interactableList.Where(a => a.IsInteractable == true).ToList(); }
+            set { _interactableList = value; }
+        }
+        public List<IInteractable> InteractableList
+        {
+            get { return _interactableList; }
+            set { _interactableList = value; }
+        }
+        public IInteractable AddInteractable(IDroppable _droppableToAdd)
+        {
+            Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
+            freeCell.ChangeFloorColor(_droppableToAdd.Data.ShowMateriaInRoom);
+            freeCell.ActualInteractable = _droppableToAdd;
+            InteractableAvailable.Add(_droppableToAdd);
+            return _droppableToAdd;
         }
 
-        public void RemoveDroppable(IDroppable _droppableToRemove)
+        public void RemoveInteractable(IInteractable _interactableToRemove)
         {
             Cell cell = null;
             foreach (Cell _cell in CellsInRoom)
             {
-                if (_cell.ActualDroppable == _droppableToRemove)
+                if (_cell.ActualInteractable == _interactableToRemove)
                 {
                     cell = _cell;
                     break;
@@ -167,13 +173,13 @@ namespace DumbProject.Rooms
             }
             if(cell != null)
             {
-                cell.ActualDroppable = null;
+                cell.ActualInteractable = null;
                 //_______
                 //TODO: ricolorare pavimento?
                 //__________
             }
 
-            DroppableList.Remove(_droppableToRemove);
+            InteractableAvailable.Remove(_interactableToRemove);
         }
         #endregion
         #endregion

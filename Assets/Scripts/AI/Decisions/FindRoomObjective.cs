@@ -25,15 +25,19 @@ namespace DumbProject.AI {
         int ChooseWhatToDo(AIController _controller)
         {
             Room actualRoom = (_controller as AIActor).CurrentRoom;
-            List<IDroppable> droppablesInRoom = actualRoom.DroppableList;
+            List<IInteractable> interactableInRoom = actualRoom.InteractableAvailable;
 
             foreach (GenericType priority in ObjectivesPriority)
             {
-                foreach (IDroppable drop in droppablesInRoom)
+                foreach (IInteractable interaction in interactableInRoom)
                 {
-                    if(priority == drop.Data.Type)
+                    ItemGeneric item = (interaction as MonoBehaviour).GetComponent<ItemGeneric>();
+                    if (item == null)
+                        continue;
+
+                    if (priority == item.Data.Type)
                     {
-                        (_controller as AIActor).NextRoomObjective = drop;
+                        (_controller as AIActor).InteractableObjective = interaction;
                         return 0;
                     }                
                 }

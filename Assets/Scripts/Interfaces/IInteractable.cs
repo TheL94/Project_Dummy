@@ -7,6 +7,7 @@ namespace DumbProject
     public interface IInteractable
     {
         bool IsInteractable { get; set; }
+        Transform Transf { get; }
         void Interact();
     }
 }

@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace DumbProject.Items
 {
-    public class Potion : ItemGeneric
+    public class Weapon : ItemGeneric
     {
-        public PotionData PotionValues;
+        public WeaponData SwordValues;
         public override void Init(GenericItemData _values)
         {
-            PotionValues = _values as PotionData;
+            SwordValues = _values as WeaponData;
         }
 
         public override void Interact()
