@@ -59,7 +59,7 @@ namespace DumbProject.Generic
             GridNode node = null;
             foreach (Edge edge in edges)
             {
-                node = edge.RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetNodeInFrontPosition());
+                node = edge.RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetFrontPosition());
                 if (node != null && node.RelativeCell != null)
                 {
                     switch (_room.StatusOfExploration)
