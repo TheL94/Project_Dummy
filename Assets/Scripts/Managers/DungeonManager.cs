@@ -53,7 +53,7 @@ namespace DumbProject.Generic
         /// Regole per settare lo stato di esplorazione delle stanze
         /// </summary>
         /// <param name="_room"></param>
-        public void SetRoomStausBasedOnCloseRoomsStatus(Room _room)
+        public void SetDoorsStatus(Room _room)
         {
             List<Edge> edges = _room.GetListOfEdges().Where(e => e.Type == EdgeType.Door).ToList();
             GridNode node = null;
@@ -68,32 +68,47 @@ namespace DumbProject.Generic
                             edge.StatusOfExploration = ExplorationStatus.NotInGame;
                             break;
                         case ExplorationStatus.Unavailable:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable)
+                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable|| 
+                                node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
                             {
                                 edge.StatusOfExploration = ExplorationStatus.Unavailable;
                             }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Unavailable;
-                            }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored)
+                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
+                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
                             {
                                 edge.StatusOfExploration = ExplorationStatus.Unexplored;
                                 _room.StatusOfExploration = ExplorationStatus.Unexplored;
                             }
                             break;
                         case ExplorationStatus.Unexplored:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable)
+                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable ||
+                                node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
                             {
                                 edge.StatusOfExploration = ExplorationStatus.Unavailable;
+                            }
+                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
+                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
+                            {
+                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
+                            }
+                            break;
+                        case ExplorationStatus.InExploration:
+                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable)
+                            {
+                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
+                                node.RelativeCell.RelativeRoom.StatusOfExploration = ExplorationStatus.Unexplored;
                             }
                             else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
                             {
-                                edge.StatusOfExploration = ExplorationStatus.Unavailable;
-                            }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored)
-                            {
                                 edge.StatusOfExploration = ExplorationStatus.Unexplored;
+                            }
+                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration))                              
+                            {
+                                Debug.LogWarning("Due stanze in esplorazione contemporaneamente !");
+                            }
+                            else if((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
+                            {
+                                edge.StatusOfExploration = ExplorationStatus.Explored;
                             }
                             break;
                         case ExplorationStatus.Explored:
@@ -106,7 +121,8 @@ namespace DumbProject.Generic
                             {
                                 edge.StatusOfExploration = ExplorationStatus.Unexplored;
                             }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored)
+                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
+                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
                             {
                                 edge.StatusOfExploration = ExplorationStatus.Explored;
                             }

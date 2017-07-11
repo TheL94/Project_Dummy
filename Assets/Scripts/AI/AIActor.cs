@@ -2,7 +2,8 @@
 using Framework.Pathfinding;
 using DumbProject.Grid;
 using DumbProject.Rooms;
-using DumbProject.Items;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
@@ -80,6 +81,23 @@ namespace DumbProject.Generic
                     });
                 });
             }
+        }
+
+        public List<IInteractable> GetCurrentCellInteractables ()
+        {
+            List<IInteractable> interactionToReturn = new List<IInteractable>();
+
+            interactionToReturn.Add(CurrentCell.ActualInteractable);
+            foreach (INetworkable node in CurrentCell.RelativeNode.Links)
+            {
+                if (node.GetType() == typeof(Edge))
+                    interactionToReturn.Add(node as IInteractable);
+            }
+
+            interactionToReturn = interactionToReturn.Where(i => i != null).ToList();
+            interactionToReturn = interactionToReturn.OrderBy(i => Vector3.Distance(i.Transf.position, transform.position)).ToList();
+
+            return interactionToReturn;
         }
     }
 

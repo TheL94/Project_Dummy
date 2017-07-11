@@ -20,7 +20,7 @@ namespace DumbProject.Rooms
             set
             {
                 _statusOfExploration = value;
-                GameManager.I.DungeonMng.SetRoomStausBasedOnCloseRoomsStatus(this);
+                GameManager.I.DungeonMng.SetDoorsStatus(this);
             }
         }
 
@@ -462,6 +462,32 @@ namespace DumbProject.Rooms
             return listOfPillars;
         }
         #endregion
+
+        private void OnDrawGizmos()
+        {
+
+            switch (StatusOfExploration)
+            {
+                case ExplorationStatus.NotInGame:
+                    Gizmos.color = Color.white;
+                    break;
+                case ExplorationStatus.Unavailable:
+                    Gizmos.color = Color.grey;
+                    break;
+                case ExplorationStatus.Unexplored:
+                    Gizmos.color = Color.red;
+                    break;
+                case ExplorationStatus.InExploration:
+                    Gizmos.color = Color.yellow;
+                    break;
+                case ExplorationStatus.Explored:
+                    Gizmos.color = Color.green;
+                    break;
+                default:
+                    break;
+            }
+            Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), new Vector3(5f, 1f, 5f));
+        }
     }
 
     public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, InExploration = 2, Explored = 3 }

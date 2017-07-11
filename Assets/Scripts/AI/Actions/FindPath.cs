@@ -5,6 +5,7 @@ using Framework.AI;
 using Framework.Pathfinding;
 using DumbProject.Generic;
 using DumbProject.Items;
+using DumbProject.Rooms;
 
 namespace DumbProject.AI
 {
@@ -27,9 +28,16 @@ namespace DumbProject.AI
         /// <param name="_controller"></param>
         void Evaluate(AIController _controller)
         {
-            INetworkable objectivePosition = grid.GetSpecificGridNode((_controller as AIActor).InteractableObjective.Transf.position);
+            IInteractable objective = (_controller as AIActor).InteractableObjective;
+            INetworkable objectivePosition = null;
+            if ((objective as MonoBehaviour).GetComponent<IDroppable>() != null)
+                objectivePosition = grid.GetSpecificGridNode(objective.Transf.position);
+            else
+                objectivePosition = (objective as INetworkable);
+
             if(objectivePosition == null)
             {
+                Debug.LogWarning("Evaluating a target that is neighter a ItemGeneric nor a Edge");
                 Debug.LogWarning("Trying to find a path on a null NextObjectivePosition");
                 return;
             }

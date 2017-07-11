@@ -1,5 +1,5 @@
-﻿using DumbProject.Grid;
-using DumbProject.Items;
+﻿using DumbProject.Rooms;
+using System.Collections.Generic;
 using UnityEngine;
 using Framework.AI;
 using DumbProject.Generic;
@@ -10,15 +10,23 @@ namespace DumbProject.AI {
     {
         public override int Decide(AIController _controller)
         {
-            IInteractable cellElement = (_controller as AIActor).Grid.GetSpecificGridNode(_controller.transform.position).RelativeCell.ActualInteractable;
-            if (cellElement != null && cellElement.IsInteractable
-                && Vector3.Distance(cellElement.Transf.position, _controller.transform.position) <= (_controller as AIActor).InteractionRadius)
+            return DecideCheck(_controller as AIActor);
+        }
+
+        int DecideCheck(AIActor _actor)
+        {
+            List<IInteractable> possibleInteractions = _actor.GetCurrentCellInteractables();
+            foreach (IInteractable cellElement in possibleInteractions)
             {
-                (_controller as AIActor).InteractableObjective = cellElement;
-                return 1;
+                if (cellElement != null && cellElement.IsInteractable
+                    && Vector3.Distance(cellElement.Transf.position, _actor.transform.position) <= _actor.InteractionRadius)
+                {
+                    _actor.InteractableObjective = cellElement;
+                    return 1;
+                }
             }
-            else
-                return 0;
+
+            return 0;
         }
     }
 }

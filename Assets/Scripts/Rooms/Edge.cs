@@ -117,14 +117,14 @@ namespace DumbProject.Rooms
             }
 
             Room room = RelativeCell.RelativeRoom;
-            if ((int)room.StatusOfExploration < 2)
+            if (room.StatusOfExploration == ExplorationStatus.Unexplored)
                 room.StatusOfExploration = ExplorationStatus.InExploration;
 
             GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
             Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
             if(nodeInFront != null && nodeInFront.RelativeCell != null)
             {
-                if ((int)roomInFront.StatusOfExploration < 2)
+                if (room.StatusOfExploration == ExplorationStatus.Unexplored)
                     roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
             }
 
@@ -213,7 +213,7 @@ namespace DumbProject.Rooms
                         Gizmos.color = Color.yellow;
                         break;
                     case ExplorationStatus.Explored:
-                        Gizmos.color = Color.red;
+                        Gizmos.color = Color.green;
                         break;
                     default:
                         break;
