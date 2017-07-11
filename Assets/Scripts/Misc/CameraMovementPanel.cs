@@ -53,7 +53,6 @@ namespace DumbProject
         {
             positiontoHead = eventData;
             //HeadPointer(eventData.pressPosition);
-            Debug.Log("sto draggando");
             //Vector2 direction = (eventData.position - eventData.pressPosition) * GameManager.I.CameraVelocity;
             //GameManager.I.CameraController.MoveCamera(-direction);
         }
@@ -91,7 +90,7 @@ namespace DumbProject
 
         void HeadPointer()
         {
-            if (!isPointerHeading)
+            if (!isPointerHeading || positiontoHead == null)
                 return;
 
             /*(pointerData.position - pointerData.pressPosition) * GameManager.I.CameraVelocity;*/
