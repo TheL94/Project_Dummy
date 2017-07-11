@@ -225,7 +225,7 @@ namespace DumbProject.Rooms
 
                 foreach (Framework.Pathfinding.INetworkable node in Links)
                 {
-                    Gizmos.color = Color.green;
+                    Gizmos.color = Color.blue;
                     Gizmos.DrawLine(spacePosition, node.spacePosition);
                 }
             }
