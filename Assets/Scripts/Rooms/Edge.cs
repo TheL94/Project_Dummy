@@ -21,8 +21,7 @@ namespace DumbProject.Rooms
             set
             {
                 _statusOfExploration = value;
-                if (_statusOfExploration != ExplorationStatus.NotInGame)
-                    UpdateLinks();
+                UpdateLinks();
             }
         }
 
@@ -82,7 +81,9 @@ namespace DumbProject.Rooms
         {
             // relative node
             GridNode node = RelativeCell.RelativeNode;
-            if((int)RelativeCell.RelativeRoom.StatusOfExploration > 1)
+            //se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
+            if ((RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) ||
+                (RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
             {
                 AddLinks(new List<INetworkable>() { node });
                 node.AddLinks(new List<INetworkable>() { this });
@@ -92,8 +93,9 @@ namespace DumbProject.Rooms
             GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
-                // se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
-                if ((int)nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration > 1)
+                //se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
+                if ((nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) ||
+                    (nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
                 {
                     AddLinks(new List<INetworkable>() { nodeInFront });
                     nodeInFront.AddLinks(new List<INetworkable>() { this });
@@ -120,14 +122,18 @@ namespace DumbProject.Rooms
             {
                 Room room = RelativeCell.RelativeRoom;
                 if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+                {
                     room.StatusOfExploration = ExplorationStatus.InExploration;
+                }
 
                 GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
                 Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
                 if (nodeInFront != null && nodeInFront.RelativeCell != null)
                 {
                     if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+                    {
                         roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
+                    }
                 }
 
                 IsInteractable = false;
@@ -223,11 +229,15 @@ namespace DumbProject.Rooms
                 }
                 Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
 
-                foreach (Framework.Pathfinding.INetworkable node in Links)
+                Gizmos.color = Color.cyan;
+                foreach (INetworkable node in Links)
                 {
-                    Gizmos.color = Color.blue;
-                    Gizmos.DrawLine(spacePosition, node.spacePosition);
+                    Gizmos.DrawLine(spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
                 }
+
+                Gizmos.color = Color.magenta;
+                if(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()) != null)
+                    Gizmos.DrawLine(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()).WorldPosition + new Vector3(0f, 6f, 0f), transform.position + new Vector3(0f, 6f, 0f));
             }
         }
     }

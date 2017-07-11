@@ -323,13 +323,13 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
-        private void OnDrawGizmos()
-        {
-            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(RelativeNode.WorldPosition, node.spacePosition);
-            }
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
+        //    {
+        //        Gizmos.color = Color.green;
+        //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
+        //    }
+        //}
     }
 }

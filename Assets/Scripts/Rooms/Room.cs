@@ -472,7 +472,7 @@ namespace DumbProject.Rooms
                     Gizmos.color = Color.white;
                     break;
                 case ExplorationStatus.Unavailable:
-                    Gizmos.color = Color.grey;
+                    Gizmos.color = Color.black;
                     break;
                 case ExplorationStatus.NotExplored:
                     Gizmos.color = Color.red;

@@ -18,6 +18,9 @@ namespace DumbProject.Rooms
         RoomData RoomTypesInstances;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
+        //Variabile usata solo per differenziare il nome delle room 
+        int numberOfRoomsCreated;
+
         public void Setup()
         {
             MainRoomTypesInstances = Instantiate(MainRoomTypesData);
@@ -72,7 +75,7 @@ namespace DumbProject.Rooms
             SpawnsAssociation association = GetFirstSpawnsAssociationAvailable();
             if (association != null)
             {
-                GameObject newRoomObj = new GameObject("Room_" + GameManager.I.DungeonMng.RoomInDungeon.Count);
+                GameObject newRoomObj = new GameObject("Room_" + numberOfRoomsCreated);
                 newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
                 newRoomObj.transform.parent = transform;
                 Room room = newRoomObj.AddComponent<Room>();
@@ -90,6 +93,7 @@ namespace DumbProject.Rooms
                         GameManager.I.ItemManager.InstantiateItemInRoom(room);
                     //}
                 }
+                numberOfRoomsCreated++;
             }
         }
 
