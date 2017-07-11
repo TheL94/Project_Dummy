@@ -42,7 +42,7 @@ namespace DumbProject.Generic
             {
                 foreach (Edge edge in room.GetListOfEdges())
                 {
-                    if(edge.Type == EdgeType.Door && edge.StatusOfExploration == ExplorationStatus.Unexplored)
+                    if(edge.Type == EdgeType.Door && edge.StatusOfExploration == ExplorationStatus.NotExplored)
                         unexploredDoors.Add(edge);
                 }
             }
@@ -62,69 +62,80 @@ namespace DumbProject.Generic
                 node = edge.RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(edge.GetFrontPosition());
                 if (node != null && node.RelativeCell != null)
                 {
+                    Room roomInFront = node.RelativeCell.RelativeRoom;
                     switch (_room.StatusOfExploration)
                     {
                         case ExplorationStatus.NotInGame:
                             edge.StatusOfExploration = ExplorationStatus.NotInGame;
                             break;
                         case ExplorationStatus.Unavailable:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable|| 
-                                node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
+                            switch (roomInFront.StatusOfExploration)
                             {
-                                edge.StatusOfExploration = ExplorationStatus.Unavailable;
-                            }
-                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
-                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
-                                _room.StatusOfExploration = ExplorationStatus.Unexplored;
+                                case ExplorationStatus.NotInGame:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.Unavailable;
+                                    break;
+                                case ExplorationStatus.Unavailable:
+                                case ExplorationStatus.NotExplored:
+                                    edge.StatusOfExploration = ExplorationStatus.Unavailable;
+                                    break;
+                                case ExplorationStatus.InExploration:
+                                case ExplorationStatus.Explored:
+                                    _room.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
                             }
                             break;
-                        case ExplorationStatus.Unexplored:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable ||
-                                node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
+                        case ExplorationStatus.NotExplored:
+                            switch (roomInFront.StatusOfExploration)
                             {
-                                edge.StatusOfExploration = ExplorationStatus.Unavailable;
-                            }
-                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
-                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
+                                case ExplorationStatus.NotInGame:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.Unavailable;
+                                    break;
+                                case ExplorationStatus.Unavailable:
+                                case ExplorationStatus.NotExplored:
+                                    edge.StatusOfExploration = ExplorationStatus.Unavailable;
+                                    break;
+                                case ExplorationStatus.InExploration:
+                                case ExplorationStatus.Explored:
+                                    edge.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
                             }
                             break;
                         case ExplorationStatus.InExploration:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable)
+                            switch (roomInFront.StatusOfExploration)
                             {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
-                                node.RelativeCell.RelativeRoom.StatusOfExploration = ExplorationStatus.Unexplored;
-                            }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
-                            }
-                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration))                              
-                            {
-                                Debug.LogWarning("Due stanze in esplorazione contemporaneamente !");
-                            }
-                            else if((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Explored;
+                                case ExplorationStatus.NotInGame:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.Unavailable:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.NotExplored:
+                                    edge.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.InExploration:
+                                    Debug.LogWarning("Due stanze in esplorazione contemporaneamente !");
+                                    break;
+                                case ExplorationStatus.Explored:
+                                    edge.StatusOfExploration = ExplorationStatus.Explored;
+                                    break;
                             }
                             break;
                         case ExplorationStatus.Explored:
-                            if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unavailable)
+                            switch (roomInFront.StatusOfExploration)
                             {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
-                                node.RelativeCell.RelativeRoom.StatusOfExploration = ExplorationStatus.Unexplored;
-                            }
-                            else if (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Unexplored)
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Unexplored;
-                            }
-                            else if ((node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) || 
-                                (node.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
-                            {
-                                edge.StatusOfExploration = ExplorationStatus.Explored;
+                                case ExplorationStatus.NotInGame:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.Unavailable:
+                                    roomInFront.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.NotExplored:
+                                    edge.StatusOfExploration = ExplorationStatus.NotExplored;
+                                    break;
+                                case ExplorationStatus.InExploration:
+                                case ExplorationStatus.Explored:
+                                    edge.StatusOfExploration = ExplorationStatus.Explored;
+                                    break;
                             }
                             break;
                     }
@@ -137,11 +148,12 @@ namespace DumbProject.Generic
                             edge.StatusOfExploration = ExplorationStatus.NotInGame;
                             break;
                         case ExplorationStatus.Unavailable:
-                        case ExplorationStatus.Unexplored:
+                        case ExplorationStatus.NotExplored:
                             edge.StatusOfExploration = ExplorationStatus.Unavailable;
                             break;
+                        case ExplorationStatus.InExploration:
                         case ExplorationStatus.Explored:
-                            edge.StatusOfExploration = ExplorationStatus.Unexplored;
+                            edge.StatusOfExploration = ExplorationStatus.NotExplored;
                             break;
                     }
                 }

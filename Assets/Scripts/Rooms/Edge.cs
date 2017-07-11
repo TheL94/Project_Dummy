@@ -116,19 +116,22 @@ namespace DumbProject.Rooms
                 return; 
             }
 
-            Room room = RelativeCell.RelativeRoom;
-            if (room.StatusOfExploration == ExplorationStatus.Unexplored)
-                room.StatusOfExploration = ExplorationStatus.InExploration;
-
-            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
-            Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
-            if(nodeInFront != null && nodeInFront.RelativeCell != null)
+            if(StatusOfExploration == ExplorationStatus.NotExplored)
             {
-                if (room.StatusOfExploration == ExplorationStatus.Unexplored)
-                    roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
-            }
+                Room room = RelativeCell.RelativeRoom;
+                if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+                    room.StatusOfExploration = ExplorationStatus.InExploration;
 
-            IsInteractable = false;
+                GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
+                Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
+                if (nodeInFront != null && nodeInFront.RelativeCell != null)
+                {
+                    if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+                        roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
+                }
+
+                IsInteractable = false;
+            }
         }
         #endregion
 
@@ -209,7 +212,7 @@ namespace DumbProject.Rooms
                     case ExplorationStatus.Unavailable:
                         Gizmos.color = Color.red;
                         break;
-                    case ExplorationStatus.Unexplored:
+                    case ExplorationStatus.NotExplored:
                         Gizmos.color = Color.yellow;
                         break;
                     case ExplorationStatus.Explored:

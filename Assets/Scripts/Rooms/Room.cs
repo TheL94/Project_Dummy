@@ -474,7 +474,7 @@ namespace DumbProject.Rooms
                 case ExplorationStatus.Unavailable:
                     Gizmos.color = Color.grey;
                     break;
-                case ExplorationStatus.Unexplored:
+                case ExplorationStatus.NotExplored:
                     Gizmos.color = Color.red;
                     break;
                 case ExplorationStatus.InExploration:
@@ -490,5 +490,5 @@ namespace DumbProject.Rooms
         }
     }
 
-    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, Unexplored = 1, InExploration = 2, Explored = 3 }
+    public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, NotExplored = 1, InExploration = 2, Explored = 3 }
 }
