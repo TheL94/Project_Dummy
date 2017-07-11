@@ -35,7 +35,7 @@ namespace DumbProject.AI {
                     if (item == null)
                         continue;
 
-                    if (priority == item.Data.Type)
+                    if (priority == item.Data.Type && item.IsInteractable)
                     {
                         (_controller as AIActor).InteractableObjective = interaction;
                         return 0;

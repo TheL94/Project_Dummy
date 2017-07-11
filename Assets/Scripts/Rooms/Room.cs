@@ -141,6 +141,9 @@ namespace DumbProject.Rooms
 
         #region IDroppableHolder
         List<IInteractable> _interactableList = new List<IInteractable>();
+        /// <summary>
+        /// Do not ADD on this property. Use AddInteractable function instead
+        /// </summary>
         public List<IInteractable> InteractableAvailable
         {
             get { return _interactableList.Where(a => a.IsInteractable == true).ToList(); }
@@ -154,9 +157,9 @@ namespace DumbProject.Rooms
         public IInteractable AddInteractable(IDroppable _droppableToAdd)
         {
             Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
-            freeCell.ChangeFloorColor(_droppableToAdd.Data.ShowMateriaInRoom);
             freeCell.ActualInteractable = _droppableToAdd;
-            InteractableAvailable.Add(_droppableToAdd);
+            freeCell.ChangeFloorColor(_droppableToAdd.Data.ShowMateriaInRoom);
+            InteractableList.Add(_droppableToAdd);
             return _droppableToAdd;
         }
 
@@ -179,8 +182,10 @@ namespace DumbProject.Rooms
                 //__________
             }
 
-            InteractableAvailable.Remove(_interactableToRemove);
+            InteractableList.Remove(_interactableToRemove);
         }
+
+        
         #endregion
         #endregion
 

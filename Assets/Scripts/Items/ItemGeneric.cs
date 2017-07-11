@@ -14,7 +14,7 @@ namespace DumbProject.Items
             set { _data = value; }
         }
 
-        bool _isInteractable;
+        bool _isInteractable = true;
         public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         public Transform Transf { get { return transform; } }

@@ -46,7 +46,7 @@ namespace DumbProject.Rooms
                 // TODO : posizionare bene l'oggetto
                 _actualInteractable = value;
                 _actualInteractable.Transf.parent = RelativeRoom.transform;
-                _actualInteractable.Transf.position = transform.position + Vector3.one;
+                _actualInteractable.Transf.position = transform.position;
                 _actualInteractable.Transf.rotation = transform.rotation;
             }
         }

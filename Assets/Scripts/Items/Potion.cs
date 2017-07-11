@@ -11,6 +11,7 @@ namespace DumbProject.Items
         public override void Init(GenericItemData _values)
         {
             PotionValues = _values as PotionData;
+            PotionValues.Type = GenericType.Item;
         }
 
         public override void Interact()

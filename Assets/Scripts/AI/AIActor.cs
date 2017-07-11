@@ -70,10 +70,10 @@ namespace DumbProject.Generic
             {
                 pathTrack = transform.DOLookAt(wayPoint, LookDuration).OnComplete(() =>
                 {
-                    Debug.Log("Finished looking at: " + wayPoint);
+                    //Debug.Log("Finished looking at: " + wayPoint);
                     pathTrack = transform.DOMove(wayPoint, MoveDuration).OnComplete(() =>
                     {
-                        Debug.Log("Finished moving to: " + wayPoint);
+                        //Debug.Log("Finished moving to: " + wayPoint);
                         INetworkable nodeToRemove = nodePath[0];
                         nodePath.Remove(nodeToRemove);
                         pathTrack = null;

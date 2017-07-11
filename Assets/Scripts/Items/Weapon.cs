@@ -11,6 +11,7 @@ namespace DumbProject.Items
         public override void Init(GenericItemData _values)
         {
             SwordValues = _values as WeaponData;
+            SwordValues.Type = GenericType.Item;
         }
 
         public override void Interact()
