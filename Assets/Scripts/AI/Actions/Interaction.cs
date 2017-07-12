@@ -25,8 +25,7 @@ namespace DumbProject.AI
             {
                 Edge _edg = (interaction as MonoBehaviour).GetComponent<Edge>();
                 if (_edg != null && _edg.Type == EdgeType.Door)
-                {
-                    interaction.Interact();
+                {                    
                     CrossDoor((_controller as AIActor), _edg);
                     return;
                 }
@@ -44,14 +43,10 @@ namespace DumbProject.AI
 
         void CrossDoor(AIActor _actor, Edge _doorToCross)
         {
-            foreach (INetworkable node in _doorToCross.Links)
-            {
-                if (node.spacePosition != _actor.CurrentNode.spacePosition)
-                {
-                    _actor.nodePath = new List<INetworkable>() { node };
-                    _actor.MoveToNextPathNode();
-                }
-            }
+            INetworkable nodeToAdd = _doorToCross.LinkOtherNode();
+            _doorToCross.Interact();
+            _actor.nodePath = new List<INetworkable>() { nodeToAdd };
+            _actor.MoveToNextPathNode();
         }
     }
 }

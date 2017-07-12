@@ -56,6 +56,35 @@ namespace DumbProject.Rooms
             }
         }
 
+
+        /// <summary>
+        /// Funzione che aggiunge ai links l0'latro collegamento possibile della porta
+        /// </summary>
+        public INetworkable LinkOtherNode()
+        {
+            // relative node
+            GridNode node = RelativeCell.RelativeNode;
+            if(!Links.Contains(node))
+            {
+                AddLinks(new List<INetworkable>() { node });
+                node.AddLinks(new List<INetworkable>() { this });
+                return node;
+            }
+
+            //node in front
+            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
+            if (nodeInFront != null && nodeInFront.RelativeCell != null)
+            {
+                if (!Links.Contains(nodeInFront))
+                {
+                    AddLinks(new List<INetworkable>() { nodeInFront });
+                    nodeInFront.AddLinks(new List<INetworkable>() { this });
+                    return nodeInFront;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Funzione che aggiorna i links
         /// </summary>

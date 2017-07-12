@@ -58,6 +58,15 @@ namespace Framework.AI
                 Gizmos.color = CurrentState.StateColor;
                 Gizmos.DrawSphere(transform.position, 0.2f);
             }
+
+            Gizmos.color = Color.magenta;
+
+            if (nodePath == null)
+                return;
+            foreach (INetworkable node in nodePath)
+            {
+                Gizmos.DrawWireCube(node.spacePosition, Vector3.one);
+            }
         }
 
 
@@ -65,14 +74,5 @@ namespace Framework.AI
         public virtual INetworkable CurrentNode { get; set; }
         public List<INetworkable> nodePath = new List<INetworkable>();
         #endregion
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.magenta;
-            foreach (INetworkable node in nodePath)
-            {
-                Gizmos.DrawCube(node.spacePosition, Vector3.one);
-            }
-        }
     }
 }
