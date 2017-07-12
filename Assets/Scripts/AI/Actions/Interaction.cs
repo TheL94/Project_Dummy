@@ -43,9 +43,9 @@ namespace DumbProject.AI
 
         void CrossDoor(AIActor _actor, Edge _doorToCross)
         {
-            INetworkable nodeToAdd = _doorToCross.LinkOtherNode();
+            INetworkable nodeBehindDoor = _doorToCross.ForceLinksConnection();
             _doorToCross.Interact();
-            _actor.nodePath = new List<INetworkable>() { nodeToAdd };
+            _actor.nodePath = new List<INetworkable>() { nodeBehindDoor };
             _actor.MoveToNextPathNode();
         }
     }

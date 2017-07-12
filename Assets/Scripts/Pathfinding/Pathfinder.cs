@@ -114,7 +114,6 @@ namespace Framework.Pathfinding
             }
 
             shortestPath.Reverse();
-            shortestPath.Remove(shortestPath[0]);
             return shortestPath;
         }
         /// <summary>

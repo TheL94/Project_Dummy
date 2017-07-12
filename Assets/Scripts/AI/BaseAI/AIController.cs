@@ -56,7 +56,7 @@ namespace Framework.AI
             if (CurrentState != null)
             {
                 Gizmos.color = CurrentState.StateColor;
-                Gizmos.DrawSphere(transform.position, 0.2f);
+                Gizmos.DrawWireSphere(transform.position + new Vector3(0f, 2.5f, 0f), 0.5f);
             }
 
             Gizmos.color = Color.magenta;

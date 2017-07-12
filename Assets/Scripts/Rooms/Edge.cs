@@ -60,7 +60,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che aggiunge ai links l0'latro collegamento possibile della porta
         /// </summary>
-        public INetworkable LinkOtherNode()
+        public INetworkable ForceLinksConnection()
         {
             // relative node
             GridNode node = RelativeCell.RelativeNode;
@@ -68,7 +68,7 @@ namespace DumbProject.Rooms
             {
                 AddLinks(new List<INetworkable>() { node });
                 node.AddLinks(new List<INetworkable>() { this });
-                return node;
+                return (node as INetworkable);
             }
 
             //node in front
@@ -79,7 +79,7 @@ namespace DumbProject.Rooms
                 {
                     AddLinks(new List<INetworkable>() { nodeInFront });
                     nodeInFront.AddLinks(new List<INetworkable>() { this });
-                    return nodeInFront;
+                    return (nodeInFront as INetworkable);
                 }
             }
             return null;
@@ -264,9 +264,9 @@ namespace DumbProject.Rooms
                     Gizmos.DrawLine(spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
                 }
 
-                Gizmos.color = Color.magenta;
-                if(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()) != null)
-                    Gizmos.DrawLine(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()).WorldPosition + new Vector3(0f, 6f, 0f), transform.position + new Vector3(0f, 6f, 0f));
+                //Gizmos.color = Color.magenta;
+                //if(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()) != null)
+                //    Gizmos.DrawLine(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()).WorldPosition + new Vector3(0f, 6f, 0f), transform.position + new Vector3(0f, 6f, 0f));
             }
         }
     }
