@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace DumbProject.Items
 {
@@ -20,6 +21,6 @@ namespace DumbProject.Items
         public Transform Transf { get { return transform; } }
 
         public abstract void Init(GenericItemData _data);
-        public abstract void Interact();
+        public abstract void Interact(AIActor _actor);
     }
 }

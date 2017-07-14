@@ -49,30 +49,13 @@ namespace Framework.AI
             }
         }
 
-        private void OnDrawGizmos()
-        {
-            if (!DebugMode)
-                return;
-            if (CurrentState != null)
-            {
-                Gizmos.color = CurrentState.StateColor;
-                Gizmos.DrawWireSphere(transform.position + new Vector3(0f, 2.5f, 0f), 0.5f);
-            }
-
-            Gizmos.color = Color.magenta;
-
-            if (nodePath == null)
-                return;
-            foreach (INetworkable node in nodePath)
-            {
-                Gizmos.DrawWireCube(node.spacePosition, Vector3.one);
-            }
-        }
-
-
         #region Pathfinder
         public virtual INetworkable CurrentNode { get; set; }
-        public List<INetworkable> nodePath = new List<INetworkable>();
+        public List<INetworkable> NodePath
+        {
+            get;
+            set;
+        }
         #endregion
     }
 }

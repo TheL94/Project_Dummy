@@ -21,9 +21,12 @@ namespace DumbProject.AI
             List<IInteractable> unexploredDoors = GameManager.I.DungeonMng.GetAllUnexploredDoors().ConvertAll(e => e as IInteractable);
 
             if (unexploredDoors == null || unexploredDoors.Count <= 0)
+            {
+                Debug.LogWarning("NON CI SONO PORTE INESPLORATE DISPONIBILI. MUORI");
                 return 1;
+            }
             
-            (_controller as AIActor).InteractableObjective = unexploredDoors[Random.Range(0, unexploredDoors.Count)];
+            (_controller as AIActor).INetworkableObjective = Converter.IInteractableToINetworkable(unexploredDoors[Random.Range(0, unexploredDoors.Count)]);
             return 0;
         }
     }

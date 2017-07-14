@@ -28,16 +28,11 @@ namespace DumbProject.AI
         /// <param name="_controller"></param>
         void Evaluate(AIController _controller)
         {
-            List<INetworkable> path = _controller.nodePath;
+            List<INetworkable> path = _controller.NodePath;
             if (path != null && path.Count > 0/* && path[path.Count - 1] == objectivePosition*/)
                 return;
 
-            IInteractable objective = (_controller as AIActor).InteractableObjective;
-            INetworkable objectivePosition = null;
-            if ((objective as MonoBehaviour).GetComponent<IDroppable>() != null)
-                objectivePosition = grid.GetSpecificGridNode(objective.Transf.position);
-            else
-                objectivePosition = (objective as INetworkable);
+            INetworkable objectivePosition = (_controller as AIActor).INetworkableObjective;
 
             if(objectivePosition == null)
             {
@@ -45,7 +40,7 @@ namespace DumbProject.AI
                 Debug.LogWarning("Trying to find a path on a null NextObjectivePosition");
                 return;
             }
-            _controller.nodePath = Pathfinder.FindPath(objectivePosition, (_controller as AIActor).CurrentNode);
+            _controller.NodePath = Pathfinder.FindPath(objectivePosition, (_controller as AIActor).CurrentNode);
         }
     }
 }

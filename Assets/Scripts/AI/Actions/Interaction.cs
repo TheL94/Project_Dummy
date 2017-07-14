@@ -15,12 +15,12 @@ namespace DumbProject.AI
 
         public override void Act(AIController _controller)
         {
-            OpenDoor(_controller);   
+            Interact(_controller);   
         }
 
-        void OpenDoor(AIController _controller)
+        void Interact(AIController _controller)
         {
-            IInteractable interaction = (_controller as AIActor).InteractableObjective;
+            IInteractable interaction = Converter.INetworkableToIInteractable((_controller as AIActor).INetworkableObjective);
             if(interaction != null && interaction.IsInteractable)
             {
                 Edge _edg = (interaction as MonoBehaviour).GetComponent<Edge>();
@@ -34,7 +34,7 @@ namespace DumbProject.AI
                     ItemGeneric item = (interaction as MonoBehaviour).GetComponent<ItemGeneric>();
                     if(item != null && item.Data.Type == type)
                     {
-                        interaction.Interact();
+                        interaction.Interact((_controller as AIActor));
                         return;
                     }
                 }
@@ -43,9 +43,7 @@ namespace DumbProject.AI
 
         void CrossDoor(AIActor _actor, Edge _doorToCross)
         {
-            INetworkable nodeBehindDoor = _doorToCross.ForceLinksConnection();
-            _doorToCross.Interact();
-            _actor.nodePath = new List<INetworkable>() { nodeBehindDoor };
+            _doorToCross.Interact(_actor);
             _actor.MoveToNextPathNode();
         }
     }

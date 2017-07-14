@@ -16,7 +16,15 @@ namespace DumbProject.Rooms
         ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
         public ExplorationStatus StatusOfExploration
         {
-            get { return _statusOfExploration; }
+            get
+            {
+                if (_statusOfExploration == ExplorationStatus.InExploration && InteractableAvailable.Count == 0)
+                {
+                    _statusOfExploration = ExplorationStatus.Explored;
+                    GameManager.I.DungeonMng.SetDoorsStatus(this);
+                }
+                return _statusOfExploration;
+            }
             set
             {
                 _statusOfExploration = value;

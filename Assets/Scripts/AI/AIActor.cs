@@ -49,7 +49,15 @@ namespace DumbProject.Generic
         public Cell CurrentCell { get { return Grid.GetSpecificGridNode(transform.position).RelativeCell; } }
         public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
 
-        public IInteractable InteractableObjective;
+        public INetworkable INetworkableObjective { get; set; }
+        List<INetworkable> _nodePath = new List<INetworkable>();
+        public new List<INetworkable> NodePath
+        {
+            get { return _nodePath; }
+            set {
+                pathTrack.Kill();
+                _nodePath = value; }
+        }
 
         /// <summary>
         /// Va muovere Dumby di un passo alla volta di nodo in nodo
@@ -59,29 +67,39 @@ namespace DumbProject.Generic
         {
             BlockPathWithObstacles();
             AnimState = AnimationStatus.Running;
-            if (nodePath == null || nodePath.Count <= 0)
+            if (NodePath == null || NodePath.Count <= 0)
             {
                 AnimState = AnimationStatus.Idle;
                 return;
             }
 
-            Vector3 wayPoint = nodePath[0].spacePosition;
-
-
-            if (pathTrack == null)
+            if (pathTrack == null || !pathTrack.IsPlaying())
             {
-                pathTrack = transform.DOLookAt(wayPoint, LookDuration).OnComplete(() =>
-                {
-                    //Debug.Log("Finished looking at: " + wayPoint);
-                    pathTrack = transform.DOMove(wayPoint, MoveDuration).OnComplete(() =>
-                    {
-                        //Debug.Log("Finished moving to: " + wayPoint);
-                        INetworkable nodeToRemove = nodePath[0];
-                        nodePath.Remove(nodeToRemove);
-                        pathTrack = null;
-                    });
+                Vector3[] waypoints = NodePath.ToVector3Array();
+                pathTrack = transform.DOPath(waypoints, MoveDuration, PathType.CatmullRom, PathMode.Full3D, 5, Color.magenta);
+                pathTrack.SetSpeedBased();
+                pathTrack.OnComplete(() => {
+                    NodePath.Clear();
+                    pathTrack.Kill();
                 });
             }
+
+
+            //Vector3 wayPoint = NodePath[0].spacePosition;
+            //if (pathTrack == null)
+            //{
+            //    pathTrack = transform.DOLookAt(wayPoint, LookDuration).OnComplete(() =>
+            //    {
+            //        //Debug.Log("Finished looking at: " + wayPoint);
+            //        pathTrack = transform.DOMove(wayPoint, MoveDuration).OnComplete(() =>
+            //        {
+            //            //Debug.Log("Finished moving to: " + wayPoint);
+            //            INetworkable nodeToRemove = NodePath[0];
+            //            NodePath.Remove(nodeToRemove);
+            //            pathTrack = null;
+            //        });
+            //    });
+            //}
         }
 
         public List<IInteractable> GetCurrentCellInteractables ()

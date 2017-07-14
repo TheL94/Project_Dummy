@@ -25,7 +25,7 @@ namespace DumbProject.AI {
                     {
                         Debug.Log((item as MonoBehaviour).name);
                     }
-                    _actor.InteractableObjective = cellElement;
+                    _actor.INetworkableObjective = Converter.IInteractableToINetworkable(cellElement);
                     return 1;
                 }
             }

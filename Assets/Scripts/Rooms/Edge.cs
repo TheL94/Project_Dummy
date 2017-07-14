@@ -56,35 +56,6 @@ namespace DumbProject.Rooms
             }
         }
 
-
-        /// <summary>
-        /// Funzione che aggiunge ai links l0'latro collegamento possibile della porta
-        /// </summary>
-        public INetworkable ForceLinksConnection()
-        {
-            // relative node
-            GridNode node = RelativeCell.RelativeNode;
-            if(!Links.Contains(node))
-            {
-                AddLinks(new List<INetworkable>() { node });
-                node.AddLinks(new List<INetworkable>() { this });
-                return (node as INetworkable);
-            }
-
-            //node in front
-            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
-            if (nodeInFront != null && nodeInFront.RelativeCell != null)
-            {
-                if (!Links.Contains(nodeInFront))
-                {
-                    AddLinks(new List<INetworkable>() { nodeInFront });
-                    nodeInFront.AddLinks(new List<INetworkable>() { this });
-                    return (nodeInFront as INetworkable);
-                }
-            }
-            return null;
-        }
-
         /// <summary>
         /// Funzione che aggiorna i links
         /// </summary>
@@ -119,7 +90,7 @@ namespace DumbProject.Rooms
             }
 
             //node in front
-            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
+            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition());
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
                 //se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
@@ -139,7 +110,7 @@ namespace DumbProject.Rooms
         bool _isInteractable = true;
         public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
-        public void Interact()
+        public void Interact(AIActor _actor)
         {
             if (Type == EdgeType.Wall)
             {
@@ -147,26 +118,48 @@ namespace DumbProject.Rooms
                 return; 
             }
 
-            if(StatusOfExploration == ExplorationStatus.NotExplored)
+            GridNode actorNode = _actor.CurrentNode as GridNode;
+            GridNode nodeInFront = actorNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition(actorNode.WorldPosition));
+            Room nextRoom = null;
+            if (nodeInFront.RelativeCell != null)
             {
-                Room room = RelativeCell.RelativeRoom;
-                if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+                nextRoom = nodeInFront.RelativeCell.RelativeRoom;
+                if (nextRoom.StatusOfExploration == ExplorationStatus.NotExplored)
                 {
-                    room.StatusOfExploration = ExplorationStatus.InExploration;
+                    nextRoom.StatusOfExploration = ExplorationStatus.InExploration;
                 }
-
-                GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition());
-                Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
-                if (nodeInFront != null && nodeInFront.RelativeCell != null)
-                {
-                    if (room.StatusOfExploration == ExplorationStatus.NotExplored)
-                    {
-                        roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
-                    }
-                }
-
-                IsInteractable = false;
             }
+
+
+            //if(StatusOfExploration == ExplorationStatus.NotExplored)
+            //{
+            //    Room room = RelativeCell.RelativeRoom;
+            //    if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+            //    {
+            //        room.StatusOfExploration = ExplorationStatus.InExploration;
+            //    }
+
+
+            //        Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
+            //        if (nodeInFront != null && nodeInFront.RelativeCell != null)
+            //        {
+            //            if (room.StatusOfExploration == ExplorationStatus.NotExplored)
+            //            {
+            //                roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
+            INetworkable next = _actor.CurrentNode;
+            if (next.spacePosition == Links[0].spacePosition)
+                next = Links[1];
+            else
+                next = Links[0];
+
+            _actor.INetworkableObjective  = next;
+            IsInteractable = false;
         }
         #endregion
 
@@ -194,7 +187,7 @@ namespace DumbProject.Rooms
         /// <param name="_grid"></param>
         public void CheckCollisionWithOtherEdges(GridController _grid)
         {
-            GridNode nodeInFront = _grid.GetSpecificGridNode(GetFrontPosition());
+            GridNode nodeInFront = _grid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition());
             List<Edge> edgesInFrontCell = new List<Edge>();
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
@@ -217,9 +210,14 @@ namespace DumbProject.Rooms
         /// Funzione che ritorna la posizione che sta di fronte a se stesso
         /// </summary>
         /// <returns></returns>
-        public Vector3 GetFrontPosition()
+        public Vector3 GetOppositeOfRelativeCellPosition()
         {
-            return (transform.position * 2) - RelativeCell.transform.position;
+            return GetFrontPosition(RelativeCell.transform.position);
+        }
+
+        public Vector3 GetFrontPosition(Vector3 _position)
+        {
+            return (transform.position * 2) - _position;
         }
 
         /// <summary>

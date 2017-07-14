@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace DumbProject.Items
 {
@@ -13,7 +14,7 @@ namespace DumbProject.Items
             ArmoryValues = _values as ArmorData;
         }
 
-        public override void Interact()
+        public override void Interact(AIActor _actor)
         {
             IsInteractable = false;
         }

@@ -19,17 +19,44 @@ namespace DumbProject.Generic
 
         public override void BlockPathWithObstacles()
         {
-            for (int i = 0; i < nodePath.Count; i++)
+            for (int i = 0; i < NodePath.Count; i++)
             {
-                if (nodePath[i].GetType() != typeof(Edge))
+                if (NodePath[i].GetType() != typeof(Edge))
                 {
-                    if (Grid.GetSpecificGridNode(nodePath[i].spacePosition).RelativeCell.ActualInteractable != null)
+                    if (Grid.GetSpecificGridNode(NodePath[i].spacePosition).RelativeCell.ActualInteractable != null)
                     {
-                        nodePath.RemoveRange(i + 1, nodePath.Count - i - 1);
+                        NodePath.RemoveRange(i + 1, NodePath.Count - i - 1);
                         break;
                     }
                 }
             }            
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!DebugMode)
+                return;
+            if (CurrentState != null)
+            {
+                Gizmos.color = CurrentState.StateColor;
+                Gizmos.DrawWireSphere(transform.position + new Vector3(0f, 2.5f, 0f), 0.5f);
+            }
+
+
+            if(INetworkableObjective != null)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(INetworkableObjective.spacePosition + new Vector3(0f, 8f, 0f), 0.5f);
+            }
+
+            if (NodePath == null)
+                return;
+
+            Gizmos.color = Color.magenta;
+            foreach (INetworkable node in NodePath)
+            {
+                Gizmos.DrawWireCube(node.spacePosition, Vector3.one);
+            }
         }
     }
 }
