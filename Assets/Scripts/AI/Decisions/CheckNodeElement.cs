@@ -21,6 +21,10 @@ namespace DumbProject.AI {
                 if (cellElement != null && cellElement.IsInteractable
                     && Vector3.Distance(cellElement.Transf.position, _actor.transform.position) <= _actor.InteractionRadius)
                 {
+                    foreach (var item in possibleInteractions)
+                    {
+                        Debug.Log((item as MonoBehaviour).name);
+                    }
                     _actor.InteractableObjective = cellElement;
                     return 1;
                 }

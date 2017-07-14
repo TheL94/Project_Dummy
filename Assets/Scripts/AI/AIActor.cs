@@ -57,6 +57,7 @@ namespace DumbProject.Generic
         /// <param name="forceNew"></param>
         public void MoveToNextPathNode(bool forceNew = false)
         {
+            BlockPathWithObstacles();
             AnimState = AnimationStatus.Running;
             if (nodePath == null || nodePath.Count <= 0)
             {
@@ -96,9 +97,11 @@ namespace DumbProject.Generic
 
             interactionToReturn = interactionToReturn.Where(i => i != null).ToList();
             interactionToReturn = interactionToReturn.OrderBy(i => Vector3.Distance(i.Transf.position, transform.position)).ToList();
-
+            
             return interactionToReturn;
         }
+
+        public virtual void BlockPathWithObstacles() { }
     }
 
     public enum AnimationStatus

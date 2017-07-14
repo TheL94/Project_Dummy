@@ -16,5 +16,20 @@ namespace DumbProject.Generic
             animator = GetComponentInChildren<Animator>();
             base.Setup(_setActive);
         }
+
+        public override void BlockPathWithObstacles()
+        {
+            for (int i = 0; i < nodePath.Count; i++)
+            {
+                if (nodePath[i].GetType() != typeof(Edge))
+                {
+                    if (Grid.GetSpecificGridNode(nodePath[i].spacePosition).RelativeCell.ActualInteractable != null)
+                    {
+                        nodePath.RemoveRange(i + 1, nodePath.Count - i - 1);
+                        break;
+                    }
+                }
+            }            
+        }
     }
 }
