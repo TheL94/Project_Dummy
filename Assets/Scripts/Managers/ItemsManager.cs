@@ -92,16 +92,19 @@ namespace DumbProject.Items
             else if (_data.GetType() == typeof(WeaponData))
             {
                 item = newObj.AddComponent<Weapon>();
+                newObj.AddComponent<ItemIndicator>();
                 item.name = "Weapon";
             }
             else if (_data.GetType() == typeof(PotionData))
             {
                 item = newObj.AddComponent<Potion>();
+                newObj.AddComponent<ItemIndicator>();
                 item.name = "Potion";
             }
             else if (_data.GetType() == typeof(ArmorData))
             {
                 item = newObj.AddComponent<Armor>();
+                newObj.AddComponent<ItemIndicator>();
                 item.name = "Armor";
             }
             else if (_data.GetType() == typeof(TrapData))
