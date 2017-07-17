@@ -126,12 +126,29 @@ namespace DumbProject.Rooms
             List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
             {
-                foreach (Edge edge in cell.GetEdgesList(true))
+                foreach (Edge edge in cell.GetEdgesList())
                 {
                     listOfEdges.Add(edge);
                 }
             }
             return listOfEdges;
+        }
+
+        /// <summary>
+        /// Ritorna la lista delle porte contenute in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        public List<Door> GetListOfDoors()
+        {
+            List<Door> listOfDoors = new List<Door>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Door door in cell.Doors)
+                {
+                    listOfDoors.Add(door);
+                }
+            }
+            return listOfDoors;
         }
 
         public void SetDoors(List<Door> _doors)
@@ -295,17 +312,9 @@ namespace DumbProject.Rooms
                 }
             }
 
-            foreach (Cell cell in CellsInRoom)
+            foreach (Edge wallToRemove in itemsToBeDestroyed)
             {
-                List<Edge> list = cell.GetEdgesList(true);
-                foreach (Edge wallToRemove in itemsToBeDestroyed)
-                {
-                    if (list.Contains(wallToRemove))
-                    {
-                        list.Remove(wallToRemove);
-                        wallToRemove.gameObject.SetActive(false);
-                    }
-                }
+                wallToRemove.DisableEdge();
             }
         }
 
@@ -346,7 +355,7 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che distrugge 
+        /// Funzione che distrugge gli edge in collisione con una porta
         /// </summary>
         /// <param name="_grid"></param>
         void TrimCollidingEdges(GridController _grid)
@@ -358,15 +367,19 @@ namespace DumbProject.Rooms
             {
                 if (!itemsToBeDestroyed.Contains(edge.CollidingEdge) && !itemsToBeDestroyed.Contains(edge) && edge.CollidingEdge != null)
                 {
-                    // porta collide con muro
+                    // porta collide con una porta o un muro
                     if (edge.GetType() == typeof(Door))
                     {
+                        (edge as Door).AddAjdacentCell(edge.CollidingEdge.RelativeCell);
+                        edge.CollidingEdge.RelativeCell.Doors.Add((edge as Door));
                         itemsToBeDestroyed.Add(edge.CollidingEdge);
                     }
 
                     // muro collide con porta
                     else if (edge.CollidingEdge.GetType() == typeof(Door))
                     {
+                        (edge.CollidingEdge as Door).AddAjdacentCell(edge.RelativeCell);
+                        edge.RelativeCell.Doors.Add(edge.CollidingEdge as Door);
                         itemsToBeDestroyed.Add(edge);
                     }
                 }
@@ -374,11 +387,7 @@ namespace DumbProject.Rooms
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
-                if (egdeToDestroy.RelativeCell.GetEdgesList(true).Contains(egdeToDestroy))
-                {
-                    egdeToDestroy.RelativeCell.GetEdgesList(true).Remove(egdeToDestroy);
-                    egdeToDestroy.gameObject.SetActive(false);
-                }
+                egdeToDestroy.DisableEdge();
             }
         }
 
@@ -402,8 +411,6 @@ namespace DumbProject.Rooms
                     numberOfDoors--;
             }
         }
-
-
 
         /// <summary>
         /// Ritorna la lista dei pilastri contenuti in tutte le celle

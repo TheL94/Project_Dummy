@@ -34,8 +34,13 @@ namespace DumbProject.Rooms
         }
 
         GameObject floor;
-        List<Door> doors = new List<Door>();
-        List<Edge> edges = new List<Edge>();
+
+        List<Door> _doors = new List<Door>();
+        public List<Door> Doors { get { return _doors; } private set { _doors = value; } }
+
+        List<Edge> _edges = new List<Edge>();
+        public List<Edge> Edges { get { return _edges; } private set { _edges = value; } }
+
         List<GameObject> angles = new List<GameObject>();
 
         IInteractable _actualInteractable;
@@ -98,7 +103,7 @@ namespace DumbProject.Rooms
             _newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
-            edges.Add(newEdge);
+            Edges.Add(newEdge);
         }
 
         /// <summary>
@@ -152,7 +157,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateWallElements()
         {
-            foreach (Edge edge in edges)
+            foreach (Edge edge in Edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
@@ -253,10 +258,7 @@ namespace DumbProject.Rooms
         /// <param name="_edge"></param>
         public bool ReplaceEdgeWithDoor(Edge _edge)
         {
-            if (_edge.GetType() == typeof(Door))
-                return false;
-
-            _edge.DisableActions();
+            _edge.DisableEdge();
             GameObject edgeObj = _edge.gameObject;
             Destroy(_edge);
             Door newDoor = edgeObj.AddComponent<Door>();
@@ -284,7 +286,8 @@ namespace DumbProject.Rooms
                     Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
             }
-            doors.Add(newDoor);
+            newDoor.gameObject.SetActive(true);
+            Doors.Add(newDoor);
             return true;
         }
 
@@ -338,25 +341,12 @@ namespace DumbProject.Rooms
         /// Funzione che ritorna la lista degli edge di questa cella
         /// </summary>
         /// <returns></returns>
-        public List<Edge> GetEdgesList(bool _includeDoors = false)
+        public List<Edge> GetEdgesList()
         {
             List<Edge> edgesToReturn = new List<Edge>();
-            if(_includeDoors)
-                edgesToReturn.AddRange(GetDoorsList().ConvertAll(d => d as Edge));
-
-            edges.RemoveAll(e => e == null);
-            edgesToReturn.AddRange(edges);
+            edgesToReturn.AddRange(Doors.ConvertAll(d => d as Edge));
+            edgesToReturn.AddRange(Edges);
             return edgesToReturn;
-        }
-
-        /// <summary>
-        /// Funzione che ritorna la lista delle door di questa cella
-        /// </summary>
-        /// <returns></returns>
-        public List<Door> GetDoorsList()
-        {
-            doors.RemoveAll(e => e == null);
-            return doors;
         }
 
         /// <summary>
@@ -379,13 +369,13 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
-        private void OnDrawGizmos()
-        {
-            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
-            }
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
+        //    {
+        //        Gizmos.color = Color.green;
+        //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
+        //    }
+        //}
     }
 }

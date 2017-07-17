@@ -20,27 +20,25 @@ namespace DumbProject.Rooms
             }
         }
 
-        //Implementazione di INetworkable
-        #region INetworkable
-        public Vector3 spacePosition { get { return transform.position; } set { } }
-        List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links { get { return _links; } set { _links = value; } }
+        Cell[] _adjacentCells = new Cell[2];
+        public Cell[] AjdacentCells { get { return _adjacentCells; } }
 
-        public void AddLinks(List<INetworkable> _newLinks)
+        public override void Setup(Cell _relativeCell)
         {
-            foreach (INetworkable _INet in _newLinks)
-            {
-                if (!Links.Contains(_INet))
-                    Links.Add(_INet);
-            }
+            base.Setup(_relativeCell);
+            AddAjdacentCell(RelativeCell);
         }
 
-        public void RemoveLinks(List<INetworkable> _linksToRemove)
+        /// <summary>
+        /// Funzione che aggiunge una cella come adiacente alla porta
+        /// </summary>
+        /// <param name="_adjacentCell"></param>
+        public void AddAjdacentCell(Cell _adjacentCell)
         {
-            foreach (INetworkable _INet in _linksToRemove)
+            for (int i = 0; i < _adjacentCells.Length; i++)
             {
-                if (Links.Contains(_INet))
-                    Links.Remove(_INet);
+                if (_adjacentCells[i] == null)
+                    _adjacentCells[i] = _adjacentCell;
             }
         }
 
@@ -88,6 +86,30 @@ namespace DumbProject.Rooms
                     AddLinks(new List<INetworkable>() { nodeInFront });
                     nodeInFront.AddLinks(new List<INetworkable>() { this });
                 }
+            }
+        }
+
+        //Implementazione di INetworkable
+        #region INetworkable
+        public Vector3 spacePosition { get { return transform.position; } set { } }
+        List<INetworkable> _links = new List<INetworkable>();
+        public List<INetworkable> Links { get { return _links; } set { _links = value; } }
+
+        public void AddLinks(List<INetworkable> _newLinks)
+        {
+            foreach (INetworkable _INet in _newLinks)
+            {
+                if (!Links.Contains(_INet))
+                    Links.Add(_INet);
+            }
+        }
+
+        public void RemoveLinks(List<INetworkable> _linksToRemove)
+        {
+            foreach (INetworkable _INet in _linksToRemove)
+            {
+                if (Links.Contains(_INet))
+                    Links.Remove(_INet);
             }
         }
         #endregion

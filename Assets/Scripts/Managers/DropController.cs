@@ -71,7 +71,7 @@ namespace DumbProject.Generic
             bool isValidPosition = false;
             List<Edge> roomEdges = new List<Edge>();
             foreach (Cell cell in _room.CellsInRoom)
-                roomEdges.AddRange(cell.GetEdgesList(true));
+                roomEdges.AddRange(cell.GetEdgesList());
 
             foreach (Edge edge in roomEdges)
             {

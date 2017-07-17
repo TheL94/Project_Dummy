@@ -120,7 +120,7 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cell in room.CellsInRoom)
             {
-                foreach (Edge edge in cell.GetEdgesList(true))
+                foreach (Edge edge in cell.GetEdgesList())
                 {
                     edge.CheckCollisionWithOtherEdges(GameManager.I.MainGridCtrl);
                 }

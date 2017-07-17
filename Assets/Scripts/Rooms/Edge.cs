@@ -18,7 +18,7 @@ namespace DumbProject.Rooms
 
         GameObject graphic;
 
-        public void Setup(Cell _relativeCell)
+        public virtual void Setup(Cell _relativeCell)
         {
             RelativeCell = _relativeCell;
         }
@@ -46,7 +46,7 @@ namespace DumbProject.Rooms
             List<Edge> edgesInFrontCell = new List<Edge>();
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
-                edgesInFrontCell = nodeInFront.RelativeCell.GetEdgesList(true);
+                edgesInFrontCell = nodeInFront.RelativeCell.GetEdgesList();
                 foreach (Edge edgeInFront in edgesInFrontCell)
                 {
                     if (Vector3.Distance(edgeInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
@@ -78,13 +78,15 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che continene
         /// </summary>
-        public void DisableActions()
+        public void DisableEdge()
         {
             if (graphic != null)
             {
                 graphic.SetActive(false);
                 graphic = null;
             }
+            RelativeCell.Edges.Remove(this);
+            gameObject.SetActive(false);
         }
     }
 }
