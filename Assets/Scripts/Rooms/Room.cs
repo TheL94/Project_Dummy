@@ -23,6 +23,7 @@ namespace DumbProject.Rooms
             set
             {
                 _statusOfExploration = value;
+                OnExplorationStatusSet();
             }
         }
 
@@ -428,6 +429,17 @@ namespace DumbProject.Rooms
             return listOfPillars;
         }
         #endregion
+
+        void OnExplorationStatusSet()
+        {
+            LinkCells();
+            List<Room> adjRooms = GameManager.I.DungeonMng.GetAdjacentRooms(this);
+
+            foreach (Room room in adjRooms)
+            {
+                //TODO: aggiornare  lo stato delle stanze (adiacenti)
+            }
+        }
 
         private void OnDrawGizmos()
         {
