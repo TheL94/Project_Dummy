@@ -34,7 +34,13 @@ namespace DumbProject.Rooms
         }
 
         GameObject floor;
-        List<Edge> edges = new List<Edge>();
+
+        List<Door> _doors = new List<Door>();
+        public List<Door> Doors { get { return _doors; } private set { _doors = value; } }
+
+        List<Edge> _edges = new List<Edge>();
+        public List<Edge> Edges { get { return _edges; } private set { _edges = value; } }
+
         List<GameObject> angles = new List<GameObject>();
 
         IInteractable _actualInteractable;
@@ -97,7 +103,7 @@ namespace DumbProject.Rooms
             _newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
-            edges.Add(newEdge);
+            Edges.Add(newEdge);
         }
 
         /// <summary>
@@ -151,7 +157,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateWallElements()
         {
-            foreach (Edge edge in edges)
+            foreach (Edge edge in Edges)
             {
                 if (edge.name == "RightEdge" || edge.name == "LeftEdge")
                 {
@@ -247,6 +253,45 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
+        /// Funzione che sostituisce la grafica del muro con la grafica porta
+        /// </summary>
+        /// <param name="_edge"></param>
+        public bool ReplaceEdgeWithDoor(Edge _edge)
+        {
+            _edge.DisableEdge();
+            GameObject edgeObj = _edge.gameObject;
+            Destroy(_edge);
+            Door newDoor = edgeObj.AddComponent<Door>();
+
+            newDoor.Setup(this);
+            if (_edge.name == "RightEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
+                newDoor.name = "RightDoor";
+            }
+            else if (_edge.name == "LeftEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
+                newDoor.name = "LeftDoor";
+            }
+            else if (_edge.name == "UpEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
+                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
+                newDoor.name = "UpDoor";
+            }
+            else if (_edge.name == "DownEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
+                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
+                newDoor.name = "DownDoor";
+            }
+            newDoor.gameObject.SetActive(true);
+            Doors.Add(newDoor);
+            return true;
+        }
+
+        /// <summary>
         /// Funzione che setta il nodo relativo della cella
         /// </summary>
         /// <param name="_relativeNode"></param>
@@ -286,10 +331,9 @@ namespace DumbProject.Rooms
                     RelativeNode.Links.Add(adjacentNode);
 
             // Aggiungo ai links del nodo relativo le mie porte
-            foreach (Edge edge in edges)
+            foreach (Door door in GetComponentsInChildren<Door>())
             {
-                if (edge.Type == EdgeType.Door)
-                    edge.UpdateLinks();
+                door.UpdateLinks();
             }
         } 
 
@@ -299,8 +343,10 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public List<Edge> GetEdgesList()
         {
-            edges.RemoveAll(e => e == null);
-            return edges;
+            List<Edge> edgesToReturn = new List<Edge>();
+            edgesToReturn.AddRange(Doors.ConvertAll(d => d as Edge));
+            edgesToReturn.AddRange(Edges);
+            return edgesToReturn;
         }
 
         /// <summary>

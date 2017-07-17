@@ -50,14 +50,6 @@ namespace DumbProject.Generic
         public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
 
         public INetworkable INetworkableObjective { get; set; }
-        List<INetworkable> _nodePath = new List<INetworkable>();
-        public new List<INetworkable> NodePath
-        {
-            get { return _nodePath; }
-            set {
-                pathTrack.Kill();
-                _nodePath = value; }
-        }
 
         /// <summary>
         /// Va muovere Dumby di un passo alla volta di nodo in nodo
@@ -73,14 +65,15 @@ namespace DumbProject.Generic
                 return;
             }
 
-            if (pathTrack == null || !pathTrack.IsPlaying())
+            if (pathTrack == null || !pathTrack.IsActive())
             {
-                Vector3[] waypoints = NodePath.ToVector3Array();
-                pathTrack = transform.DOPath(waypoints, MoveDuration, PathType.CatmullRom, PathMode.Full3D, 5, Color.magenta);
-                pathTrack.SetSpeedBased();
-                pathTrack.OnComplete(() => {
-                    NodePath.Clear();
-                    pathTrack.Kill();
+                pathTrack = transform.DOLookAt(NodePath[0].spacePosition, LookDuration).OnComplete(() =>
+                {
+                    pathTrack = transform.DOMove(NodePath[0].spacePosition, MoveDuration).OnComplete(() => 
+                    {
+                        NodePath.Remove(NodePath[0]);
+                        pathTrack.Kill();
+                    });
                 });
             }
 
@@ -102,7 +95,14 @@ namespace DumbProject.Generic
             //}
         }
 
-        public List<IInteractable> GetCurrentCellInteractables ()
+        public void SetPath(List<INetworkable> _networkables)
+        {
+            if (pathTrack != null)
+                pathTrack.Complete();
+            NodePath = _networkables;
+        }
+
+        public List<IInteractable> GetCurrentCellInteractables()
         {
             List<IInteractable> interactionToReturn = new List<IInteractable>();
 
@@ -115,7 +115,7 @@ namespace DumbProject.Generic
 
             interactionToReturn = interactionToReturn.Where(i => i != null).ToList();
             interactionToReturn = interactionToReturn.OrderBy(i => Vector3.Distance(i.Transf.position, transform.position)).ToList();
-            
+
             return interactionToReturn;
         }
 

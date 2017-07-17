@@ -75,13 +75,13 @@ namespace DumbProject.Generic
 
             foreach (Edge edge in roomEdges)
             {
-                if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                if(edge.CollidingEdge != null)
                 {
-                    isValidPosition = true;
-                }
-                else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null)
-                {
-                    if (edge.CollidingEdge.Type == EdgeType.Door)
+                    if (edge.GetType() == typeof(Door))
+                    {
+                        isValidPosition = true;
+                    }
+                    else if (edge.CollidingEdge.GetType() == typeof(Door))
                     {
                         isValidPosition = true;
                     }

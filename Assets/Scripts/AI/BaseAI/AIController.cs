@@ -54,7 +54,7 @@ namespace Framework.AI
         public List<INetworkable> NodePath
         {
             get;
-            set;
+            protected set;
         }
         #endregion
     }

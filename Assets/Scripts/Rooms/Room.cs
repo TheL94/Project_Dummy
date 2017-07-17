@@ -18,19 +18,16 @@ namespace DumbProject.Rooms
         {
             get
             {
-                if (_statusOfExploration == ExplorationStatus.InExploration && InteractableAvailable.Count == 0)
-                {
-                    _statusOfExploration = ExplorationStatus.Explored;
-                    GameManager.I.DungeonMng.SetDoorsStatus(this);
-                }
                 return _statusOfExploration;
             }
             set
             {
                 _statusOfExploration = value;
-                GameManager.I.DungeonMng.SetDoorsStatus(this);
+                OnExplorationStatusSet();
             }
         }
+
+        public List<Door> Doors { get; protected set; }
 
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
@@ -40,16 +37,6 @@ namespace DumbProject.Rooms
         public DropController DropController;
         [HideInInspector]
         public RoomData Data;
-
-        List<Cell> _freeCells = new List<Cell>();
-        List<Cell> freeCells
-        {
-            get
-            {
-                _freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
-                return _freeCells;
-            }
-        }
 
         Vector3 _initialPosition;
         Tweener rotationTween;
@@ -147,6 +134,28 @@ namespace DumbProject.Rooms
             return listOfEdges;
         }
 
+        /// <summary>
+        /// Ritorna la lista delle porte contenute in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        public List<Door> GetListOfDoors()
+        {
+            List<Door> listOfDoors = new List<Door>();
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Door door in cell.Doors)
+                {
+                    listOfDoors.Add(door);
+                }
+            }
+            return listOfDoors;
+        }
+
+        public void SetDoors(List<Door> _doors)
+        {
+            Doors = _doors;
+        }
+
         #region IDroppableHolder
         List<IInteractable> _interactableList = new List<IInteractable>();
         /// <summary>
@@ -164,6 +173,7 @@ namespace DumbProject.Rooms
         }
         public IInteractable AddInteractable(IDroppable _droppableToAdd)
         {
+            List<Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
             Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
             freeCell.ActualInteractable = _droppableToAdd;
             freeCell.ChangeFloorColor(_droppableToAdd.Data.ShowMateriaInRoom);
@@ -295,24 +305,16 @@ namespace DumbProject.Rooms
             {
                 if (!itemsToBeDestroyed.Contains(edge))
                 {
-                    if (edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
+                    if (edge.CollidingEdge != null)
                     {
                         itemsToBeDestroyed.Add(edge);
                     }
                 }
             }
 
-            foreach (Cell cell in CellsInRoom)
+            foreach (Edge wallToRemove in itemsToBeDestroyed)
             {
-                List<Edge> list = cell.GetEdgesList();
-                foreach (Edge wallToRemove in itemsToBeDestroyed)
-                {
-                    if (list.Contains(wallToRemove))
-                    {
-                        list.Remove(wallToRemove);
-                        wallToRemove.gameObject.SetActive(false);
-                    }
-                }
+                wallToRemove.DisableEdge();
             }
         }
 
@@ -353,7 +355,7 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che distrugge 
+        /// Funzione che distrugge gli edge in collisione con una porta
         /// </summary>
         /// <param name="_grid"></param>
         void TrimCollidingEdges(GridController _grid)
@@ -363,35 +365,29 @@ namespace DumbProject.Rooms
 
             foreach (Edge edge in edges)
             {
-                if (!itemsToBeDestroyed.Contains(edge.CollidingEdge))
+                if (!itemsToBeDestroyed.Contains(edge.CollidingEdge) && !itemsToBeDestroyed.Contains(edge) && edge.CollidingEdge != null)
                 {
-                    if (edge.Type == EdgeType.Door && edge.CollidingEdge != null)
+                    // porta collide con una porta o un muro
+                    if (edge.GetType() == typeof(Door))
                     {
+                        (edge as Door).AddAjdacentCell(edge.CollidingEdge.RelativeCell);
+                        edge.CollidingEdge.RelativeCell.Doors.Add((edge as Door));
                         itemsToBeDestroyed.Add(edge.CollidingEdge);
                     }
-                    else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Door)
+
+                    // muro collide con porta
+                    else if (edge.CollidingEdge.GetType() == typeof(Door))
                     {
+                        (edge.CollidingEdge as Door).AddAjdacentCell(edge.RelativeCell);
+                        edge.RelativeCell.Doors.Add(edge.CollidingEdge as Door);
                         itemsToBeDestroyed.Add(edge);
                     }
-
-                    //###################################
-                    // CONTROLLO DA NON CANCELLARE !
-                    // serve per distruggere i muri che collidono fra di loro quando piazzo la stanza, da usare o meno in funzione della grafica.
-                    //else if (edge.Type == EdgeType.Wall && edge.CollidingEdge != null && edge.CollidingEdge.Type == EdgeType.Wall)
-                    //{
-                    //    itemsToBeDestroyed.Add(edge);
-                    //}
-                    //###################################
                 }
             }
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
-                if (egdeToDestroy.RelativeCell.GetEdgesList().Contains(egdeToDestroy))
-                {
-                    egdeToDestroy.RelativeCell.GetEdgesList().Remove(egdeToDestroy);
-                    egdeToDestroy.gameObject.SetActive(false);
-                }
+                egdeToDestroy.DisableEdge();
             }
         }
 
@@ -409,48 +405,11 @@ namespace DumbProject.Rooms
             while (numberOfDoors > 0)
             {
                 int randomIndex = UnityEngine.Random.Range(0, listOfEdges.Count);
-                if (ReplaceWallWithArch(listOfEdges[randomIndex]))
+                Edge edgeToReplace = listOfEdges[randomIndex];
+                Cell relativeCell = edgeToReplace.RelativeCell;
+                if (relativeCell.ReplaceEdgeWithDoor(edgeToReplace))
                     numberOfDoors--;
             }
-        }
-
-        /// <summary>
-        /// Funzione che sostituisce la grafica del muro con la grafica porta
-        /// </summary>
-        /// <param name="_edge"></param>
-        bool ReplaceWallWithArch(Edge _edge)
-        {
-            if (_edge.Type == EdgeType.Door)
-                return false;
-
-            Cell parentCell = null;
-            _edge.GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
-            parentCell = _edge.transform.parent.GetComponent<Cell>();
-
-            if (_edge.name == "RightEdge")
-            {
-                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
-                _edge.name = "RightDoor";
-            }
-            else if (_edge.name == "LeftEdge")
-            {
-                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
-                _edge.name = "LeftDoor";
-            }
-            else if (_edge.name == "UpEdge")
-            {
-                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - _edge.transform.position));
-                _edge.name = "UpDoor";
-            }
-            else if (_edge.name == "DownEdge")
-            {
-                _edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(parentCell.GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - _edge.transform.position));
-                _edge.name = "DownDoor";
-            }
-            _edge.Type = EdgeType.Door;
-            return true;
         }
 
         /// <summary>
@@ -470,6 +429,17 @@ namespace DumbProject.Rooms
             return listOfPillars;
         }
         #endregion
+
+        void OnExplorationStatusSet()
+        {
+            LinkCells();
+            List<Room> adjRooms = GameManager.I.DungeonMng.GetAdjacentRooms(this);
+
+            foreach (Room room in adjRooms)
+            {
+                //TODO: aggiornare  lo stato delle stanze (adiacenti)
+            }
+        }
 
         private void OnDrawGizmos()
         {
