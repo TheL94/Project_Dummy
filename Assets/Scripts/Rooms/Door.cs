@@ -9,19 +9,13 @@ namespace DumbProject.Rooms
 {
     public class Door : Edge, INetworkable, IInteractable
     {
-        ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
         public ExplorationStatus StatusOfExploration
         {
-            get { return _statusOfExploration; }
-            set
-            {
-                _statusOfExploration = value;
-                UpdateLinks();
-            }
+            get { return EvaluateStatus(); }
         }
 
         Cell[] _adjacentCells = new Cell[2];
-        public Cell[] AjdacentCells { get { return _adjacentCells; } }
+        public Cell[] AdjacentCells { get { return _adjacentCells; } }
 
         public override void Setup(Cell _relativeCell)
         {
@@ -38,55 +32,112 @@ namespace DumbProject.Rooms
             for (int i = 0; i < _adjacentCells.Length; i++)
             {
                 if (_adjacentCells[i] == null)
+                {
                     _adjacentCells[i] = _adjacentCell;
+                    return;
+                }
             }
         }
 
         /// <summary>
-        /// Funzione che aggiorna i links
+        /// Update INetworkable links based on the exploration status
         /// </summary>
         public void UpdateLinks()
         {
-            //if (StatusOfExploration != ExplorationStatus.NotInGame)
-            //{
-            LinkIfConnectionIsAvailable();
-            //}
-            //else
-            //{
-            //    foreach (INetworkable INet in Links)
-            //    {
-            //        INet.RemoveLinks(new List<INetworkable>() { this });
-            //    }
-            //}
+            for (int i = 0; i < AdjacentCells.Length; i++)
+            {
+                if (AdjacentCells[i] == null)
+                    continue;
+
+                if(AdjacentCells[i].RelativeRoom.StatusOfExploration == (ExplorationStatus.Explored | ExplorationStatus.InExploration))
+                {
+                    INetworkable networkable = AdjacentCells[i].RelativeNode as INetworkable;
+                    AddLinks(new List<INetworkable>() { networkable });
+                }
+            }
         }
 
         /// <summary>
-        /// Collega, se possibile e se valido per ogni nodo, la stanza con i due nodi vicini
+        /// Evaluate the status of the door based on the status of his adjacent rooms
         /// </summary>
-        void LinkIfConnectionIsAvailable()
+        /// <returns></returns>
+        ExplorationStatus EvaluateStatus()
         {
-            // relative node
-            GridNode node = RelativeCell.RelativeNode;
-            //se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
-            if ((RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) ||
-                (RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
-            {
-                AddLinks(new List<INetworkable>() { node });
-                node.AddLinks(new List<INetworkable>() { this });
-            }
+            ExplorationStatus status = ExplorationStatus.NotInGame;
 
-            //node in front
-            GridNode nodeInFront = RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition());
-            if (nodeInFront != null && nodeInFront.RelativeCell != null)
+            if (AdjacentCells[1] == null)
             {
-                //se lo stato della stanza di fronte alla porta è esplorato o in esplorazione allora mi collego
-                if ((nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration) ||
-                    (nodeInFront.RelativeCell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored))
+                switch (AdjacentCells[0].RelativeRoom.StatusOfExploration)
                 {
-                    AddLinks(new List<INetworkable>() { nodeInFront });
-                    nodeInFront.AddLinks(new List<INetworkable>() { this });
+                    case ExplorationStatus.NotInGame:
+                        break;
+                    case ExplorationStatus.Unavailable:
+                    case ExplorationStatus.NotExplored:    
+                        return status = ExplorationStatus.Unavailable;
+                    case ExplorationStatus.InExploration:
+                    case ExplorationStatus.Explored:
+                        return status = ExplorationStatus.NotExplored;
                 }
             }
+            else
+            {
+                switch (AdjacentCells[0].RelativeRoom.StatusOfExploration)
+                {
+                    case ExplorationStatus.NotInGame:
+                        break;
+                    case ExplorationStatus.Unavailable:
+                        switch (AdjacentCells[1].RelativeRoom.StatusOfExploration)
+                        {
+                            case ExplorationStatus.Unavailable:
+                            case ExplorationStatus.NotExplored:
+                                return status = ExplorationStatus.Unavailable;
+                            default:
+                                Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
+                                break;
+                        }
+                        break;
+                    case ExplorationStatus.NotExplored:
+                        switch (AdjacentCells[1].RelativeRoom.StatusOfExploration)
+                        {
+                            case ExplorationStatus.Unavailable:
+                            case ExplorationStatus.NotExplored:
+                                return status = ExplorationStatus.Unavailable;
+                            case ExplorationStatus.InExploration:
+                            case ExplorationStatus.Explored:
+                                return status = ExplorationStatus.NotExplored;
+                            default:
+                                Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
+                                break;
+                        }
+                        break;
+                    case ExplorationStatus.InExploration:
+                        switch (AdjacentCells[1].RelativeRoom.StatusOfExploration)
+                        {
+                            case ExplorationStatus.NotExplored:
+                                return status = ExplorationStatus.NotExplored;
+                            case ExplorationStatus.Explored:
+                                return status = ExplorationStatus.Explored;
+                            default:
+                                Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
+                                break;
+                        }
+                        break;
+                    case ExplorationStatus.Explored:
+                        switch (AdjacentCells[1].RelativeRoom.StatusOfExploration)
+                        {
+                            case ExplorationStatus.NotExplored:
+                                return status = ExplorationStatus.NotExplored;
+                            case ExplorationStatus.InExploration:
+                            case ExplorationStatus.Explored:
+                                return status = ExplorationStatus.Explored;
+                            default:
+                                Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
+                                break;
+                        }
+                        break;
+                }
+            }
+            return status;
         }
 
         //Implementazione di INetworkable

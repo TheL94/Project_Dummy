@@ -23,7 +23,6 @@ namespace DumbProject.Rooms
             set
             {
                 _statusOfExploration = value;
-                LinkCells();
             }
         }
 
