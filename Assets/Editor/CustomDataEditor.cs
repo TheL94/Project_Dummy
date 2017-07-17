@@ -160,6 +160,13 @@ namespace DumbProject.Editors
             Data.ShowMateriaInRoom = (Material)EditorGUILayout.ObjectField("Material For Room", Data.ShowMateriaInRoom, typeof(Material), false);
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Time to spend");
+            GUILayout.Space(80);
+            (Data as GenericItemData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericItemData).TimeToSpend);
+            GUILayout.Space(80);
+            GUILayout.EndHorizontal();
+
             if (GUI.changed)
                 EditorUtility.SetDirty(target);
             
