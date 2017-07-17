@@ -15,7 +15,7 @@ namespace DumbProject.Generic
         public float MoveDuration;
         public float InteractionRadius;
 
-        Tweener pathTrack;
+        public Tweener pathTrack;
         /// <summary>
         /// Actual position onto the INetworkable grid. 
         /// Can't be Set. Any try will change nothing.
@@ -50,14 +50,6 @@ namespace DumbProject.Generic
         public Room CurrentRoom { get { return CurrentCell.RelativeRoom; } }
 
         public INetworkable INetworkableObjective { get; set; }
-        List<INetworkable> _nodePath = new List<INetworkable>();
-        public new List<INetworkable> NodePath
-        {
-            get { return _nodePath; }
-            set {
-                pathTrack.Kill();
-                _nodePath = value; }
-        }
 
         /// <summary>
         /// Va muovere Dumby di un passo alla volta di nodo in nodo
@@ -76,12 +68,11 @@ namespace DumbProject.Generic
             if (pathTrack == null || !pathTrack.IsPlaying())
             {
                 Vector3[] waypoints = NodePath.ToVector3Array();
-                pathTrack = transform.DOPath(waypoints, MoveDuration, PathType.CatmullRom, PathMode.Full3D, 5, Color.magenta);
-                pathTrack.SetSpeedBased();
-                pathTrack.OnComplete(() => {
-                    NodePath.Clear();
-                    pathTrack.Kill();
-                });
+                if(waypoints != null && waypoints.Length > 0)
+                {
+                    pathTrack = transform.DOPath(waypoints, MoveDuration, PathType.CatmullRom, PathMode.Full3D, 5, Color.magenta);
+                    pathTrack.SetSpeedBased();
+                }
             }
 
 
@@ -100,6 +91,13 @@ namespace DumbProject.Generic
             //        });
             //    });
             //}
+        }
+
+        public void SetPath(List<INetworkable> _networkables)
+        {
+            if (pathTrack != null)
+                pathTrack.Complete();
+            NodePath = _networkables;
         }
 
         public List<IInteractable> GetCurrentCellInteractables ()
