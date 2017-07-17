@@ -23,10 +23,10 @@ namespace DumbProject.AI
             IInteractable interaction = Converter.INetworkableToIInteractable((_controller as AIActor).INetworkableObjective);
             if(interaction != null && interaction.IsInteractable)
             {
-                Edge _edg = (interaction as MonoBehaviour).GetComponent<Edge>();
-                if (_edg != null && _edg.Type == EdgeType.Door)
+                Door door = (interaction as MonoBehaviour).GetComponent<Door>();
+                if (door != null)
                 {                    
-                    CrossDoor((_controller as AIActor), _edg);
+                    CrossDoor((_controller as AIActor), door);
                     return;
                 }
                 foreach (GenericType type in PossibleInteraction)
@@ -41,7 +41,7 @@ namespace DumbProject.AI
             }
         }
 
-        void CrossDoor(AIActor _actor, Edge _doorToCross)
+        void CrossDoor(AIActor _actor, Door _doorToCross)
         {
             _doorToCross.Interact(_actor);
             _actor.MoveToNextPathNode();

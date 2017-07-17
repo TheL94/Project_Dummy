@@ -34,6 +34,7 @@ namespace DumbProject.Rooms
         }
 
         GameObject floor;
+        List<Door> doors = new List<Door>();
         List<Edge> edges = new List<Edge>();
         List<GameObject> angles = new List<GameObject>();
 
@@ -247,6 +248,47 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
+        /// Funzione che sostituisce la grafica del muro con la grafica porta
+        /// </summary>
+        /// <param name="_edge"></param>
+        public bool ReplaceEdgeWithDoor(Edge _edge)
+        {
+            if (_edge.GetType() == typeof(Door))
+                return false;
+
+            _edge.DisableActions();
+            GameObject edgeObj = _edge.gameObject;
+            Destroy(_edge);
+            Door newDoor = edgeObj.AddComponent<Door>();
+
+            newDoor.Setup(this);
+            if (_edge.name == "RightEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
+                newDoor.name = "RightDoor";
+            }
+            else if (_edge.name == "LeftEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
+                newDoor.name = "LeftDoor";
+            }
+            else if (_edge.name == "UpEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
+                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
+                newDoor.name = "UpDoor";
+            }
+            else if (_edge.name == "DownEdge")
+            {
+                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
+                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
+                newDoor.name = "DownDoor";
+            }
+            doors.Add(newDoor);
+            return true;
+        }
+
+        /// <summary>
         /// Funzione che setta il nodo relativo della cella
         /// </summary>
         /// <param name="_relativeNode"></param>
@@ -286,10 +328,9 @@ namespace DumbProject.Rooms
                     RelativeNode.Links.Add(adjacentNode);
 
             // Aggiungo ai links del nodo relativo le mie porte
-            foreach (Edge edge in edges)
+            foreach (Door door in GetComponentsInChildren<Door>())
             {
-                if (edge.Type == EdgeType.Door)
-                    edge.UpdateLinks();
+                door.UpdateLinks();
             }
         } 
 
@@ -297,10 +338,25 @@ namespace DumbProject.Rooms
         /// Funzione che ritorna la lista degli edge di questa cella
         /// </summary>
         /// <returns></returns>
-        public List<Edge> GetEdgesList()
+        public List<Edge> GetEdgesList(bool _includeDoors = false)
         {
+            List<Edge> edgesToReturn = new List<Edge>();
+            if(_includeDoors)
+                edgesToReturn.AddRange(GetDoorsList().ConvertAll(d => d as Edge));
+
             edges.RemoveAll(e => e == null);
-            return edges;
+            edgesToReturn.AddRange(edges);
+            return edgesToReturn;
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la lista delle door di questa cella
+        /// </summary>
+        /// <returns></returns>
+        public List<Door> GetDoorsList()
+        {
+            doors.RemoveAll(e => e == null);
+            return doors;
         }
 
         /// <summary>
@@ -323,13 +379,13 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
-        //private void OnDrawGizmos()
-        //{
-        //    foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
-        //    {
-        //        Gizmos.color = Color.green;
-        //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
-        //    }
-        //}
+        private void OnDrawGizmos()
+        {
+            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
+            }
+        }
     }
 }

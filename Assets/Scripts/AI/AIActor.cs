@@ -15,7 +15,7 @@ namespace DumbProject.Generic
         public float MoveDuration;
         public float InteractionRadius;
 
-        public Tweener pathTrack;
+        Tweener pathTrack;
         /// <summary>
         /// Actual position onto the INetworkable grid. 
         /// Can't be Set. Any try will change nothing.
@@ -65,14 +65,16 @@ namespace DumbProject.Generic
                 return;
             }
 
-            if (pathTrack == null || !pathTrack.IsPlaying())
+            if (pathTrack == null || !pathTrack.IsActive())
             {
-                Vector3[] waypoints = NodePath.ToVector3Array();
-                if(waypoints != null && waypoints.Length > 0)
+                pathTrack = transform.DOLookAt(NodePath[0].spacePosition, LookDuration).OnComplete(() =>
                 {
-                    pathTrack = transform.DOPath(waypoints, MoveDuration, PathType.CatmullRom, PathMode.Full3D, 5, Color.magenta);
-                    pathTrack.SetSpeedBased();
-                }
+                    pathTrack = transform.DOMove(NodePath[0].spacePosition, MoveDuration).OnComplete(() => 
+                    {
+                        NodePath.Remove(NodePath[0]);
+                        pathTrack.Kill();
+                    });
+                });
             }
 
 
@@ -100,7 +102,7 @@ namespace DumbProject.Generic
             NodePath = _networkables;
         }
 
-        public List<IInteractable> GetCurrentCellInteractables ()
+        public List<IInteractable> GetCurrentCellInteractables()
         {
             List<IInteractable> interactionToReturn = new List<IInteractable>();
 
@@ -113,7 +115,7 @@ namespace DumbProject.Generic
 
             interactionToReturn = interactionToReturn.Where(i => i != null).ToList();
             interactionToReturn = interactionToReturn.OrderBy(i => Vector3.Distance(i.Transf.position, transform.position)).ToList();
-            
+
             return interactionToReturn;
         }
 

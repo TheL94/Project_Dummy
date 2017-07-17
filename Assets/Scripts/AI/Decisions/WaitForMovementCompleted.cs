@@ -1,7 +1,5 @@
 ﻿using Framework.AI;
 using UnityEngine;
-using DumbProject.Generic;
-using DG.Tweening;
 
 namespace DumbProject.AI
 {
@@ -10,7 +8,7 @@ namespace DumbProject.AI
     {
         public override int Decide(AIController _controller)
         {
-            if(!(_controller as AIActor).pathTrack.IsActive())
+            if(_controller.NodePath != null && _controller.NodePath.Count == 0)
                 return 0;
 
             return 1;

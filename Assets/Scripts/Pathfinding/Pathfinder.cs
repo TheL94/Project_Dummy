@@ -37,6 +37,8 @@ namespace Framework.Pathfinding
             }
 
             List<INetworkable> foundPath = RetrackPath(possiblePaths, _target, _start);
+            //Remove the starting point from the path
+            foundPath.Remove(foundPath[0]);
 
             return foundPath;
         }
