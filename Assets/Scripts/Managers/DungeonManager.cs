@@ -59,6 +59,19 @@ namespace DumbProject.Generic
         public List<Room> GetAdjacentRoomsByDoors(Room _objective)
         {
             List<Room> roomToReturn = new List<Room>();
+            List<Door> objectiveDoors = _objective.GetListOfDoors();
+
+            foreach (Door door in objectiveDoors)
+            {
+                for (int i = 0; i < door.AdjacentCells.Length; i++)
+                {
+                    if (door.AdjacentCells[i] != null)
+                    {
+                        if (!roomToReturn.Contains(door.AdjacentCells[i].RelativeRoom))
+                            roomToReturn.Add(door.AdjacentCells[i].RelativeRoom);
+                    }
+                }
+            }
 
             foreach (Room room in RoomInDungeon)
             {
@@ -75,7 +88,8 @@ namespace DumbProject.Generic
                     }
                 }
             }
-
+            if (roomToReturn.Contains(_objective))
+                roomToReturn.Remove(_objective);
             return roomToReturn;
         }
         #endregion
