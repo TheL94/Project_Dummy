@@ -37,8 +37,9 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public RoomData Data;
 
-        Vector3 _initialPosition;
         Tweener rotationTween;
+        // TODO : spostare in room Movment 
+        Vector3 _initialPosition;
         public Vector3 InitialPosition
         {
             get { return _initialPosition; }
@@ -126,7 +127,7 @@ namespace DumbProject.Rooms
             List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
             {
-                foreach (Edge edge in cell.GetEdgesList())
+                foreach (Edge edge in cell.Edges)
                 {
                     listOfEdges.Add(edge);
                 }
@@ -365,17 +366,17 @@ namespace DumbProject.Rooms
         void TrimCollidingEdges(GridController _grid)
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
-            List<Edge> edges = GetListOfEdges();
+            List<Edge> roomEdges = GetListOfEdges();
+            roomEdges.AddRange(GetListOfDoors().ConvertAll(d => d as Edge));
 
-            foreach (Edge edge in edges)
+            foreach (Edge edge in roomEdges)
             {
-                if (!itemsToBeDestroyed.Contains(edge.CollidingEdge) && !itemsToBeDestroyed.Contains(edge) && edge.CollidingEdge != null)
+                if (!itemsToBeDestroyed.Contains(edge) && edge.CollidingEdge != null && !itemsToBeDestroyed.Contains(edge.CollidingEdge))
                 {
                     // porta collide con una porta o un muro
                     if (edge.GetType() == typeof(Door))
                     {
                         (edge as Door).AddAjdacentCell(edge.CollidingEdge.RelativeCell);
-                        edge.CollidingEdge.RelativeCell.Doors.Add((edge as Door));
                         itemsToBeDestroyed.Add(edge.CollidingEdge);
                     }
 
@@ -383,7 +384,6 @@ namespace DumbProject.Rooms
                     else if (edge.CollidingEdge.GetType() == typeof(Door))
                     {
                         (edge.CollidingEdge as Door).AddAjdacentCell(edge.RelativeCell);
-                        edge.RelativeCell.Doors.Add(edge.CollidingEdge as Door);
                         itemsToBeDestroyed.Add(edge);
                     }
                 }

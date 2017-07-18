@@ -16,7 +16,7 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Cell RelativeCell;
 
-        GameObject graphic;
+        protected GameObject graphic;
 
         public virtual void Setup(Cell _relativeCell)
         {
@@ -46,7 +46,8 @@ namespace DumbProject.Rooms
             List<Edge> edgesInFrontCell = new List<Edge>();
             if (nodeInFront != null && nodeInFront.RelativeCell != null)
             {
-                edgesInFrontCell = nodeInFront.RelativeCell.GetEdgesList();
+                edgesInFrontCell.AddRange(nodeInFront.RelativeCell.Edges);
+                edgesInFrontCell.AddRange(nodeInFront.RelativeCell.Doors.ConvertAll(d => d as Edge));
                 foreach (Edge edgeInFront in edgesInFrontCell)
                 {
                     if (Vector3.Distance(edgeInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
@@ -76,9 +77,9 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che continene
+        /// Funzione che rimove l'edge dalla cell
         /// </summary>
-        public void DisableEdge()
+        public virtual void DisableEdge()
         {
             if (graphic != null)
             {

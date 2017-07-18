@@ -100,6 +100,17 @@ namespace DumbProject.Grid
             }
 
         }
+
+        public void ClearNodesRelativeCell()
+        {
+            for (int i = 0; i < GridWidth; i++)
+            {
+                for (int j = 0; j < GridHeight; j++)
+                {
+                    Grid[i, j].RelativeCell = null;
+                }
+            }
+        }
         #endregion
 
         /// <summary>

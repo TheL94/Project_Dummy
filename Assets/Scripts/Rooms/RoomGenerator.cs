@@ -54,7 +54,10 @@ namespace DumbProject.Rooms
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
                 if (association.Room == _room)
+                {
                     association.Room = null;
+                    association.GridSpawn.ClearNodesRelativeCell();
+                }
         }
 
         Room InstantiateFirstRoom(RoomData _data)

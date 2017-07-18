@@ -90,8 +90,9 @@ namespace DumbProject.Rooms
         {
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
+                // TODO : controllare snap
+                snap.OnComplete(() => room.PlaceAction());
                 snap.Complete(true);
-                room.PlaceAction();
                 return true;
             }
             else
@@ -121,7 +122,10 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cell in room.CellsInRoom)
             {
-                foreach (Edge edge in cell.GetEdgesList())
+                List<Edge> cellEdges = new List<Edge>();
+                cellEdges.AddRange(cell.Edges);
+                cellEdges.AddRange(cell.Doors.ConvertAll(d => d as Edge));
+                foreach (Edge edge in cellEdges)
                 {
                     edge.CheckCollisionWithOtherEdges(GameManager.I.MainGridCtrl);
                 }

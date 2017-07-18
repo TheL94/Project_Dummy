@@ -24,6 +24,21 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
+        /// Funzione che rimove la door dalla cell
+        /// </summary>
+        public override void DisableEdge()
+        {
+            if (graphic != null)
+            {
+                graphic.SetActive(false);
+                graphic = null;
+            }
+            RelativeCell.Doors.Remove(this);
+            gameObject.SetActive(false);
+            Debug.Log("Door spenta");
+        }
+
+        /// <summary>
         /// Funzione che aggiunge una cella come adiacente alla porta
         /// </summary>
         /// <param name="_adjacentCell"></param>

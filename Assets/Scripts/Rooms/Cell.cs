@@ -14,9 +14,6 @@ namespace DumbProject.Rooms
             get { return _relativeNode; }
             set
             {
-                if (_relativeNode != null && _relativeNode.RelativeCell != null)
-                    _relativeNode.RelativeCell = null;
-
                 _relativeNode = value;
                 if (_relativeNode != null)
                 {
@@ -331,22 +328,10 @@ namespace DumbProject.Rooms
                     RelativeNode.Links.Add(adjacentNode);
 
             // Aggiungo ai links del nodo relativo le mie porte
-            foreach (Door door in GetComponentsInChildren<Door>())
+            foreach (Door door in Doors)
             {
                 door.UpdateLinks();
             }
-        } 
-
-        /// <summary>
-        /// Funzione che ritorna la lista degli edge di questa cella
-        /// </summary>
-        /// <returns></returns>
-        public List<Edge> GetEdgesList()
-        {
-            List<Edge> edgesToReturn = new List<Edge>();
-            edgesToReturn.AddRange(Doors.ConvertAll(d => d as Edge));
-            edgesToReturn.AddRange(Edges);
-            return edgesToReturn;
         }
 
         /// <summary>
