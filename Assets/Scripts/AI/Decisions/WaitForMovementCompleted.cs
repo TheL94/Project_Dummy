@@ -1,5 +1,6 @@
 ﻿using Framework.AI;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace DumbProject.AI
 {
@@ -8,10 +9,16 @@ namespace DumbProject.AI
     {
         public override int Decide(AIController _controller)
         {
-            if(_controller.NodePath != null && _controller.NodePath.Count == 0)
-                return 0;
+            IInteractable intercatable = Converter.INetworkableToIInteractable((_controller as AIActor).INetworkableObjective);
 
-            return 1;
+            if(_controller.NodePath != null && _controller.NodePath.Count == 0)
+            {
+                if (intercatable == null)
+                    return 1;
+                else
+                    return 0;
+            }
+            return 2;
         }
     }
 }
