@@ -90,6 +90,7 @@ namespace DumbProject.Rooms
         {
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
+                snap.Complete(true);
                 room.PlaceAction();
                 return true;
             }

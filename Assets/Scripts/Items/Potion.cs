@@ -15,11 +15,6 @@ namespace DumbProject.Items
             PotionValues.Type = GenericType.Item;
         }
 
-        public override void Interact(AIActor _actor)
-        {
-            IsInteractable = false;
-        }
-
         private void OnDrawGizmos()
         {
             if (!IsInteractable)

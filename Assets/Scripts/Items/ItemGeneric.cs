@@ -21,6 +21,9 @@ namespace DumbProject.Items
         public Transform Transf { get { return transform; } }
 
         public abstract void Init(GenericItemData _data);
-        public abstract void Interact(AIActor _actor);
+        public virtual void Interact(AIActor _actor)
+        {
+            IsInteractable = false;
+        }
     }
 }

@@ -23,11 +23,10 @@ namespace DumbProject.Rooms
             set
             {
                 _statusOfExploration = value;
-                OnExplorationStatusSet();
             }
         }
 
-        public List<Door> Doors { get; protected set; }
+        protected List<Door> doors = new List<Door>();
 
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
@@ -86,8 +85,9 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
-            GameManager.I.DungeonMng.ParentRoom(this);
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
+            GameManager.I.DungeonMng.ParentRoom(this);
+
             Destroy(RoomMovment);
         }
 
@@ -140,20 +140,24 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public List<Door> GetListOfDoors()
         {
-            List<Door> listOfDoors = new List<Door>();
-            foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Door door in cell.Doors)
-                {
-                    listOfDoors.Add(door);
-                }
-            }
-            return listOfDoors;
+            //List<Door> listOfDoors = new List<Door>();
+            //foreach (Cell cell in CellsInRoom)
+            //{
+            //    foreach (Door door in cell.Doors)
+            //    {
+            //        listOfDoors.Add(door);
+            //    }
+            //}
+            return doors;
         }
 
         public void SetDoors(List<Door> _doors)
         {
-            Doors = _doors;
+            foreach (Door newDoor in _doors)
+            {
+                if (!doors.Contains(newDoor))
+                    doors.Add(newDoor);
+            }
         }
 
         #region IDroppableHolder
@@ -399,17 +403,20 @@ namespace DumbProject.Rooms
             float maxAmountOfDoors = _data.SelfDoorTrim ? CellsInRoom.Count + 1 : _data.DoorNumberPercentage * CellsInRoom.Count;
             if (maxAmountOfDoors < 1)
                 maxAmountOfDoors = 1;
-            int numberOfDoors = Mathf.RoundToInt(UnityEngine.Random.Range(1f, maxAmountOfDoors));
+            int numberOfDoors = Mathf.RoundToInt(Random.Range(1f, maxAmountOfDoors));
 
             List<Edge> listOfEdges = GetListOfEdges();
             while (numberOfDoors > 0)
             {
-                int randomIndex = UnityEngine.Random.Range(0, listOfEdges.Count);
+                int randomIndex = Random.Range(0, listOfEdges.Count);
                 Edge edgeToReplace = listOfEdges[randomIndex];
                 Cell relativeCell = edgeToReplace.RelativeCell;
                 if (relativeCell.ReplaceEdgeWithDoor(edgeToReplace))
                     numberOfDoors--;
             }
+
+            foreach (Cell cell in CellsInRoom)
+                SetDoors(cell.Doors);
         }
 
         /// <summary>
@@ -430,33 +437,21 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        void OnExplorationStatusSet()
-        {
-            LinkCells();
-            List<Room> adjRooms = GameManager.I.DungeonMng.GetAdjacentRooms(this);
-
-            foreach (Room room in adjRooms)
-            {
-                //TODO: aggiornare  lo stato delle stanze (adiacenti)
-            }
-        }
-
         private void OnDrawGizmos()
         {
-
             switch (StatusOfExploration)
             {
                 case ExplorationStatus.NotInGame:
                     Gizmos.color = Color.white;
                     break;
                 case ExplorationStatus.Unavailable:
-                    Gizmos.color = Color.black;
-                    break;
-                case ExplorationStatus.NotExplored:
                     Gizmos.color = Color.red;
                     break;
-                case ExplorationStatus.InExploration:
+                case ExplorationStatus.NotExplored:
                     Gizmos.color = Color.yellow;
+                    break;
+                case ExplorationStatus.InExploration:
+                    Gizmos.color = Color.cyan;
                     break;
                 case ExplorationStatus.Explored:
                     Gizmos.color = Color.green;

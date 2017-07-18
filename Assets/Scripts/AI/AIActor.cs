@@ -57,13 +57,13 @@ namespace DumbProject.Generic
         /// <param name="forceNew"></param>
         public void MoveToNextPathNode(bool forceNew = false)
         {
-            BlockPathWithObstacles();
             AnimState = AnimationStatus.Running;
             if (NodePath == null || NodePath.Count <= 0)
             {
                 AnimState = AnimationStatus.Idle;
                 return;
             }
+            BlockPathWithObstacles();
 
             if (pathTrack == null || !pathTrack.IsActive())
             {

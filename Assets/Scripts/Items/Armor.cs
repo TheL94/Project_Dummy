@@ -14,11 +14,6 @@ namespace DumbProject.Items
             ArmoryValues = _values as ArmorData;
         }
 
-        public override void Interact(AIActor _actor)
-        {
-            IsInteractable = false;
-        }
-
         private void OnDrawGizmos()
         {
             if (!IsInteractable)

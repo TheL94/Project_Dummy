@@ -42,7 +42,8 @@ namespace DumbProject.AI {
                     }                
                 }
             }
-            actualRoom.StatusOfExploration = ExplorationStatus.Explored;
+
+            GameManager.I.DungeonMng.UpdateRoomStatus(actualRoom, ExplorationStatus.Explored);
             return 1;
         }
     }

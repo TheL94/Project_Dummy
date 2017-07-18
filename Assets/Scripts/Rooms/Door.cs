@@ -49,10 +49,11 @@ namespace DumbProject.Rooms
                 if (AdjacentCells[i] == null)
                     continue;
 
-                if(AdjacentCells[i].RelativeRoom.StatusOfExploration == (ExplorationStatus.Explored | ExplorationStatus.InExploration))
+                if(AdjacentCells[i].RelativeRoom.StatusOfExploration == ExplorationStatus.Explored || AdjacentCells[i].RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration)
                 {
                     INetworkable networkable = AdjacentCells[i].RelativeNode as INetworkable;
                     AddLinks(new List<INetworkable>() { networkable });
+                    AdjacentCells[i].RelativeNode.AddLinks(new List<INetworkable>() { this });
                 }
             }
         }
@@ -174,15 +175,21 @@ namespace DumbProject.Rooms
         public void Interact(AIActor _actor)
         {
             GridNode actorNode = _actor.CurrentNode as GridNode;
-            GridNode nodeInFront = actorNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition(actorNode.WorldPosition));
+            GridNode nodeInFront = null;
+
+            if (actorNode == AdjacentCells[0].RelativeNode && AdjacentCells[1] != null)
+                nodeInFront = AdjacentCells[1].RelativeNode;
+            else
+                nodeInFront = AdjacentCells[0].RelativeNode;
+
             Room nextRoom = null;
-            if (nodeInFront.RelativeCell != null)
+            if (nodeInFront != null)
             {
                 //Se trova una stanza la collega e aggiorna lo stato delle stanze/porte nel dungeon
                 nextRoom = nodeInFront.RelativeCell.RelativeRoom;
                 if (nextRoom.StatusOfExploration == ExplorationStatus.NotExplored)
                 {
-                    nextRoom.StatusOfExploration = ExplorationStatus.InExploration;
+                    GameManager.I.DungeonMng.UpdateRoomStatus(nextRoom, ExplorationStatus.InExploration);
                 }
             }
             else
@@ -190,27 +197,6 @@ namespace DumbProject.Rooms
                 //Se non trova nulla, semplicemente aggiunge solo il link della cella davanti
                 AddLinks(new List<INetworkable>() { nodeInFront });
             }
-
-
-            //if(StatusOfExploration == ExplorationStatus.NotExplored)
-            //{
-            //    Room room = RelativeCell.RelativeRoom;
-            //    if (room.StatusOfExploration == ExplorationStatus.NotExplored)
-            //    {
-            //        room.StatusOfExploration = ExplorationStatus.InExploration;
-            //    }
-
-
-            //        Room roomInFront = nodeInFront.RelativeCell.RelativeRoom;
-            //        if (nodeInFront != null && nodeInFront.RelativeCell != null)
-            //        {
-            //            if (room.StatusOfExploration == ExplorationStatus.NotExplored)
-            //            {
-            //                roomInFront.StatusOfExploration = ExplorationStatus.InExploration;
-            //            }
-            //        }
-            //    }
-            //}
 
             //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
             INetworkable next = _actor.CurrentNode;
