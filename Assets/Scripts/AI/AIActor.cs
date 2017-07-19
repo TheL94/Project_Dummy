@@ -57,8 +57,7 @@ namespace DumbProject.Generic
         /// <summary>
         /// Va muovere Dumby di un passo alla volta di nodo in nodo
         /// </summary>
-        /// <param name="forceNew"></param>
-        public void MoveToNextPathNode(bool forceNew = false)
+        public void MoveToNextPathNode()
         {
             AnimState = AnimationStatus.Running;
             if (NodePath == null || NodePath.Count <= 0)

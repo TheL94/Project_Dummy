@@ -255,6 +255,9 @@ namespace DumbProject.Rooms
         /// <param name="_edge"></param>
         public bool ReplaceEdgeWithDoor(Edge _edge)
         {
+            if (_edge.GetType() == typeof(Door))
+                return false;
+
             _edge.DisableEdge();
             GameObject edgeObj = _edge.gameObject;
             Destroy(_edge);
@@ -354,16 +357,16 @@ namespace DumbProject.Rooms
         #endregion
         #endregion
 
-        //private void OnDrawGizmos()
-        //{
-        //    if (RelativeNode == null)
-        //        return;
-        //    Gizmos.color = Color.green;
-        //    foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
-        //    {   
-        //        if(node != null)
-        //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
-        //    }
-        //}
+        private void OnDrawGizmos()
+        {
+            if (RelativeNode == null)
+                return;
+            Gizmos.color = Color.green;
+            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
+            {
+                if (node != null)
+                    Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, .5f, 0f), node.spacePosition + new Vector3(0f, .5f, 0f));
+            }
+        }
     }
 }

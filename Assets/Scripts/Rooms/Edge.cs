@@ -53,7 +53,10 @@ namespace DumbProject.Rooms
                     if (Vector3.Distance(edgeInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
                     {
                         CollidingEdge = edgeInFront;
+                        return;
                     }
+                    else
+                        CollidingEdge = null;
                 }
             }
             else if (nodeInFront != null && nodeInFront.RelativeCell == null)
