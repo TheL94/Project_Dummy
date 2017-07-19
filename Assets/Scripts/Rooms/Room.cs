@@ -16,14 +16,8 @@ namespace DumbProject.Rooms
         ExplorationStatus _statusOfExploration = ExplorationStatus.NotInGame;
         public ExplorationStatus StatusOfExploration
         {
-            get
-            {
-                return _statusOfExploration;
-            }
-            set
-            {
-                _statusOfExploration = value;
-            }
+            get { return _statusOfExploration; }
+            set { _statusOfExploration = value; }
         }
 
         protected List<Door> doors = new List<Door>();
@@ -238,7 +232,7 @@ namespace DumbProject.Rooms
             {
                 List<GridNode> adjacentNodes = GetEmptyGridNodes();
                 if (adjacentNodes.Count > 0)
-                    nodeToReturn = adjacentNodes[UnityEngine.Random.Range(0, adjacentNodes.Count)];
+                    nodeToReturn = adjacentNodes[Random.Range(0, adjacentNodes.Count)];
             }
             return nodeToReturn;
         }
@@ -268,7 +262,7 @@ namespace DumbProject.Rooms
             if (_data.MinNumberOfCells > CellsInRoom.Count)
                 return true;
 
-            float randomProbabaility = UnityEngine.Random.Range(0f, 1f);
+            float randomProbabaility = Random.Range(0f, 1f);
             if (cellProbability >= randomProbabaility)
                 return true;
             else
