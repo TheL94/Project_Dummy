@@ -73,7 +73,7 @@ namespace DumbProject.Rooms
         public void PlaceAction()
         {
             foreach (Cell cell in CellsInRoom)
-                cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
+                cell.RelativeNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
 
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             GameManager.I.DungeonMng.SetupRoomInDungeon(this);

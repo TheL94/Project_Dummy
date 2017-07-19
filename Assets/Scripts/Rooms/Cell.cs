@@ -193,52 +193,11 @@ namespace DumbProject.Rooms
         /// <param name="_pointToFace"></param>
         /// <param name="_relativeRoom"></param>
         /// <returns></returns>
-        public Cell PlaceCell(GridNode _relativeNode, Transform _pointToFace, Room _relativeRoom)
-        {
-            Quaternion newRotation = ((_pointToFace.position - transform.position) != Vector3.zero) ? 
-                Quaternion.LookRotation(_pointToFace.position - transform.position) : Quaternion.identity;
-            return PlaceCell(_relativeNode, newRotation, _relativeRoom);           
-        }
-
-        /// <summary>
-        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
-        /// </summary>
-        /// <param name="_relativeNode"></param>
-        /// <param name="_pointToFace"></param>
-        /// <param name="_relativeRoom"></param>
-        /// <returns></returns>
-        public Cell PlaceCell(GridNode _relativeNode, Vector3 _pointToFace, Room _relativeRoom)
-        {
-            Quaternion newRotation = Quaternion.LookRotation(_pointToFace - transform.position);
-            return PlaceCell(_relativeNode, newRotation, _relativeRoom);
-        }
-
-        /// <summary>
-        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
-        /// </summary>
-        /// <param name="_relativeNode"></param>
-        /// <param name="_pointToFace"></param>
-        /// <param name="_relativeRoom"></param>
-        /// <returns></returns>
         public Cell PlaceCell(GridNode _relativeNode, Room _relativeRoom)
-        {
-            PlaceCell(_relativeNode, Quaternion.identity, _relativeRoom);
-            return this;
-        }
-
-        /// <summary>
-        /// Funzione che continene tutte le istruzioni per creare una cella con tutta la sua grafica
-        /// </summary>
-        /// <param name="_relativeNode"></param>
-        /// <param name="_pointToFace"></param>
-        /// <param name="_relativeRoom"></param>
-        /// <returns></returns>
-        public Cell PlaceCell(GridNode _relativeNode, Quaternion _pointToFace, Room _relativeRoom)
         {
             RelativeNode = _relativeNode;
             RelativeRoom = _relativeRoom;
             transform.parent = RelativeRoom.transform;
-            transform.rotation = /*_pointToFace*/ Quaternion.identity;
 
             //istanzio i contenitori
             InstantiateFloor();
@@ -289,38 +248,9 @@ namespace DumbProject.Rooms
                     Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
             }
-            //newDoor.gameObject.SetActive(true);
+
             Doors.Add(newDoor);
             return true;
-        }
-
-        /// <summary>
-        /// Funzione che setta il nodo relativo della cella
-        /// </summary>
-        /// <param name="_relativeNode"></param>
-        public void SetRelativeNode(GridNode _relativeNode = null)
-        {
-            if(_relativeNode == null)
-            {
-                GridController grid = RelativeNode.RelativeGrid;
-                RelativeNode = grid.GetSpecificGridNode(transform.position);
-            }
-            else
-                RelativeNode = _relativeNode;
-        }
-
-        /// <summary>
-        /// Funzione che mosta visivamente se il giocatore ha trascianto la stanza in una posizione invalida
-        /// </summary>
-        /// <param name="_isInvalid"></param>
-        public void ShowInvalidPosition(bool _isInvalid)
-        {
-            //if (_isInvalid)
-            //    foreach (MeshRenderer mesh in childrenMesh)
-            //        mesh.material.color = Color.red;
-            //else
-            //    foreach (MeshRenderer mesh in childrenMesh)
-            //        mesh.material.color = Color.white;
         }
 
         /// <summary>

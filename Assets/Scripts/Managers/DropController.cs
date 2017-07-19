@@ -5,6 +5,7 @@ using DumbProject.Grid;
 
 namespace DumbProject.Generic
 {
+    // TODO : rinominare o accorpare ad un'altra classe
     public class DropController
     {
         public DropController() { }
@@ -27,7 +28,7 @@ namespace DumbProject.Generic
         /// <param name="_grid"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public bool CheckCellValidPosition(Cell _cell, GridController _grid, out GridNode node)
+        bool CheckCellValidPosition(Cell _cell, GridController _grid, out GridNode node)
         {
             node = _grid.GetSpecificGridNode(_cell.transform.position);
             if (node != null && node.RelativeCell == null)

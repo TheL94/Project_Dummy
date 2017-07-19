@@ -20,6 +20,9 @@ namespace DumbProject.Rooms
             private set { _roomInitialPosition = value; }
         }
 
+        Tweener rotationTween;
+        bool canRotate = true;
+
         Tweener snap;
         GridNode _closerNode;
         Vector3 mousePosition;
@@ -45,9 +48,6 @@ namespace DumbProject.Rooms
                     SafeSnap(RoomInitialPosition);
             }
         }
-
-        Tweener rotationTween;
-        bool canRotate = true;
 
         //------------Sistema con Raycast--------
         Ray mouseProjection;
@@ -79,17 +79,7 @@ namespace DumbProject.Rooms
 
             closerNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (closerNode != null)
-            {
-                //room.transform.position = closerNode.WorldPosition;
-                foreach (Cell cell in room.CellsInRoom)
-                {
-                    // TODO : 
-                    //if (closerNode == null || (closerNode != null && closerNode.RelativeCell != null))
-                    //    cell.ShowInvalidPosition(true);
-                    //else
-                    //    cell.ShowInvalidPosition(false);
-                }
-            }
+                room.transform.position = closerNode.WorldPosition;
             else
                 transform.position = mousePosition;
         }
@@ -126,8 +116,6 @@ namespace DumbProject.Rooms
                 rotationTween = room.transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() =>
                 {
                     canRotate = true;
-                    //foreach (Cell cell in room.CellsInRoom)
-                    //    cell.SetRelativeNode();
                 });
             }
         }
