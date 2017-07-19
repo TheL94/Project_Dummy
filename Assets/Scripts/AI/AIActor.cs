@@ -16,6 +16,8 @@ namespace DumbProject.Generic
         public float InteractionRadius;
 
         Tweener pathTrack;
+
+        protected INetworkable _currentNode;
         /// <summary>
         /// Actual position onto the INetworkable grid. 
         /// Can't be Set. Any try will change nothing.
@@ -24,12 +26,13 @@ namespace DumbProject.Generic
         {
             get
             {
-                return Grid.GetSpecificGridNode(transform.position);
+                if (_currentNode == null)
+                    _currentNode = Grid.GetSpecificGridNode(transform.position);
+                return _currentNode;
             }
             set
             {
-                Debug.LogWarning("Can't Set CurrentNode fild in Dumby");
-                return;
+                _currentNode = value;
             }
         }
 
@@ -71,6 +74,7 @@ namespace DumbProject.Generic
                 {
                     pathTrack = transform.DOMove(NodePath[0].spacePosition, MoveDuration).OnComplete(() => 
                     {
+                        CurrentNode = NodePath[0];
                         NodePath.Remove(NodePath[0]);
                         pathTrack.Kill();
                     });

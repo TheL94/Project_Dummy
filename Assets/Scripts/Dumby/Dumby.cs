@@ -23,7 +23,8 @@ namespace DumbProject.Generic
             {
                 if (NodePath[i].GetType() != typeof(Edge))
                 {
-                    if (Grid.GetSpecificGridNode(NodePath[i].spacePosition).RelativeCell.ActualInteractable != null)
+                    IInteractable interactable = Grid.GetSpecificGridNode(NodePath[i].spacePosition).RelativeCell.ActualInteractable;
+                    if (interactable != null && interactable.IsInteractable)
                     {
                         NodePath.RemoveRange(i + 1, NodePath.Count - i - 1);
                         break;

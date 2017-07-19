@@ -38,13 +38,6 @@ namespace DumbProject.Rooms
         public RoomData Data;
 
         Tweener rotationTween;
-        // TODO : spostare in room Movment 
-        Vector3 _initialPosition;
-        public Vector3 InitialPosition
-        {
-            get { return _initialPosition; }
-            private set { _initialPosition = value; }
-        }
 
         bool canRotate = true;
         float cellProbability = 1f;
@@ -60,7 +53,6 @@ namespace DumbProject.Rooms
         {
             RoomMovment = _roomMovment;
             RoomMovment.Init(this);
-            InitialPosition = transform.position;
             Setup(_data, _grid);
         }
 
@@ -87,7 +79,7 @@ namespace DumbProject.Rooms
                 cell.SetRelativeNode(GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position));
 
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
-            GameManager.I.DungeonMng.ParentRoom(this);
+            GameManager.I.DungeonMng.SetupRoomInDungeon(this);
 
             Destroy(RoomMovment);
         }

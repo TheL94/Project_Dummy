@@ -356,9 +356,12 @@ namespace DumbProject.Rooms
 
         //private void OnDrawGizmos()
         //{
+        //    if (RelativeNode == null)
+        //        return;
+        //    Gizmos.color = Color.green;
         //    foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
-        //    {
-        //        Gizmos.color = Color.green;
+        //    {   
+        //        if(node != null)
         //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
         //    }
         //}

@@ -27,19 +27,19 @@ namespace DumbProject.Generic
         }
 
         #region Rooms
+        public void SetupRoomInDungeon(Room _room)
+        {
+            if (!RoomInDungeon.Contains(_room))
+                RoomInDungeon.Add(_room);
+            ParentRoom(_room, EvaluateRoomStatus(_room, GetAdjacentRoomsByDoors(_room)));
+        }
+
         public void ParentRoom(Room _room, ExplorationStatus _status)
         {
             _room.transform.parent = transform;
             if (!RoomInDungeon.Contains(_room))
                 RoomInDungeon.Add(_room);
             UpdateRoomStatus(_room, _status);
-        }
-
-        public void ParentRoom(Room _room)
-        {
-            if (!RoomInDungeon.Contains(_room))
-                RoomInDungeon.Add(_room);
-            ParentRoom(_room, EvaluateRoomStatus(_room, GetAdjacentRoomsByDoors(_room)));
         }
 
         public List<Door> GetAllUnexploredDoors()

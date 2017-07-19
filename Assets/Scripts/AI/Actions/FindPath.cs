@@ -40,8 +40,8 @@ namespace DumbProject.AI
                 Debug.LogWarning("Trying to find a path on a null NextObjectivePosition");
                 return;
             }
-
-            (_controller as AIActor).SetPath(Pathfinder.FindPath(objectivePosition, (_controller as AIActor).CurrentNode));
+            List<INetworkable> newPath = Pathfinder.FindPath(objectivePosition, (_controller as AIActor).CurrentNode);
+            (_controller as AIActor).SetPath(newPath);
         }
     }
 }

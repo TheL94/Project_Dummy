@@ -160,7 +160,9 @@ namespace DumbProject.Rooms
         #region INetworkable
         public Vector3 spacePosition { get { return transform.position; } set { } }
         List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links { get { return _links; } set { _links = value; } }
+        public List<INetworkable> Links {
+            get { return _links; }
+            set { _links = value; } }
 
         public void AddLinks(List<INetworkable> _newLinks)
         {
@@ -185,42 +187,39 @@ namespace DumbProject.Rooms
         #region IInteractable
         public Transform Transf { get { return transform; } }
         bool _isInteractable = true;
-        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
+        public bool IsInteractable {
+            get
+            {
+                if (StatusOfExploration == ExplorationStatus.Explored)
+                    _isInteractable = false;
+                return _isInteractable;
+            }
+            set { _isInteractable = value; }
+        }
 
         public void Interact(AIActor _actor)
         {
-            GridNode actorNode = _actor.CurrentNode as GridNode;
-            GridNode nodeInFront = null;
-
-            if (actorNode == AdjacentCells[0].RelativeNode && AdjacentCells[1] != null)
-                nodeInFront = AdjacentCells[1].RelativeNode;
-            else
-                nodeInFront = AdjacentCells[0].RelativeNode;
-
-            Room nextRoom = null;
-            if (nodeInFront != null)
+            foreach (Cell cell in AdjacentCells)
             {
-                //Se trova una stanza la collega e aggiorna lo stato delle stanze/porte nel dungeon
-                nextRoom = nodeInFront.RelativeCell.RelativeRoom;
-                if (nextRoom.StatusOfExploration == ExplorationStatus.NotExplored)
+                if(cell != null)
                 {
-                    GameManager.I.DungeonMng.UpdateRoomStatus(nextRoom, ExplorationStatus.InExploration);
+                    AddLinks(new List<INetworkable>() { cell.RelativeNode });
+                    cell.RelativeNode.AddLinks(new List<INetworkable>() { this });
+                    //Se la cella appartiene ad una stanza esplorata non modifica lo status, altrimenti porta lo stato della nuova stanza in esplorazione
+                    ExplorationStatus statusToSet = cell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored ? ExplorationStatus.Explored : ExplorationStatus.InExploration;
+                    if(statusToSet != ExplorationStatus.Explored)
+                        GameManager.I.DungeonMng.UpdateRoomStatus(cell.RelativeRoom, statusToSet);
                 }
-            }
-            else
-            {
-                //Se non trova nulla, semplicemente aggiunge solo il link della cella davanti
-                AddLinks(new List<INetworkable>() { nodeInFront });
+                else
+                {
+                    //Caso in cui la porta collega all'esterno
+                    AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
+                }
             }
 
             //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
-            INetworkable next = _actor.CurrentNode;
-            if (next.spacePosition == Links[0].spacePosition)
-                next = Links[1];
-            else
-                next = Links[0];
-
-            _actor.INetworkableObjective = next;
+            //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
+            _actor.INetworkableObjective = Links[1];
             IsInteractable = false;
         }
         #endregion
@@ -251,10 +250,6 @@ namespace DumbProject.Rooms
             {
                 Gizmos.DrawLine(spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
             }
-
-            //Gizmos.color = Color.magenta;
-            //if(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()) != null)
-            //    Gizmos.DrawLine(RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetFrontPosition()).WorldPosition + new Vector3(0f, 6f, 0f), transform.position + new Vector3(0f, 6f, 0f));           
         }
     }
 }

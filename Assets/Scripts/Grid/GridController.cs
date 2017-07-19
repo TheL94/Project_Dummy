@@ -73,6 +73,22 @@ namespace DumbProject.Grid
         }
 
         /// <summary>
+        /// Funzione che distrugge la griglia
+        /// </summary>
+        public void DestroyGrid()
+        {
+            Grid = null;
+            List<Transform> childrenTransform = GetComponentsInChildren<Transform>().ToList();
+            childrenTransform.Remove(transform);
+            foreach (Transform item in childrenTransform)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+
+        #region Cell
+        // TODO : da spostare per aggiungere la classe al framework
+        /// <summary>
         /// Controlla la presenza di una cella su uno dei nodi adiacenti a quello passato come parametro
         /// </summary>
         /// <param name="_node"></param>
@@ -89,18 +105,9 @@ namespace DumbProject.Grid
             return false;
         }
 
-        public void DestroyGrid()
-        {
-            Grid = null;
-            List<Transform> childrenTransform = GetComponentsInChildren<Transform>().ToList();
-            childrenTransform.Remove(transform);
-            foreach (Transform item in childrenTransform)
-            {
-                Destroy(item.gameObject);
-            }
-
-        }
-
+        /// <summary>
+        /// Funzione che canella i riferimenti della cella relativa dei nodi
+        /// </summary>
         public void ClearNodesRelativeCell()
         {
             for (int i = 0; i < GridWidth; i++)
@@ -111,6 +118,7 @@ namespace DumbProject.Grid
                 }
             }
         }
+        #endregion
         #endregion
 
         /// <summary>

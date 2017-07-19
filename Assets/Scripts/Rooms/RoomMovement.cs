@@ -12,6 +12,14 @@ namespace DumbProject.Rooms
     public class RoomMovement : MonoBehaviour
     {
         Room room;
+
+        Vector3 _roomInitialPosition;
+        public Vector3 RoomInitialPosition
+        {
+            get { return _roomInitialPosition; }
+            private set { _roomInitialPosition = value; }
+        }
+
         Tweener snap;
         GridNode _closerNode;
         public GridNode closerNode
@@ -33,7 +41,7 @@ namespace DumbProject.Rooms
             set {
                 _movingInitialPosition = value;
                 if (value)
-                    SafeSnap(room.InitialPosition);
+                    SafeSnap(RoomInitialPosition);
             }
         }
         
@@ -48,6 +56,7 @@ namespace DumbProject.Rooms
             gridLevel = new Plane(Vector3.up, GameManager.I.MainGridCtrl.transform.position.y + GameManager.I.MainGridCtrl.GridOffsetY);
             //----------
             room = _room;
+            RoomInitialPosition = room.transform.position;
         }
 
         /// <summary>
@@ -91,8 +100,8 @@ namespace DumbProject.Rooms
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
                 // TODO : controllare snap
-                snap.OnComplete(() => room.PlaceAction());
                 snap.Complete(true);
+                room.PlaceAction();
                 return true;
             }
             else
