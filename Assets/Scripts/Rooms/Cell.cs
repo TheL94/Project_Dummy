@@ -14,7 +14,11 @@ namespace DumbProject.Rooms
             get { return _relativeNode; }
             set
             {
+                if (_relativeNode != null && RelativeNode.RelativeCell != null)
+                    RelativeNode.RelativeCell = null;
+
                 _relativeNode = value;
+
                 if (_relativeNode != null)
                 {
                     transform.position = RelativeNode.WorldPosition;
@@ -258,9 +262,8 @@ namespace DumbProject.Rooms
             if (_edge.GetType() == typeof(Door))
                 return false;
 
-            _edge.DisableEdge();
             GameObject edgeObj = _edge.gameObject;
-            Destroy(_edge);
+            _edge.DisableEdge();
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
@@ -286,7 +289,7 @@ namespace DumbProject.Rooms
                     Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
             }
-            newDoor.gameObject.SetActive(true);
+            //newDoor.gameObject.SetActive(true);
             Doors.Add(newDoor);
             return true;
         }

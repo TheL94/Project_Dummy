@@ -19,6 +19,12 @@ namespace DumbProject.Rooms
 
         public override void Setup(Cell _relativeCell)
         {
+            if (gameObject.GetComponents<Door>().Length > 1)
+            {
+                Debug.LogWarning("Due Door ! " + transform.position);
+                DestroyImmediate(this);
+            }
+
             base.Setup(_relativeCell);
             AddAjdacentCell(RelativeCell);
         }
@@ -34,8 +40,9 @@ namespace DumbProject.Rooms
                 graphic = null;
             }
             RelativeCell.Doors.Remove(this);
-            gameObject.SetActive(false);
+            RelativeCell.RelativeNode.Links.Remove(this);
             Debug.Log("Door spenta");
+            Destroy(this);
         }
 
         /// <summary>

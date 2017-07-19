@@ -37,9 +37,6 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public RoomData Data;
 
-        Tweener rotationTween;
-
-        bool canRotate = true;
         float cellProbability = 1f;
 
         #region API
@@ -85,23 +82,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// funzione che fa ruotare la stanza attorno al suo centro in senso orario sulla griglia 
-        /// </summary>
-        public void RotateClockwise()
-        {
-            if (canRotate)
-            {
-                canRotate = false;
-                rotationTween = transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() =>
-                {
-                    canRotate = true;
-                    foreach (Cell cell in CellsInRoom)
-                        cell.SetRelativeNode();
-                });
-            }
-        }
-
-        /// <summary>
         /// Funzione che collega tra di loro le stanze
         /// </summary>
         public void LinkCells()
@@ -133,14 +113,21 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public List<Door> GetListOfDoors()
         {
-            //List<Door> listOfDoors = new List<Door>();
-            //foreach (Cell cell in CellsInRoom)
-            //{
-            //    foreach (Door door in cell.Doors)
-            //    {
-            //        listOfDoors.Add(door);
-            //    }
-            //}
+            List<Door> doorToReset = new List<Door>();
+
+            foreach (Cell cell in CellsInRoom)
+            {
+                foreach (Door door in cell.Doors)
+                {
+                    if (door.gameObject.activeSelf)
+                        doorToReset.Add(door);
+                    else
+                        door.DisableEdge();
+                } 
+            }
+
+            doors = doorToReset;
+
             return doors;
         }
 
@@ -404,7 +391,10 @@ namespace DumbProject.Rooms
                 Edge edgeToReplace = listOfEdges[randomIndex];
                 Cell relativeCell = edgeToReplace.RelativeCell;
                 if (relativeCell.ReplaceEdgeWithDoor(edgeToReplace))
+                {
                     numberOfDoors--;
+                    listOfEdges = GetListOfEdges();
+                }
             }
 
             foreach (Cell cell in CellsInRoom)

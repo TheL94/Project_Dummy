@@ -19,9 +19,9 @@ namespace DumbProject.Generic
 
         public override void BlockPathWithObstacles()
         {
-            for (int i = 0; i < NodePath.Count; i++)
+            for (int i = 0; i < NodePath.Count -1; i++)
             {
-                if (NodePath[i].GetType() != typeof(Edge))
+                if (NodePath[i].GetType() != typeof(Door))
                 {
                     IInteractable interactable = Grid.GetSpecificGridNode(NodePath[i].spacePosition).RelativeCell.ActualInteractable;
                     if (interactable != null && interactable.IsInteractable)

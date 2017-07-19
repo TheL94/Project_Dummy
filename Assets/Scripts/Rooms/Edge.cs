@@ -90,7 +90,7 @@ namespace DumbProject.Rooms
                 graphic = null;
             }
             RelativeCell.Edges.Remove(this);
-            gameObject.SetActive(false);
+            Destroy(this);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace DumbProject.Rooms
 
         Tweener snap;
         GridNode _closerNode;
+        Vector3 mousePosition;
         public GridNode closerNode
         {
             get { return _closerNode; }
@@ -44,7 +45,10 @@ namespace DumbProject.Rooms
                     SafeSnap(RoomInitialPosition);
             }
         }
-        
+
+        Tweener rotationTween;
+        bool canRotate = true;
+
         //------------Sistema con Raycast--------
         Ray mouseProjection;
         Plane gridLevel;
@@ -65,7 +69,7 @@ namespace DumbProject.Rooms
         /// <param name="_eventData"></param>
         public void DragActions(PointerEventData _eventData)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(_eventData.position);
+            mousePosition = Camera.main.ScreenToWorldPoint(_eventData.position);
             //------------Sistem con Raycast--------
             mouseProjection = Camera.main.ScreenPointToRay(_eventData.position);
             float distance;
@@ -111,6 +115,23 @@ namespace DumbProject.Rooms
             }
         }
 
+        /// <summary>
+        /// funzione che fa ruotare la stanza attorno al suo centro in senso orario sulla griglia 
+        /// </summary>
+        public void RotateClockwise()
+        {
+            if (canRotate)
+            {
+                canRotate = false;
+                rotationTween = room.transform.DORotate(transform.up * 90f, 0.5f, RotateMode.LocalAxisAdd).OnComplete(() =>
+                {
+                    canRotate = true;
+                    //foreach (Cell cell in room.CellsInRoom)
+                    //    cell.SetRelativeNode();
+                });
+            }
+        }
+
         void SafeSnap(Vector3 _nodePosition)
         {
             if (_nodePosition == null || closerNode == null)
@@ -121,9 +142,9 @@ namespace DumbProject.Rooms
                 if (snap != null)
                     snap.Complete();
                 if (!MovingToInitialPosition)
-                    snap = room.transform.DOMove(_nodePosition, .05f);
+                    snap = room.transform.DOMove(_nodePosition, 0);
                 else
-                    snap = room.transform.DOMove(_nodePosition, .1f).OnComplete(() => { MovingToInitialPosition = false; });
+                    snap = room.transform.DOMove(_nodePosition,0).OnComplete(() => { MovingToInitialPosition = false; });
             }
         }
 
@@ -140,5 +161,5 @@ namespace DumbProject.Rooms
                 }
             }
         }
-    }
+    } 
 }
