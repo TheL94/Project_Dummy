@@ -65,9 +65,8 @@ namespace DumbProject.Generic
                 AnimState = AnimationStatus.Idle;
                 return;
             }
-            BlockPathWithObstacles();
 
-            if (pathTrack == null || !pathTrack.IsActive())
+            if (pathTrack == null || !pathTrack.IsActive() || pathTrack.IsComplete())
             {
                 pathTrack = transform.DOLookAt(NodePath[0].spacePosition, LookDuration).OnComplete(() =>
                 {
@@ -79,23 +78,6 @@ namespace DumbProject.Generic
                     });
                 });
             }
-
-
-            //Vector3 wayPoint = NodePath[0].spacePosition;
-            //if (pathTrack == null)
-            //{
-            //    pathTrack = transform.DOLookAt(wayPoint, LookDuration).OnComplete(() =>
-            //    {
-            //        //Debug.Log("Finished looking at: " + wayPoint);
-            //        pathTrack = transform.DOMove(wayPoint, MoveDuration).OnComplete(() =>
-            //        {
-            //            //Debug.Log("Finished moving to: " + wayPoint);
-            //            INetworkable nodeToRemove = NodePath[0];
-            //            NodePath.Remove(nodeToRemove);
-            //            pathTrack = null;
-            //        });
-            //    });
-            //}
         }
 
         public void SetPath(List<INetworkable> _networkables)
@@ -103,6 +85,7 @@ namespace DumbProject.Generic
             if (pathTrack != null)
                 pathTrack.Complete();
             NodePath = _networkables;
+            BlockPathWithObstacles();
         }
 
         public List<IInteractable> GetCurrentCellInteractables()

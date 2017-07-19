@@ -26,6 +26,7 @@ namespace DumbProject.Generic
                     IInteractable interactable = Grid.GetSpecificGridNode(NodePath[i].spacePosition).RelativeCell.ActualInteractable;
                     if (interactable != null && interactable.IsInteractable)
                     {
+                        Debug.LogWarningFormat("Removed from {0} to {1}", i+1 , NodePath.Count - i - 1);
                         NodePath.RemoveRange(i + 1, NodePath.Count - i - 1);
                         break;
                     }
