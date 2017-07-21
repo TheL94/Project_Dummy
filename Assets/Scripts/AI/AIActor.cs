@@ -66,15 +66,15 @@ namespace DumbProject.Generic
                 return;
             }
 
-            if (pathTrack == null || !pathTrack.IsActive() || pathTrack.IsComplete())
+            if (pathTrack == null)
             {
                 pathTrack = transform.DOLookAt(NodePath[0].spacePosition, LookDuration).OnComplete(() =>
                 {
-                    pathTrack = transform.DOMove(NodePath[0].spacePosition, MoveDuration).OnComplete(() => 
+                    pathTrack = transform.DOMove(NodePath[0].spacePosition, MoveDuration).OnComplete(() =>
                     {
                         CurrentNode = NodePath[0];
                         NodePath.Remove(NodePath[0]);
-                        pathTrack.Kill();
+                        pathTrack = null;
                     });
                 });
             }
@@ -83,7 +83,9 @@ namespace DumbProject.Generic
         public void SetPath(List<INetworkable> _networkables)
         {
             if (pathTrack != null)
-                pathTrack.Complete();
+            {
+                pathTrack = null;
+            }
             NodePath = _networkables;
             BlockPathWithObstacles();
         }

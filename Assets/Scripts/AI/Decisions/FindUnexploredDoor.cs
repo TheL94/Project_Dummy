@@ -18,7 +18,12 @@ namespace DumbProject.AI
 
         int FindNextUnexploredDoor(AIController _controller)
         {
-            List<IInteractable> unexploredDoors = GameManager.I.DungeonMng.GetAllUnexploredDoors().ConvertAll(e => e as IInteractable);
+            //List<IInteractable> unexploredDoors = GameManager.I.DungeonMng.GetAllUnexploredDoors().ConvertAll(e => e as IInteractable);
+            List<IInteractable> unexploredDoors = new List<IInteractable>();
+            foreach (Door door in GameManager.I.DungeonMng.GetAllUnexploredDoors())
+            {
+                unexploredDoors.Add(door as IInteractable);
+            }
 
             if (unexploredDoors == null || unexploredDoors.Count <= 0)
             {
@@ -26,7 +31,7 @@ namespace DumbProject.AI
                 return 1;
             }
             
-            (_controller as AIActor).INetworkableObjective = Converter.IInteractableToINetworkable(unexploredDoors[Random.Range(0, unexploredDoors.Count)]);
+            (_controller as AIActor).INetworkableObjective = Converter.IInteractableToINetworkable(unexploredDoors[0 /*Random.Range(0, unexploredDoors.Count)*/]);
             return 0;
         }
     }

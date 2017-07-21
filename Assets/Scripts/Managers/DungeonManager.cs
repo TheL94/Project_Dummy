@@ -47,7 +47,7 @@ namespace DumbProject.Generic
             List<Door> unexploredDoors = new List<Door>();
             foreach (Room room in RoomInDungeon)
             {
-                foreach (Door door in room.GetListOfDoors())
+                foreach (Door door in room.GetDoors())
                 {
                     if(door.StatusOfExploration == ExplorationStatus.NotExplored)
                         unexploredDoors.Add(door);
@@ -59,7 +59,7 @@ namespace DumbProject.Generic
         public List<Room> GetAdjacentRoomsByDoors(Room _objective)
         {
             List<Room> roomToReturn = new List<Room>();
-            List<Door> objectiveDoors = _objective.GetListOfDoors();
+            List<Door> objectiveDoors = _objective.GetDoors();
 
             foreach (Door door in objectiveDoors)
             {
@@ -75,7 +75,7 @@ namespace DumbProject.Generic
 
             foreach (Room room in RoomInDungeon)
             {
-                List<Door> doors = room.GetListOfDoors();
+                List<Door> doors = room.GetDoors();
                 foreach (Door door in doors)
                 {
                     for (int i = 0; i < door.AdjacentCells.Length; i++)

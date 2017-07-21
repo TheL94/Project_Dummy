@@ -105,23 +105,8 @@ namespace DumbProject.Rooms
         /// Ritorna la lista delle porte contenute in tutte le celle
         /// </summary>
         /// <returns></returns>
-        public List<Door> GetListOfDoors()
+        public List<Door> GetDoors()
         {
-            List<Door> doorToReset = new List<Door>();
-
-            foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Door door in cell.Doors)
-                {
-                    if (door.gameObject.activeSelf)
-                        doorToReset.Add(door);
-                    else
-                        door.DisableObject();
-                } 
-            }
-
-            doors = doorToReset;
-
             return doors;
         }
 
@@ -141,7 +126,7 @@ namespace DumbProject.Rooms
         /// </summary>
         public List<IInteractable> InteractableAvailable
         {
-            get { return _interactableList.Where(a => a.IsInteractable == true).ToList(); }
+            get { /*return _interactableList.Where(a => a.IsInteractable == true).ToList();*/ return FilterAvailable(InteractableList); }
             set { _interactableList = value; }
         }
         public List<IInteractable> InteractableList
@@ -149,6 +134,20 @@ namespace DumbProject.Rooms
             get { return _interactableList; }
             set { _interactableList = value; }
         }
+
+        List<IInteractable> FilterAvailable(List<IInteractable> _list)
+        {
+            List<IInteractable> listToReturn = new List<IInteractable>();
+            foreach (IInteractable interactable in _list)
+            {
+                if (interactable.IsInteractable)
+                {
+                    listToReturn.Add(interactable);
+                }
+            }
+            return listToReturn;
+        }
+
         public IInteractable AddInteractable(IDroppable _droppableToAdd)
         {
             List<Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
@@ -332,7 +331,7 @@ namespace DumbProject.Rooms
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
             List<Edge> roomEdges = GetListOfEdges();
-            roomEdges.AddRange(GetListOfDoors().ConvertAll(d => d as Edge));
+            roomEdges.AddRange(GetDoors().ConvertAll(d => d as Edge));
 
             foreach (Edge edge in roomEdges)
             {
