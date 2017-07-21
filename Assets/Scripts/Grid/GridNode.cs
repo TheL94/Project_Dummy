@@ -21,8 +21,6 @@ namespace DumbProject.Grid
         }
         public List<GridNode> AdjacentNodes;
 
-        public GridNode() { }
-
         public GridNode(GridController _myGrid, GridPosition _gridPosition, Vector3 _worldPosition)
         {
             RelativeGrid = _myGrid;

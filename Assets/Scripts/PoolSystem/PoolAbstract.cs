@@ -6,7 +6,6 @@ namespace Framework.PoolSystem
 {
     public abstract class Pool<PoolType>
     {
-
         protected List<PoolType> inactivePool = new List<PoolType>();
         protected List<PoolType> activePool = new List<PoolType>();
 
