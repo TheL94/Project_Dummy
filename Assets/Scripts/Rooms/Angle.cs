@@ -13,13 +13,8 @@ namespace DumbProject.Rooms
         /// <param name="_avoidDestruction"></param>
         public override void DisableObject(bool _avoidDestruction = false)
         {
-            if (graphic != null)
-            {
-                graphic.SetActive(false);
-                graphic = null;
-            }
+            DisableGraphic();
             RelativeCell.Angles.Remove(this);
-            GameManager.I.PoolMng.UpdatePools();
 
             if (!_avoidDestruction)
                 Destroy(gameObject);

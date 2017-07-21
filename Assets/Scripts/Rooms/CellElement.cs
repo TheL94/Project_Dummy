@@ -18,12 +18,19 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
+        /// Funzione che disabilita l'oggetto
+        /// </summary>
+        public virtual void DisableObject(bool _avoidDestruction = false) { }
+
+        /// <summary>
         /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio di CellElement
         /// </summary>
         /// <param name="_graphic"></param>
         /// <param name="_rotation"></param>
-        public virtual void SetGraphic(GameObject _graphic, Quaternion _rotation)
+        public void SetGraphic(GameObject _graphic, Quaternion _rotation)
         {
+            DisableGraphic();
+
             graphic = _graphic;
             graphic.transform.position = transform.position;
             graphic.transform.rotation = _rotation;
@@ -31,8 +38,16 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che disabilita l'oggetto
+        /// Funzione che disabilita la grafica e la ritorna al pool
         /// </summary>
-        public virtual void DisableObject(bool _avoidDestruction = false) { }
+        protected void DisableGraphic()
+        {
+            if (graphic != null)
+            {
+                graphic.SetActive(false);
+                graphic = null;
+            }
+            GameManager.I.PoolMng.UpdatePools();
+        }
     }
 }
