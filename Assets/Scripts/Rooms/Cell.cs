@@ -34,7 +34,8 @@ namespace DumbProject.Rooms
             private set { _relativeRoom = value; }
         }
 
-        GameObject floor;
+        Floor _floor;
+        public Floor Floor { get { return _floor; } set { _floor = value; } }
 
         List<Door> _doors = new List<Door>();
         public List<Door> Doors { get { return _doors; } private set { _doors = value; } }
@@ -42,7 +43,8 @@ namespace DumbProject.Rooms
         List<Edge> _edges = new List<Edge>();
         public List<Edge> Edges { get { return _edges; } private set { _edges = value; } }
 
-        List<GameObject> angles = new List<GameObject>();
+        List<Angle> _angles = new List<Angle>();
+        public List<Angle> Angles { get { return _angles; } private set { _angles = value; } }
 
         IInteractable _actualInteractable;
         public IInteractable ActualInteractable
@@ -64,10 +66,12 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateFloor()
         {
-            floor = new GameObject("Floor");
-            floor.transform.localPosition = transform.position;
-            floor.transform.parent = transform;
-            floor.transform.rotation = transform.rotation;
+            GameObject floorObj = new GameObject("Floor");
+            Floor = floorObj.AddComponent<Floor>();
+            Floor.Setup(this);
+            Floor.transform.localPosition = transform.position;
+            Floor.transform.parent = transform;
+            Floor.transform.rotation = transform.rotation;
         }
 
         /// <summary>
@@ -112,28 +116,37 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateAngles()
         {
-            GameObject newAngle;
+            GameObject newAngleObj;
+            Angle newAngle;
             int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
-            newAngle = new GameObject("NE_Angle");
-            newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
-            newAngle.transform.parent = transform;
-            angles.Add(newAngle);
+            newAngleObj = new GameObject("NE_Angle");
+            newAngle = newAngleObj.AddComponent<Angle>();
+            newAngle.Setup(this);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.parent = transform;
+            Angles.Add(newAngle);
 
-            newAngle = new GameObject("SE_Angle");
-            newAngle.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
-            newAngle.transform.parent = transform;
-            angles.Add(newAngle);
+            newAngleObj = new GameObject("SE_Angle");
+            newAngle = newAngleObj.AddComponent<Angle>();
+            newAngle.Setup(this);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.parent = transform;
+            Angles.Add(newAngle);
 
-            newAngle = new GameObject("NO_Angle");
-            newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
-            newAngle.transform.parent = transform;
-            angles.Add(newAngle);
+            newAngleObj = new GameObject("NO_Angle");
+            newAngle = newAngleObj.AddComponent<Angle>();
+            newAngle.Setup(this);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.parent = transform;
+            Angles.Add(newAngle);
 
-            newAngle = new GameObject("SO_Angle");
-            newAngle.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
-            newAngle.transform.parent = transform;
-            angles.Add(newAngle);
+            newAngleObj = new GameObject("SO_Angle");
+            newAngle = newAngleObj.AddComponent<Angle>();
+            newAngle.Setup(this);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.parent = transform;
+            Angles.Add(newAngle);
         }
 
         /// <summary>
@@ -141,7 +154,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateFloorElement()
         {
-            PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Floor), floor.transform);
+            Floor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Floor), Quaternion.identity);
         }
 
         /// <summary>
@@ -149,8 +162,8 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiatePilllarElements()
         {
-            foreach (GameObject angle in angles)
-                PlaceGameObj(GameManager.I.PoolMng.GetGameObject(ObjType.Pillar), angle.transform);
+            foreach (Angle angle in Angles)
+                angle.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Pillar), Quaternion.identity);
         }
 
         /// <summary>
@@ -167,21 +180,14 @@ namespace DumbProject.Rooms
                 else if (edge.name == "UpEdge")
                 {
                     edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), 
-                        Quaternion.LookRotation(angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
+                        Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
                 }
                 else if (edge.name == "DownEdge")
                 {
                     edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall),
-                        Quaternion.LookRotation(angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
+                        Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
                 }
             }
-        }
-
-        void PlaceGameObj(GameObject _obj, Transform _transF)
-        {
-            _obj.transform.position = _transF.position;
-            _obj.transform.rotation = _transF.rotation;
-            _obj.transform.parent = _transF;
         }
         #endregion
 
@@ -222,7 +228,7 @@ namespace DumbProject.Rooms
                 return false;
 
             GameObject edgeObj = _edge.gameObject;
-            _edge.DisableEdge();
+            _edge.DisableObject(true);
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
@@ -239,13 +245,13 @@ namespace DumbProject.Rooms
             else if (_edge.name == "UpEdge")
             {
                 newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
+                    Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "UpDoor";
             }
             else if (_edge.name == "DownEdge")
             {
                 newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(GetAnglesList().Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
+                    Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
             }
 
@@ -270,21 +276,11 @@ namespace DumbProject.Rooms
             }
         }
 
-        /// <summary>
-        /// Funzione che ritorna la lista degli angles di questa cella
-        /// </summary>
-        /// <returns></returns>
-        public List<GameObject> GetAnglesList()
-        {
-            angles.RemoveAll(a => a == null);
-            return angles;
-        }
-
         #region IChangeColor Interface
 
         public void ChangeFloorColor(Material _newMaterial)
         {
-            floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
+            Floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
         }
 
         #endregion

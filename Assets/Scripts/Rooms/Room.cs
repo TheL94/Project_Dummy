@@ -116,7 +116,7 @@ namespace DumbProject.Rooms
                     if (door.gameObject.activeSelf)
                         doorToReset.Add(door);
                     else
-                        door.DisableEdge();
+                        door.DisableObject();
                 } 
             }
 
@@ -292,7 +292,7 @@ namespace DumbProject.Rooms
 
             foreach (Edge wallToRemove in itemsToBeDestroyed)
             {
-                wallToRemove.DisableEdge();
+                wallToRemove.DisableObject();
             }
         }
 
@@ -301,34 +301,26 @@ namespace DumbProject.Rooms
         /// </summary>
         void TrimCellAngles()
         {
-            List<GameObject> itemsToBeDestroyed = new List<GameObject>();
-            List<GameObject> listOfPillars = GetListOfAngles();
+            List<Angle> itemsToBeDestroyed = new List<Angle>();
+            List<Angle> listOfPillars = GetListOfAngles();
 
-            foreach (GameObject pillar1 in listOfPillars)
+            foreach (Angle angle1 in listOfPillars)
             {
-                foreach (GameObject pillar2 in listOfPillars)
+                foreach (Angle angle2 in listOfPillars)
                 {
-                    if (pillar1 != pillar2 && !itemsToBeDestroyed.Contains(pillar1) && !itemsToBeDestroyed.Contains(pillar2))
+                    if (angle1 != angle2 && !itemsToBeDestroyed.Contains(angle1) && !itemsToBeDestroyed.Contains(angle2))
                     {
-                        if (pillar1.transform.position == pillar2.transform.position)
+                        if (angle1.transform.position == angle2.transform.position)
                         {
-                            itemsToBeDestroyed.Add(pillar2);
+                            itemsToBeDestroyed.Add(angle2);
                         }
                     }
                 }
             }
 
-            foreach (Cell cell in CellsInRoom)
+            foreach (Angle angle in itemsToBeDestroyed)
             {
-                List<GameObject> list = cell.GetAnglesList();
-                foreach (GameObject pillarToRemove in itemsToBeDestroyed)
-                {
-                    if (list.Contains(pillarToRemove))
-                    {
-                        list.Remove(pillarToRemove);
-                        pillarToRemove.SetActive(false);
-                    }
-                }
+                angle.DisableObject();
             }
         }
 
@@ -364,7 +356,7 @@ namespace DumbProject.Rooms
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
-                egdeToDestroy.DisableEdge();
+                egdeToDestroy.DisableObject();
             }
         }
 
@@ -399,16 +391,13 @@ namespace DumbProject.Rooms
         /// Ritorna la lista dei pilastri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        List<GameObject> GetListOfAngles()
+        List<Angle> GetListOfAngles()
         {
-            List<GameObject> listOfPillars = new List<GameObject>();
+            List<Angle> listOfPillars = new List<Angle>();
             foreach (Cell cell in CellsInRoom)
-            {
-                foreach (GameObject wall in cell.GetAnglesList())
-                {
+                foreach (Angle wall in cell.Angles)
                     listOfPillars.Add(wall);
-                }
-            }
+
             return listOfPillars;
         }
         #endregion

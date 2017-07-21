@@ -9,32 +9,10 @@ using System;
 
 namespace DumbProject.Rooms
 {
-    public class Edge : MonoBehaviour
+    public class Edge : CellElement
     {
         [HideInInspector]
         public Edge CollidingEdge;
-        [HideInInspector]
-        public Cell RelativeCell;
-
-        protected GameObject graphic;
-
-        public virtual void Setup(Cell _relativeCell)
-        {
-            RelativeCell = _relativeCell;
-        }
-
-        /// <summary>
-        /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio dell'edge
-        /// </summary>
-        /// <param name="_graphic"></param>
-        /// <param name="_rotation"></param>
-        public void SetGraphic(GameObject _graphic, Quaternion _rotation)
-        {
-            graphic = _graphic;
-            graphic.transform.position = transform.position;
-            graphic.transform.rotation = _rotation;
-            graphic.transform.parent = transform;
-        }
 
         /// <summary>
         /// Funzione che controlla la collisione con altri edge
@@ -80,9 +58,9 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che rimove l'edge dalla cell
+        /// Funzione che disabilita l'oggetto
         /// </summary>
-        public virtual void DisableEdge()
+        public override void DisableObject(bool _avoidDestruction = false)
         {
             if (graphic != null)
             {
@@ -90,7 +68,12 @@ namespace DumbProject.Rooms
                 graphic = null;
             }
             RelativeCell.Edges.Remove(this);
-            Destroy(this);
+            GameManager.I.PoolMng.UpdatePools();
+
+            if (!_avoidDestruction)
+                Destroy(gameObject);
+            else
+                Destroy(this);
         }
     }
 }

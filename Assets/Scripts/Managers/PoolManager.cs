@@ -23,6 +23,14 @@ namespace DumbProject.Generic
             return GetPool(_type).Get();
         }
 
+        public void UpdatePools()
+        {
+            foreach (PoolType pool in gameObjPoolList)
+            {
+                pool.Pool.UpdatePools();
+            }
+        }
+
         GameObjectPool GetPool(ObjType _type)
         {
             foreach (PoolType pool in gameObjPoolList)
@@ -36,16 +44,16 @@ namespace DumbProject.Generic
             GameObjectPool gameObjPool = null;
             Vector3 containerPosition = Camera.main.transform.forward * -10000;
 
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Arch.ObjPrefab, containerPosition, roomTypesInstances.RoomElements.Arch.NumberOfObj);
+            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Arch.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Arch.NumberOfObj);
             gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Arch));
 
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Floor.ObjPrefab, containerPosition, roomTypesInstances.RoomElements.Floor.NumberOfObj);
+            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Floor.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Floor.NumberOfObj);
             gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Floor));
 
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Pillar.ObjPrefab, containerPosition, roomTypesInstances.RoomElements.Pillar.NumberOfObj);
+            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Pillar.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Pillar.NumberOfObj);
             gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Pillar));
 
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Wall.ObjPrefab, containerPosition, roomTypesInstances.RoomElements.Wall.NumberOfObj);
+            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Wall.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Wall.NumberOfObj);
             gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Wall));
         }
     }

@@ -5,14 +5,14 @@ namespace Framework.PoolSystem
 {
     public class ObjectPool<PoolType> : Pool<PoolType> where PoolType : MonoBehaviour
     {
-        public ObjectPool(GameObject _prefabReference, Vector3 _containerObj)
+        public ObjectPool(GameObject _prefabReference, Vector3 _containerObj, Transform _containerParent)
         {
-            InitializeObjectPool(_prefabReference, _containerObj, 0);
+            InitializeObjectPool(_prefabReference, _containerObj, _containerParent, 0);
         }
 
-        public ObjectPool(GameObject _prefabReference, Vector3 _containerObj, int _initialQuantity)
+        public ObjectPool(GameObject _prefabReference, Vector3 _containerObj, Transform _containerParent, int _initialQuantity)
         {
-            InitializeObjectPool(_prefabReference, _containerObj, _initialQuantity);
+            InitializeObjectPool(_prefabReference, _containerObj, _containerParent, _initialQuantity);
         }
 
         protected override PoolType GetPoolType(GameObject gameObject)
@@ -24,7 +24,6 @@ namespace Framework.PoolSystem
         protected override void ResetPool(PoolType _item)
         {
             _item.transform.position = parentObject.transform.position;
-            _item.transform.rotation = Quaternion.identity;
             _item.transform.parent = parentObject.transform;
         }
 

@@ -13,9 +13,10 @@ namespace Framework.PoolSystem
         protected GameObject prefabReference;
         protected Transform parentObject;
 
-        public void InitializeObjectPool(GameObject _prefabReference, Vector3 _containerPosition, int _initialQuantity)
+        public void InitializeObjectPool(GameObject _prefabReference, Vector3 _containerPosition, Transform _containerParent, int _initialQuantity)
         {
             GameObject obj = new GameObject();
+            obj.transform.parent = _containerParent;
             obj.transform.position = _containerPosition;
             parentObject = obj.transform;              
             parentObject.name = "Parent: " + _prefabReference.name;
@@ -44,7 +45,7 @@ namespace Framework.PoolSystem
 
         }
 
-        protected virtual void UpdatePools()
+        public virtual void UpdatePools()
         {
             for (int i = 0; i < activePool.Count; i++)
             {

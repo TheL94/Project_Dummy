@@ -30,9 +30,9 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che rimove la door dalla cell
+        /// Funzione che disabilita l'oggetto
         /// </summary>
-        public override void DisableEdge()
+        public override void DisableObject(bool _avoidDestruction = false)
         {
             if (graphic != null)
             {
@@ -42,7 +42,12 @@ namespace DumbProject.Rooms
             RelativeCell.Doors.Remove(this);
             RelativeCell.RelativeNode.Links.Remove(this);
             Debug.Log("Door spenta");
-            Destroy(this);
+            GameManager.I.PoolMng.UpdatePools();
+
+            if (!_avoidDestruction)
+                Destroy(gameObject);
+            else
+                Destroy(this);
         }
 
         /// <summary>
