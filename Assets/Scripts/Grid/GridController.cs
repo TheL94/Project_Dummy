@@ -24,12 +24,12 @@ namespace DumbProject.Grid
         /// </summary>
         public void Setup()
         {
-            CreateGrid(GridWidth, GridHeight, CellSize, CellOffset);
+            CreateGrid(CellSize, CellOffset);
 
             if (CellImage != null)
-                ShowGrid(CellImage, GridWidth, GridHeight);
+                ShowGrid(CellImage);
 
-            InitGridNodes(GridWidth, GridHeight);
+            InitGridNodes();
         }
 
         /// <summary>
@@ -67,6 +67,23 @@ namespace DumbProject.Grid
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Funzione che ritorna la griglia in formato lista
+        /// </summary>
+        /// <returns></returns>
+        public List<GridNode> GridToList()
+        {
+            List<GridNode> listOfNodes = new List<GridNode>();
+            for (int i = 0; i < GridWidth; i++)
+            {
+                for (int j = 0; j < GridHeight; j++)
+                {
+                    listOfNodes.Add(Grid[i, j]);
+                }
+            }
+            return listOfNodes;
         }
 
         /// <summary>
@@ -121,17 +138,15 @@ namespace DumbProject.Grid
         /// <summary>
         /// Crea la griglia in base ai parametri che gli sono passati
         /// </summary>
-        /// <param name="_gridWidth"></param>
-        /// <param name="_gridHeight"></param>
         /// <param name="_cellSize"></param>
         /// <param name="_cellOffset"></param>
-        void CreateGrid(int _gridWidth, int _gridHeight, float _cellSize, float _cellOffset)
+        void CreateGrid(float _cellSize, float _cellOffset)
         {
-            Grid = new GridNode[_gridWidth, _gridHeight];
+            Grid = new GridNode[GridWidth, GridHeight];
 
-            for (int i = 0; i < _gridWidth; i++)
+            for (int i = 0; i < GridWidth; i++)
             {
-                for (int j = 0; j < _gridHeight; j++)
+                for (int j = 0; j < GridHeight; j++)
                 {
                     Grid[i, j] = new GridNode(this, new GridPosition(i, j), new Vector3(transform.position.x + i * _cellSize + _cellOffset, transform.position.y, transform.position.z + j * _cellSize + _cellOffset));
                 }
@@ -141,13 +156,11 @@ namespace DumbProject.Grid
         /// <summary>
         /// Inizializza i nodi della gliglia assegnando loro i riferimenti ai propri nodi adiacenti
         /// </summary>
-        /// <param name="_gridWidth"></param>
-        /// <param name="_gridHeight"></param>
-        void InitGridNodes(int _gridWidth, int _gridHeight)
+        void InitGridNodes()
         {
-            for (int i = 0; i < _gridWidth; i++)
+            for (int i = 0; i < GridWidth; i++)
             {
-                for (int j = 0; j < _gridHeight; j++)
+                for (int j = 0; j < GridHeight; j++)
                 {
                     Grid[i, j].Init(GetAdjacentNodes(new GridPosition(i, j)));
                 }
@@ -158,13 +171,11 @@ namespace DumbProject.Grid
         /// Crea l'elemento visivo per mostrare i nodi in editor
         /// </summary>
         /// <param name="_cellImage"></param>
-        /// <param name="_gridWidth"></param>
-        /// <param name="_gridHeight"></param>
-        void ShowGrid(GameObject _cellImage, int _gridWidth, int _gridHeight)
+        void ShowGrid(GameObject _cellImage)
         {
-            for (int i = 0; i < _gridWidth; i++)
+            for (int i = 0; i < GridWidth; i++)
             {
-                for (int j = 0; j < _gridHeight; j++)
+                for (int j = 0; j < GridHeight; j++)
                 {
                     GameObject obj = Instantiate(_cellImage, Grid[i, j].WorldPosition, Quaternion.identity, transform);
                     obj.name = "Node[ " + i + ", " + j + " ]";
