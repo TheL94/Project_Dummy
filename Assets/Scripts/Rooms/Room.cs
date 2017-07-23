@@ -119,6 +119,14 @@ namespace DumbProject.Rooms
             }
         }
 
+        public void SetItemIndicator(bool _isInUI)
+        {
+            foreach (ItemIndicator indicator in GetComponentsInChildren<ItemIndicator>())
+            {
+                indicator.inUI = _isInUI;
+            }
+        }
+
         #region IDroppableHolder
         List<IInteractable> _interactableList = new List<IInteractable>();
         /// <summary>

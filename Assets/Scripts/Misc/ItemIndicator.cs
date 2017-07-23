@@ -50,6 +50,11 @@ namespace DumbProject.Items
                     image.gameObject.SetActive(false);
                 } 
             }
+            else
+            {
+                if (image)
+                    Destroy(image.gameObject);
+            }
         }
 
         /// <summary>
