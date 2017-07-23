@@ -9,8 +9,8 @@ namespace DumbProject
     public class CameraMovementPanel : MonoBehaviour, IDragHandler, IScrollHandler, IPointerDownHandler, IPointerUpHandler
     {
         bool isPointerHeading = false;
-        PointerEventData pointerData;
-        PointerEventData positiontoHead;
+        PointerEventData initialPointerData;
+        PointerEventData currentPointerData;
         float touchesDistance;
 
         #region Rotation Option
@@ -51,7 +51,7 @@ namespace DumbProject
 
         public void OnDrag(PointerEventData eventData)
         {
-            positiontoHead = eventData;
+            currentPointerData = eventData;
             //HeadPointer(eventData.pressPosition);
             //Vector2 direction = (eventData.position - eventData.pressPosition) * GameManager.I.CameraVelocity;
             //GameManager.I.CameraController.MoveCamera(-direction);
@@ -77,12 +77,12 @@ namespace DumbProject
                     if (touchesDistance > tempDistance)
                     {
                         // zoom in
-                        GameManager.I.CameraController.ZoomTheCamera(touchesDistance);
+                        GameManager.I.CameraManager.ZoomTheCamera(touchesDistance);
                     }
                     else
                     {
                         // zoom out
-                        GameManager.I.CameraController.ZoomTheCamera(-touchesDistance);
+                        GameManager.I.CameraManager.ZoomTheCamera(-touchesDistance);
                     }
                 }
             }
@@ -90,11 +90,11 @@ namespace DumbProject
 
         void HeadPointer()
         {
-            if (!isPointerHeading || positiontoHead == null)
+            if (!isPointerHeading || currentPointerData == null)
                 return;
 
             /*(pointerData.position - pointerData.pressPosition) * GameManager.I.CameraVelocity;*/
-            if (positiontoHead.position.x != 0 || positiontoHead.position.y != 0)
+            if (currentPointerData.position.x != 0 || currentPointerData.position.y != 0)
             {
                 float distance = CalculateDistanceInWorld();
 
@@ -106,17 +106,18 @@ namespace DumbProject
 
         float CalculateDistanceInWorld()
         {
-            float ScreenDistance = Vector2.Distance(positiontoHead.position, pointerData.position);
+            float ScreenDistance = Vector2.Distance(currentPointerData.position, initialPointerData.position);
 
             Vector2 A1;
             Vector2 A2;
 
-            A1.x = pointerData.position.x * 776 / 294;
-            A1.y = pointerData.position.y * 598 / 294;
+            A1.x = initialPointerData.position.x * 776 / 294;
+            A1.y = initialPointerData.position.y * 598 / 294;
 
-            A2.x = positiontoHead.position.x * 776 / 294;
-            A2.y = positiontoHead.position.y * 598 / 294;
+            A2.x = currentPointerData.position.x * 776 / 294;
+            A2.y = currentPointerData.position.y * 598 / 294;
 
+            Debug.Log(string.Format("Distanza dello schermo {0}, distanza del trascinamento {1}", ScreenDistance, Vector2.Distance(A1, A2)));
             return Vector2.Distance(A1, A2);
         }
 
@@ -124,12 +125,12 @@ namespace DumbProject
         {
             if(eventData.scrollDelta.y > 0)
             {
-                GameManager.I.CameraController.ZoomTheCamera(eventData.scrollDelta.y);
+                GameManager.I.CameraManager.ZoomTheCamera(eventData.scrollDelta.y);
             }
 
             if (eventData.scrollDelta.y < 0)
             {
-                GameManager.I.CameraController.ZoomTheCamera(eventData.scrollDelta.y);
+                GameManager.I.CameraManager.ZoomTheCamera(eventData.scrollDelta.y);
             }
 
         }
@@ -137,7 +138,7 @@ namespace DumbProject
         public void OnPointerDown(PointerEventData eventData)
         {
             isPointerHeading = true;
-            pointerData = eventData;
+            initialPointerData = eventData;
         }
 
         public void OnPointerUp(PointerEventData eventData)
