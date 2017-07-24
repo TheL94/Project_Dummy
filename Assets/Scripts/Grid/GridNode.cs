@@ -7,11 +7,9 @@ using System;
 
 namespace DumbProject.Grid
 {
-    public class GridNode : ICellNode, INetworkable
+    public class GridNode : NetNode, ICellNode
     {
-        public GridController RelativeGrid;
         public GridPosition GridPosition;
-        public Vector3 WorldPosition;
 
         Cell _relativeCell;
         public Cell RelativeCell
@@ -19,9 +17,10 @@ namespace DumbProject.Grid
             get { return _relativeCell; }
             set { _relativeCell = value; }
         }
-        public List<GridNode> AdjacentNodes;
 
-        public GridNode(GridController _myGrid, GridPosition _gridPosition, Vector3 _worldPosition)
+        new public List<GridNode> AdjacentNodes;
+
+        public GridNode(GridController _myGrid, GridPosition _gridPosition, Vector3 _worldPosition) : base(_myGrid, _worldPosition)
         {
             RelativeGrid = _myGrid;
             GridPosition = _gridPosition;
@@ -32,33 +31,6 @@ namespace DumbProject.Grid
         {
             AdjacentNodes = _adjacentNodes;
         }
-
-        //Implementazione di INetworkable
-        #region INetworkable
-        public Vector3 spacePosition { get { return WorldPosition; } set { } }
-        List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links
-        {
-            get { return _links; }
-            set { _links = value; }
-        }
-
-        public void AddLinks(List<INetworkable> _newLinks) {
-            foreach (INetworkable _INet in _newLinks)
-            {
-                if (!Links.Contains(_INet))
-                    Links.Add(_INet);
-            }
-        }
-
-        public void RemoveLinks(List<INetworkable> _linksToRemove) {
-            foreach (INetworkable _INet in _linksToRemove)
-            {
-                if (Links.Contains(_INet))
-                    Links.Remove(_INet);
-            }
-        }
-        #endregion
     }
 
     public struct GridPosition
