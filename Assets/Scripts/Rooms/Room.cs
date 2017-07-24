@@ -20,8 +20,6 @@ namespace DumbProject.Rooms
             set { _statusOfExploration = value; }
         }
 
-        protected List<Door> doors = new List<Door>();
-
         [HideInInspector]
         public List<Cell> CellsInRoom = new List<Cell>();
         [HideInInspector]
@@ -92,7 +90,7 @@ namespace DumbProject.Rooms
         {
             GridController relativeGrid = CellsInRoom[0].RelativeNode.RelativeGrid;
             List<GenericNode> adjacentNodes;
-            foreach (Door door in doors)
+            foreach (Door door in GetDoors())
             {
                 adjacentNodes = new List<GenericNode>() { door.RelativeCell.RelativeNode as GenericNode,
                     relativeGrid.GetSpecificGridNode(door.GetOppositeOfRelativeCellPosition()) };
@@ -124,16 +122,12 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public List<Door> GetDoors()
         {
-            return doors;
-        }
-
-        public void SetDoors(List<Door> _doors)
-        {
-            foreach (Door newDoor in _doors)
+            List<Door> doors = new List<Door>();
+            foreach (Cell cell in CellsInRoom)
             {
-                if (!doors.Contains(newDoor))
-                    doors.Add(newDoor);
+                doors.AddRange(cell.Doors);
             }
+            return doors;
         }
 
         public void SetItemIndicator(bool _isInUI)
@@ -412,9 +406,6 @@ namespace DumbProject.Rooms
                     listOfEdges = GetListOfEdges();
                 }
             }
-
-            foreach (Cell cell in CellsInRoom)
-                SetDoors(cell.Doors);
         }
 
         /// <summary>

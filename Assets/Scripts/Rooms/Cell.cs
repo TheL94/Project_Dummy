@@ -1,4 +1,4 @@
-﻿using DumbProject.Items;
+﻿using Framework.Pathfinding;
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
@@ -267,7 +267,7 @@ namespace DumbProject.Rooms
             // Aggiungo ai links del nodo relativo le celle delle stanza relativa adiacenti
             foreach (GridNode adjacentNode in RelativeNode.AdjacentNodes)
                 if (adjacentNode.RelativeCell != null && adjacentNode.RelativeCell.RelativeRoom == RelativeRoom)
-                    RelativeNode.Links.Add(adjacentNode);
+                    RelativeNode.AddLinks(new List<INetworkable>() { adjacentNode });
 
             // Aggiungo ai links del nodo relativo le mie porte
             foreach (Door door in Doors)
@@ -291,10 +291,10 @@ namespace DumbProject.Rooms
             if (RelativeNode == null)
                 return;
             Gizmos.color = Color.green;
-            foreach (Framework.Pathfinding.INetworkable node in RelativeNode.Links)
+            foreach (INetworkable link in RelativeNode.Links)
             {
-                if (node != null)
-                    Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, .5f, 0f), node.spacePosition + new Vector3(0f, .5f, 0f));
+                if (link != null)
+                    Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, .5f, 0f), link.spacePosition + new Vector3(0f, .5f, 0f));
             }
         }
     }

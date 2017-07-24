@@ -18,8 +18,7 @@ namespace Framework.Pathfinding
         /// <returns> An ordered list of node to be used as position for the pathfinding</returns>
         public static List<INetworkable> FindPath(INetworkable _target, INetworkable _start)
         {
-            PathStep startingStep;
-            startingStep = new PathStep(_start, _start, _target);
+            PathStep startingStep = new PathStep(_start, _start, _target);
 
             List<PathStep> possiblePaths = new List<PathStep>() { startingStep };
             //-----------------------------------------------------------------------
@@ -95,7 +94,7 @@ namespace Framework.Pathfinding
             List<INetworkable> shortestPath = new List<INetworkable>();
             shortestPath.Add(_target);
 
-            SortByTargetOffset(_validPath);            //   .OrderBy(t => t.targetOffSet).ToList();
+            SortByOriginOffset(_validPath);
             List<PathStep> _pathInEvaluation = _validPath;
             PathStep nextToAdd = _validPath[0];
             while (!shortestPath.Contains(_start))
@@ -112,8 +111,14 @@ namespace Framework.Pathfinding
                         distanceFromStart = _pathInEvaluation[i].originOffSet;
                     }
                 }
-                _pathInEvaluation.Remove(nextToAdd);
-                shortestPath.Add(nextToAdd.node);
+                if (_pathInEvaluation.Remove(nextToAdd))
+                    shortestPath.Add(nextToAdd.node);
+                else
+                {
+                    Debug.LogWarning("Emergency break on Pathfinding");
+                    break;
+                }
+
             }
 
             shortestPath.Reverse();
@@ -149,13 +154,13 @@ namespace Framework.Pathfinding
             return iNetPath;
         }
 
-        static void SortByTargetOffset(List<PathStep> _original)
+        static void SortByOriginOffset(List<PathStep> _original)
         {
             for (int i = _original.Count - 1; i > 0; i--)
             {
                 for (int j = 0; j <= i - 1; j++)
                 {
-                    if (_original[j].targetOffSet > _original[j + 1].targetOffSet)
+                    if (_original[j].originOffSet > _original[j + 1].originOffSet)
                     {
                         PathStep cacheClass = _original[j];
 

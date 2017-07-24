@@ -31,7 +31,7 @@ namespace DumbProject.AI
                 return 1;
             }
             
-            (_controller as AIActor).INetworkableObjective = Converter.IInteractableToINetworkable(unexploredDoors[0 /*Random.Range(0, unexploredDoors.Count)*/]);
+            (_controller as AIActor).INetworkableObjective = Converter.IInteractableToINetworkable(unexploredDoors[Random.Range(0, unexploredDoors.Count)]);
             return 0;
         }
     }
