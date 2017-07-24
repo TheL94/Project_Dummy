@@ -18,18 +18,11 @@ namespace DumbProject.Grid
             set { _relativeCell = value; }
         }
 
-        new public List<GridNode> AdjacentNodes;
-
         public GridNode(GridController _myGrid, GridPosition _gridPosition, Vector3 _worldPosition) : base(_myGrid, _worldPosition)
         {
             RelativeGrid = _myGrid;
             GridPosition = _gridPosition;
             WorldPosition = _worldPosition;
-        }
-
-        public void Init(List<GridNode> _adjacentNodes)
-        {
-            AdjacentNodes = _adjacentNodes;
         }
     }
 

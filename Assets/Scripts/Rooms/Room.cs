@@ -250,12 +250,18 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         List<GridNode> GetEmptyGridNodes()
         {
-            List<GridNode> adjacentNodes = new List<GridNode>();
+            List<GridNode> adjacentEmptyNodes = new List<GridNode>();
             foreach (Cell cell in CellsInRoom)
             {
-                adjacentNodes.AddRange(cell.RelativeNode.AdjacentNodes.Where(a => a.RelativeCell == null).ToList());
+                foreach (NetNode node in cell.RelativeNode.AdjacentNodes)
+                {
+                    if(node.GetType() == typeof(GridNode) && (node as GridNode).RelativeCell == null)
+                    {
+                        adjacentEmptyNodes.Add(node as GridNode);
+                    }
+                }
             }
-            return adjacentNodes;
+            return adjacentEmptyNodes;
         }
 
         /// <summary>

@@ -17,7 +17,8 @@ namespace DumbProject.Grid
         public GameObject CellImage;
 
         GridNode[,] Grid;
-
+        List<NetNode> NetNodes = new List<NetNode>();
+ 
         #region API
         /// <summary>
         /// Setup della gliglia
@@ -100,6 +101,35 @@ namespace DumbProject.Grid
             }
         }
 
+        #region Net Node
+        /// <summary>
+        /// Funzione che crea eaggiunge un nuovo net node
+        /// </summary>
+        /// <param name="_position"></param>
+        /// <param name="_adjacentNodes"></param>
+        public void AddNewNetNode(Vector3 _position, List<NetNode> _adjacentNodes)
+        {
+            NetNode newNode = new NetNode(this, _position);
+            newNode.Init(_adjacentNodes);
+            NetNodes.Add(newNode);
+        }
+
+        /// <summary>
+        /// Funzione che ritorna un net node in base alla posizione
+        /// </summary>
+        /// <param name="_worldPosition"></param>
+        /// <returns></returns>
+        public NetNode GetSpecificNetNode(Vector3 _worldPosition)
+        {
+            foreach (NetNode node in NetNodes)
+            {
+                if (node.WorldPosition == _worldPosition)
+                    return node;
+            }
+            return null;
+        }
+        #endregion
+
         #region Cell
         // TODO : da spostare per aggiungere la classe al framework
         /// <summary>
@@ -152,7 +182,7 @@ namespace DumbProject.Grid
                 }
             }
         }
-
+        
         /// <summary>
         /// Inizializza i nodi della gliglia assegnando loro i riferimenti ai propri nodi adiacenti
         /// </summary>
@@ -188,9 +218,9 @@ namespace DumbProject.Grid
         /// </summary>
         /// <param name="_gridPosition"></param>
         /// <returns></returns>
-        List<GridNode> GetAdjacentNodes(GridPosition _gridPosition)
+        List<NetNode> GetAdjacentNodes(GridPosition _gridPosition)
         {
-            List<GridNode> adjacentNodes = new List<GridNode>();
+            List<NetNode> adjacentNodes = new List<NetNode>();
 
             if (_gridPosition.x + 1 < GridWidth)
             {
