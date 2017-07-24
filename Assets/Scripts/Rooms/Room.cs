@@ -423,30 +423,30 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        private void OnDrawGizmos()
-        {
-            switch (StatusOfExploration)
-            {
-                case ExplorationStatus.NotInGame:
-                    Gizmos.color = Color.white;
-                    break;
-                case ExplorationStatus.Unavailable:
-                    Gizmos.color = Color.red;
-                    break;
-                case ExplorationStatus.NotExplored:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case ExplorationStatus.InExploration:
-                    Gizmos.color = Color.cyan;
-                    break;
-                case ExplorationStatus.Explored:
-                    Gizmos.color = Color.green;
-                    break;
-                default:
-                    break;
-            }
-            Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), new Vector3(5f, 1f, 5f));
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    switch (StatusOfExploration)
+        //    {
+        //        case ExplorationStatus.NotInGame:
+        //            Gizmos.color = Color.white;
+        //            break;
+        //        case ExplorationStatus.Unavailable:
+        //            Gizmos.color = Color.red;
+        //            break;
+        //        case ExplorationStatus.NotExplored:
+        //            Gizmos.color = Color.yellow;
+        //            break;
+        //        case ExplorationStatus.InExploration:
+        //            Gizmos.color = Color.cyan;
+        //            break;
+        //        case ExplorationStatus.Explored:
+        //            Gizmos.color = Color.green;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), new Vector3(5f, 1f, 5f));
+        //}
     }
 
     public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, NotExplored = 1, InExploration = 2, Explored = 3 }

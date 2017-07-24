@@ -68,20 +68,14 @@ namespace Framework.Pathfinding
                 }
             }
             //Choose the closest between the Inetworkables in the closest
-            foreach (PathStep step in possibleOutcomes)
-            {
-                if (pathDistance == -1)
-                    pathDistance = step.distance;
-
-                if (step.distance <= pathDistance)
-                    outcome = step;
-            }
+            outcome = possibleOutcomes.OrderBy(i => i.targetOffSet).ThenBy(j => j.distance).ToList()[0];
             //Return null if there are no possible path found
             if (CheckForNodeInPath(outcome.node, _givenPath))
                 return null;
             //Return the next closest INetworkable to the target
             return outcome;
         }
+
         /// <summary>
         /// Evaluate the actual path starting from a list of already evaluated nodes
         /// </summary>
@@ -94,7 +88,7 @@ namespace Framework.Pathfinding
             List<INetworkable> shortestPath = new List<INetworkable>();
             shortestPath.Add(_target);
 
-            SortByOriginOffset(_validPath);
+            SortByTargetOffset(_validPath);
             List<PathStep> _pathInEvaluation = _validPath;
             PathStep nextToAdd = _validPath[0];
             while (!shortestPath.Contains(_start))
@@ -102,7 +96,7 @@ namespace Framework.Pathfinding
                 float distanceFromStart = _pathInEvaluation[0].originOffSet;
                 for (int i = 0; i < _pathInEvaluation.Count; i++)
                 {
-                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_pathInEvaluation[i].node))
+                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_pathInEvaluation[i].node) || _pathInEvaluation[i].node == _target)
                         continue;
 
                     if (_pathInEvaluation[i].originOffSet < distanceFromStart)
@@ -154,13 +148,13 @@ namespace Framework.Pathfinding
             return iNetPath;
         }
 
-        static void SortByOriginOffset(List<PathStep> _original)
+        static void SortByTargetOffset(List<PathStep> _original)
         {
             for (int i = _original.Count - 1; i > 0; i--)
             {
                 for (int j = 0; j <= i - 1; j++)
                 {
-                    if (_original[j].originOffSet > _original[j + 1].originOffSet)
+                    if (_original[j].targetOffSet > _original[j + 1].targetOffSet)
                     {
                         PathStep cacheClass = _original[j];
 
