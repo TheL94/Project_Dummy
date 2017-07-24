@@ -1,48 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 namespace DumbProject.Generic
 {
-    public class CameraController : MonoBehaviour {
+    public class CameraController : MonoBehaviour, IDragHandler, IScrollHandler, IPointerDownHandler, IPointerUpHandler
+    {
+        CameraMovement camMovement;
 
-        public float TranslationSpeed = 10;
-        public float ZoomSpeed = 10;
+        Vector3 dragStartPosition;
+        Vector3 dragEndPosition;
 
-        public float ZoomMax = 10;
-        public float ZoomMin = 10;
-        float currentZoom;
-
-        Vector3 startingPosition;
-        private void Awake()
+        private void Start()
         {
-            startingPosition = transform.position;
+            camMovement = Camera.main.GetComponent<CameraMovement>();
         }
 
-        public void Translate(Vector3 _objectivePosition)
+        public void OnDrag(PointerEventData eventData)
         {
-            float x = Mathf.Lerp(transform.position.x, _objectivePosition.x, TranslationSpeed);
-            float y = Mathf.Lerp(transform.position.y, _objectivePosition.y, TranslationSpeed);
-            float z = Mathf.Lerp(transform.position.y, _objectivePosition.y, TranslationSpeed);
+            Vector3 objective = new Vector3(camMovement.CurrentPosition.x + eventData.pressPosition.x,
+                camMovement.CurrentPosition.y,
+                camMovement.CurrentPosition.x + eventData.pressPosition.y);
 
-            Vector3 headingPoint = new Vector3(x, y, z);
-            transform.position = headingPoint;
+            camMovement.Translate(objective);
+            Debug.Log("drag");
         }
 
-        public void Zoom(float _zoomDelta)
+        public void OnPointerDown(PointerEventData eventData)
         {
-            if (currentZoom != _zoomDelta)
-            {
-                currentZoom += Mathf.Lerp(currentZoom, _zoomDelta, ZoomSpeed);
-                if (currentZoom < ZoomMin)
-                    currentZoom = ZoomMin;
-                if (currentZoom > ZoomMax)
-                    currentZoom = ZoomMax;
+            dragStartPosition = Camera.main.transform.position;
+            Debug.Log("click");
 
-                Translate(startingPosition + Vector3.forward * currentZoom);
-            }
+        }
 
+        public void OnPointerUp(PointerEventData eventData)
+        {
+
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            //Vector3 objective;
+            //camMovement.Zoom();
         }
     }
 }

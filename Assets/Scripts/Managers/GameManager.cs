@@ -20,7 +20,6 @@ namespace DumbProject.Generic
         public DungeonManager DungeonManagerPrefab;
         public ItemsManager ItemManagerPrefab;
         public PoolManager PoolManagerPrefab;
-        public CameraManager CameraManagerPrefab;
 
         public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
 
@@ -36,8 +35,6 @@ namespace DumbProject.Generic
         public RoomPreviewController RoomPreviewCtrl;
         [HideInInspector]
         public DungeonManager DungeonMng;
-        [HideInInspector]
-        public CameraManager CameraManager;
         [HideInInspector]
         public ItemsManager ItemManager;
         [HideInInspector]
@@ -72,10 +69,8 @@ namespace DumbProject.Generic
             UIMng = Instantiate(UIManagerPrefab);
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-            CameraManager = Instantiate(CameraManagerPrefab,transform);
             ItemManager = Instantiate(ItemManagerPrefab);
             ItemManager.Init();
-            CameraManager.Init();
 
             FlowMng.CurrentState = FlowState.Loading;
         }
