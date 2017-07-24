@@ -69,6 +69,7 @@ namespace DumbProject.Rooms
             foreach (Cell cell in CellsInRoom)
                 cell.RelativeNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(cell.transform.position);
 
+            AddNetNodesOnDoors();
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
             GameManager.I.DungeonMng.SetupRoomInDungeon(this);
 
@@ -82,6 +83,22 @@ namespace DumbProject.Rooms
         {
             foreach (Cell cell in CellsInRoom)
                 cell.UpdateRelativeNodeLinks();
+        }
+
+        /// <summary>
+        /// Funzione che aggiunge un net node nella posizione della porta
+        /// </summary>
+        public void AddNetNodesOnDoors()
+        {
+            GridController relativeGrid = CellsInRoom[0].RelativeNode.RelativeGrid;
+            List<GenericNode> adjacentNodes;
+            foreach (Door door in doors)
+            {
+                adjacentNodes = new List<GenericNode>() { door.RelativeCell.RelativeNode as GenericNode,
+                    relativeGrid.GetSpecificGridNode(door.GetOppositeOfRelativeCellPosition()) };
+                door.RelativeNetNode = relativeGrid.AddNewNetNode(door.transform.position);
+                door.RelativeNetNode.Init(adjacentNodes, door);
+            }
         }
 
         /// <summary>

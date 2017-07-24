@@ -12,7 +12,6 @@ namespace DumbProject.Grid
         public float CellSize;
         public float CellOffset;
         public float GridOffsetY = 0f;
-        public float GridPositionSensitivity;
 
         public GameObject CellImage;
 
@@ -103,15 +102,19 @@ namespace DumbProject.Grid
 
         #region Net Node
         /// <summary>
-        /// Funzione che crea eaggiunge un nuovo net node
+        /// Funzione che crea e aggiunge un nuovo net node nella posizione che viene passata.
+        /// Se ne esiste uno già in quella posizione viene ritornato quello già presente.
         /// </summary>
-        /// <param name="_position"></param>
+        /// <param name="_worldPosition"></param>
         /// <param name="_adjacentNodes"></param>
-        public void AddNewNetNode(Vector3 _position, List<NetNode> _adjacentNodes)
+        public NetNode AddNewNetNode(Vector3 _worldPosition)
         {
-            NetNode newNode = new NetNode(this, _position);
-            newNode.Init(_adjacentNodes);
-            NetNodes.Add(newNode);
+            NetNode node = GetSpecificNetNode(_worldPosition);
+            if(node == null)
+                node = new NetNode(this, _worldPosition);
+
+            NetNodes.Add(node);
+            return node;
         }
 
         /// <summary>
@@ -123,7 +126,7 @@ namespace DumbProject.Grid
         {
             foreach (NetNode node in NetNodes)
             {
-                if (node.WorldPosition == _worldPosition)
+                if (Vector3.Distance(node.WorldPosition, _worldPosition) < 0.1f)
                     return node;
             }
             return null;
@@ -218,9 +221,9 @@ namespace DumbProject.Grid
         /// </summary>
         /// <param name="_gridPosition"></param>
         /// <returns></returns>
-        List<NetNode> GetAdjacentNodes(GridPosition _gridPosition)
+        List<GenericNode> GetAdjacentNodes(GridPosition _gridPosition)
         {
-            List<NetNode> adjacentNodes = new List<NetNode>();
+            List<GenericNode> adjacentNodes = new List<GenericNode>();
 
             if (_gridPosition.x + 1 < GridWidth)
             {

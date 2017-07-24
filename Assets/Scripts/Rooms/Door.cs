@@ -7,16 +7,24 @@ using UnityEngine;
 
 namespace DumbProject.Rooms
 {
-    public class Door : Edge, INetworkable, IInteractable
+    public class Door : Edge, IInteractable
     {
         public ExplorationStatus StatusOfExploration
         {
             get { return EvaluateStatus(); }
         }
 
+        NetNode _relativeNetNode;
+        public NetNode RelativeNetNode
+        {
+            get { return _relativeNetNode; }
+            set { _relativeNetNode = value; }
+        }
+
         Cell[] _adjacentCells = new Cell[2];
         public Cell[] AdjacentCells { get { return _adjacentCells; } }
 
+        #region API
         public override void Setup(Cell _relativeCell)
         {
             if (gameObject.GetComponents<Door>().Length > 1)
@@ -37,7 +45,7 @@ namespace DumbProject.Rooms
         {
             DisableGraphic();
             RelativeCell.Doors.Remove(this);
-            RelativeCell.RelativeNode.Links.Remove(this);
+            //RelativeCell.RelativeNode.Links.Remove(this);
             Debug.Log("Door spenta");
 
             if (!_avoidDestruction)
@@ -67,6 +75,8 @@ namespace DumbProject.Rooms
         /// </summary>
         public void UpdateLinks()
         {
+            if (RelativeNetNode == null)
+                return;
             for (int i = 0; i < AdjacentCells.Length; i++)
             {
                 if (AdjacentCells[i] == null)
@@ -75,11 +85,54 @@ namespace DumbProject.Rooms
                 if(AdjacentCells[i].RelativeRoom.StatusOfExploration == ExplorationStatus.Explored || AdjacentCells[i].RelativeRoom.StatusOfExploration == ExplorationStatus.InExploration)
                 {
                     INetworkable networkable = AdjacentCells[i].RelativeNode as INetworkable;
-                    AddLinks(new List<INetworkable>() { networkable });
-                    AdjacentCells[i].RelativeNode.AddLinks(new List<INetworkable>() { this });
+                    RelativeNetNode.AddLinks(new List<INetworkable>() { networkable });
+                    AdjacentCells[i].RelativeNode.AddLinks(new List<INetworkable>() { RelativeNetNode });
                 }
             }
         }
+
+        //Implementazione di IInteractable
+        #region IInteractable
+        public Transform Transf { get { return transform; } }
+        bool _isInteractable = true;
+        public bool IsInteractable
+        {
+            get
+            {
+                if (StatusOfExploration == ExplorationStatus.Explored)
+                    _isInteractable = false;
+                return _isInteractable;
+            }
+            set { _isInteractable = value; }
+        }
+
+        public void Interact(AIActor _actor)
+        {
+            foreach (Cell cell in AdjacentCells)
+            {
+                if (cell != null)
+                {
+                    RelativeNetNode.AddLinks(new List<INetworkable>() { cell.RelativeNode });
+                    cell.RelativeNode.AddLinks(new List<INetworkable>() { RelativeNetNode });
+                    //Se la cella appartiene ad una stanza esplorata non modifica lo status, altrimenti porta lo stato della nuova stanza in esplorazione
+                    ExplorationStatus statusToSet = cell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored ? ExplorationStatus.Explored : ExplorationStatus.InExploration;
+                    if (statusToSet != ExplorationStatus.Explored)
+                        GameManager.I.DungeonMng.UpdateRoomStatus(cell.RelativeRoom, statusToSet);
+                }
+                else
+                {
+                    //Caso in cui la porta collega all'esterno
+                    RelativeNetNode.AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
+                }
+            }
+
+            //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
+            //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
+            _actor.INetworkableObjective = RelativeNetNode.Links[1];
+            IsInteractable = false;
+        }
+        #endregion
+        #endregion
 
         /// <summary>
         /// Evaluate the status of the door based on the status of his adjacent rooms
@@ -164,74 +217,6 @@ namespace DumbProject.Rooms
             return status;
         }
 
-        //Implementazione di INetworkable
-        #region INetworkable
-        public Vector3 spacePosition { get { return transform.position; } set { } }
-        List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links {
-            get { return _links; }
-            set { _links = value; } }
-
-        public void AddLinks(List<INetworkable> _newLinks)
-        {
-            foreach (INetworkable _INet in _newLinks)
-            {
-                if (!Links.Contains(_INet))
-                    Links.Add(_INet);
-            }
-        }
-
-        public void RemoveLinks(List<INetworkable> _linksToRemove)
-        {
-            foreach (INetworkable _INet in _linksToRemove)
-            {
-                if (Links.Contains(_INet))
-                    Links.Remove(_INet);
-            }
-        }
-        #endregion
-
-        //Implementazione di IInteractable
-        #region IInteractable
-        public Transform Transf { get { return transform; } }
-        bool _isInteractable = true;
-        public bool IsInteractable {
-            get
-            {
-                if (StatusOfExploration == ExplorationStatus.Explored)
-                    _isInteractable = false;
-                return _isInteractable;
-            }
-            set { _isInteractable = value; }
-        }
-
-        public void Interact(AIActor _actor)
-        {
-            foreach (Cell cell in AdjacentCells)
-            {
-                if(cell != null)
-                {
-                    AddLinks(new List<INetworkable>() { cell.RelativeNode });
-                    cell.RelativeNode.AddLinks(new List<INetworkable>() { this });
-                    //Se la cella appartiene ad una stanza esplorata non modifica lo status, altrimenti porta lo stato della nuova stanza in esplorazione
-                    ExplorationStatus statusToSet = cell.RelativeRoom.StatusOfExploration == ExplorationStatus.Explored ? ExplorationStatus.Explored : ExplorationStatus.InExploration;
-                    if(statusToSet != ExplorationStatus.Explored)
-                        GameManager.I.DungeonMng.UpdateRoomStatus(cell.RelativeRoom, statusToSet);
-                }
-                else
-                {
-                    //Caso in cui la porta collega all'esterno
-                    AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
-                }
-            }
-
-            //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
-            //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
-            _actor.INetworkableObjective = Links[1];
-            IsInteractable = false;
-        }
-        #endregion
-
         private void OnDrawGizmos()
         {
             switch (StatusOfExploration)
@@ -254,9 +239,12 @@ namespace DumbProject.Rooms
             Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
 
             Gizmos.color = Color.cyan;
-            foreach (INetworkable node in Links)
+            if(RelativeNetNode != null)
             {
-                Gizmos.DrawLine(spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
+                foreach (INetworkable node in RelativeNetNode.Links)
+                {
+                    Gizmos.DrawLine(RelativeNetNode.spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
+                }
             }
         }
     }

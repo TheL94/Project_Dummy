@@ -67,6 +67,7 @@ namespace DumbProject.Rooms
             Room mainRoom = newRoomObj.AddComponent<Room>();
             mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
             mainRoom.name = "FirstRoom";
+            mainRoom.AddNetNodesOnDoors();
             GameManager.I.DungeonMng.ParentRoom(mainRoom, ExplorationStatus.InExploration);
 
             GameManager.I.ItemManager.InstantiateItemInRoom(mainRoom);
