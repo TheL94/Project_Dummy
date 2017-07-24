@@ -19,19 +19,13 @@ namespace DumbProject.Generic
 
         public void OnDrag(PointerEventData eventData)
         {
-            Vector3 objective = new Vector3(camMovement.CurrentPosition.x + eventData.pressPosition.x,
-                camMovement.CurrentPosition.y,
-                camMovement.CurrentPosition.x + eventData.pressPosition.y);
-
-            camMovement.Translate(objective);
-            Debug.Log("drag");
+            //camMovement.Drag();
+            //Debug.Log("drag");
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            dragStartPosition = Camera.main.transform.position;
-            Debug.Log("click");
-
+            dragStartPosition = eventData.pressPosition;
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -41,7 +35,6 @@ namespace DumbProject.Generic
 
         public void OnScroll(PointerEventData eventData)
         {
-            //Vector3 objective;
             //camMovement.Zoom();
         }
     }
