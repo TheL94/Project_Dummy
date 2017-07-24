@@ -14,8 +14,8 @@ namespace DumbProject
         {
             IInteractable interactable = null;
 
-            if (_networkable.GetType() == typeof(Door))
-                interactable = _networkable as IInteractable;
+            if (_networkable.GetType() == typeof(NetNode))
+                interactable = (_networkable as NetNode).RelativeInteractable;
             else if (_networkable.GetType() == typeof(GridNode) && (_networkable as GridNode).RelativeCell!= null)
                 interactable = (_networkable as GridNode).RelativeCell.ActualInteractable;
 
@@ -27,7 +27,7 @@ namespace DumbProject
             INetworkable networkable = null;
 
             if (_interactable.GetType() == typeof(Door))
-                networkable = _interactable as INetworkable;
+                networkable = (_interactable as Door).RelativeNetNode;
             else
             {
                 try

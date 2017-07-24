@@ -1,56 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Framework.Pathfinding;
+using DumbProject.Generic;
 
 namespace DumbProject.Grid
 {
-    public class NetNode : INetworkable
+    public class NetNode : GenericNode
     {
-        public GridController RelativeGrid;
-        public Vector3 WorldPosition;
+        IInteractable _relativeInteractable;
+        public IInteractable RelativeInteractable
+        {
+            get { return _relativeInteractable; }
+            private set { _relativeInteractable = value; }
+        }
 
-        public List<NetNode> AdjacentNodes;
-
-        public NetNode(GridController _myGrid, Vector3 _worldPosition)
+        public NetNode(GridController _myGrid, Vector3 _worldPosition) : base(_myGrid, _worldPosition)
         {
             RelativeGrid = _myGrid;
             WorldPosition = _worldPosition;
         }
 
-        public void Init(List<NetNode> _adjacentNodes)
+        public void Init(List<GenericNode> _adjacentNodes, IInteractable _relativeInteractable)
         {
             AdjacentNodes = _adjacentNodes;
+            RelativeInteractable = _relativeInteractable;
         }
-
-        //Implementazione di INetworkable
-        #region INetworkable
-        public Vector3 spacePosition { get { return WorldPosition; } set { } }
-        List<INetworkable> _links = new List<INetworkable>();
-        public List<INetworkable> Links
-        {
-            get { return _links; }
-            set { _links = value; }
-        }
-
-        public void AddLinks(List<INetworkable> _newLinks)
-        {
-            foreach (INetworkable _INet in _newLinks)
-            {
-                if (!Links.Contains(_INet))
-                    Links.Add(_INet);
-            }
-        }
-
-        public void RemoveLinks(List<INetworkable> _linksToRemove)
-        {
-            foreach (INetworkable _INet in _linksToRemove)
-            {
-                if (Links.Contains(_INet))
-                    Links.Remove(_INet);
-            }
-        }
-        #endregion
     }
 }
 

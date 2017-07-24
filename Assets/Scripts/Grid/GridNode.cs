@@ -7,7 +7,7 @@ using System;
 
 namespace DumbProject.Grid
 {
-    public class GridNode : NetNode, ICellNode
+    public class GridNode : NetNode
     {
         public GridPosition GridPosition;
 
