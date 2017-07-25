@@ -1,135 +1,146 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using DumbProject.Generic;
+using DumbProject.Grid;
 
-public class CameraHandler : MonoBehaviour
+namespace DumbProject.CameraController
 {
-
-    private static readonly float PanSpeed = 20f;
-    private static readonly float ZoomSpeedTouch = 0.1f;
-    private static readonly float ZoomSpeedMouse = 0.5f;
-
-    private static readonly float[] BoundsX = new float[] { -10f, 5f };
-    private static readonly float[] BoundsZ = new float[] { -18f, -4f };
-    private static readonly float[] ZoomBounds = new float[] { 10f, 85f };
-
-    private Camera cam;
-
-    private Vector3 lastPanPosition;
-    private int panFingerId; // Touch mode only
-
-    private bool wasZoomingLastFrame; // Touch mode only
-    private Vector2[] lastZoomPositions; // Touch mode only
-
-    void Awake()
+    public class CameraHandler : MonoBehaviour
     {
-        cam = GetComponent<Camera>();
-    }
+        public float PanSpeed = 20f;
+        public float ZoomSpeedTouch = 0.1f;
+        public float ZoomSpeedMouse = 0.5f;
+        [Range(1f, 10f)]
+        public float BorderLimitDelta = 1f;
 
-    void LateUpdate()
-    {
-        if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer)
+        public float[] BoundsX { get { return new float[] { 0f - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta,
+            GameManager.I.MainGridCtrl.GridWidth * GameManager.I.MainGridCtrl.CellSize - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta }; } }
+
+        public float[] BoundsZ { get { return new float[] { 0f - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta,
+            GameManager.I.MainGridCtrl.GridHeight * GameManager.I.MainGridCtrl.CellSize - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta }; } }
+
+        public float[] ZoomBounds = new float[] { 10f, 85f };
+
+        private Camera cam;
+
+        private Vector3 lastPanPosition;
+        private int panFingerId; // Touch mode only
+
+        private bool wasZoomingLastFrame; // Touch mode only
+        private Vector2[] lastZoomPositions; // Touch mode only
+
+        void Start()
         {
-            HandleTouch();
-        }
-        else
-        {
-            HandleMouse();
-        }
-    }
-
-    void HandleTouch()
-    {
-        switch (Input.touchCount)
-        {
-
-            case 1: // Panning
-                wasZoomingLastFrame = false;
-
-                // If the touch began, capture its position and its finger ID.
-                // Otherwise, if the finger ID of the touch doesn't match, skip it.
-                Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)
-                {
-                    lastPanPosition = touch.position;
-                    panFingerId = touch.fingerId;
-                }
-                else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
-                {
-                    PanCamera(touch.position);
-                }
-                break;
-
-            case 2: // Zooming
-                Vector2[] newPositions = new Vector2[] { Input.GetTouch(0).position, Input.GetTouch(1).position };
-                if (!wasZoomingLastFrame)
-                {
-                    lastZoomPositions = newPositions;
-                    wasZoomingLastFrame = true;
-                }
-                else
-                {
-                    // Zoom based on the distance between the new positions compared to the 
-                    // distance between the previous positions.
-                    float newDistance = Vector2.Distance(newPositions[0], newPositions[1]);
-                    float oldDistance = Vector2.Distance(lastZoomPositions[0], lastZoomPositions[1]);
-                    float offset = newDistance - oldDistance;
-
-                    ZoomCamera(offset, ZoomSpeedTouch);
-
-                    lastZoomPositions = newPositions;
-                }
-                break;
-
-            default:
-                wasZoomingLastFrame = false;
-                break;
-        }
-    }
-
-    void HandleMouse()
-    {
-        // On mouse down, capture it's position.
-        // Otherwise, if the mouse is still down, pan the camera.
-        if (Input.GetMouseButtonDown(0))
-        {
-            lastPanPosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            PanCamera(Input.mousePosition);
+            cam = GetComponent<Camera>();
         }
 
-        // Check for scrolling to zoom the camera
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        ZoomCamera(scroll, ZoomSpeedMouse);
-    }
-
-    void PanCamera(Vector3 newPanPosition)
-    {
-        // Determine how much to move the camera
-        Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
-        Vector3 move = new Vector3(offset.x * PanSpeed, 0, offset.y * PanSpeed);
-
-        // Perform the movement
-        transform.Translate(move, Space.World);
-
-        // Ensure the camera remains within bounds.
-        Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(transform.position.x, BoundsX[0], BoundsX[1]);
-        pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0], BoundsZ[1]);
-        transform.position = pos;
-
-        // Cache the position
-        lastPanPosition = newPanPosition;
-    }
-
-    void ZoomCamera(float offset, float speed)
-    {
-        if (offset == 0)
+        #region Touch Input
+        void HandleTouch()
         {
-            return;
+            switch (Input.touchCount)
+            {
+                case 1: // Panning
+                    TouchPanning();
+                    break;
+                case 2: // Zooming
+                    PinchToZoom();
+                    break;
+                default:
+                    wasZoomingLastFrame = false;
+                    break;
+            }
         }
 
-        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (offset * speed), ZoomBounds[0], ZoomBounds[1]);
+        void TouchPanning()
+        {
+            wasZoomingLastFrame = false;
+
+            // If the touch began, capture its position and its finger ID.
+            // Otherwise, if the finger ID of the touch doesn't match, skip it.
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                lastPanPosition = touch.position;
+                panFingerId = touch.fingerId;
+            }
+            else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
+            {
+                PanCamera(touch.position);
+            }
+        }
+
+        void PinchToZoom()
+        {
+            Vector2[] newPositions = new Vector2[] { Input.GetTouch(0).position, Input.GetTouch(1).position };
+            if (!wasZoomingLastFrame)
+            {
+                lastZoomPositions = newPositions;
+                wasZoomingLastFrame = true;
+            }
+            else
+            {
+                // Zoom based on the distance between the new positions compared to the 
+                // distance between the previous positions.
+                float newDistance = Vector2.Distance(newPositions[0], newPositions[1]);
+                float oldDistance = Vector2.Distance(lastZoomPositions[0], lastZoomPositions[1]);
+                float offset = newDistance - oldDistance;
+
+                ZoomCamera(offset, ZoomSpeedTouch);
+
+                lastZoomPositions = newPositions;
+            }
+        }
+        #endregion
+
+        #region Mouse Input
+        public void OnClickEvent(PointerEventData _eventData)
+        {
+            // On mouse down, capture it's position.
+            lastPanPosition = _eventData.pressPosition;
+        }
+
+        public void OnDragEvent(PointerEventData _eventData)
+        {
+            // If the mouse is still down, pan the camera.
+            PanCamera(_eventData.position);
+        }
+
+        public void OnScrollEvent(PointerEventData _eventData)
+        {
+            // Check for scrolling to zoom the camera
+            float scroll = _eventData.scrollDelta.y;
+            ZoomCamera(scroll, ZoomSpeedMouse);
+        }
+        #endregion
+
+        #region Actions
+        void PanCamera(Vector3 newPanPosition)
+        {
+            // Determine how much to move the camera
+            Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
+            Vector3 move = new Vector3(offset.x * PanSpeed, 0, offset.y * PanSpeed);
+
+            // Perform the movement
+            transform.Translate(move, Space.World);
+
+            // Ensure the camera remains within bounds.
+            Vector3 pos = transform.position;
+            pos.x = Mathf.Clamp(transform.position.x, BoundsX[0], BoundsX[1]);
+            pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0], BoundsZ[1]);
+            transform.position = pos;
+
+            // Cache the position
+            lastPanPosition = newPanPosition;
+        }
+
+        void ZoomCamera(float offset, float speed)
+        {
+            if (offset == 0)
+                return;
+
+            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (offset * speed), ZoomBounds[0], ZoomBounds[1]);
+        }
+        #endregion
     }
 }

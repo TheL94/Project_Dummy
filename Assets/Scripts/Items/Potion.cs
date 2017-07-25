@@ -14,14 +14,5 @@ namespace DumbProject.Items
             PotionValues = _values as PotionData;
             PotionValues.Type = GenericType.Item;
         }
-
-        private void OnDrawGizmos()
-        {
-            if (!IsInteractable)
-            {
-                Gizmos.color = Color.gray;
-                Gizmos.DrawCube(transform.position, Vector3.one);
-            }
-        }
     }
 }
