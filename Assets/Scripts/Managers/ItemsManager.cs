@@ -17,6 +17,8 @@ namespace DumbProject.Items
 
         public void Init()
         {
+            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata.
+            // Rivedere il sistema di items.
             foreach (GenericItemData _data in AllDatas)
             {
 
