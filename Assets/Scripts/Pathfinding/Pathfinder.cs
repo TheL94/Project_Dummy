@@ -53,7 +53,6 @@ namespace Framework.Pathfinding
         {
             List<PathStep> possibleOutcomes = new List<PathStep>();
             PathStep outcome = new PathStep(_givenPath[0].node.Links[0], _givenPath[0].node, _target);
-            float pathDistance = -1f;
             //Search all the Inetworkables close to _givenPath
             for (int i = 0; i < _givenPath.Count; i++)
             {
@@ -85,39 +84,55 @@ namespace Framework.Pathfinding
         /// <returns></returns>
         static List<INetworkable> RetrackPath(List<PathStep> _validPath, INetworkable _target, INetworkable _start)
         {
+            //Create a new output list starting from the target
             List<INetworkable> shortestPath = new List<INetworkable>();
             shortestPath.Add(_target);
-
+            //Sort the list by distance from target
             SortByTargetOffset(_validPath);
-            List<PathStep> _pathInEvaluation = _validPath;
-            PathStep nextToAdd = _validPath[0];
+
+            //Create temporary viariables to cicle list while tracking the path backwords
+            List<PathStep> possiblesNext = new List<PathStep>();
+            PathStep nextToAdd = null;
+
             while (!shortestPath.Contains(_start))
             {
-                float distanceFromStart = _pathInEvaluation[0].originOffSet;
-                for (int i = 0; i < _pathInEvaluation.Count; i++)
+                //Evaluate distance between the first PathStep and the orgin as reference
+                float distanceFromStart = _validPath[0].originOffSet;
+                //Cicle all the PathSteps in the list to search for linked to the last element of shortestPath
+                for (int i = 0; i < _validPath.Count; i++)
                 {
-                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_pathInEvaluation[i].node) || _pathInEvaluation[i].node == _target)
+                    //If the node is also not contained in the links of the last element of shortestPath, skip
+                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_validPath[i].node))
                         continue;
 
-                    if (_pathInEvaluation[i].originOffSet < distanceFromStart)
+                    if (_validPath[i].originOffSet <= distanceFromStart)
                     {
-                        nextToAdd = _pathInEvaluation[i];
-                        distanceFromStart = _pathInEvaluation[i].originOffSet;
+                        if(_validPath[i].originOffSet < distanceFromStart)
+                        {
+                            possiblesNext.Clear();
+                            possiblesNext.Add(_validPath[i]);
+                            distanceFromStart = _validPath[i].originOffSet;
+                        }
+                        else
+                            possiblesNext.Add(_validPath[i]);
                     }
                 }
-                if (_pathInEvaluation.Remove(nextToAdd))
-                    shortestPath.Add(nextToAdd.node);
-                else
+                //Among all the possibilities, choose the one who minimize the pathDistanace and than the originDistance
+                nextToAdd = possiblesNext.OrderBy(n => n.distance).ThenBy(m => m.originOffSet).ToList()[0];
+                
+                shortestPath.Add(nextToAdd.node);
+
+                if(!shortestPath.Contains(_start) && _validPath.Count == 0)
                 {
                     Debug.LogWarning("Emergency break on Pathfinding");
                     break;
                 }
-
             }
 
             shortestPath.Reverse();
             return shortestPath;
         }
+
         /// <summary>
         /// Check if the _target node is already in the _givenPath list
         /// </summary>
