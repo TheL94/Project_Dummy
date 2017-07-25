@@ -406,7 +406,7 @@ namespace Multitouch.EventSystems.InputModules
         private readonly object[] _paramArray = new object[3];
         private readonly bool? _trueObject = true;
         private readonly bool? _falseObject = false;
-        private void ProcessTouchPress(PointerEventData pointerEvent, bool pressed, bool released)
+        new private void ProcessTouchPress(PointerEventData pointerEvent, bool pressed, bool released)
         {
             if (_processTouchPress == null)
             {

@@ -51,7 +51,7 @@ namespace DumbProject.Generic
         }
 
 
-        private void Awake()
+        void Awake()
         {
             //Singleton paradigm
             if (I == null)
@@ -60,7 +60,7 @@ namespace DumbProject.Generic
                 DestroyImmediate(gameObject);
         }
 
-        private void Start()
+        void Start()
         {
             PoolMng = Instantiate(PoolManagerPrefab);
             PoolMng.Setup();
@@ -75,7 +75,7 @@ namespace DumbProject.Generic
             FlowMng.CurrentState = FlowState.Loading;
         }
 
-        private void Update()
+        void Update()
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {

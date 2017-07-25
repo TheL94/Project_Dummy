@@ -17,28 +17,27 @@ namespace DumbProject.Items
 
         public void Init()
         {
-            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata.
-            // Rivedere il sistema di items.
+            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata.(righe 24 o 29)
+            // Possibile errore nel tipe di scriptable 
             foreach (GenericItemData _data in AllDatas)
             {
-
-                if (_data.GetType() == typeof(EnemyData))
-                {
-                    enemyDatas.Add(Instantiate(_data));
-
-                }
-                else if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
+                //if (_data.GetType() == typeof(EnemyData))
+                //{
+                //    enemyDatas.Add(Instantiate(_data));
+                //}
+                //else 
+                if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
                 {
                     itemDatas.Add(Instantiate(_data));
                 }
-                else if (_data.GetType() == typeof(TrapData))
-                {
-                    trapDatas.Add(Instantiate(_data));
-                }
-                else if (_data.GetType() == typeof(TimeWasterData))
-                {
-                    timeWasterDatas.Add(Instantiate(_data));
-                }
+                //else if (_data.GetType() == typeof(TrapData))
+                //{
+                //    trapDatas.Add(Instantiate(_data));
+                //}
+                //else if (_data.GetType() == typeof(TimeWasterData))
+                //{
+                //    timeWasterDatas.Add(Instantiate(_data));
+                //}
             }
         }
 
