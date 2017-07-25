@@ -67,7 +67,10 @@ namespace Framework.Pathfinding
                 }
             }
             //Choose the closest between the Inetworkables in the closest
-            outcome = possibleOutcomes.OrderBy(i => i.targetOffSet).ThenBy(j => j.distance).ToList()[0];
+            //float minDist = possibleOutcomes.Min(b => b.distance);
+            //float minOffset = possibleOutcomes.Min(b => b.originOffSet);
+            //outcome = possibleOutcomes.Where(p => p.distance <= minDist).Where(p => p.originOffSet <= minOffset).First();
+            outcome = possibleOutcomes.OrderBy(i => i.targetOffSet).ThenBy(j => j.distance).Distinct().ToList()[0];
             //Return null if there are no possible path found
             if (CheckForNodeInPath(outcome.node, _givenPath))
                 return null;
@@ -89,43 +92,57 @@ namespace Framework.Pathfinding
             shortestPath.Add(_target);
             //Sort the list by distance from target
             SortByTargetOffset(_validPath);
-
+            List<PathStep> pathCopy = new List<PathStep>();
+            pathCopy.AddRange(_validPath);
+            pathCopy.RemoveAll(p => p.node == _target);
             //Create temporary viariables to cicle list while tracking the path backwords
             List<PathStep> possiblesNext = new List<PathStep>();
             PathStep nextToAdd = null;
-
             while (!shortestPath.Contains(_start))
             {
                 //Evaluate distance between the first PathStep and the orgin as reference
-                float distanceFromStart = _validPath[0].originOffSet;
+                float distanceFromStart = _validPath.Max(a => a.distance);
                 //Cicle all the PathSteps in the list to search for linked to the last element of shortestPath
-                for (int i = 0; i < _validPath.Count; i++)
+                for (int i = 0; i < pathCopy.Count; i++)
                 {
                     //If the node is also not contained in the links of the last element of shortestPath, skip
-                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(_validPath[i].node))
+                    if (!shortestPath[shortestPath.Count - 1].Links.Contains(pathCopy[i].node))
                         continue;
 
-                    if (_validPath[i].originOffSet <= distanceFromStart)
+                    if (pathCopy[i].distance <= distanceFromStart)
                     {
-                        if(_validPath[i].originOffSet < distanceFromStart)
+                        if(pathCopy[i].distance < distanceFromStart)
                         {
                             possiblesNext.Clear();
-                            possiblesNext.Add(_validPath[i]);
-                            distanceFromStart = _validPath[i].originOffSet;
+                            possiblesNext.Add(pathCopy[i]);
+                            distanceFromStart = pathCopy[i].distance;
                         }
                         else
-                            possiblesNext.Add(_validPath[i]);
+                            possiblesNext.Add(pathCopy[i]);
                     }
                 }
                 //Among all the possibilities, choose the one who minimize the pathDistanace and than the originDistance
-                nextToAdd = possiblesNext.OrderBy(n => n.distance).ThenBy(m => m.originOffSet).ToList()[0];
-                
-                shortestPath.Add(nextToAdd.node);
 
-                if(!shortestPath.Contains(_start) && _validPath.Count == 0)
+                //float minDist = possiblesNext.Min(b => b.distance);
+                //float minOffset = possiblesNext.Min(b => b.originOffSet);
+                //nextToAdd = possiblesNext.Where(p => p.distance <= minDist).Where (p => p.originOffSet <= minOffset).First();
+                if (possiblesNext.Count == 0)
                 {
-                    Debug.LogWarning("Emergency break on Pathfinding");
-                    break;
+                    shortestPath.RemoveAt(shortestPath.Count - 1);
+                }
+                else
+                {
+                    nextToAdd = possiblesNext.OrderBy(s => s.distance).ThenBy(k => k.targetOffSet).Distinct().ToList()[0];
+                    if (pathCopy.Remove(nextToAdd))
+                    {
+                        shortestPath.Add(nextToAdd.node);
+                        possiblesNext.Clear();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Emergecy break");
+                        break;
+                    }
                 }
             }
 
