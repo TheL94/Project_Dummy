@@ -17,27 +17,25 @@ namespace DumbProject.Items
 
         public void Init()
         {
-            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata al primo confronto che trova.
-            // Possibile errore nel tipe di scriptable 
             foreach (GenericDroppableData _data in AllDatas)
             {
-                //if (_data.GetType() == typeof(EnemyData))
-                //{
-                //    enemyDatas.Add(Instantiate(_data));
-                //}
-                //else 
+                if (_data.GetType() == typeof(EnemyData))
+                {
+                    enemyDatas.Add(Instantiate(_data));
+                }
+                else
                 if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
                 {
                     itemDatas.Add(Instantiate(_data));
                 }
-                //else if (_data.GetType() == typeof(TrapData))
-                //{
-                //    trapDatas.Add(Instantiate(_data));
-                //}
-                //else if (_data.GetType() == typeof(TimeWasterData))
-                //{
-                //    timeWasterDatas.Add(Instantiate(_data));
-                //}
+                else if (_data.GetType() == typeof(TrapData))
+                {
+                    trapDatas.Add(Instantiate(_data));
+                }
+                else if (_data.GetType() == typeof(TimeWasterData))
+                {
+                    timeWasterDatas.Add(Instantiate(_data));
+                }
             }
         }
 

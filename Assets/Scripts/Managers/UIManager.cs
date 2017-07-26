@@ -25,7 +25,7 @@ namespace DumbProject.UI
             SetupCameraByEnvironment(cameraInputObj);
             CameraHandler cc = Camera.main.GetComponent<CameraHandler>();
             CamInput.Init(this, cc);
-            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuControler"), transform).GetComponent<UIMenuController>();
+            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuController"), transform).GetComponent<UIMenuController>();
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameplayPanel"), transform).GetComponent<UIGameplayController>();
             MenuController.Init(this);
             GamePlayCtrl.Init(this);
