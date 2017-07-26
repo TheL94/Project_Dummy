@@ -26,8 +26,8 @@ namespace DumbProject.AI {
 
         void ShowPopUp(AIActor _actor)
         {
-            actualPopUp.transform.DOJump(actualPopUp.transform.position, VerticalJumpHeight, 1, DisplayTime / 2)
-                .SetDelay(DisplayTime/2)
+            actualPopUp.transform.parent = null;
+            actualPopUp.transform.DOJump(actualPopUp.transform.position, VerticalJumpHeight, 1, DisplayTime)
                 .OnComplete(()=> { actualPopUp.SetActive(false); });
         }
 
