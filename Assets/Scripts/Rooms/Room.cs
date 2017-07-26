@@ -60,6 +60,26 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
+        /// Funzione che ritorna tutti gli oggetti grafici al pool prima di distruggere la stanza e le relative celle
+        /// </summary>
+        public void DestroyObject()
+        {
+            for (int i = 0; i < CellsInRoom.Count; i++)
+            {
+                CellsInRoom[i].Floor.DisableObject();
+
+                for (int j = 0; j < CellsInRoom[i].Angles.Count; j++)
+                    CellsInRoom[i].Angles[j].DisableObject();
+
+                for (int j = 0; j < CellsInRoom[i].Edges.Count; j++)
+                    CellsInRoom[i].Edges[j].DisableObject();
+
+                for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
+                    CellsInRoom[i].Doors[j].DisableObject();
+            }
+        }
+
+        /// <summary>
         /// Funzione che contiene le azioni da eseguire quando la posizione in cui si vuole metere la stanza è valida e la stanza viene piazzata
         /// </summary>
         public void PlaceAction()

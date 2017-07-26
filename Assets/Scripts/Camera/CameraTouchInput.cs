@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using DumbProject.CameraController;
 using Multitouch.EventSystems.EventData;
 using Multitouch.EventSystems.Gestures;
-using System;
 
 namespace DumbProject.Generic
 {
@@ -22,12 +21,12 @@ namespace DumbProject.Generic
 
         public void OnPan(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 delta)
         {
-            
+            camMovement.TouchPanning(sender, eventData, delta);
         }
 
         public void OnPinch(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 pinchDelta)
         {
-            
+            camMovement.PinchToZoom(sender, eventData, pinchDelta);
         }
 
         public void OnPointerDown(PointerEventData eventData)

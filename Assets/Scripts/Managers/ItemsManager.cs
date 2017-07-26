@@ -8,18 +8,18 @@ namespace DumbProject.Items
 {
     public class ItemsManager : MonoBehaviour
     {
-        public List<GenericItemData> AllDatas = new List<GenericItemData>();
+        public List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
 
-        List<GenericItemData> itemDatas = new List<GenericItemData>();
-        List<GenericItemData> enemyDatas = new List<GenericItemData>();
-        List<GenericItemData> trapDatas = new List<GenericItemData>();
-        List<GenericItemData> timeWasterDatas = new List<GenericItemData>();
+        List<GenericDroppableData> itemDatas = new List<GenericDroppableData>();
+        List<GenericDroppableData> enemyDatas = new List<GenericDroppableData>();
+        List<GenericDroppableData> trapDatas = new List<GenericDroppableData>();
+        List<GenericDroppableData> timeWasterDatas = new List<GenericDroppableData>();
 
         public void Init()
         {
-            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata.(righe 24 o 29)
+            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata al primo confronto che trova.
             // Possibile errore nel tipe di scriptable 
-            foreach (GenericItemData _data in AllDatas)
+            foreach (GenericDroppableData _data in AllDatas)
             {
                 //if (_data.GetType() == typeof(EnemyData))
                 //{
@@ -45,7 +45,7 @@ namespace DumbProject.Items
         /// Ritorna l'item da istanziare nella ui
         /// </summary>
         /// <returns></returns>
-        GenericItemData ChooseItem()
+        GenericDroppableData ChooseItem()
         {
             int randNum = Random.Range(0, itemDatas.Count);
             return itemDatas[randNum];
@@ -61,7 +61,7 @@ namespace DumbProject.Items
 
         public void InstantiateItemInRoom(Room _room)
         {
-            GenericItemData data = ChooseItem();
+            GenericDroppableData data = ChooseItem();
             IDroppable droppable = CreateIDroppable(data);
             droppable.Data = data;
             _room.AddInteractable(droppable);
@@ -72,14 +72,14 @@ namespace DumbProject.Items
         /// chiamandone anche l'init dove vengono passati i valori relativi all'oggetto
         /// </summary>
         /// <param name="_data">Il data relativo all'oggetto che viene istanziato</param>
-        ItemGeneric CreateIDroppable(GenericItemData _data)
+        ItemGeneric CreateIDroppable(GenericDroppableData _data)
         {
             GameObject newObj = new GameObject();
             ItemGeneric item = null;
 
             if (_data.GetType() == typeof(EnemyData))
             {
-                switch ((_data as GenericItemData).SpecificEnemyType)
+                switch ((_data as GenericDroppableData).SpecificEnemyType)
                 {
                     case EnemyType.None:
                         break;
@@ -114,7 +114,7 @@ namespace DumbProject.Items
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
-                switch ((_data as GenericItemData).SpecificTrapType)
+                switch ((_data as GenericDroppableData).SpecificTrapType)
                 {
                     case TrapType.None:
                         break;

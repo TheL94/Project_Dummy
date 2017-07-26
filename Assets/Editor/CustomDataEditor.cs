@@ -8,14 +8,14 @@ namespace DumbProject.Editors
 {
     [System.Serializable]
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(GenericItemData), true)]
+    [CustomEditor(typeof(GenericDroppableData), true)]
     public class CustomDataTypeEditor : Editor
     {
-        GenericItemData Data;
+        GenericDroppableData Data;
        
         private void OnEnable()
         {
-            Data = (GenericItemData)target;
+            Data = (GenericDroppableData)target;
         }
 
         List<GenericType> _genericCategories;
@@ -163,7 +163,7 @@ namespace DumbProject.Editors
             GUILayout.BeginHorizontal();
             GUILayout.Label("Time to spend");
             GUILayout.Space(80);
-            (Data as GenericItemData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericItemData).TimeToSpend);
+            (Data as GenericDroppableData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericDroppableData).TimeToSpend);
             GUILayout.Space(80);
             GUILayout.EndHorizontal();
 

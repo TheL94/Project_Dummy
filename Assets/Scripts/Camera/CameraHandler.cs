@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DumbProject.Generic;
-using DumbProject.Grid;
+using Multitouch.EventSystems.EventData;
+using Multitouch.EventSystems.Gestures;
 
 namespace DumbProject.CameraController
 {
@@ -36,60 +37,49 @@ namespace DumbProject.CameraController
         }
 
         #region Touch Input
-        void HandleTouch()
+        public void TouchPanning(SimpleGestures _sender, MultiTouchPointerEventData _eventData, Vector2 _delta)
         {
-            switch (Input.touchCount)
-            {
-                case 1: // Panning
-                    TouchPanning();
-                    break;
-                case 2: // Zooming
-                    PinchToZoom();
-                    break;
-                default:
-                    wasZoomingLastFrame = false;
-                    break;
-            }
+            PanCamera(_eventData.position); // ??
+
+            //wasZoomingLastFrame = false;
+
+            //// If the touch began, capture its position and its finger ID.
+            //// Otherwise, if the finger ID of the touch doesn't match, skip it.
+            //Touch touch = Input.GetTouch(0);
+            //if (touch.phase == TouchPhase.Began)
+            //{
+            //    lastPanPosition = touch.position;
+            //    panFingerId = touch.fingerId;
+            //}
+            //else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
+            //{
+            //    PanCamera(touch.position);
+            //}
         }
 
-        void TouchPanning()
+        public void PinchToZoom(SimpleGestures _sender, MultiTouchPointerEventData _eventData, Vector2 _delta)
         {
-            wasZoomingLastFrame = false;
+            float offset = Mathf.Sign(_delta.x) * (_delta.magnitude / 1); // ?
+            ZoomCamera(offset, ZoomSpeedTouch);
 
-            // If the touch began, capture its position and its finger ID.
-            // Otherwise, if the finger ID of the touch doesn't match, skip it.
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                lastPanPosition = touch.position;
-                panFingerId = touch.fingerId;
-            }
-            else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
-            {
-                PanCamera(touch.position);
-            }
-        }
+            //Vector2[] newPositions = new Vector2[] { Input.GetTouch(0).position, Input.GetTouch(1).position };
+            //if (!wasZoomingLastFrame)
+            //{
+            //    lastZoomPositions = newPositions;
+            //    wasZoomingLastFrame = true;
+            //}
+            //else
+            //{
+            //    // Zoom based on the distance between the new positions compared to the 
+            //    // distance between the previous positions.
+            //    float newDistance = Vector2.Distance(newPositions[0], newPositions[1]);
+            //    float oldDistance = Vector2.Distance(lastZoomPositions[0], lastZoomPositions[1]);
+            //    float offset = newDistance - oldDistance;
 
-        void PinchToZoom()
-        {
-            Vector2[] newPositions = new Vector2[] { Input.GetTouch(0).position, Input.GetTouch(1).position };
-            if (!wasZoomingLastFrame)
-            {
-                lastZoomPositions = newPositions;
-                wasZoomingLastFrame = true;
-            }
-            else
-            {
-                // Zoom based on the distance between the new positions compared to the 
-                // distance between the previous positions.
-                float newDistance = Vector2.Distance(newPositions[0], newPositions[1]);
-                float oldDistance = Vector2.Distance(lastZoomPositions[0], lastZoomPositions[1]);
-                float offset = newDistance - oldDistance;
+            //    ZoomCamera(offset, ZoomSpeedTouch);
 
-                ZoomCamera(offset, ZoomSpeedTouch);
-
-                lastZoomPositions = newPositions;
-            }
+            //    lastZoomPositions = newPositions;
+            //}
         }
         #endregion
 

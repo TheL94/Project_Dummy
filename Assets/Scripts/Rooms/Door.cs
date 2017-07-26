@@ -43,15 +43,8 @@ namespace DumbProject.Rooms
         /// <param name="_avoidDestruction"></param>
         public override void DisableObject(bool _avoidDestruction = false)
         {
-            DisableGraphic();
             RelativeCell.Doors.Remove(this);
-            //RelativeCell.RelativeNode.Links.Remove(this);
-            Debug.Log("Door spenta");
-
-            if (!_avoidDestruction)
-                Destroy(gameObject);
-            else
-                Destroy(this);
+            base.DisableObject(_avoidDestruction);
         }
 
         /// <summary>
