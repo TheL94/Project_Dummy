@@ -66,16 +66,30 @@ namespace DumbProject.Rooms
         {
             for (int i = 0; i < CellsInRoom.Count; i++)
             {
-                CellsInRoom[i].Floor.DisableObject();
+                CellsInRoom[i].Floor.DisableGraphic();
 
                 for (int j = 0; j < CellsInRoom[i].Angles.Count; j++)
-                    CellsInRoom[i].Angles[j].DisableObject();
+                    CellsInRoom[i].Angles[j].DisableGraphic();
 
                 for (int j = 0; j < CellsInRoom[i].Edges.Count; j++)
-                    CellsInRoom[i].Edges[j].DisableObject();
+                    CellsInRoom[i].Edges[j].DisableGraphic();
 
                 for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
-                    CellsInRoom[i].Doors[j].DisableObject();
+                    CellsInRoom[i].Doors[j].DisableGraphic();
+            }
+
+            for (int i = 0; i < CellsInRoom.Count; i++)
+            {
+                CellsInRoom[i].Floor.DestroyObject();
+
+                for (int j = 0; j < CellsInRoom[i].Angles.Count; j++)
+                    CellsInRoom[i].Angles[j].DestroyObject();
+
+                for (int j = 0; j < CellsInRoom[i].Edges.Count; j++)
+                    CellsInRoom[i].Edges[j].DestroyObject();
+
+                for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
+                    CellsInRoom[i].Doors[j].DestroyObject();
             }
         }
 
@@ -336,7 +350,7 @@ namespace DumbProject.Rooms
 
             foreach (Edge wallToRemove in itemsToBeDestroyed)
             {
-                wallToRemove.DisableObject();
+                wallToRemove.DisableAndDestroyObject();
             }
         }
 
@@ -364,7 +378,7 @@ namespace DumbProject.Rooms
 
             foreach (Angle angle in itemsToBeDestroyed)
             {
-                angle.DisableObject();
+                angle.DisableAndDestroyObject();
             }
         }
 
@@ -400,7 +414,7 @@ namespace DumbProject.Rooms
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
-                egdeToDestroy.DisableObject();
+                egdeToDestroy.DisableAndDestroyObject();
             }
         }
 

@@ -17,10 +17,6 @@ namespace DumbProject.Generic
         #region API
         public void Setup()
         {
-            if(RoomInDungeon.Count > 0)
-                for (int i = 0; i < RoomInDungeon.Count; i++)
-                    Destroy(RoomInDungeon[i].gameObject);
-
             DropCtrl = new DropController();
             RoomInDungeon = new List<Room>();
         }
@@ -28,7 +24,10 @@ namespace DumbProject.Generic
         public void Clean()
         {
             foreach (Room room in RoomInDungeon)
-                room.DestroyObject();          
+                room.DestroyObject();
+
+            for (int i = 0; i < RoomInDungeon.Count; i++)
+                Destroy(RoomInDungeon[i].gameObject);
         }
 
         #region Rooms

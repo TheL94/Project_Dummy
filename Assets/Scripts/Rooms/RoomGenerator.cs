@@ -31,12 +31,6 @@ namespace DumbProject.Rooms
 
             if (SpawnsAssociations.Count == 0)
                 SetupSpawnsAssociations();
-            else
-            {
-                for (int i = 0; i < SpawnsAssociations.Count; i++)
-                    if (SpawnsAssociations[i].Room != null)
-                        Destroy(SpawnsAssociations[i].Room.gameObject);
-            }
 
             FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
@@ -48,6 +42,10 @@ namespace DumbProject.Rooms
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
                 association.Room.DestroyObject();
+
+            for (int i = 0; i < SpawnsAssociations.Count; i++)
+                if (SpawnsAssociations[i].Room != null)
+                    Destroy(SpawnsAssociations[i].Room.gameObject);
         }
 
         public void CreateNewRoom()
@@ -113,8 +111,8 @@ namespace DumbProject.Rooms
         {
             for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.GamePlayElements.RoomPreviewController.UISpawns.Count; i++)
                 SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], 
-                    GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i], 
-                    GameManager.I.UIMng.GamePlayCtrl.VerticalInventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));          
+            GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i], 
+            GameManager.I.UIMng.GamePlayCtrl.VerticalInventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

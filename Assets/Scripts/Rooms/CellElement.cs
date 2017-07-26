@@ -18,19 +18,6 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        public virtual void DisableObject(bool _destroyComponentOnly = false)
-        {
-            DisableGraphic();
-
-            if (_destroyComponentOnly)
-                Destroy(this);
-            else
-                Destroy(gameObject);
-        }
-
-        /// <summary>
         /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio di CellElement
         /// </summary>
         /// <param name="_graphic"></param>
@@ -48,7 +35,7 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che disabilita la grafica e la ritorna al pool
         /// </summary>
-        protected void DisableGraphic()
+        public void DisableGraphic()
         {
             if (graphicObj != null)
             {
@@ -56,6 +43,27 @@ namespace DumbProject.Rooms
                 graphicObj = null;
                 GameManager.I.PoolMng.UpdatePools();
             }
+        }
+
+        /// <summary>
+        /// Funzione che disabilita l'oggetto
+        /// </summary>
+        public virtual void DisableAndDestroyObject(bool _destroyComponentOnly = false)
+        {
+            DisableGraphic();
+            DestroyObject(_destroyComponentOnly);
+        }
+
+        /// <summary>
+        /// Funzione che distrugge l'oggetto
+        /// </summary>
+        /// <param name="_destroyComponentOnly"></param>
+        public void DestroyObject(bool _destroyComponentOnly = false)
+        {
+            if (_destroyComponentOnly)
+                Destroy(this);
+            else
+                DestroyImmediate(gameObject);
         }
     }
 }

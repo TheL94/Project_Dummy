@@ -228,7 +228,7 @@ namespace DumbProject.Rooms
                 return false;
 
             GameObject edgeObj = _edge.gameObject;
-            _edge.DisableObject(true);
+            _edge.DisableAndDestroyObject(true);
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
