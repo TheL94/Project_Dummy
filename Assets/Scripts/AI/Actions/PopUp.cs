@@ -10,9 +10,9 @@ namespace DumbProject.AI {
     {
         public Sprite Icon;
         public float VerticalOffSet;
-        public float VerticalJumpHeight;
+        public float OffSetToAdd;
         public float DisplayTime;
-
+        Tween floating;
         GameObject actualPopUp;
         SpriteRenderer popUpRenderer;
 
@@ -26,22 +26,29 @@ namespace DumbProject.AI {
 
         void ShowPopUp(AIActor _actor)
         {
-            actualPopUp.transform.DOJump(actualPopUp.transform.position, VerticalJumpHeight, 1, DisplayTime / 2)
-                .SetDelay(DisplayTime/2)
+            floating = actualPopUp.transform.DOMoveY(VerticalOffSet + OffSetToAdd, DisplayTime)
                 .OnComplete(()=> { actualPopUp.SetActive(false); });
         }
 
         void PopUpSetup(AIActor _actor)
         {
             if (actualPopUp == null)
+            {
                 actualPopUp = new GameObject("PopUp");
+                actualPopUp.AddComponent<ForceFacingCamera>();
+            }
             else
                 actualPopUp.SetActive(true);
+
+            
 
             if (popUpRenderer == null)
                 popUpRenderer = actualPopUp.AddComponent<SpriteRenderer>();
             else
                 popUpRenderer.enabled = true;
+
+            if(floating != null)
+                floating.Complete();
 
             popUpRenderer.sprite = Icon;
             actualPopUp.transform.parent = _actor.transform;
