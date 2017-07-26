@@ -29,14 +29,8 @@ namespace DumbProject.Rooms
             if (RoomTypesInstances == null)
                 RoomTypesInstances = Instantiate(RoomTypesData);
 
-            if (SpawnsAssociations.Count == 0)
-                SetupSpawnsAssociations();
-            else
-            {
-                for (int i = 0; i < SpawnsAssociations.Count; i++)
-                    if (SpawnsAssociations[i].Room != null)
-                        Destroy(SpawnsAssociations[i].Room.gameObject);
-            }
+            //if (SpawnsAssociations.Count == 0)
+            SetupSpawnsAssociations();
 
             FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
@@ -47,7 +41,13 @@ namespace DumbProject.Rooms
         public void Clean()
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
-                association.Room.DestroyObject();
+                association.Room.DestroyChildrenObject();
+
+            for (int i = 0; i < SpawnsAssociations.Count; i++)
+                if (SpawnsAssociations[i].Room != null)
+                    Destroy(SpawnsAssociations[i].Room.gameObject);
+
+            SpawnsAssociations.Clear();
         }
 
         public void CreateNewRoom()
@@ -113,8 +113,8 @@ namespace DumbProject.Rooms
         {
             for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.GamePlayElements.RoomPreviewController.UISpawns.Count; i++)
                 SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i], 
-                    GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i], 
-                    GameManager.I.UIMng.GamePlayCtrl.VerticalInventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));          
+            GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i], 
+            GameManager.I.UIMng.GamePlayCtrl.VerticalInventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));          
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

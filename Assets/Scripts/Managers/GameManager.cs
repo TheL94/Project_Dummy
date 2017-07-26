@@ -82,6 +82,11 @@ namespace DumbProject.Generic
                 DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
                 DumbyToTest.Setup();
             }
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                PoolMng.UpdatePools();
+            }
         }
 
         public void Init()
@@ -112,6 +117,7 @@ namespace DumbProject.Generic
         /// </summary>
         public void ExitGameplayMode()
         {
+            //PoolMng.ForceAllPoolsReset();
             DungeonMng.Clean();
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();

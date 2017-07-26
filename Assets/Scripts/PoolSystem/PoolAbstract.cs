@@ -6,28 +6,11 @@ namespace Framework.PoolSystem
 {
     public abstract class Pool<PoolType>
     {
-        protected List<PoolType> inactivePool = new List<PoolType>();
-        protected List<PoolType> activePool = new List<PoolType>();
+        public List<PoolType> inactivePool = new List<PoolType>();
+        public List<PoolType> activePool = new List<PoolType>();
 
         protected GameObject prefabReference;
         protected Transform parentObject;
-
-        public void InitializeObjectPool(GameObject _prefabReference, Vector3 _containerPosition, Transform _containerParent, int _initialQuantity)
-        {
-            GameObject obj = new GameObject();
-            obj.transform.parent = _containerParent;
-            obj.transform.position = _containerPosition;
-            parentObject = obj.transform;              
-            parentObject.name = "Parent: " + _prefabReference.name;
-
-            prefabReference = _prefabReference;
-            for (int i = 0; i < _initialQuantity; i++)
-            {
-                PoolType item = InstantiateInstance();
-                inactivePool.Add(item);
-                ChangeObjectState(item, false);
-            }
-        }
 
         public virtual PoolType Get()
         {
@@ -51,10 +34,39 @@ namespace Framework.PoolSystem
                 PoolType item = activePool[i];
                 if (!IsObjectActive(item))
                 {
-                    activePool.RemoveAt(i);
+                    activePool.Remove(item);
                     inactivePool.Add(item);
                     ResetPool(item);
                 }
+            }
+        }
+
+        public void ForcePoolsReset()
+        {
+            for (int i = 0; i < activePool.Count; i++)
+            {
+                PoolType item = activePool[i];
+                ChangeObjectState(item, false);
+                activePool.Remove(item);
+                inactivePool.Add(item);
+                ResetPool(item);
+            }
+        }
+
+        protected void InitializeObjectPool(GameObject _prefabReference, Vector3 _containerPosition, Transform _containerParent, int _initialQuantity)
+        {
+            GameObject obj = new GameObject();
+            obj.transform.parent = _containerParent;
+            obj.transform.position = _containerPosition;
+            parentObject = obj.transform;
+            parentObject.name = "Parent: " + _prefabReference.name;
+
+            prefabReference = _prefabReference;
+            for (int i = 0; i < _initialQuantity; i++)
+            {
+                PoolType item = InstantiateInstance();
+                inactivePool.Add(item);
+                ChangeObjectState(item, false);
             }
         }
 
