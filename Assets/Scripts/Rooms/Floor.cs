@@ -13,13 +13,8 @@ namespace DumbProject.Rooms
         /// <param name="_avoidDestruction"></param>
         public override void DisableObject(bool _avoidDestruction = false)
         {
-            DisableGraphic();
             RelativeCell.Floor = null;
-
-            if (!_avoidDestruction)
-                Destroy(gameObject);
-            else
-                Destroy(this);
+            base.DisableObject(_avoidDestruction);
         }
     }
 }

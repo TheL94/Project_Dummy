@@ -9,7 +9,7 @@ namespace DumbProject.Items
     public class Weapon : ItemGeneric
     {
         public WeaponData SwordValues;
-        public override void Init(GenericItemData _values)
+        public override void Init(GenericDroppableData _values)
         {
             SwordValues = _values as WeaponData;
             SwordValues.Type = GenericType.Item;

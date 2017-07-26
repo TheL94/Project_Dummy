@@ -10,7 +10,7 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Cell RelativeCell;
 
-        protected GameObject graphic;
+        protected GameObject graphicObj;
 
         public virtual void Setup(Cell _relativeCell)
         {
@@ -20,7 +20,15 @@ namespace DumbProject.Rooms
         /// <summary>
         /// Funzione che disabilita l'oggetto
         /// </summary>
-        public virtual void DisableObject(bool _avoidDestruction = false) { }
+        public virtual void DisableObject(bool _destroyComponentOnly = false)
+        {
+            DisableGraphic();
+
+            if (_destroyComponentOnly)
+                Destroy(this);
+            else
+                Destroy(gameObject);
+        }
 
         /// <summary>
         /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio di CellElement
@@ -31,10 +39,10 @@ namespace DumbProject.Rooms
         {
             DisableGraphic();
 
-            graphic = _graphic;
-            graphic.transform.position = transform.position;
-            graphic.transform.rotation = _rotation;
-            graphic.transform.parent = transform;
+            graphicObj = _graphic;
+            graphicObj.transform.position = transform.position;
+            graphicObj.transform.rotation = _rotation;
+            graphicObj.transform.parent = transform;
         }
 
         /// <summary>
@@ -42,12 +50,12 @@ namespace DumbProject.Rooms
         /// </summary>
         protected void DisableGraphic()
         {
-            if (graphic != null)
+            if (graphicObj != null)
             {
-                graphic.SetActive(false);
-                graphic = null;
+                graphicObj.SetActive(false);
+                graphicObj = null;
+                GameManager.I.PoolMng.UpdatePools();
             }
-            GameManager.I.PoolMng.UpdatePools();
         }
     }
 }

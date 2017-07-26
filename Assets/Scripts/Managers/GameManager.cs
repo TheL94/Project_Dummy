@@ -97,7 +97,8 @@ namespace DumbProject.Generic
         {
             if (!IsGamePlaying)
             {
-                DungeonMng = Instantiate(DungeonManagerPrefab);
+                if(DungeonMng == null)
+                    DungeonMng = Instantiate(DungeonManagerPrefab);
                 DungeonMng.Setup();
                 MainGridCtrl.Setup();
                 RoomPreviewCtrl.Setup();
@@ -112,10 +113,9 @@ namespace DumbProject.Generic
         public void ExitGameplayMode()
         {
             DungeonMng.Clean();
-            Destroy(DungeonMng.gameObject);
+            RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
-            RoomGenerator.Clean();
             UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
             IsGamePlaying = false;
         }
@@ -127,13 +127,5 @@ namespace DumbProject.Generic
         {
             FlowMng.CurrentState = FlowState.GameplayState;
         }
-
-        /// <summary>
-        /// Attiva il pannello della pausa
-        /// </summary>
-        //public void ActivePauseMode()
-        //{
-        //    UIMng.GamePlayCtrl.ActivatePause();
-        //}
     }
 }

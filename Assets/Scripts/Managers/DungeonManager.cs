@@ -12,18 +12,23 @@ namespace DumbProject.Generic
         [HideInInspector]
         public DropController DropCtrl;
         [HideInInspector]
-        public List<Room> RoomInDungeon = new List<Room>();
+        public List<Room> RoomInDungeon;
 
         #region API
         public void Setup()
         {
+            if(RoomInDungeon.Count > 0)
+                for (int i = 0; i < RoomInDungeon.Count; i++)
+                    Destroy(RoomInDungeon[i].gameObject);
+
             DropCtrl = new DropController();
+            RoomInDungeon = new List<Room>();
         }
 
         public void Clean()
         {
             foreach (Room room in RoomInDungeon)
-                Destroy(room.gameObject);
+                room.DestroyObject();          
         }
 
         #region Rooms
