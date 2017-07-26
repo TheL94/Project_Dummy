@@ -63,7 +63,7 @@ namespace DumbProject.Rooms
             if (_destroyComponentOnly)
                 Destroy(this);
             else
-                DestroyImmediate(gameObject);
+                Destroy(gameObject);
         }
     }
 }

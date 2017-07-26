@@ -24,7 +24,7 @@ namespace DumbProject.Generic
         public void Clean()
         {
             foreach (Room room in RoomInDungeon)
-                room.DestroyObject();
+                room.DestroyChildrenObject();
 
             for (int i = 0; i < RoomInDungeon.Count; i++)
                 Destroy(RoomInDungeon[i].gameObject);

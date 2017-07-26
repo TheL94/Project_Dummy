@@ -117,13 +117,13 @@ namespace DumbProject.Generic
         /// </summary>
         public void ExitGameplayMode()
         {
+            //PoolMng.ForceAllPoolsReset();
             DungeonMng.Clean();
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
             IsGamePlaying = false;
-            PoolMng.ForceAllPoolsReset();
         }
 
         /// <summary>

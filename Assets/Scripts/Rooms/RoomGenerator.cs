@@ -29,8 +29,8 @@ namespace DumbProject.Rooms
             if (RoomTypesInstances == null)
                 RoomTypesInstances = Instantiate(RoomTypesData);
 
-            if (SpawnsAssociations.Count == 0)
-                SetupSpawnsAssociations();
+            //if (SpawnsAssociations.Count == 0)
+            SetupSpawnsAssociations();
 
             FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
@@ -41,11 +41,13 @@ namespace DumbProject.Rooms
         public void Clean()
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
-                association.Room.DestroyObject();
+                association.Room.DestroyChildrenObject();
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 if (SpawnsAssociations[i].Room != null)
                     Destroy(SpawnsAssociations[i].Room.gameObject);
+
+            SpawnsAssociations.Clear();
         }
 
         public void CreateNewRoom()
