@@ -206,7 +206,7 @@ namespace Multitouch.Debugging
         {
             _lines.Clear();
             ComputeDisplayEdges(tree.Root, tree);
-            lineRenderer.SetVertexCount(_lines.Count);
+            lineRenderer.positionCount = _lines.Count;
             for (int i = 0; i < _lines.Count; i++)
                 lineRenderer.SetPosition(i, _lines[i]);
             lineRenderer.enabled = true;
