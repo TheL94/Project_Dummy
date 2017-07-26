@@ -6,7 +6,7 @@ using DumbProject.Generic;
 using UnityEngine.EventSystems;
 using System;
 
-public class UIGamePlayController : MonoBehaviour, IDragHandler {
+public class UIGameplayController : MonoBehaviour {
 
     UIManager uiManager;
 
@@ -124,15 +124,5 @@ public class UIGamePlayController : MonoBehaviour, IDragHandler {
     }
 
     #endregion
-
-    #region Camera Movement
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        
-    }
-
-    #endregion
-
     #endregion
 }

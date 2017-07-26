@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace DumbProject
 {
-    public class MenuPanelController : MonoBehaviour
+    public class UIMenuController : MonoBehaviour
     {
         bool isVertical { get {
                 if (uiManager)

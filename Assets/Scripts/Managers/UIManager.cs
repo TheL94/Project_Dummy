@@ -2,30 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
+using DumbProject.CameraController;
 
 namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
-        GameObject canvasGame;
-
         public bool _isVertical;
 
         public bool IsVertical { get { return _isVertical; } set { _isVertical = value; } }
 
         [HideInInspector]
-        public MenuPanelController MenuController;
+        public UIMenuController MenuController;
         [HideInInspector]
-        public UIGamePlayController GamePlayCtrl;
+        public UIGameplayController GamePlayCtrl;
+        [HideInInspector]
+        public CameraInput CamInput;
 
         public void Init()
         {
-            canvasGame = Instantiate(Resources.Load("Prefabs/UI/CanvasGame") as GameObject, transform);
-            MenuController = GetComponentInChildren<MenuPanelController>();
-            GamePlayCtrl = GetComponentInChildren<UIGamePlayController>();
-            CheckRunningMachine();
+            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>("Prefabs/UI/CameraMovementPanel"), transform);
+            SetupCameraByEnvironment(cameraInputObj);
+            CameraHandler cc = Camera.main.GetComponent<CameraHandler>();
+            CamInput.Init(this, cc);
+            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuControler"), transform).GetComponent<UIMenuController>();
+            GamePlayCtrl = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameplayPanel"), transform).GetComponent<UIGameplayController>();
             MenuController.Init(this);
             GamePlayCtrl.Init(this);
+        }
+
+        /// <summary>
+        /// Controlla il dispositivo su cui è setta di conseguenza il tipo di input per la camera 
+        /// </summary>
+        void SetupCameraByEnvironment(GameObject _camInputObj)
+        {
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                CamInput = _camInputObj.AddComponent<CameraMouseInput>();
+            }
+            else if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
+            {
+                CamInput = _camInputObj.AddComponent<CameraTouchInput>();
+            }
         }
 
         /// <summary>
@@ -38,28 +56,6 @@ namespace DumbProject.UI
         }
 
         /// <summary>
-        /// Controlla il dispositivo su cui è setta la l'orientamento di conseguenza
-        /// </summary>
-        void CheckRunningMachine()
-        {
-            switch (GameManager.I.DeviceEnviroment)
-            {
-                case DeviceType.Unknown:
-                    break;
-                case DeviceType.Handheld:
-                    IsVertical = true;
-                    break;
-                case DeviceType.Console:
-                    break;
-                case DeviceType.Desktop:
-                    IsVertical = false;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
         /// Attiva il pannello del gameplay, disattiva il pannello del menu
         /// </summary>
         public void ActivateGamePlayPanel()
@@ -67,19 +63,13 @@ namespace DumbProject.UI
             GamePlayCtrl.Setup();
             MenuController.ChildPanel.gameObject.SetActive(false);
         }
-
-        public void DestroyCanvasGame()
-        {
-            Destroy(canvasGame);
-        }
-
         
         private void Update()
         {
-            if(GameManager.I.DeviceEnviroment == DeviceType.Handheld)
+            if(GameManager.I.DeviceEnvironment == DeviceType.Handheld)
                 AdaptTheUI();
 
-            if(GameManager.I.DeviceEnviroment == DeviceType.Desktop)
+            if(GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {
                 if (Input.GetKeyDown(KeyCode.X))
                 {

@@ -9,6 +9,7 @@ using DumbProject.Items;
 
 namespace DumbProject.Generic
 {
+    [RequireComponent(typeof(FlowManager))]
     public class GameManager : MonoBehaviour
     {
         public static GameManager I;
@@ -21,7 +22,7 @@ namespace DumbProject.Generic
         public ItemsManager ItemManagerPrefab;
         public PoolManager PoolManagerPrefab;
 
-        public DeviceType DeviceEnviroment { get { return SystemInfo.deviceType; } }
+        public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
 
         [HideInInspector]
         public FlowManager FlowMng;
@@ -50,7 +51,6 @@ namespace DumbProject.Generic
             set { _isGamePaused = value; }
         }
 
-
         void Awake()
         {
             //Singleton paradigm
@@ -62,16 +62,7 @@ namespace DumbProject.Generic
 
         void Start()
         {
-            PoolMng = Instantiate(PoolManagerPrefab);
-            PoolMng.Setup();
             FlowMng = GetComponent<FlowManager>();
-            MainGridCtrl = Instantiate(GridControllerPrefab);
-            UIMng = Instantiate(UIManagerPrefab);
-            RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
-            RoomGenerator = Instantiate(RoomGenertorPrefab);
-            ItemManager = Instantiate(ItemManagerPrefab);
-            ItemManager.Init();
-
             FlowMng.CurrentState = FlowState.Loading;
         }
 
@@ -82,16 +73,19 @@ namespace DumbProject.Generic
                 DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
                 DumbyToTest.Setup();
             }
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                PoolMng.UpdatePools();
-            }
         }
 
         public void Init()
         {
+            PoolMng = Instantiate(PoolManagerPrefab);
+            PoolMng.Setup();
+            UIMng = Instantiate(UIManagerPrefab);
             UIMng.Init();
+            MainGridCtrl = Instantiate(GridControllerPrefab);
+            RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
+            RoomGenerator = Instantiate(RoomGenertorPrefab);
+            ItemManager = Instantiate(ItemManagerPrefab);
+            ItemManager.Init();
             FlowMng.CurrentState = FlowState.MenuState;
         }
 
