@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DumbProject.Generic;
 using DumbProject.CameraController;
 
@@ -8,8 +9,7 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
-        public bool _isVertical;
-
+        bool _isVertical;
         public bool IsVertical { get { return _isVertical; } set { _isVertical = value; } }
 
         [HideInInspector]
@@ -21,14 +21,20 @@ namespace DumbProject.UI
 
         public void Init()
         {
+            //setta la risoluzione di riferimento del canvas in base a quella dello schermo del dispositivo in uso
+            CanvasScaler scaler = GetComponent<CanvasScaler>();
+            scaler.referenceResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+            // setup menu panel
+            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuController"), transform).GetComponent<UIMenuController>();
+            MenuController.Init(this);
+            // setup gameplay panel
+            GamePlayCtrl = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameplayPanel"), transform).GetComponent<UIGameplayController>();
+            //GamePlayCtrl.Init(this);
+            // setup camera panel
             GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>("Prefabs/UI/CameraMovementPanel"), transform);
             SetupCameraByEnvironment(cameraInputObj);
-            CameraHandler cc = Camera.main.GetComponent<CameraHandler>();
-            CamInput.Init(this, cc);
-            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuController"), transform).GetComponent<UIMenuController>();
-            GamePlayCtrl = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameplayPanel"), transform).GetComponent<UIGameplayController>();
-            MenuController.Init(this);
-            GamePlayCtrl.Init(this);
+            CameraHandler cameraHandler = Camera.main.GetComponent<CameraHandler>();
+            CamInput.Init(this, cameraHandler);
         }
 
         /// <summary>
@@ -76,12 +82,12 @@ namespace DumbProject.UI
                     if (IsVertical)
                     {
                         IsVertical = false;
-                        AdaptTheUI(IsVertical);
+                        AdaptTheUI();
                     }
                     else
                     {
                         IsVertical = true;
-                        AdaptTheUI(IsVertical);
+                        AdaptTheUI();
                     }
                 }
             }
@@ -99,51 +105,24 @@ namespace DumbProject.UI
 
         void AdaptTheUI()
         {
-            if (Screen.orientation == ScreenOrientation.Portrait)
-            {
-                // La UI deve essere orientata per l'utilizzo verticale;
-                IsVertical = true;
-                if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(true); 
-                if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(true);
-            }
-            else
-            {
-                // Gli altri orientamenti
-                IsVertical = false;
-                if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(false);
-                if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(false);
-            }
+            
         }
+    }
 
+    [System.Serializable]
+    public class RectTranformValues
+    {
+        public Vector2 AnchorMin;
+        public Vector2 AnchorMax;
+        public Vector2 OffsetMin;
+        public Vector2 OffsetMax;
 
-        /// <summary>
-        /// Usata solo per impostare manualmente la UI
-        /// </summary>
-        /// <param name="_isVertical"></param>
-        void AdaptTheUI(bool _isVertical)
+        public RectTranformValues(Vector2 _anchorMin, Vector2 _anchorMax, Vector2 _offsetMin, Vector2 _offsetMax)
         {
-            if (_isVertical)
-            {
-                // La UI deve essere orientata per l'utilizzo verticale;
-                IsVertical = true;
-                if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(true);
-                if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(true);
-            }
-            else
-            {
-                // Gli altri orientamenti
-                IsVertical = false;
-                if (MenuController.gameObject.activeInHierarchy)
-                    MenuController.SetVerticalUI(false);
-                if (GamePlayCtrl.gameObject.activeInHierarchy)
-                    GamePlayCtrl.SetVerticalGameUI(false);
-            }
+            AnchorMin = _anchorMin;
+            AnchorMax = _anchorMax;
+            OffsetMin = _offsetMin;
+            OffsetMax = _offsetMax;
         }
     }
 }
