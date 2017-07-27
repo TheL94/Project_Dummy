@@ -2,118 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
-using UnityEngine.EventSystems;
-using System;
+using UnityEngine.UI;
 
 namespace DumbProject.UI
 {
-    public class UIGameplayController : MonoBehaviour
+    public class UIGamePlayController : MonoBehaviour
     {
-
         UIManager uiManager;
 
-        bool isVertical { get { return uiManager.IsVertical; } }
+        public LateralGUIContainer LateralGUI;
+        public PausePanelController PausePanel;
 
-        public GameObject ChildPanel;
-
-        [HideInInspector]
-        public GamePlayUIElements GamePlayElements;
-
-        public InventoryContainer InventoryContainer;
-
-        RectTranformValues verticalRectValues;
-        RectTranformValues orizontalRectValues;
+        UIPositionData positionData;
 
         #region API
-
-        public void GetRoomPanelControllers()
-        {
-
-        }
-
-        public void Init(UIManager _uiManager, RectTranformValues _verticalRectValues, RectTranformValues _orizontalRectValues)
+        public void Init(UIManager _uiManager, UIPositionData _positionData)
         {
             uiManager = _uiManager;
-            verticalRectValues = _verticalRectValues;
-            orizontalRectValues = _orizontalRectValues;
+            positionData = _positionData;
 
-            InventoryContainer.Init();
-            ChildPanel.SetActive(false);
+            uiManager.SetRectTransformParameters(transform as RectTransform, _positionData);
 
+            LateralGUI.Init();
+            LateralGUI.gameObject.SetActive(false);
+            PausePanel.gameObject.SetActive(false);
         }
-
-        public void Setup()
-        {
-            ChildPanel.SetActive(true);
-            //SetVerticalGameUI(isVertical);
-        }
-
-        //public void SetVerticalGameUI(bool _isVertical)
-        //{
-        //    if (InventoryContainer.gameObject.activeInHierarchy || VerticalInventoryContainer.gameObject.activeInHierarchy)
-        //    {
-        //        bool isPauseActive = false;
-        //        if (_isVertical)
-        //        {
-        //            VerticalInventoryContainer.gameObject.SetActive(true);
-        //            if (GamePlayElements.PausePanel != null)
-        //            {
-        //                if (GamePlayElements.PausePanel.activeInHierarchy)
-        //                {
-        //                    isPauseActive = true;
-        //                    GamePlayElements.PausePanel.SetActive(false);
-        //                } 
-        //            }
-        //            GamePlayElements = VerticalInventoryContainer.GetGamePlayElements();
-        //            InventoryContainer.gameObject.SetActive(false);
-        //            if (isPauseActive)                                          // Se il pannello di pausa è
-        //                GamePlayElements.PausePanel.SetActive(true);
-        //        }
-        //        else
-        //        {
-        //            InventoryContainer.gameObject.SetActive(true);
-        //            if (GamePlayElements.PausePanel != null)
-        //            {
-        //                if (GamePlayElements.PausePanel.activeInHierarchy)
-        //                {
-        //                    isPauseActive = true;
-        //                    GamePlayElements.PausePanel.SetActive(false);
-        //                } 
-        //            }
-        //            GamePlayElements = InventoryContainer.GetGamePlayElements();
-        //            VerticalInventoryContainer.gameObject.SetActive(false);
-        //            if (isPauseActive)
-        //                GamePlayElements.PausePanel.SetActive(true);
-        //        }
-        //    }
-
-        //}
 
         #region PauseRegion
         /// <summary>
         /// Attiva il pannello della pausa
         /// </summary>
-        public void ActivatePause()
+        public void ActivatePause(bool _status)
         {
-            GamePlayElements.PausePanel.SetActive(true);
-            GameManager.I.FlowMng.CurrentState = DumbProject.Flow.FlowState.Pause;
-        }
-
-        /// <summary>
-        /// disattiva il pannello della pausa
-        /// </summary>
-        public void DeactivatePause()
-        {
-            GamePlayElements.PausePanel.SetActive(false);
-        }
-
-        /// <summary>
-        /// Disattiva il pannello della pausa e passa lo stato del flow manager a Gameplay
-        /// </summary>
-        public void Resume()
-        {
-            DeactivatePause();
-            GameManager.I.DeactivatePauseMode();
+            if(_status)
+                GameManager.I.ChageFlowState(Flow.FlowState.Pause);
+            else
+                GameManager.I.ChageFlowState(Flow.FlowState.GameplayState);
         }
 
         /// <summary>
@@ -121,8 +45,8 @@ namespace DumbProject.UI
         /// </summary>
         public void QuitGamePlay()
         {
-            DeactivatePause();
-            GameManager.I.FlowMng.CurrentState = DumbProject.Flow.FlowState.ExitGameplay;
+            ActivatePause(false);
+            GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay);
         }
 
         #endregion

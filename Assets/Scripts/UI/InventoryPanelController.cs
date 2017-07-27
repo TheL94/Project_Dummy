@@ -6,13 +6,12 @@ using UnityEngine.UI;
 
 namespace DumbProject.UI {
 
-    public class InventoryController : MonoBehaviour {
+    public class InventoryPanelController : MonoBehaviour {
 
         List<Slot> slots = new List<Slot>();
         public IventoryItem UiItemPrefab;
 
         List<IventoryItem> itemsInInventory = new List<IventoryItem>();
-
 
         // Use this for initialization
         void Start() {

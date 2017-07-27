@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DumbProject.UI
 {
-    public class RoomPanelController : MonoBehaviour
+    public class RoomPanelContainer : MonoBehaviour
     {
         List<UIRoomController> _uiSpawns = new List<UIRoomController>();
 

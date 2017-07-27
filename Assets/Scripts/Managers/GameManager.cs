@@ -23,9 +23,8 @@ namespace DumbProject.Generic
         public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
+        public FlowState CurrentState { get { return FlowMng.CurrentState; } }
 
-        [HideInInspector]
-        public FlowManager FlowMng;
         [HideInInspector]
         public RoomGenerator RoomGenerator;
         [HideInInspector]
@@ -41,6 +40,7 @@ namespace DumbProject.Generic
         [HideInInspector]
         public PoolManager PoolMng;
 
+        FlowManager FlowMng;
         bool IsGamePlaying;
 
         private bool _isGamePaused;
@@ -63,7 +63,7 @@ namespace DumbProject.Generic
         void Start()
         {
             FlowMng = GetComponent<FlowManager>();
-            FlowMng.CurrentState = FlowState.Loading;
+            ChageFlowState(FlowState.Loading);
         }
 
         void Update()
@@ -75,6 +75,7 @@ namespace DumbProject.Generic
             }
         }
 
+        #region API
         public void Init()
         {
             PoolMng = Instantiate(PoolManagerPrefab);
@@ -86,7 +87,16 @@ namespace DumbProject.Generic
             RoomGenerator = Instantiate(RoomGenertorPrefab);
             ItemManager = Instantiate(ItemManagerPrefab);
             ItemManager.Init();
-            FlowMng.CurrentState = FlowState.MenuState;
+            ChageFlowState(FlowState.MenuState);
+        }
+
+        #region ChangeStateCalls
+        /// <summary>
+        /// Funzione che innesca il cambio di stato
+        /// </summary>
+        public void ChageFlowState(FlowState _stateToSet)
+        {
+            FlowMng.ChageState(_stateToSet);
         }
 
         /// <summary>
@@ -96,7 +106,7 @@ namespace DumbProject.Generic
         {
             if (!IsGamePlaying)
             {
-                if(DungeonMng == null)
+                if (DungeonMng == null)
                     DungeonMng = Instantiate(DungeonManagerPrefab);
                 DungeonMng.Setup();
                 MainGridCtrl.Setup();
@@ -116,16 +126,10 @@ namespace DumbProject.Generic
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
-            UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
+            //UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
             IsGamePlaying = false;
         }
-
-        /// <summary>
-        /// Richiamata dal bottone di Resume nel pause Panel per tornare nello stato di gameplay
-        /// </summary>
-        public void DeactivatePauseMode()
-        {
-            FlowMng.CurrentState = FlowState.GameplayState;
-        }
+        #endregion
+        #endregion
     }
 }

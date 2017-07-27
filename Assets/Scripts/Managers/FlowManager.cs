@@ -14,13 +14,12 @@ namespace DumbProject.Flow
         public FlowState CurrentState
         {
             get { return _currentState; }
-            set {
+            private set {
                 _currentState = value;
                 Debug.Log(_currentState.ToString());
                 OnStateChange();
             }
         }
-
         
         private void OnStateChange()
         {
@@ -30,21 +29,24 @@ namespace DumbProject.Flow
                     GameManager.I.Init();
                     break;
                 case FlowState.MenuState:
-                    GameManager.I.UIMng.ActivateMenuPanel();
+                    GameManager.I.UIMng.ActivateMenuPanel(true);
+                    GameManager.I.UIMng.ActivateGamePlayPanel(false);
                     break;
                 case FlowState.GameplayState:
                     // Fa partire il gioco
-                    GameManager.I.UIMng.ActivateGamePlayPanel();
+                    GameManager.I.UIMng.ActivateGamePlayPanel(true);
+                    GameManager.I.UIMng.ActivateMenuPanel(false);
                     GameManager.I.EnterGameplayMode();
                     break;
                 case FlowState.Pause:
-                    // Blocca Dummy e attiva il menu di pausa
+                    //GameManager.I.UIMng.GamePlayCtrl.
                     break;
                 case FlowState.ExitGameplay:
                     GameManager.I.ExitGameplayMode();
                     CurrentState = FlowState.MenuState;
                     break;
-                default:
+                case FlowState.ExitGame:
+                    Application.Quit();
                     break;
             }
         }
@@ -57,6 +59,10 @@ namespace DumbProject.Flow
             }
         }
 
+        public void ChageState(FlowState _stateToSet)
+        {
+            CurrentState = _stateToSet;
+        }
     }
 
     public enum FlowState
@@ -66,5 +72,6 @@ namespace DumbProject.Flow
         GameplayState,
         Pause,
         ExitGameplay,
+        ExitGame
     }
 }

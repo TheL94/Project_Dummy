@@ -52,7 +52,7 @@ namespace DumbProject.Rooms
 
         public void CreateNewRoom()
         {
-            if(GameManager.I.FlowMng.CurrentState == Flow.FlowState.GameplayState)
+            if(GameManager.I.CurrentState == Flow.FlowState.GameplayState)
             {
                 InstantiateRoom(RoomTypesInstances);
             }
@@ -111,9 +111,12 @@ namespace DumbProject.Rooms
 
         void SetupSpawnsAssociations()
         {
-            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || i < GameManager.I.UIMng.GamePlayCtrl.GamePlayElements.RoomPreviewController.UISpawns.Count; i++)
+            for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || 
+                i < GameManager.I.UIMng.GamePlayCtrl.LateralGUI.RoomPreviewController.UISpawns.Count; i++)
+            {
                 SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i],
-            GameManager.I.UIMng.GamePlayCtrl.InventoryContainer.GetGamePlayElements().RoomPreviewController.UISpawns[i]));   
+                    GameManager.I.UIMng.GamePlayCtrl.LateralGUI.RoomPreviewController.UISpawns[i]));
+            }
         }
 
         SpawnsAssociation GetFirstSpawnsAssociationAvailable()

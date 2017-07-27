@@ -15,26 +15,68 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIMenuController MenuController;
         [HideInInspector]
-        public UIGameplayController GamePlayCtrl;
+        public UIGamePlayController GamePlayCtrl;
         [HideInInspector]
         public CameraInput CamInput;
+
+        public ScreenOrientation DeviceCurrentOrientation { get { return Screen.orientation; } }
+        public Vector2 DeviceReferenceResolution { get { return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height); } }
+
+        string DataPath = "Data/UIData/";
+        string PrefabPath = "Prefabs/UI/";
 
         public void Init()
         {
             //setta la risoluzione di riferimento del canvas in base a quella dello schermo del dispositivo in uso
             CanvasScaler scaler = GetComponent<CanvasScaler>();
-            scaler.referenceResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+            scaler.referenceResolution = DeviceReferenceResolution;
             // setup menu panel
-            MenuController = Instantiate(Resources.Load<GameObject>("Prefabs/UI/MenuController"), transform).GetComponent<UIMenuController>();
-            MenuController.Init(this);
+            MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
+            MenuController.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "MenuPanelPosition")));
             // setup gameplay panel
-            GamePlayCtrl = Instantiate(Resources.Load<GameObject>("Prefabs/UI/GameplayPanel"), transform).GetComponent<UIGameplayController>();
-            //GamePlayCtrl.Init(this);
+            GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
+            GamePlayCtrl.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "GameplayPanelPosition")));
             // setup camera panel
-            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>("Prefabs/UI/CameraMovementPanel"), transform);
+            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
             SetupCameraByEnvironment(cameraInputObj);
             CameraHandler cameraHandler = Camera.main.GetComponent<CameraHandler>();
-            CamInput.Init(this, cameraHandler);
+            CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
+        }
+
+        public void SetRectTransformParameters(RectTransform _rcTransform, UIPositionData _data)
+        {
+            RectTranformValues values = null;
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                values = _data.orizontalRectValues;
+            }
+            else if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
+            {
+                if (DeviceCurrentOrientation == ScreenOrientation.Landscape)
+                    values = _data.orizontalRectValues;
+                else
+                    values = _data.verticalRectValues;
+            }
+
+            if (values != null)
+            {
+                _rcTransform.anchorMin = values.AnchorMin;
+                _rcTransform.anchorMax = values.AnchorMax;
+                _rcTransform.offsetMin = values.OffsetMin;
+                _rcTransform.offsetMax = values.OffsetMax;
+            }
+            else
+                Debug.LogWarning("Device Type Not Valid");
+        }
+
+        public void ActivateMenuPanel(bool _status)
+        {
+            MenuController.gameObject.SetActive(_status);
+        }
+
+        public void ActivateGamePlayPanel(bool _status)
+        {
+            GamePlayCtrl.gameObject.SetActive(_status);
         }
 
         /// <summary>
@@ -52,61 +94,6 @@ namespace DumbProject.UI
             }
         }
 
-        /// <summary>
-        /// Attiva il pannello del menu, disattiva il pannello del gameplay
-        /// </summary>
-        public void ActivateMenuPanel()
-        {
-            MenuController.Setup();
-            GamePlayCtrl.ChildPanel.gameObject.SetActive(false);
-        }
-
-        /// <summary>
-        /// Attiva il pannello del gameplay, disattiva il pannello del menu
-        /// </summary>
-        public void ActivateGamePlayPanel()
-        {
-            GamePlayCtrl.Setup();
-            MenuController.ChildPanel.gameObject.SetActive(false);
-        }
-        
-        private void Update()
-        {
-            if(GameManager.I.DeviceEnvironment == DeviceType.Handheld)
-                AdaptTheUI();
-
-            if(GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-            {
-                if (Input.GetKeyDown(KeyCode.X))
-                {
-                    if (IsVertical)
-                    {
-                        IsVertical = false;
-                        AdaptTheUI();
-                    }
-                    else
-                    {
-                        IsVertical = true;
-                        AdaptTheUI();
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Setta lo stato di gameplay nel FlowManager
-        /// </summary>
-        public void GoInGameplayMode()
-        {
-            GamePlayCtrl.gameObject.SetActive(true);
-            GameManager.I.FlowMng.CurrentState = Flow.FlowState.GameplayState;
-        }
-
-        void AdaptTheUI()
-        {
-            
-        }
     }
 
     [System.Serializable]
