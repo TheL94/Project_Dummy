@@ -8,9 +8,11 @@ namespace DumbProject.UI
     {
         public InventoryPanelController InventoryController;
         public RoomPanelContainer RoomPreviewController;
+        UIGamePlayController controller;
 
-        public void Init()
+        public void Init(UIGamePlayController _controller)
         {
+            controller = _controller;
             RoomPreviewController.Setup();
         }
     }

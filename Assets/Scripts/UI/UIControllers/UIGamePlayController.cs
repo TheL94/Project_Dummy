@@ -24,7 +24,8 @@ namespace DumbProject.UI
 
             uiManager.SetRectTransformParametersByData(transform as RectTransform, _positionData);
 
-            LateralGUI.Init();
+            LateralGUI.Init(this);
+            PausePanel.Init(this);
             ActivateLateralGUI(false);
             ActivatePausePanel(false);
             InitPauseButton();
