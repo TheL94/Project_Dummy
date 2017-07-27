@@ -64,24 +64,6 @@ namespace DumbProject.Generic
             gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Wall.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Wall.NumberOfObj);
             gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Wall));
         }
-
-        private void OnDrawGizmos()
-        {
-            foreach (PoolType pool in gameObjPoolList)
-            {
-                Gizmos.color = Color.white;
-                foreach (GameObject item in pool.Pool.activePool)
-                {
-                    Gizmos.DrawWireCube(item.transform.position, Vector3.one);
-                }
-
-                Gizmos.color = Color.black;
-                foreach (GameObject item in pool.Pool.inactivePool)
-                {
-                    Gizmos.DrawWireCube(item.transform.position, Vector3.one);
-                }
-            }
-        }
     }
 
     public class PoolType

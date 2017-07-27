@@ -82,11 +82,6 @@ namespace DumbProject.Generic
                 DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
                 DumbyToTest.Setup();
             }
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                PoolMng.UpdatePools();
-            }
         }
 
         public void Init()
