@@ -32,10 +32,19 @@ namespace DumbProject.UI
 
         void InitPauseButton()
         {
-            PauseButton.onClick.AddListener(() => { ActivatePausePanel(true); });
-            float xMax = 1f + ((-3f) - 0.9f) / (uiManager.DeviceReferenceResolution.y / uiManager.DeviceReferenceResolution.x);
-            Vector2 anchorMin = new Vector2(-3f, 0.9f);
-            Vector2 anchorMax = new Vector2(xMax, 1f);
+            float xMin = -3f;
+            float yMin = 0.9f;
+
+            float xMax;
+            float yMax = 1f;
+
+            if (uiManager.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+                 xMax = (xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f));
+            else
+                 xMax = 1 / ((xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f)));
+
+            Vector2 anchorMin = new Vector2(xMin, yMin);
+            Vector2 anchorMax = new Vector2(xMax, yMax);
             uiManager.SetRectTransformParametersByValues(PauseButton.transform as RectTransform, anchorMin, anchorMax, Vector2.zero, Vector2.zero);
         }
 
@@ -63,6 +72,16 @@ namespace DumbProject.UI
         {
             ActivatePausePanel(false);
             GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay);
+        }
+
+        private void OnEnable()
+        {
+            PauseButton.onClick.AddListener(() => { ActivatePausePanel(true); });
+        }
+
+        private void OnDisable()
+        {           
+            PauseButton.onClick.RemoveAllListeners();
         }
 
         #endregion

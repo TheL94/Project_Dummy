@@ -30,17 +30,17 @@ namespace DumbProject.UI
             //setta la risoluzione di riferimento del canvas in base a quella dello schermo del dispositivo in uso
             CanvasScaler scaler = GetComponent<CanvasScaler>();
             scaler.referenceResolution = DeviceReferenceResolution;
+            // setup camera panel
+            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
+            SetupCameraByEnvironment(cameraInputObj);
+            CameraHandler cameraHandler = Camera.main.GetComponent<CameraHandler>();
+            CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
             MenuController.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "MenuPanelPosition")));
             // setup gameplay panel
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
             GamePlayCtrl.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "GameplayPanelPosition")));
-            // setup camera panel
-            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
-            SetupCameraByEnvironment(cameraInputObj);
-            CameraHandler cameraHandler = Camera.main.GetComponent<CameraHandler>();
-            CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
