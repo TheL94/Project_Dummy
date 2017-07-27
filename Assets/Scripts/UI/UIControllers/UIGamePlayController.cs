@@ -12,6 +12,7 @@ namespace DumbProject.UI
 
         public LateralGUIContainer LateralGUI;
         public PausePanelController PausePanel;
+        public Button PauseButton;
 
         UIPositionData positionData;
 
@@ -21,23 +22,38 @@ namespace DumbProject.UI
             uiManager = _uiManager;
             positionData = _positionData;
 
-            uiManager.SetRectTransformParameters(transform as RectTransform, _positionData);
+            uiManager.SetRectTransformParametersByData(transform as RectTransform, _positionData);
 
             LateralGUI.Init();
-            LateralGUI.gameObject.SetActive(false);
-            PausePanel.gameObject.SetActive(false);
+            ActivateLateralGUI(false);
+            ActivatePausePanel(false);
+            InitPauseButton();
+        }
+
+        void InitPauseButton()
+        {
+            PauseButton.onClick.AddListener(() => { ActivatePausePanel(true); });
+            float xMax = 1f + ((-3f) - 0.9f) / (uiManager.DeviceReferenceResolution.y / uiManager.DeviceReferenceResolution.x);
+            Vector2 anchorMin = new Vector2(-3f, 0.9f);
+            Vector2 anchorMax = new Vector2(xMax, 1f);
+            uiManager.SetRectTransformParametersByValues(PauseButton.transform as RectTransform, anchorMin, anchorMax, Vector2.zero, Vector2.zero);
         }
 
         #region PauseRegion
         /// <summary>
+        /// Attiva il pannello della GUI laterale
+        /// </summary>
+        public void ActivateLateralGUI(bool _status)
+        {
+            LateralGUI.gameObject.SetActive(_status);
+        }
+
+        /// <summary>
         /// Attiva il pannello della pausa
         /// </summary>
-        public void ActivatePause(bool _status)
+        public void ActivatePausePanel(bool _status)
         {
-            if(_status)
-                GameManager.I.ChageFlowState(Flow.FlowState.Pause);
-            else
-                GameManager.I.ChageFlowState(Flow.FlowState.GameplayState);
+            PausePanel.gameObject.SetActive(_status);
         }
 
         /// <summary>
@@ -45,7 +61,7 @@ namespace DumbProject.UI
         /// </summary>
         public void QuitGamePlay()
         {
-            ActivatePause(false);
+            ActivatePausePanel(false);
             GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay);
         }
 

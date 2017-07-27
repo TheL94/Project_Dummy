@@ -43,7 +43,7 @@ namespace DumbProject.UI
             CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
         }
 
-        public void SetRectTransformParameters(RectTransform _rcTransform, UIPositionData _data)
+        public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
         {
             RectTranformValues values = null;
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
@@ -59,14 +59,17 @@ namespace DumbProject.UI
             }
 
             if (values != null)
-            {
-                _rcTransform.anchorMin = values.AnchorMin;
-                _rcTransform.anchorMax = values.AnchorMax;
-                _rcTransform.offsetMin = values.OffsetMin;
-                _rcTransform.offsetMax = values.OffsetMax;
-            }
+                SetRectTransformParametersByValues(_rcTransform, values.AnchorMin, values.AnchorMax, values.OffsetMin, values.OffsetMax);
             else
                 Debug.LogWarning("Device Type Not Valid");
+        }
+
+        public void SetRectTransformParametersByValues(RectTransform _rcTransform, Vector2 _anchorMin, Vector2 _anchorMax, Vector2 _offsetMin, Vector2 _offsetMax)
+        {
+                _rcTransform.anchorMin = _anchorMin;
+                _rcTransform.anchorMax = _anchorMax;
+                _rcTransform.offsetMin = _offsetMin;
+                _rcTransform.offsetMax = _offsetMax;
         }
 
         public void ActivateMenuPanel(bool _status)
@@ -77,6 +80,11 @@ namespace DumbProject.UI
         public void ActivateGamePlayPanel(bool _status)
         {
             GamePlayCtrl.gameObject.SetActive(_status);
+        }
+
+        public void ActivateCameraPanel(bool _status)
+        {
+            CamInput.gameObject.SetActive(_status);
         }
 
         /// <summary>
@@ -92,6 +100,8 @@ namespace DumbProject.UI
             {
                 CamInput = _camInputObj.AddComponent<CameraTouchInput>();
             }
+            else
+                Debug.LogWarning("Device Type Not Valid");
         }
 
     }

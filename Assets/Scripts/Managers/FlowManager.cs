@@ -31,19 +31,22 @@ namespace DumbProject.Flow
                 case FlowState.MenuState:
                     GameManager.I.UIMng.ActivateMenuPanel(true);
                     GameManager.I.UIMng.ActivateGamePlayPanel(false);
+                    GameManager.I.UIMng.ActivateCameraPanel(false);
                     break;
                 case FlowState.GameplayState:
                     // Fa partire il gioco
                     GameManager.I.UIMng.ActivateGamePlayPanel(true);
                     GameManager.I.UIMng.ActivateMenuPanel(false);
+                    GameManager.I.UIMng.ActivateCameraPanel(true);
+                    GameManager.I.UIMng.GamePlayCtrl.ActivateLateralGUI(true);
                     GameManager.I.EnterGameplayMode();
                     break;
                 case FlowState.Pause:
-                    //GameManager.I.UIMng.GamePlayCtrl.
+                    GameManager.I.UIMng.GamePlayCtrl.ActivatePausePanel(true);
                     break;
                 case FlowState.ExitGameplay:
                     GameManager.I.ExitGameplayMode();
-                    CurrentState = FlowState.MenuState;
+                    GameManager.I.UIMng.GamePlayCtrl.ActivateLateralGUI(false);
                     break;
                 case FlowState.ExitGame:
                     Application.Quit();

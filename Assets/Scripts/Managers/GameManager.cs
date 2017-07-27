@@ -128,6 +128,7 @@ namespace DumbProject.Generic
             RoomPreviewCtrl.DestroyUIGrid();
             //UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
             IsGamePlaying = false;
+            ChageFlowState(FlowState.MenuState);
         }
         #endregion
         #endregion

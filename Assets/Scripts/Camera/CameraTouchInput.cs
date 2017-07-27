@@ -13,7 +13,7 @@ namespace DumbProject.Generic
     {
         private void Update()
         {
-            uiMng.SetRectTransformParameters(transform as RectTransform, positionData);
+            uiMng.SetRectTransformParametersByData(transform as RectTransform, positionData);
         }
 
         public void OnDrag(PointerEventData eventData)

@@ -19,7 +19,7 @@ namespace DumbProject.Generic
             uiMng = _uiMng;
             camHandler = _camHandler;
             positionData = _positionData;
-            uiMng.SetRectTransformParameters(transform as RectTransform, _positionData);
+            uiMng.SetRectTransformParametersByData(transform as RectTransform, _positionData);
         }
     }
 }

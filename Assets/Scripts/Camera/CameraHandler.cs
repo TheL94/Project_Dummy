@@ -33,7 +33,7 @@ namespace DumbProject.CameraController
 
         void Start()
         {
-            cam = GetComponent<Camera>();
+            cam = GetComponentInChildren<Camera>();
         }
 
         #region Touch Input

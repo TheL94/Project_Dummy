@@ -18,7 +18,7 @@ namespace DumbProject.UI
         {
             uiManager = _uiManager;
             positionData = _positionData;
-            uiManager.SetRectTransformParameters(transform as RectTransform, _positionData);
+            uiManager.SetRectTransformParametersByData(transform as RectTransform, _positionData);
         }
 
         #region MainMenuAPI
