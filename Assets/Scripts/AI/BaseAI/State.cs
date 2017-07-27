@@ -32,7 +32,8 @@ namespace Framework.AI
             {
                 // seleziona come stato successivo quello con l'indice pari al risultato di Decision.Decide().
                 int index = Transitions[i].Decision.Decide(_controller);
-                _controller.TransitionToState(Transitions[i].NextPosiibleStates[index]);
+                if(Transitions[i].NextPosiibleStates != null && Transitions[i].NextPosiibleStates.Length > 0)
+                    _controller.TransitionToState(Transitions[i].NextPosiibleStates[index]);
             }
         }
     }

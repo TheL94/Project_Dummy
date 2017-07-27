@@ -70,6 +70,9 @@ namespace DumbProject.Generic
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
+                if (DumbyToTest != null)
+                    Destroy(DumbyToTest.gameObject);
+
                 DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
                 DumbyToTest.Setup();
             }
@@ -127,6 +130,9 @@ namespace DumbProject.Generic
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
             //UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
+            //------------------
+            Destroy(DumbyToTest.gameObject);
+            //------------------
             IsGamePlaying = false;
             ChageFlowState(FlowState.MenuState);
         }

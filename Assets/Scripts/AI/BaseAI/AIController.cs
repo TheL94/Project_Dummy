@@ -18,6 +18,9 @@ namespace Framework.AI
             }
             set
             {
+                if (inhibitedStateChange)
+                    return;
+
                 _currentState = value;
                 Debug.Log(CurrentState.name);
             }
@@ -26,9 +29,15 @@ namespace Framework.AI
         public bool DebugMode;
         public bool isActive = false;
 
+        bool inhibitedStateChange = false;
+
         public virtual void Setup(bool _setActive = true)
         {
             isActive = _setActive;
+        }
+        public void InhibitStateChange(bool _state)
+        {
+            inhibitedStateChange = _state;
         }
 
         private void Update()
