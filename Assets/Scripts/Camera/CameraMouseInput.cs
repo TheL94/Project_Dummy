@@ -14,7 +14,7 @@ namespace DumbProject.Generic
         {
             if (GameManager.I.DeviceEnviroment == DeviceType.Handheld)
                 DestroyImmediate(this);
-            camHandler = Camera.main.GetComponent<CameraHandler>();
+            camHandler = Camera.main.transform.parent.GetComponent<CameraHandler>();
         }
 
         public void OnDrag(PointerEventData eventData)

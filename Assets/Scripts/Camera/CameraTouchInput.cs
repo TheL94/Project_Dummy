@@ -16,7 +16,7 @@ namespace DumbProject.Generic
         {
             if (GameManager.I.DeviceEnviroment == DeviceType.Desktop)
                 DestroyImmediate(this);
-            camMovement = Camera.main.GetComponent<CameraHandler>();
+            camMovement = Camera.main.transform.parent.GetComponent<CameraHandler>();
         }
 
         public void OnPan(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 delta)
