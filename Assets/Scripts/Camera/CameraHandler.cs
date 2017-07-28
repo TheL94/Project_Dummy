@@ -105,7 +105,8 @@ namespace DumbProject.CameraController
             // Determine how much to move the camera
             Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
             Vector3 move = new Vector3(offset.x * PanSpeed, 0, offset.y * PanSpeed);
-
+            //compensate the eventual camera rotation;
+            move = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, 0f) * move;
             // Perform the movement
             transform.Translate(move, Space.World);
 
