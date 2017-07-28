@@ -11,15 +11,11 @@ namespace DumbProject.Generic
     {
         protected UIManager uiMng;
         protected CameraHandler camHandler;
-        protected RectTransform canvasTransform;
-        protected UIPositionData positionData;
 
-        public void Init(UIManager _uiMng, CameraHandler _camHandler, UIPositionData _positionData)
+        public void Init(UIManager _uiMng, CameraHandler _camHandler)
         {
             uiMng = _uiMng;
             camHandler = _camHandler;
-            positionData = _positionData;
-            uiMng.SetRectTransformParametersByData(transform as RectTransform, _positionData);
         }
     }
 }

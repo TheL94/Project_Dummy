@@ -11,14 +11,11 @@ namespace DumbProject.UI
         public GameObject CreditsPanel;
 
         UIManager uiManager;
-        UIPositionData positionData;
 
         #region API
-        public void Init(UIManager _uiManager, UIPositionData _positionData)
+        public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
-            positionData = _positionData;
-            uiManager.SetRectTransformParametersByData(transform as RectTransform, _positionData);
         }
 
         #region MainMenuAPI
@@ -41,5 +38,10 @@ namespace DumbProject.UI
 
         #endregion
         #endregion
+
+        void SetupMainMenuPanel(UIPositionData _positionData)
+        {
+            uiManager.SetRectTransformParametersByData(MainMenuPanel.transform as RectTransform, _positionData);
+        }
     }
 }

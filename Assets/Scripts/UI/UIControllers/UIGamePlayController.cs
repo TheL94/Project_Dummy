@@ -14,15 +14,10 @@ namespace DumbProject.UI
         public PausePanelController PausePanel;
         public Button PauseButton;
 
-        UIPositionData positionData;
-
         #region API
-        public void Init(UIManager _uiManager, UIPositionData _positionData)
+        public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
-            positionData = _positionData;
-
-            uiManager.SetRectTransformParametersByData(transform as RectTransform, _positionData);
 
             LateralGUI.Init(this);
             PausePanel.Init(this);

@@ -11,11 +11,6 @@ namespace DumbProject.Generic
 {
     public class CameraTouchInput : CameraInput, IPinchHandler, IDragHandler, IPointerDownHandler
     {
-        private void Update()
-        {
-            uiMng.SetRectTransformParametersByData(transform as RectTransform, positionData);
-        }
-
         public void OnDrag(PointerEventData eventData)
         {
             camHandler.OnDragEvent(eventData);

@@ -19,11 +19,26 @@ namespace DumbProject.UI
         [HideInInspector]
         public CameraInput CamInput;
 
+        ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
         public ScreenOrientation DeviceCurrentOrientation { get { return Screen.orientation; } }
+
         public Vector2 DeviceReferenceResolution { get { return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height); } }
 
-        string DataPath = "Data/UIData/";
         string PrefabPath = "Prefabs/UI/";
+
+        private void Update()
+        {
+            UpdateUIOrientation();
+        }
+
+        void UpdateUIOrientation()
+        {
+            if (deviceOrientation != DeviceCurrentOrientation)
+            {
+                OnScreenOrientationChange();
+                deviceOrientation = DeviceCurrentOrientation;
+            }
+        }
 
         public void Init()
         {
@@ -35,13 +50,13 @@ namespace DumbProject.UI
             SetupCameraByEnvironment(cameraInputObj);
             // TODO : trovare un modo migliore per passare il riferimento della camera
             CameraHandler cameraHandler = Camera.main.transform.parent.GetComponent<CameraHandler>();
-            CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
+            CamInput.Init(this, cameraHandler);
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
-            MenuController.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "MenuPanelPosition")));
+            MenuController.Init(this);
             // setup gameplay panel
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
-            GamePlayCtrl.Init(this, Instantiate(Resources.Load<UIPositionData>(DataPath + "GameplayPanelPosition")));
+            GamePlayCtrl.Init(this);
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
@@ -67,10 +82,10 @@ namespace DumbProject.UI
 
         public void SetRectTransformParametersByValues(RectTransform _rcTransform, Vector2 _anchorMin, Vector2 _anchorMax, Vector2 _offsetMin, Vector2 _offsetMax)
         {
-                _rcTransform.anchorMin = _anchorMin;
-                _rcTransform.anchorMax = _anchorMax;
-                _rcTransform.offsetMin = _offsetMin;
-                _rcTransform.offsetMax = _offsetMax;
+            _rcTransform.anchorMin = _anchorMin;
+            _rcTransform.anchorMax = _anchorMax;
+            _rcTransform.offsetMin = _offsetMin;
+            _rcTransform.offsetMax = _offsetMax;
         }
 
         public void ActivateMenuPanel(bool _status)
@@ -105,6 +120,8 @@ namespace DumbProject.UI
                 Debug.LogWarning("Device Type Not Valid");
         }
 
+        public delegate void LayoutEvent();
+        public LayoutEvent OnScreenOrientationChange;
     }
 
     [System.Serializable]
