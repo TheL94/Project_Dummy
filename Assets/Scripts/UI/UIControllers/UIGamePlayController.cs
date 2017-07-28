@@ -66,18 +66,9 @@ namespace DumbProject.UI
             PausePanel.gameObject.SetActive(_status);
         }
 
-        /// <summary>
-        /// Esce dallo stato di gameplay per andare nello stato di menu
-        /// </summary>
-        public void QuitGamePlay()
-        {
-            ActivatePausePanel(false);
-            GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay);
-        }
-
         private void OnEnable()
         {
-            PauseButton.onClick.AddListener(() => { ActivatePausePanel(true); });
+            PauseButton.onClick.AddListener(() => { GameManager.I.ChageFlowState(Flow.FlowState.Pause); });
         }
 
         private void OnDisable()

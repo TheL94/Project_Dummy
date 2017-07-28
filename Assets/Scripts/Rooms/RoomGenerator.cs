@@ -35,7 +35,7 @@ namespace DumbProject.Rooms
             FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
-                CreateNewRoom();
+                InstantiateRoom(RoomTypesInstances);
         }
 
         public void Clean()
@@ -52,7 +52,7 @@ namespace DumbProject.Rooms
 
         public void CreateNewRoom()
         {
-            if(GameManager.I.CurrentState == Flow.FlowState.GameplayState)
+            if(GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
                 InstantiateRoom(RoomTypesInstances);
             }

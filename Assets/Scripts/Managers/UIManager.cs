@@ -33,7 +33,8 @@ namespace DumbProject.UI
             // setup camera panel
             GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
             SetupCameraByEnvironment(cameraInputObj);
-            CameraHandler cameraHandler = Camera.main.GetComponent<CameraHandler>();
+            // TODO : trovare un modo migliore per passare il riferimento della camera
+            CameraHandler cameraHandler = Camera.main.transform.parent.GetComponent<CameraHandler>();
             CamInput.Init(this, cameraHandler, Instantiate(Resources.Load<UIPositionData>(DataPath + "CameraPanelPosition")));
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();

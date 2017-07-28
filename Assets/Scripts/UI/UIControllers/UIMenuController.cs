@@ -24,7 +24,7 @@ namespace DumbProject.UI
         #region MainMenuAPI
         public void PlayGame()
         {
-            GameManager.I.ChageFlowState(Flow.FlowState.GameplayState);
+            GameManager.I.ChageFlowState(Flow.FlowState.EnterGameplay);
         }
 
         public void ShowCredits()

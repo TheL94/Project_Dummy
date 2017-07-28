@@ -3,53 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 
-
 namespace DumbProject.Flow
 {
     public class FlowManager : MonoBehaviour
     {
-
-        private FlowState _currentState;
-
+        private FlowState _currentState = FlowState.None;
         public FlowState CurrentState
         {
             get { return _currentState; }
-            private set {
-                _currentState = value;
-                Debug.Log(_currentState.ToString());
-                OnStateChange();
+            private set
+            {
+                if(_currentState != value)
+                {
+                    FlowState oldState = _currentState;
+                    _currentState = value;
+                    Debug.Log(_currentState.ToString());
+                    OnStateChange(_currentState ,oldState);
+                }
             }
         }
         
-        private void OnStateChange()
+        private void OnStateChange(FlowState _newState, FlowState _oldState)
         {
-            switch (CurrentState)
+            switch (_newState)
             {
                 case FlowState.Loading:
-                    GameManager.I.Init();
+                    GameManager.I.LoadingActions();
                     break;
-                case FlowState.MenuState:
-                    GameManager.I.UIMng.ActivateMenuPanel(true);
-                    GameManager.I.UIMng.ActivateGamePlayPanel(false);
-                    GameManager.I.UIMng.ActivateCameraPanel(false);
+                case FlowState.Menu:
+                    GameManager.I.MenuActions();
                     break;
-                case FlowState.GameplayState:
-                    // Fa partire il gioco
-                    GameManager.I.UIMng.ActivateGamePlayPanel(true);
-                    GameManager.I.UIMng.ActivateMenuPanel(false);
-                    GameManager.I.UIMng.ActivateCameraPanel(true);
-                    GameManager.I.UIMng.GamePlayCtrl.ActivateLateralGUI(true);
-                    GameManager.I.EnterGameplayMode();
+                case FlowState.EnterGameplay:
+                    GameManager.I.EnterGameplayActions();
+                    break;
+                case FlowState.Gameplay:
+                    if(_oldState == FlowState.Pause)
+                        GameManager.I.PauseActions(false);
                     break;
                 case FlowState.Pause:
-                    GameManager.I.UIMng.GamePlayCtrl.ActivatePausePanel(true);
+                    GameManager.I.PauseActions(true);
                     break;
                 case FlowState.ExitGameplay:
-                    GameManager.I.ExitGameplayMode();
-                    GameManager.I.UIMng.GamePlayCtrl.ActivateLateralGUI(false);
+                    GameManager.I.ExitGameplayActions();
                     break;
                 case FlowState.ExitGame:
-                    Application.Quit();
+                    GameManager.I.QuitGameActions();
                     break;
             }
         }
@@ -58,7 +56,7 @@ namespace DumbProject.Flow
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                CurrentState = FlowState.Pause;
+                ChageState(FlowState.Pause);
             }
         }
 
@@ -70,9 +68,11 @@ namespace DumbProject.Flow
 
     public enum FlowState
     {
+        None,
         Loading,
-        MenuState,
-        GameplayState,
+        Menu,
+        EnterGameplay,
+        Gameplay,
         Pause,
         ExitGameplay,
         ExitGame

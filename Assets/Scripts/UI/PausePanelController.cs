@@ -20,10 +20,9 @@ namespace DumbProject.UI
         private void OnEnable()
         {
             ResumeButton.onClick.AddListener(() => {
-                controller.ActivatePausePanel(false);
-                GameManager.I.ChageFlowState(Flow.FlowState.GameplayState);
+                GameManager.I.ChageFlowState(Flow.FlowState.Gameplay);
             });
-            ExitButton.onClick.AddListener(() => { controller.QuitGamePlay(); });
+            ExitButton.onClick.AddListener(() => { GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay); });
         }
 
         private void OnDisable()

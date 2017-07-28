@@ -41,15 +41,6 @@ namespace DumbProject.Generic
         public PoolManager PoolMng;
 
         FlowManager FlowMng;
-        bool IsGamePlaying;
-
-        private bool _isGamePaused;
-
-        public bool IsGamePaused
-        {
-            get { return _isGamePaused; }
-            set { _isGamePaused = value; }
-        }
 
         void Awake()
         {
@@ -79,21 +70,7 @@ namespace DumbProject.Generic
         }
 
         #region API
-        public void Init()
-        {
-            PoolMng = Instantiate(PoolManagerPrefab);
-            PoolMng.Setup();
-            UIMng = Instantiate(UIManagerPrefab);
-            UIMng.Init();
-            MainGridCtrl = Instantiate(GridControllerPrefab);
-            RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
-            RoomGenerator = Instantiate(RoomGenertorPrefab);
-            ItemManager = Instantiate(ItemManagerPrefab);
-            ItemManager.Init();
-            ChageFlowState(FlowState.MenuState);
-        }
-
-        #region ChangeStateCalls
+        #region Game Flow
         /// <summary>
         /// Funzione che innesca il cambio di stato
         /// </summary>
@@ -102,29 +79,64 @@ namespace DumbProject.Generic
             FlowMng.ChageState(_stateToSet);
         }
 
+        public void LoadingActions()
+        {
+            PoolMng = Instantiate(PoolManagerPrefab);
+            PoolMng.Setup();
+            UIMng = Instantiate(UIManagerPrefab);
+            UIMng.Init();
+            MainGridCtrl = Instantiate(GridControllerPrefab);
+            RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
+            RoomGenerator = Instantiate(RoomGenertorPrefab);
+            DungeonMng = Instantiate(DungeonManagerPrefab);
+            ItemManager = Instantiate(ItemManagerPrefab);
+            ItemManager.Init();
+            ChageFlowState(FlowState.Menu);
+        }
+
         /// <summary>
         /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
         /// </summary>
-        public void EnterGameplayMode()
+        public void EnterGameplayActions()
         {
-            if (!IsGamePlaying)
-            {
-                if (DungeonMng == null)
-                    DungeonMng = Instantiate(DungeonManagerPrefab);
-                DungeonMng.Setup();
-                MainGridCtrl.Setup();
-                RoomPreviewCtrl.Setup();
-                RoomGenerator.Setup();
-                IsGamePlaying = true;
-            }
+            DungeonMng.Setup();
+            MainGridCtrl.Setup();
+            RoomPreviewCtrl.Setup();
+            RoomGenerator.Setup();
+
+            UIMng.ActivateGamePlayPanel(true);
+            UIMng.ActivateMenuPanel(false);
+            UIMng.ActivateCameraPanel(true);
+            UIMng.GamePlayCtrl.ActivateLateralGUI(true);
+
+            ChageFlowState(FlowState.Gameplay);
+        }
+
+        public void MenuActions()
+        {
+            UIMng.ActivateMenuPanel(true);
+            UIMng.ActivateGamePlayPanel(false);
+            UIMng.ActivateCameraPanel(false);
+        }
+
+        public void PauseActions(bool _status)
+        {
+            UIMng.GamePlayCtrl.ActivatePausePanel(_status);
+            //if (_status)
+            //{
+            //    // azioni da fare quando si entra in pausa
+            //}
+            //else
+            //{
+            //    // azioni da fare quando si esce dalla pausa
+            //}
         }
 
         /// <summary>
         /// Pulisce gli elementi presenti nel gameplay
         /// </summary>
-        public void ExitGameplayMode()
+        public void ExitGameplayActions()
         {
-            //PoolMng.ForceAllPoolsReset();
             DungeonMng.Clean();
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
@@ -133,8 +145,13 @@ namespace DumbProject.Generic
             //------------------
             Destroy(DumbyToTest.gameObject);
             //------------------
-            IsGamePlaying = false;
-            ChageFlowState(FlowState.MenuState);
+            UIMng.GamePlayCtrl.ActivateLateralGUI(false);
+            ChageFlowState(FlowState.Menu);
+        }
+
+        public void QuitGameActions()
+        {
+            Application.Quit();
         }
         #endregion
         #endregion
