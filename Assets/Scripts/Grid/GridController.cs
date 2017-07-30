@@ -17,7 +17,7 @@ namespace DumbProject.Grid
 
         GridNode[,] Grid;
         List<NetNode> NetNodes = new List<NetNode>();
- 
+        
         #region API
         /// <summary>
         /// Setup della gliglia
