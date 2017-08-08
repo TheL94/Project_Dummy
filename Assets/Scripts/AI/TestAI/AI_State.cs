@@ -10,11 +10,21 @@ namespace Framework.Test.AI
         public AI_State DefaultTransition = null;
         public List<State_Action> Actions = new List<State_Action>();
 
+        protected bool isToSetUp = false;
+
         public void Init()
         {
             foreach (State_Action sAction in Actions)
             {
-                sAction.Init();
+                sAction.Init(isToSetUp);
+            }
+        }
+
+        public void Clean()
+        {
+            foreach (State_Action sAction in Actions)
+            {
+                sAction.Clean();
             }
         }
 
@@ -23,7 +33,7 @@ namespace Framework.Test.AI
             foreach (State_Action sAction in Actions)
             {
                 if (!sAction.LoopAction)
-                    sAction.Action.Act(_controller);
+                    sAction.Action.DoAct(_controller);
             }
         }
 
@@ -32,7 +42,7 @@ namespace Framework.Test.AI
             foreach (State_Action sAction in Actions)
             {
                 if(sAction.LoopAction)
-                    sAction.Action.Act(_controller);
+                    sAction.Action.DoAct(_controller);
             }
         }
     }
@@ -42,15 +52,41 @@ namespace Framework.Test.AI
     {
         public bool LoopAction;
         public AI_Action Action;
-        private AI_Action originalAction;
         public AI_State OnCompleteTransition;
 
-        public void Init()
-        {
-            if (originalAction == null)
-                originalAction = Action;
+        private AI_Action originalAction;
+        private AI_Action.OnLifeFlow onEndHandler;
 
-            Action = GameObject.Instantiate(originalAction);
+        public void Init(bool toSetUp)
+        {
+            if (toSetUp)
+            {
+                if (originalAction == null)
+                    originalAction = Action;
+
+                Action = GameObject.Instantiate(originalAction);
+                onEndHandler = new AI_Action.OnLifeFlow(HandleOnEnd);
+            }
+
+            if (onEndHandler != null)
+                Action.OnEnd += onEndHandler;
+        }
+
+        public void Clean()
+        {
+            if (onEndHandler != null)
+                Action.OnEnd -= onEndHandler;
+        }
+
+        ~State_Action()
+        {
+            Clean();
+        }
+
+        void HandleOnEnd(AI_Controller _controller)
+        {
+            if(OnCompleteTransition != null)
+                _controller.CurrentState = OnCompleteTransition;
         }
     }
 }
