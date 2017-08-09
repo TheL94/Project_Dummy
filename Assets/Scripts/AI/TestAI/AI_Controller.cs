@@ -10,19 +10,13 @@ namespace Framework.Test.AI
     /// </summary>
     public class AI_Controller : MonoBehaviour
     {
-        public bool IsActive = true;
+        public bool IsActive;
         public AI_State InitialDefaultState;
         private AI_State _currentState;
         public AI_State CurrentState
         {
             get { return _currentState; }
             set { _currentState = OnCurrentStateSet(CurrentState, value); }
-        }
-
-        //TODO: to be cleant after test phase
-        private void Start()
-        {
-            Init(InitialDefaultState);
         }
 
         public void Init(AI_State currentState)
@@ -32,6 +26,9 @@ namespace Framework.Test.AI
 
         private void Update()
         {
+            if(CurrentState == null)
+                Init(InitialDefaultState);
+
             if (IsActive)
             {
                 CurrentState.Run(this);

@@ -7,10 +7,9 @@ namespace Framework.Test.AI
     [CreateAssetMenu(menuName = "Test/AI/State/NewState")]
     public class AI_State : ScriptableObject
     {
-        public AI_State DefaultTransition = null;
         public List<State_Action> Actions = new List<State_Action>();
 
-        protected bool isToSetUp = false;
+        protected bool isToSetUp = true;
         protected bool isNoLoopActionsRunt = false;
 
         /// <summary>
@@ -22,7 +21,7 @@ namespace Framework.Test.AI
             {
                 sAction.Init(isToSetUp);
             }
-
+            isToSetUp = false;
             isNoLoopActionsRunt = false; //Reset the NoLoopActions runs
         }
         /// <summary>
@@ -47,7 +46,7 @@ namespace Framework.Test.AI
                 isNoLoopActionsRunt = true;
             }
 
-            ExecuteNoLoopActions(_controller);
+            ExecuteLoopActions(_controller);
         }
 
         void ExecuteNoLoopActions(AI_Controller _controller)
@@ -101,11 +100,6 @@ namespace Framework.Test.AI
         {
             if (onEndHandler != null)
                 Action.OnEnd -= onEndHandler;
-        }
-
-        ~State_Action()
-        {
-            Clean();
         }
 
         void HandleOnEnd(AI_Controller _controller)

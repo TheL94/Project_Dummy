@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System;
 using UnityEngine;
 
 namespace Framework.Test.AI
@@ -75,7 +75,7 @@ namespace Framework.Test.AI
                 AI_State stateInstance = null;
                 foreach (AI_State instance in stateInstances)
                 {
-                    if (instance.name == _state.name)
+                    if (instance.name.StartsWith(_state.name))
                         stateInstance = instance;
                 }
 
