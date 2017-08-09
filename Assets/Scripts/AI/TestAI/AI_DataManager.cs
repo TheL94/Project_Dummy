@@ -65,7 +65,11 @@ namespace Framework.Test.AI
             {
                 Controller = controller;
             }
-
+            /// <summary>
+            /// Get the instance of the State required. It creates a new one if missing.
+            /// </summary>
+            /// <param name="_state">Original State</param>
+            /// <returns>Instance of the original State</returns>
             public AI_State GetStateInstance(AI_State _state)
             {
                 AI_State stateInstance = null;
@@ -78,7 +82,6 @@ namespace Framework.Test.AI
                 if(stateInstance == null)
                 {
                     stateInstance = GameObject.Instantiate(_state);
-                    stateInstance.Init();
                     stateInstances.Add(stateInstance);
                 }
 

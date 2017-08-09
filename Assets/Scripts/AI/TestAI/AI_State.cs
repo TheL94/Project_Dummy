@@ -11,15 +11,23 @@ namespace Framework.Test.AI
         public List<State_Action> Actions = new List<State_Action>();
 
         protected bool isToSetUp = false;
+        protected bool isNoLoopActionsRunt = false;
 
+        /// <summary>
+        /// Initialize the state with starting settings
+        /// </summary>
         public void Init()
         {
             foreach (State_Action sAction in Actions)
             {
                 sAction.Init(isToSetUp);
             }
-        }
 
+            isNoLoopActionsRunt = false; //Reset the NoLoopActions runs
+        }
+        /// <summary>
+        /// Clean Actions instances in order to reset
+        /// </summary>
         public void Clean()
         {
             foreach (State_Action sAction in Actions)
@@ -27,8 +35,22 @@ namespace Framework.Test.AI
                 sAction.Clean();
             }
         }
+        /// <summary>
+        /// Executions of all the action, menaging the loops
+        /// </summary>
+        /// <param name="_controller"></param>
+        public void Run(AI_Controller _controller)
+        {
+            if (!isNoLoopActionsRunt)
+            {
+                ExecuteNoLoopActions(_controller);
+                isNoLoopActionsRunt = true;
+            }
 
-        public void ExecuteNoLoopActions(AI_Controller _controller)
+            ExecuteNoLoopActions(_controller);
+        }
+
+        void ExecuteNoLoopActions(AI_Controller _controller)
         {
             foreach (State_Action sAction in Actions)
             {
@@ -37,7 +59,7 @@ namespace Framework.Test.AI
             }
         }
 
-        public void ExecuteLoopActions(AI_Controller _controller)
+        void ExecuteLoopActions(AI_Controller _controller)
         {
             foreach (State_Action sAction in Actions)
             {
@@ -47,6 +69,9 @@ namespace Framework.Test.AI
         }
     }
 
+    /// <summary>
+    /// Class the add some property to the normal Action in order to make it easy manageable by the Unity Editor and State class.
+    /// </summary>
     [System.Serializable]
     public class State_Action
     {

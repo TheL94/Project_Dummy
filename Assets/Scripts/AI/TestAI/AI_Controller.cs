@@ -4,14 +4,25 @@ using UnityEngine;
 
 namespace Framework.Test.AI
 {
+    /// <summary>
+    /// It runs and controls the flow of the current State.
+    /// Also manage the state change.
+    /// </summary>
     public class AI_Controller : MonoBehaviour
     {
         public bool IsActive = true;
+        public AI_State InitialDefaultState;
         private AI_State _currentState;
         public AI_State CurrentState
         {
             get { return _currentState; }
-            set { OnCurrentStateChange(_currentState, value); }
+            set { _currentState = OnCurrentStateSet(CurrentState, value); }
+        }
+
+        //TODO: to be cleant after test phase
+        private void Start()
+        {
+            Init(InitialDefaultState);
         }
 
         public void Init(AI_State currentState)
@@ -23,19 +34,25 @@ namespace Framework.Test.AI
         {
             if (IsActive)
             {
-                CurrentState.ExecuteLoopActions(this);
+                CurrentState.Run(this);
             }
         }
 
-        private void OnCurrentStateChange(AI_State oldState, AI_State newState)
+        /// <summary>
+        /// Called on CurrentState Set to manage the shift correctly
+        /// </summary>
+        /// <param name="oldState">Previus CurrentState</param>
+        /// <param name="newState">Incoming State to Set</param>
+        private AI_State OnCurrentStateSet(AI_State oldState, AI_State newState)
         {
-            oldState.Clean();
+            if(oldState != null)
+                oldState.Clean(); //Clean the old State as soon as the state change in order to prevent multiple State changes called by events
 
             AI_State newStateInstance = AI_DataManager.GetState(this, newState);
-            Debug.Log(newStateInstance.name + " instance: " + newStateInstance.GetInstanceID());
+            newStateInstance.Init();
+            Debug.Log(newStateInstance.name + " instance: " + newStateInstance.GetInstanceID()); //TODO: cut this line off once finished testing phase
 
-            oldState = newStateInstance;
-            newStateInstance.ExecuteNoLoopActions(this);
+            return newStateInstance;
         }
     }
 }
