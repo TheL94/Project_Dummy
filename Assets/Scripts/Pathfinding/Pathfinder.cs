@@ -165,6 +165,7 @@ namespace Framework.Pathfinding
             }
             return false;
         }
+
         /// <summary>
         /// Convert a PathStep list to a INetworkable
         /// </summary>

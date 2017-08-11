@@ -28,6 +28,8 @@ namespace DumbProject.Generic
             {
                 if (_currentNetworkable == null)
                     _currentNetworkable = GameManager.I.MainGridCtrl.GetSpecificNetNode(transform.position);
+                if (_currentNetworkable == null)
+                    _currentNetworkable = GameManager.I.MainGridCtrl.GetSpecificGridNode(transform.position);
                 return _currentNetworkable;
             }
             set

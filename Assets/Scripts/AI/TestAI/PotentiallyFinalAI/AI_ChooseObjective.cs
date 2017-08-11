@@ -22,7 +22,12 @@ namespace Framework.AI
 
             if (objective != null)
             {
+                //Try to set as a NetNode in case of Doors
                 (_controller as Dumby).Objective = GameManager.I.MainGridCtrl.GetSpecificNetNode(objective.Transf.position);
+                //If still null, try to go for a NormalNode
+                if((_controller as Dumby).Objective == null)
+                    (_controller as Dumby).Objective = GameManager.I.MainGridCtrl.GetSpecificGridNode(objective.Transf.position);
+
                 return true;
             }
             else

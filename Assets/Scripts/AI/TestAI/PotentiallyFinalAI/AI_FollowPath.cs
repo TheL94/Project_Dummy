@@ -51,14 +51,14 @@ namespace Framework.AI
         void SmoothRotation(Vector3 objective)
         {
             Quaternion rotationToApply = Quaternion.LookRotation(objective - ctrlTransform.position);
-            rotationToApply = Quaternion.Slerp(ctrlTransform.rotation, rotationToApply, RotationSpeed);
+            rotationToApply = Quaternion.Slerp(ctrlTransform.rotation, rotationToApply, RotationSpeed * Time.deltaTime);
 
             ctrlTransform.rotation = rotationToApply;
         }
 
         void SmoothTranslation(Vector3 objective)
         {
-            Vector3 positionToApply = Vector3.Lerp(ctrlTransform.position, objective, RunSpeed);
+            Vector3 positionToApply = Vector3.Lerp(ctrlTransform.position, objective, RunSpeed * Time.deltaTime);
             ctrlTransform.position = positionToApply;
         }
     }

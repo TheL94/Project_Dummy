@@ -80,9 +80,6 @@ namespace DumbProject.Generic
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
-                if (DumbyToTest != null)
-                    Destroy(DumbyToTest.gameObject);
-
                 DumbyToTest = Instantiate<AI_Controller>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             }
         }
