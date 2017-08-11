@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "Test/AI/State/NewState")]
+    [CreateAssetMenu(menuName = "AI/State/NewState")]
     public class AI_State : ScriptableObject
     {
-        public List<State_Action> Actions = new List<State_Action>();
+        public List<ActionStructureForState> Actions = new List<ActionStructureForState>();
 
         protected bool isToSetUp = true;
         protected bool isNoLoopActionsRunt = false;
@@ -17,7 +17,7 @@ namespace Framework.Test.AI
         /// </summary>
         public void Init()
         {
-            foreach (State_Action sAction in Actions)
+            foreach (ActionStructureForState sAction in Actions)
             {
                 sAction.Init(isToSetUp);
             }
@@ -29,7 +29,7 @@ namespace Framework.Test.AI
         /// </summary>
         public void Clean()
         {
-            foreach (State_Action sAction in Actions)
+            foreach (ActionStructureForState sAction in Actions)
             {
                 sAction.Clean();
             }
@@ -51,7 +51,7 @@ namespace Framework.Test.AI
 
         void ExecuteNoLoopActions(AI_Controller _controller)
         {
-            foreach (State_Action sAction in Actions)
+            foreach (ActionStructureForState sAction in Actions)
             {
                 if (!sAction.LoopAction)
                     sAction.Action.DoAct(_controller);
@@ -60,7 +60,7 @@ namespace Framework.Test.AI
 
         void ExecuteLoopActions(AI_Controller _controller)
         {
-            foreach (State_Action sAction in Actions)
+            foreach (ActionStructureForState sAction in Actions)
             {
                 if(sAction.LoopAction)
                     sAction.Action.DoAct(_controller);
@@ -72,7 +72,7 @@ namespace Framework.Test.AI
     /// Class the add some property to the normal Action in order to make it easy manageable by the Unity Editor and State class.
     /// </summary>
     [System.Serializable]
-    public class State_Action
+    public class ActionStructureForState
     {
         public bool LoopAction;
         public AI_Action Action;

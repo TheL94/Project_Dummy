@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Generic;
+using Framework.AI;
 
 namespace DumbProject.Items
 {
@@ -21,7 +21,7 @@ namespace DumbProject.Items
         public Transform Transf { get { return transform; } }
 
         public abstract void Init(GenericDroppableData _data);
-        public virtual void Interact(AIActor _actor)
+        public virtual void Interact(AI_Controller _controller)
         {
             IsInteractable = false;
         }

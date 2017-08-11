@@ -1,7 +1,7 @@
 ﻿using DumbProject.Generic;
 using DumbProject.Grid;
 using Framework.Pathfinding;
-using System.Collections;
+using Framework.AI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,7 +99,7 @@ namespace DumbProject.Rooms
             set { _isInteractable = value; }
         }
 
-        public void Interact(AIActor _actor)
+        public void Interact(AI_Controller _controller)
         {
             foreach (Cell cell in AdjacentCells)
             {
@@ -121,7 +121,7 @@ namespace DumbProject.Rooms
 
             //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
             //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
-            _actor.INetworkableObjective = RelativeNetNode.Links[1];
+            //_controller.INetworkableObjective = RelativeNetNode.Links[1];
             IsInteractable = false;
         }
         #endregion

@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
     /// <summary>
     /// Called to recive instances of the AI_State. It also manages who need those Datas and eventually create new instances

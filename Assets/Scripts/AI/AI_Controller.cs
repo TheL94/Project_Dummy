@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
     /// <summary>
     /// It runs and controls the flow of the current State.
