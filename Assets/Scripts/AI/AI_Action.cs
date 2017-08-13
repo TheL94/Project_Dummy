@@ -16,6 +16,9 @@ namespace Framework.AI
         protected abstract bool Act(AI_Controller _controller);
 
         public delegate void OnLifeFlow(AI_Controller _controller);
+        /// <summary>
+        /// Called on succesful end of the Action
+        /// </summary>
         public event OnLifeFlow OnEnd;
     }
 }

@@ -10,6 +10,7 @@ namespace Framework.AI
     {
         public float RunSpeed;
         public float RotationSpeed;
+        public float TurnRadius;
         Transform ctrlTransform;
 
         protected override bool Act(AI_Controller _controller)
@@ -41,7 +42,7 @@ namespace Framework.AI
             SmoothTranslation(_pathfinder.Path[0].spacePosition);
 
             //Each time a node is reached is set as current and removed from the current Path
-            if (Vector3.Distance(_pathfinder.Path[0].spacePosition, ctrlTransform.position) <= 0)
+            if (Vector3.Distance(_pathfinder.Path[0].spacePosition, ctrlTransform.position) <= TurnRadius)
             {
                 _pathfinder.CurrentNetworkable = _pathfinder.Path[0];
                 _pathfinder.Path = _pathfinder.Path.Skip(1).ToArray();
