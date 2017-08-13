@@ -14,7 +14,7 @@ namespace Framework.AI
 
         protected override bool Act(AI_Controller _controller)
         {
-            Room room = (_controller as Dumby).CurrentRoom;
+            Room room = GameManager.I.DungeonMng.ActualInExplorationRoom;
             IInteractable objective = SearchInRoom(room);
 
             if (objective == null)
