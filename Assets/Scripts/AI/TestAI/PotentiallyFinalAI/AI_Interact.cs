@@ -1,5 +1,6 @@
 ﻿using DumbProject.Rooms;
 using DumbProject.Generic;
+using DumbProject;
 using DumbProject.Grid;
 using Framework.Pathfinding;
 using System.Collections.Generic;
@@ -13,16 +14,16 @@ namespace Framework.AI
         protected override bool Act(AI_Controller _controller)
         {
             INetworkable objPosition = (_controller as Dumby).CurrentNetworkable;
-            IInteractable obj = null;
+            IInteractable obj = Converter.INetworkableToIInteractable(objPosition);
 
-            if(objPosition.GetType() == typeof(NetNode))
-            {
-                obj = (objPosition as NetNode).RelativeInteractable;
-            }
-            else if(objPosition.GetType() == typeof(Cell))
-            {
-                obj = (objPosition as Cell).ActualInteractable;
-            }
+            //if(objPosition.GetType() == typeof(NetNode))
+            //{
+            //    obj = (objPosition as NetNode).RelativeInteractable;
+            //}
+            //else if(objPosition.GetType() == typeof(Cell))
+            //{
+            //    obj = (objPosition as Cell).ActualInteractable;
+            //}
 
             if(obj == null)
             {
