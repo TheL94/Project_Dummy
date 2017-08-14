@@ -18,7 +18,10 @@ namespace Framework.AI
             IInteractable objective = SearchInRoom(room);
 
             if (objective == null)
+            {
+                GameManager.I.DungeonMng.UpdateRoomStatus(room, ExplorationStatus.Explored);
                 objective = SearchInDungeon((_controller as Dumby).CurrentNetworkable);
+            }
 
             if (objective != null)
             {
