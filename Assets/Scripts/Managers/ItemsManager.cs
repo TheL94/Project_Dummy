@@ -45,7 +45,11 @@ namespace DumbProject.Items
                 percentageSum += _data.PercentageToSpawn;
             }
 
-            AssignPercentageToData();
+            // Se la lista di strutture è vuota la riempie.
+            if (DatasWithPercentage.Count == 0)
+            {
+                AssignPercentageToData(); 
+            }
         }
 
         /// <summary>
