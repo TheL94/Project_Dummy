@@ -162,9 +162,14 @@ namespace DumbProject.Editors
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Time to spend");
-            GUILayout.Space(80);
+            GUILayout.Space(130);
             (Data as GenericDroppableData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericDroppableData).TimeToSpend);
-            GUILayout.Space(80);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Percentage to pawn");
+            GUILayout.Space(100);
+            (Data as GenericDroppableData).PercentageToSpawn = EditorGUILayout.FloatField((Data as GenericDroppableData).PercentageToSpawn);
             GUILayout.EndHorizontal();
 
             if (GUI.changed)

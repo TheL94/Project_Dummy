@@ -9,11 +9,14 @@ namespace DumbProject.Items
     public class ItemsManager : MonoBehaviour
     {
         public List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
+        List<DataPercentage> DatasWithPercentage = new List<DataPercentage>();
 
         List<GenericDroppableData> itemDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> enemyDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> trapDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> timeWasterDatas = new List<GenericDroppableData>();
+
+        float percentageSum;
 
         public void Init()
         {
@@ -38,17 +41,45 @@ namespace DumbProject.Items
                 //{
                 //    timeWasterDatas.Add(Instantiate(_data));
                 //}
+
+                percentageSum += _data.PercentageToSpawn;
+            }
+
+            AssignPercentageToData();
+        }
+
+        /// <summary>
+        /// Per ogni elemento contenuto nella lista AllDatas crea una nuova struttura DataPercentage con il data e il calcolo della sua percentuale di spawn
+        /// </summary>
+        void AssignPercentageToData()
+        {
+            foreach (GenericDroppableData _data in AllDatas)
+            {
+                DatasWithPercentage.Add(new DataPercentage() { data = _data, percentage = ( _data.PercentageToSpawn * 100) / percentageSum });
             }
         }
 
         /// <summary>
-        /// Ritorna l'item da istanziare nella ui
+        /// Ritorna l'item da istanziare nella ui in base alla percentuale di spawn
         /// </summary>
         /// <returns></returns>
         GenericDroppableData ChooseItem()
         {
-            int randNum = Random.Range(0, itemDatas.Count);
-            return itemDatas[randNum];
+            //int randNum = Random.Range(0, itemDatas.Count);
+            //return itemDatas[randNum];
+
+            float minValue = 0;
+            float randNum = Random.Range(0f, 100f);
+
+            foreach (DataPercentage _data in DatasWithPercentage)
+            {
+                if (randNum > minValue && randNum <= (minValue + _data.percentage))
+                    return _data.data;
+                else
+                    minValue += _data.percentage;
+            }
+            Debug.LogError("No Item to instantiate");
+            return null;
         }
 
         /// <summary>
@@ -129,5 +160,14 @@ namespace DumbProject.Items
             item.Init(_data);
             return item;
         }
+    }
+
+    /// <summary>
+    /// Struttura che contiente il data e la relativa percentuale (usata per la scelta dell'item con percentuale di spawn)
+    /// </summary>
+    struct DataPercentage
+    {
+        public GenericDroppableData data;
+        public float percentage;
     }
 }
