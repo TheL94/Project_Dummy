@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "Test/AI/State/NewAction/DoWaitForInput")]
+    [CreateAssetMenu(menuName = "AI/State/NewAction/DoWaitForInput")]
     public class AI_DoWaitForKeyboardInput : AI_Action
     {
         public KeyCode InputToWaitFor;

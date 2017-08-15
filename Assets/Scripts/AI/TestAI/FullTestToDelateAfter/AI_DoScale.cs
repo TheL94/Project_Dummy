@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "Test/AI/State/NewAction/DoScale")]
+    [CreateAssetMenu(menuName = "AI/State/NewAction/DoScale")]
     public class AI_DoScale : AI_Action
     {
         public float ScaleMultiplier;

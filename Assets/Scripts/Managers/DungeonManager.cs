@@ -13,6 +13,7 @@ namespace DumbProject.Generic
         public DropController DropCtrl;
         [HideInInspector]
         public List<Room> RoomInDungeon;
+        public Room ActualInExplorationRoom { get; protected set; }
 
         #region API
         public void Setup()
@@ -131,12 +132,18 @@ namespace DumbProject.Generic
         {
             _room.StatusOfExploration = _newStatus;
             _room.LinkCells();
+            //Eventually set the current inExplorationRoom
+            if (_room.StatusOfExploration == ExplorationStatus.InExploration)
+                ActualInExplorationRoom = _room;
 
             List<Room> adjRooms = GetAdjacentRoomsByDoors(_room);
             foreach (Room room in adjRooms)
             {
                 room.StatusOfExploration = EvaluateRoomStatus(room, GetAdjacentRoomsByDoors(room));
                 room.LinkCells();
+                //Eventually set the current inExplorationRoom
+                if (room.StatusOfExploration == ExplorationStatus.InExploration)
+                    ActualInExplorationRoom = room;
             }
         }
     }

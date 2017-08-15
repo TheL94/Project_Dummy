@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Framework.AI;
 using UnityEngine;
 
 namespace DumbProject.Generic
@@ -8,6 +9,6 @@ namespace DumbProject.Generic
     {
         bool IsInteractable { get; set; }
         Transform Transf { get; }
-        void Interact(AIActor _actor);
+        void Interact(AI_Controller _controller);
     }
 }

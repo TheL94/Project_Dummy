@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.Test.AI
+namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "Test/AI/State/NewAction/DoPaint")]
+    [CreateAssetMenu(menuName = "AI/State/NewAction/DoPaint")]
     public class AI_DoPaint : AI_Action
     {
         public Color ColorToApply;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Framework.AI;
 using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
@@ -13,7 +14,7 @@ namespace DumbProject.Generic
     public class GameManager : MonoBehaviour
     {
         public static GameManager I;
-        public Dumby DumbyToTest;
+        public AI_Controller DumbyToTest;
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
         public UIManager UIManagerPrefab;
@@ -61,11 +62,7 @@ namespace DumbProject.Generic
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
-                if (DumbyToTest != null)
-                    Destroy(DumbyToTest.gameObject);
-
-                DumbyToTest = Instantiate<Dumby>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
-                DumbyToTest.Setup();
+                DumbyToTest = Instantiate<AI_Controller>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             }
         }
 
