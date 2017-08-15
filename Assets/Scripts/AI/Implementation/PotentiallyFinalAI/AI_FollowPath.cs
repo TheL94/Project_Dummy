@@ -59,7 +59,8 @@ namespace Framework.AI
 
         void SmoothTranslation(Vector3 objective)
         {
-            Vector3 positionToApply = Vector3.Lerp(ctrlTransform.position, objective, RunSpeed * Time.deltaTime);
+            //Vector3 positionToApply = Vector3.Lerp(ctrlTransform.position, objective, RunSpeed * Time.deltaTime);
+            Vector3 positionToApply = ctrlTransform.position + (objective - ctrlTransform.position).normalized * Time.deltaTime * RunSpeed;
             ctrlTransform.position = positionToApply;
         }
     }
