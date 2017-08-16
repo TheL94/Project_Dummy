@@ -7,6 +7,7 @@ namespace DumbProject.Items
     [System.Serializable]
     public class GenericDroppableData : ScriptableObject
     {
+        public float PercentageToSpawn;
         public GenericType Type;
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
