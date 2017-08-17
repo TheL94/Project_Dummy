@@ -9,6 +9,8 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
+        public bool ForceVerticalUI;
+
         [HideInInspector]
         public UIMenuController MenuController;
         [HideInInspector]
@@ -23,9 +25,14 @@ namespace DumbProject.UI
 
         const string PrefabPath = "Prefabs/UI/";
 
-        private void Update()
+        private void Start()
         {
             UpdateUIOrientation();
+        }
+
+        private void Update()
+        {
+            //UpdateUIOrientation();
         }
 
         /// <summary>
@@ -36,9 +43,16 @@ namespace DumbProject.UI
             if (deviceOrientation != DeviceCurrentOrientation)
             {
                 if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-                    deviceOrientation = ScreenOrientation.Landscape;
-                else
+                {
+                    if (ForceVerticalUI)
+                        deviceOrientation = ScreenOrientation.Portrait;
+                    else
+                        deviceOrientation = ScreenOrientation.Landscape;
+                }
+                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                {
                     deviceOrientation = DeviceCurrentOrientation;
+                }
                 OnScreenOrientationChange();
             }
         }
@@ -59,7 +73,7 @@ namespace DumbProject.UI
             MenuController.Init(this);
             // setup gameplay panel
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
-            GamePlayCtrl.Init(this);
+            GamePlayCtrl.Init(this);          
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
@@ -67,7 +81,10 @@ namespace DumbProject.UI
             RectTranformValues values = null;
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {
-                values = _data.orizontalRectValues;
+                if (ForceVerticalUI)
+                    values = _data.verticalRectValues;
+                else
+                    values = _data.orizontalRectValues;
             }
             else if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
             {
