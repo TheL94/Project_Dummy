@@ -21,7 +21,7 @@ namespace DumbProject.Items
         public void Init()
         {
             // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata al primo confronto che trova.
-            // Possibile errore nel tipe di scriptable 
+            // Possibile errore nel tipo di scriptable 
             foreach (GenericDroppableData _data in AllDatas)
             {
                 //if (_data.GetType() == typeof(EnemyData))

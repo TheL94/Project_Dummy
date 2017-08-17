@@ -9,9 +9,6 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
-        bool _isVertical;
-        public bool IsVertical { get { return _isVertical; } set { _isVertical = value; } }
-
         [HideInInspector]
         public UIMenuController MenuController;
         [HideInInspector]
@@ -24,19 +21,25 @@ namespace DumbProject.UI
 
         public Vector2 DeviceReferenceResolution { get { return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height); } }
 
-        string PrefabPath = "Prefabs/UI/";
+        const string PrefabPath = "Prefabs/UI/";
 
         private void Update()
         {
             UpdateUIOrientation();
         }
 
+        /// <summary>
+        /// Funzione che scatena l'evento che fa aggiornare la ui se cambia l'orientamento del dispositivo
+        /// </summary>
         void UpdateUIOrientation()
         {
             if (deviceOrientation != DeviceCurrentOrientation)
             {
+                if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+                    deviceOrientation = ScreenOrientation.Landscape;
+                else
+                    deviceOrientation = DeviceCurrentOrientation;
                 OnScreenOrientationChange();
-                deviceOrientation = DeviceCurrentOrientation;
             }
         }
 
@@ -104,7 +107,7 @@ namespace DumbProject.UI
         }
 
         /// <summary>
-        /// Controlla il dispositivo su cui è setta di conseguenza il tipo di input per la camera 
+        /// Controlla il dispositivo su cui è e setta di conseguenza il tipo di input per la camera 
         /// </summary>
         void SetupCameraByEnvironment(GameObject _camInputObj)
         {
@@ -120,7 +123,13 @@ namespace DumbProject.UI
                 Debug.LogWarning("Device Type Not Valid");
         }
 
+        /// <summary>
+        /// Delegato che gestisce gli eventi relativi al layout
+        /// </summary>
         public delegate void LayoutEvent();
+        /// <summary>
+        /// Evento che viene scatenato al cambio di orientamento del dispositivo
+        /// </summary>
         public LayoutEvent OnScreenOrientationChange;
     }
 

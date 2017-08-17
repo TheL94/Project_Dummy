@@ -59,6 +59,7 @@ namespace DumbProject.UI
         public void ActivatePausePanel(bool _status)
         {
             PausePanel.gameObject.SetActive(_status);
+            PauseButton.gameObject.SetActive(!_status);
         }
 
         private void OnEnable()

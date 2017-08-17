@@ -143,6 +143,7 @@ namespace DumbProject.Generic
             Destroy(DumbyToTest.gameObject);
             //------------------
             UIMng.GamePlayCtrl.ActivateLateralGUI(false);
+            UIMng.GamePlayCtrl.ActivatePausePanel(false);
             ChageFlowState(FlowState.Menu);
         }
 

@@ -11,7 +11,10 @@ namespace DumbProject.UI
 
         void UpdateRectTransform()
         {
-            GameManager.I.UIMng.SetRectTransformParametersByData(transform as RectTransform, UIObjectData);
+            if (UIObjectData != null)
+                GameManager.I.UIMng.SetRectTransformParametersByData(transform as RectTransform, UIObjectData);
+            else
+                Debug.LogWarning("Missing UI Data on " + name + " object !");
         }
 
         private void OnEnable()
@@ -23,7 +26,6 @@ namespace DumbProject.UI
         {
             GameManager.I.UIMng.OnScreenOrientationChange -= UpdateRectTransform;
         }
-
     }
 }
 
