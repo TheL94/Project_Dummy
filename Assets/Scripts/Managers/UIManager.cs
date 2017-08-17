@@ -25,14 +25,9 @@ namespace DumbProject.UI
 
         const string PrefabPath = "Prefabs/UI/";
 
-        private void Start()
-        {
-            UpdateUIOrientation();
-        }
-
         private void Update()
         {
-            //UpdateUIOrientation();
+            UpdateUIOrientation();
         }
 
         /// <summary>
