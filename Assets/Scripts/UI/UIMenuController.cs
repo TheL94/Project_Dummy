@@ -7,8 +7,8 @@ namespace DumbProject.UI
 {
     public class UIMenuController : MonoBehaviour
     {
-        public GameObject MainMenuPanel;
-        public GameObject CreditsPanel;
+        public MainMenuController MainMenuPanel;
+        public CreditsMenuController CreditsPanel;
 
         UIManager uiManager;
 
@@ -16,6 +16,10 @@ namespace DumbProject.UI
         public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
+            MainMenuPanel.Init(this);
+            CreditsPanel.Init(this);
+
+            ShowMainMenu();
         }
 
         #region MainMenuAPI
@@ -26,22 +30,23 @@ namespace DumbProject.UI
 
         public void ShowCredits()
         {
-            CreditsPanel.SetActive(true);
-            MainMenuPanel.SetActive(false);
+            CreditsPanel.gameObject.SetActive(true);
+            MainMenuPanel.gameObject.SetActive(false);
         }
 
         public void QuitApplication()
         {
             GameManager.I.ChageFlowState(Flow.FlowState.ExitGame);
         }
-
-
-        #endregion
         #endregion
 
-        void SetupMainMenuPanel(UIPositionData _positionData)
+        #region CreditsMenuAPI
+        public void ShowMainMenu()
         {
-            uiManager.SetRectTransformParametersByData(MainMenuPanel.transform as RectTransform, _positionData);
+            MainMenuPanel.gameObject.SetActive(true);
+            CreditsPanel.gameObject.SetActive(false);
         }
+        #endregion
+        #endregion
     }
 }

@@ -21,9 +21,7 @@ namespace DumbProject.UI
 
             LateralGUI.Init(this);
             PausePanel.Init(this);
-            ActivateLateralGUI(false);
-            ActivatePausePanel(false);
-            InitPauseButton();
+            //InitPauseButton();
         }
 
         void InitPauseButton()

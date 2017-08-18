@@ -68,7 +68,13 @@ namespace DumbProject.UI
             MenuController.Init(this);
             // setup gameplay panel
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
-            GamePlayCtrl.Init(this);          
+            GamePlayCtrl.Init(this);
+
+            UpdateUIOrientation();
+
+            GamePlayCtrl.ActivateLateralGUI(false);
+            GamePlayCtrl.ActivatePausePanel(false);
+
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
