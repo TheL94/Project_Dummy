@@ -72,9 +72,8 @@ namespace DumbProject.UI
 
             UpdateUIOrientation();
 
-            GamePlayCtrl.ActivateLateralGUI(false);
-            GamePlayCtrl.ActivatePausePanel(false);
-
+            MenuController.Setup();
+            GamePlayCtrl.Setup();
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)

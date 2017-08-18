@@ -24,6 +24,13 @@ namespace DumbProject.UI
             //InitPauseButton();
         }
 
+        public void Setup()
+        {
+            ActivateLateralGUI(false);
+            ActivatePausePanel(false);
+            ActivatePauseButton(false);
+        }
+
         void InitPauseButton()
         {
             float xMin = -3f;
@@ -42,7 +49,6 @@ namespace DumbProject.UI
             uiManager.SetRectTransformParametersByValues(PauseButton.transform as RectTransform, anchorMin, anchorMax, Vector2.zero, Vector2.zero);
         }
 
-        #region PauseRegion
         /// <summary>
         /// Attiva il pannello della GUI laterale
         /// </summary>
@@ -60,6 +66,15 @@ namespace DumbProject.UI
             PauseButton.gameObject.SetActive(!_status);
         }
 
+        /// <summary>
+        /// Attiva il bottone della pausa
+        /// </summary>
+        public void ActivatePauseButton(bool _status)
+        {
+            PauseButton.gameObject.SetActive(_status);
+        }
+        #endregion
+
         private void OnEnable()
         {
             PauseButton.onClick.AddListener(() => { GameManager.I.ChageFlowState(Flow.FlowState.Pause); });
@@ -69,8 +84,5 @@ namespace DumbProject.UI
         {           
             PauseButton.onClick.RemoveAllListeners();
         }
-
-        #endregion
-        #endregion
     }
 }

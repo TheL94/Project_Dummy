@@ -22,6 +22,12 @@ namespace DumbProject.UI
             ShowMainMenu();
         }
 
+        public void Setup()
+        {
+            MainMenuPanel.gameObject.SetActive(true);
+            CreditsPanel.gameObject.SetActive(false);
+        }
+
         #region MainMenuAPI
         public void PlayGame()
         {

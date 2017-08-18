@@ -13,7 +13,9 @@ namespace DumbProject.Generic
     [RequireComponent(typeof(FlowManager))]
     public class GameManager : MonoBehaviour
     {
+        [HideInInspector]
         public static GameManager I;
+
         public AI_Controller DumbyToTest;
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
@@ -25,6 +27,15 @@ namespace DumbProject.Generic
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
         public FlowState CurrentState { get { return FlowMng.CurrentState; } }
+        public bool IsGamePaused {
+            get
+            {
+                if (CurrentState == FlowState.Pause)
+                    return true;
+                else
+                    return false;
+            }
+        }
 
         [HideInInspector]
         public RoomGenerator RoomGenerator;
@@ -105,6 +116,7 @@ namespace DumbProject.Generic
             UIMng.ActivateMenuPanel(false);
             UIMng.ActivateCameraPanel(true);
             UIMng.GamePlayCtrl.ActivateLateralGUI(true);
+            UIMng.GamePlayCtrl.ActivatePauseButton(true);
 
             ChageFlowState(FlowState.Gameplay);
         }
@@ -151,6 +163,10 @@ namespace DumbProject.Generic
         {
             Application.Quit();
         }
+        #endregion
+
+        #region Gameplay Rules
+        // TODO : aggiungere controllo condizioni di vittoria sconfitta
         #endregion
         #endregion
     }
