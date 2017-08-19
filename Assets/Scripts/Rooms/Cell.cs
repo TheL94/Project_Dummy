@@ -60,7 +60,7 @@ namespace DumbProject.Rooms
             }
         }
 
-        #region Cell Elements Instantiation
+        #region Cell Elements Placing
         /// <summary>
         /// Crea il contenitore del pavimento
         /// </summary>
@@ -103,9 +103,9 @@ namespace DumbProject.Rooms
         {
             _newEdgeObj.transform.localPosition = _position;
             _newEdgeObj.transform.parent = transform;
-            Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? 
-                Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
-            _newEdgeObj.transform.rotation = newRotation;
+            //Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? 
+            //    Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
+            //_newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
             Edges.Add(newEdge);
@@ -173,20 +173,7 @@ namespace DumbProject.Rooms
         {
             foreach (Edge edge in Edges)
             {
-                if (edge.name == "RightEdge" || edge.name == "LeftEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), Quaternion.identity);
-                }
-                else if (edge.name == "UpEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), 
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
-                }
-                else if (edge.name == "DownEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall),
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
-                }
+                edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), Quaternion.LookRotation(transform.position - edge.transform.position));
             }
         }
         #endregion
@@ -232,28 +219,16 @@ namespace DumbProject.Rooms
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
+            newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.LookRotation(transform.position - newDoor.transform.position));
+
             if (_edge.name == "RightEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 newDoor.name = "RightDoor";
-            }
             else if (_edge.name == "LeftEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 newDoor.name = "LeftDoor";
-            }
             else if (_edge.name == "UpEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "UpDoor";
-            }
             else if (_edge.name == "DownEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
-            }
 
             Doors.Add(newDoor);
             return true;
