@@ -61,7 +61,7 @@ namespace DumbProject.Rooms
         }
 
         // variabile usata per posizionare gli elementi della cella
-        float distance { get { return RelativeNode.RelativeGrid.CellSize / 2; } }
+        float Distance { get { return RelativeNode.RelativeGrid.CellSize / 2; } }
 
         #region Cell Elements Placing
         /// <summary>
@@ -85,16 +85,16 @@ namespace DumbProject.Rooms
             GameObject newEdgeObj;
 
             newEdgeObj = new GameObject("RightEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + distance, transform.position.y, transform.position.z));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z));
 
             newEdgeObj = new GameObject("LeftEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x - distance, transform.position.y, transform.position.z));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z));
 
             newEdgeObj = new GameObject("UpEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z + distance));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z + Distance));
 
             newEdgeObj = new GameObject("DownEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z - distance));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z - Distance));
         }
 
         /// <summary>
@@ -124,28 +124,28 @@ namespace DumbProject.Rooms
             newAngleObj = new GameObject("NE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z + Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("SE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z - Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("NO_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z + Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("SO_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z - Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
         }
