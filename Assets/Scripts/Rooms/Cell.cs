@@ -60,7 +60,10 @@ namespace DumbProject.Rooms
             }
         }
 
-        #region Cell Elements Instantiation
+        // variabile usata per posizionare gli elementi della cella
+        float Distance { get { return RelativeNode.RelativeGrid.CellSize / 2; } }
+
+        #region Cell Elements Placing
         /// <summary>
         /// Crea il contenitore del pavimento
         /// </summary>
@@ -80,19 +83,18 @@ namespace DumbProject.Rooms
         void InstantiateEdges()
         {
             GameObject newEdgeObj;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newEdgeObj = new GameObject("RightEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + distance, transform.position.y, transform.position.z));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z));
 
             newEdgeObj = new GameObject("LeftEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x - distance, transform.position.y, transform.position.z));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z));
 
             newEdgeObj = new GameObject("UpEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z + distance));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z + Distance));
 
             newEdgeObj = new GameObject("DownEdge");
-            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z - distance));
+            SetupNewEdge(newEdgeObj, new Vector3(transform.position.x, transform.position.y, transform.position.z - Distance));
         }
 
         /// <summary>
@@ -103,9 +105,9 @@ namespace DumbProject.Rooms
         {
             _newEdgeObj.transform.localPosition = _position;
             _newEdgeObj.transform.parent = transform;
-            Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? 
-                Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
-            _newEdgeObj.transform.rotation = newRotation;
+            //Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? 
+            //    Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
+            //_newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
             Edges.Add(newEdge);
@@ -118,33 +120,32 @@ namespace DumbProject.Rooms
         {
             GameObject newAngleObj;
             Angle newAngle;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newAngleObj = new GameObject("NE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z + Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("SE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x + Distance, transform.position.y, transform.position.z - Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("NO_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z + distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z + Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
 
             newAngleObj = new GameObject("SO_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
             newAngle.Setup(this);
-            newAngleObj.transform.localPosition = new Vector3(transform.position.x - distance, transform.position.y, transform.position.z - distance);
+            newAngleObj.transform.localPosition = new Vector3(transform.position.x - Distance, transform.position.y, transform.position.z - Distance);
             newAngleObj.transform.parent = transform;
             Angles.Add(newAngle);
         }
@@ -173,20 +174,7 @@ namespace DumbProject.Rooms
         {
             foreach (Edge edge in Edges)
             {
-                if (edge.name == "RightEdge" || edge.name == "LeftEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), Quaternion.identity);
-                }
-                else if (edge.name == "UpEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), 
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - edge.transform.position));
-                }
-                else if (edge.name == "DownEdge")
-                {
-                    edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall),
-                        Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - edge.transform.position));
-                }
+                edge.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Wall), Quaternion.LookRotation(transform.position - edge.transform.position));
             }
         }
         #endregion
@@ -232,28 +220,16 @@ namespace DumbProject.Rooms
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
+            newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.LookRotation(transform.position - newDoor.transform.position));
+
             if (_edge.name == "RightEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 newDoor.name = "RightDoor";
-            }
             else if (_edge.name == "LeftEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch), Quaternion.identity);
                 newDoor.name = "LeftDoor";
-            }
             else if (_edge.name == "UpEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(Angles.Find(a => a.name == "NE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "UpDoor";
-            }
             else if (_edge.name == "DownEdge")
-            {
-                newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject(ObjType.Arch),
-                    Quaternion.LookRotation(Angles.Find(a => a.name == "SE_Angle").transform.position - newDoor.transform.position));
                 newDoor.name = "DownDoor";
-            }
 
             Doors.Add(newDoor);
             return true;

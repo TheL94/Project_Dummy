@@ -24,6 +24,7 @@ namespace Framework.AI
             isToSetUp = false;
             isNoLoopActionsRunt = false; //Reset the NoLoopActions runs
         }
+
         /// <summary>
         /// Clean Actions instances in order to reset
         /// </summary>
