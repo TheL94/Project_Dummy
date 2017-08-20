@@ -80,7 +80,7 @@ namespace DumbProject.Rooms
         void InstantiateEdges()
         {
             GameObject newEdgeObj;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
+            float distance = RelativeNode.RelativeGrid.CellSize / 2;
 
             newEdgeObj = new GameObject("RightEdge");
             SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + distance, transform.position.y, transform.position.z));
@@ -118,7 +118,7 @@ namespace DumbProject.Rooms
         {
             GameObject newAngleObj;
             Angle newAngle;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
+            float distance = RelativeNode.RelativeGrid.CellSize / 2;
 
             newAngleObj = new GameObject("NE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
