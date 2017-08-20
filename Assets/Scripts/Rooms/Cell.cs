@@ -60,6 +60,9 @@ namespace DumbProject.Rooms
             }
         }
 
+        // variabile usata per posizionare gli elementi della cella
+        float distance { get { return RelativeNode.RelativeGrid.CellSize / 2; } }
+
         #region Cell Elements Placing
         /// <summary>
         /// Crea il contenitore del pavimento
@@ -80,7 +83,6 @@ namespace DumbProject.Rooms
         void InstantiateEdges()
         {
             GameObject newEdgeObj;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newEdgeObj = new GameObject("RightEdge");
             SetupNewEdge(newEdgeObj, new Vector3(transform.position.x + distance, transform.position.y, transform.position.z));
@@ -118,7 +120,6 @@ namespace DumbProject.Rooms
         {
             GameObject newAngleObj;
             Angle newAngle;
-            int distance = (int)RelativeNode.RelativeGrid.CellSize / 2;
 
             newAngleObj = new GameObject("NE_Angle");
             newAngle = newAngleObj.AddComponent<Angle>();
