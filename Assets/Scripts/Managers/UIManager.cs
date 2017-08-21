@@ -25,7 +25,7 @@ namespace DumbProject.UI
 
         const string PrefabPath = "Prefabs/UI/";
 
-        private void Update()
+        private void LateUpdate()
         {
             UpdateUIOrientation();
         }
@@ -105,7 +105,7 @@ namespace DumbProject.UI
             _rcTransform.anchorMin = _anchorMin;
             _rcTransform.anchorMax = _anchorMax;
             _rcTransform.offsetMin = _offsetMin;
-            _rcTransform.offsetMax = _offsetMax;
+            _rcTransform.offsetMax = new Vector2(- _offsetMax.x, - _offsetMax.y);
         }
 
         public void ActivateMenuPanel(bool _status)
