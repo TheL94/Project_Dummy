@@ -10,12 +10,19 @@ namespace DumbProject.Rooms
     public class RoomGenerator : MonoBehaviour
     {
         public RoomData MainRoomTypesData;
+        public RoomData ObjectiveRoomTypesData;
         public RoomData RoomTypesData;
+
+        public float Distance;
+
         [HideInInspector]
         public Room FirstRoom;
+        [HideInInspector]
+        public Room ObjectiveRoom;
 
-        RoomData MainRoomTypesInstances;
-        RoomData RoomTypesInstances;
+        RoomData MainRoomTypesInstance;
+        RoomData ObjectiveRoomTypesInstance;
+        RoomData RoomTypesInstance;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
         //Variabile usata solo per differenziare il nome delle room 
@@ -23,19 +30,24 @@ namespace DumbProject.Rooms
 
         public void Setup()
         {
-            if(MainRoomTypesInstances == null)
-                MainRoomTypesInstances = Instantiate(MainRoomTypesData);
+            if(MainRoomTypesInstance == null)
+                MainRoomTypesInstance = Instantiate(MainRoomTypesData);
 
-            if (RoomTypesInstances == null)
-                RoomTypesInstances = Instantiate(RoomTypesData);
+            if (ObjectiveRoomTypesInstance == null)
+                ObjectiveRoomTypesInstance = Instantiate(ObjectiveRoomTypesData);
+
+            if (RoomTypesInstance == null)
+                RoomTypesInstance = Instantiate(RoomTypesData);
 
             //if (SpawnsAssociations.Count == 0)
             SetupSpawnsAssociations();
 
-            FirstRoom = InstantiateFirstRoom(MainRoomTypesInstances);
+            FirstRoom = InstantiateFirstRoom(MainRoomTypesInstance);
+
+            ObjectiveRoom = InstantiateObjectiveRoom(ObjectiveRoomTypesInstance);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
-                InstantiateRoom(RoomTypesInstances);
+                InstantiateRoom(RoomTypesInstance);
         }
 
         public void Clean()
@@ -54,26 +66,28 @@ namespace DumbProject.Rooms
         {
             if(GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
-                InstantiateRoom(RoomTypesInstances);
+                InstantiateRoom(RoomTypesInstance);
             }
         }
 
         public void ReleaseRoomSpawn(Room _room)
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)
+            {
                 if (association.Room == _room)
                 {
                     association.Room = null;
                     association.GridSpawn.ClearNodesRelativeCell();
                 }
+            }
         }
 
+        #region Room Instatiation
         Room InstantiateFirstRoom(RoomData _data)
         {
             GameObject newRoomObj = new GameObject();
-            newRoomObj.transform.position = GameManager.I.MainGridCtrl.GetGridCenter().WorldPosition;
             Room mainRoom = newRoomObj.AddComponent<Room>();
-            mainRoom.Setup(_data, GameManager.I.MainGridCtrl);
+            mainRoom.Setup(_data, GameManager.I.MainGridCtrl.GetGridCenter());
             mainRoom.name = "FirstRoom";
             mainRoom.AddNetNodesOnDoors();
             GameManager.I.DungeonMng.ParentRoom(mainRoom, ExplorationStatus.InExploration);
@@ -88,12 +102,11 @@ namespace DumbProject.Rooms
             if (association != null)
             {
                 GameObject newRoomObj = new GameObject("Room_" + numberOfRoomsCreated);
-                newRoomObj.transform.position = association.GridSpawn.GetGridCenter().WorldPosition;
                 newRoomObj.transform.parent = transform;
                 Room room = newRoomObj.AddComponent<Room>();
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
                 association.Room = room;
-                room.Setup(_data, association.GridSpawn, roomMovement);
+                room.Setup(_data, association.GridSpawn.GetGridCenter(), roomMovement);
 
                 //Istanzia casualmente degli oggetti nella room
                 float randNum = Random.Range(0f, 1f);
@@ -109,6 +122,42 @@ namespace DumbProject.Rooms
             }
         }
 
+        Room InstantiateObjectiveRoom(RoomData _data)
+        {
+            GameObject newRoomObj = new GameObject();
+            Room objectiveRoom = newRoomObj.AddComponent<Room>();
+            objectiveRoom.Setup(_data, EvaluateGridPosition(GameManager.I.MainGridCtrl));
+            objectiveRoom.name = "ObjectiveRoom";
+            objectiveRoom.AddNetNodesOnDoors();
+            GameManager.I.DungeonMng.ParentRoom(objectiveRoom, ExplorationStatus.Unavailable);
+
+            //GameManager.I.ItemManager.InstantiateItemInRoom(objectiveRoom);
+            return objectiveRoom;
+        }
+
+        GridNode EvaluateGridPosition(GridController _grid)
+        {
+            GridPosition gridRandomPosition;
+            while (CalculateRandomGridPosition(_grid, out gridRandomPosition))
+                continue;
+            return _grid.GetSpecificGridNode(gridRandomPosition);
+        }
+
+        bool CalculateRandomGridPosition(GridController _grid, out GridPosition _randomPosition)
+        {
+            _randomPosition = new GridPosition(Random.Range(0, _grid.GridWidth), Random.Range(0, _grid.GridHeight));
+            foreach (Cell cell in FirstRoom.CellsInRoom)
+            {
+                if (cell.RelativeNode.GridPosition == _randomPosition)
+                    return true;
+                else if(Vector3.Distance(cell.RelativeNode.WorldPosition, _grid.GetSpecificGridNode(_randomPosition).WorldPosition) < Distance)
+                    return true;
+            }
+            return false;
+        }
+
+        #endregion
+        #region Spawns Associations
         void SetupSpawnsAssociations()
         {
             for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || 
@@ -126,13 +175,13 @@ namespace DumbProject.Rooms
                     return association;
             return null;
         }
+        #endregion
     }
 
     class SpawnsAssociation
     {
         public GridController GridSpawn;
         public UIRoomController UICtrl;
-        public UIRoomController VerticalUICtrl;
 
         Room _room;
 

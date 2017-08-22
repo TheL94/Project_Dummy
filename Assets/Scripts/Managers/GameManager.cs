@@ -159,6 +159,11 @@ namespace DumbProject.Generic
             ChageFlowState(FlowState.Menu);
         }
 
+        public void EndGameActions()
+        {
+
+        }
+
         public void QuitGameActions()
         {
             Application.Quit();
@@ -166,7 +171,15 @@ namespace DumbProject.Generic
         #endregion
 
         #region Gameplay Rules
-        // TODO : aggiungere controllo condizioni di vittoria sconfitta
+        public void GameWon()
+        {
+
+        }
+
+        public void GameOver()
+        {
+
+        }
         #endregion
         #endregion
     }

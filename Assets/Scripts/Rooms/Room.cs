@@ -38,11 +38,11 @@ namespace DumbProject.Rooms
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         /// <param name="_roomMovment"></param>
-        public void Setup(RoomData _data, GridController _grid, RoomMovement _roomMovment)
+        public void Setup(RoomData _data, GridNode _centerNode, RoomMovement _roomMovment)
         {
             RoomMovment = _roomMovment;
             RoomMovment.Init(this);
-            Setup(_data, _grid);
+            Setup(_data, _centerNode);
         }
 
         /// <summary>
@@ -50,11 +50,12 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
-        public void Setup(RoomData _data, GridController _grid)
+        public void Setup(RoomData _data, GridNode _centerNode)
         {
+            transform.position = _centerNode.WorldPosition;
             Data = _data;
-            PlaceCells(_data, _grid);
-            TrimCellEdges(_grid);
+            PlaceCells(_data, _centerNode);
+            TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
         }
@@ -243,11 +244,11 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
-        void PlaceCells(RoomData _data, GridController _grid)
+        void PlaceCells(RoomData _data, GridNode _centerNode)
         {
-            while (EvaluateCellProbability(_data, _grid))
+            while (EvaluateCellProbability(_data))
             {
-                CellsInRoom.Add(PlaceSingleCell(_data, EvaluateGridPosition(_grid)));
+                CellsInRoom.Add(PlaceSingleCell(_data, EvaluateGridPosition(_centerNode)));
             }
         }
 
@@ -274,12 +275,11 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_grid"></param>
         /// <returns></returns>
-        GridNode EvaluateGridPosition(GridController _grid)
+        GridNode EvaluateGridPosition(GridNode _centerNode)
         {
             GridNode nodeToReturn = null;
-            GridNode centerNode = _grid.GetGridCenter();
             if (CellsInRoom.Count == 0)
-                nodeToReturn = centerNode;
+                nodeToReturn = _centerNode;
             else
             {
                 List<GridNode> adjacentNodes = GetEmptyGridNodes();
@@ -315,7 +315,7 @@ namespace DumbProject.Rooms
         /// <param name="_data"></param>
         /// <param name="_grid"></param>
         /// <returns></returns>
-        bool EvaluateCellProbability(RoomData _data, GridController _grid)
+        bool EvaluateCellProbability(RoomData _data)
         {
             if (_data.MinNumberOfCells > CellsInRoom.Count)
                 return true;

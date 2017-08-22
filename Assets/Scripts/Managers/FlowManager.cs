@@ -46,6 +46,9 @@ namespace DumbProject.Flow
                 case FlowState.ExitGameplay:
                     GameManager.I.ExitGameplayActions();
                     break;
+                case FlowState.EndGame:
+                    GameManager.I.EndGameActions();
+                    break;
                 case FlowState.ExitGame:
                     GameManager.I.QuitGameActions();
                     break;
@@ -75,6 +78,7 @@ namespace DumbProject.Flow
         Gameplay,
         Pause,
         ExitGameplay,
+        EndGame,
         ExitGame
     }
 }
