@@ -24,7 +24,9 @@ namespace Framework.AI
             {
                 //timer = GameManagerTest.I.timer; 
                 //oppure
-                timer = _controller.gameObject.AddComponent<Timer>();
+                if (_controller.gameObject.GetComponent<Timer>() == null)
+                    timer = _controller.gameObject.AddComponent<Timer>();
+                else timer = _controller.GetComponent<Timer>();
                 timer.TimeToWait = Delay;
             }
 
