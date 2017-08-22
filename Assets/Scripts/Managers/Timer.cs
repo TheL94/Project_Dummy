@@ -11,6 +11,7 @@ namespace Framework.AI
         public float time = 0;
         public bool IsOver = false;
         public bool Active = false;
+
         void Update()
         {
             if (Active)
@@ -21,7 +22,6 @@ namespace Framework.AI
                 {
                     IsOver = true;
                     time = 0;
-                    Active = false;
                 }
             }
         }
