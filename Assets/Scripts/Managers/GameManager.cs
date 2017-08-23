@@ -75,6 +75,14 @@ namespace DumbProject.Generic
             {
                 DumbyToTest = Instantiate<AI_Controller>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             }
+
+            if (Input.GetKeyDown(KeyCode.W))
+                GameWon();
+            if (Input.GetKeyDown(KeyCode.L))
+                GameLost();
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                ChageFlowState(FlowState.Pause);
         }
 
         #region API
@@ -102,6 +110,14 @@ namespace DumbProject.Generic
             ChageFlowState(FlowState.Menu);
         }
 
+        public void MenuActions()
+        {
+            UIMng.ActivateMenuPanel(true);
+            UIMng.ActivateGamePlayPanel(false);
+            UIMng.ActivateEndGameplayPanel(false);
+            UIMng.ActivateCameraPanel(false);
+        }
+
         /// <summary>
         /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
         /// </summary>
@@ -121,24 +137,15 @@ namespace DumbProject.Generic
             ChageFlowState(FlowState.Gameplay);
         }
 
-        public void MenuActions()
-        {
-            UIMng.ActivateMenuPanel(true);
-            UIMng.ActivateGamePlayPanel(false);
-            UIMng.ActivateCameraPanel(false);
-        }
-
         public void PauseActions(bool _status)
         {
             UIMng.GamePlayCtrl.ActivatePausePanel(_status);
-            //if (_status)
-            //{
-            //    // azioni da fare quando si entra in pausa
-            //}
-            //else
-            //{
-            //    // azioni da fare quando si esce dalla pausa
-            //}
+        }
+
+        public void RecapGameActions()
+        {
+            UIMng.ActivateEndGameplayPanel(true);
+            UIMng.ActivateGamePlayPanel(false);
         }
 
         /// <summary>
@@ -150,7 +157,7 @@ namespace DumbProject.Generic
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
-            //UIMng.GamePlayCtrl.GamePlayElements.InventoryController.CleanInventory();
+            UIMng.GamePlayCtrl.LateralGUI.InventoryController.CleanInventory();
             //------------------
             Destroy(DumbyToTest.gameObject);
             //------------------
@@ -159,26 +166,21 @@ namespace DumbProject.Generic
             ChageFlowState(FlowState.Menu);
         }
 
-        public void EndGameActions()
-        {
-
-        }
-
         public void QuitGameActions()
         {
             Application.Quit();
         }
-        #endregion
 
-        #region Gameplay Rules
         public void GameWon()
         {
-
+            ChageFlowState(FlowState.RecapGame);
+            UIMng.EndGameCtrl.SetRecapText("Victory");
         }
 
-        public void GameOver()
+        public void GameLost()
         {
-
+            ChageFlowState(FlowState.RecapGame);
+            UIMng.EndGameCtrl.SetRecapText("Defeat");
         }
         #endregion
         #endregion

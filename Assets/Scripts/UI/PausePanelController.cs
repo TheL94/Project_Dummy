@@ -19,9 +19,7 @@ namespace DumbProject.UI
 
         private void OnEnable()
         {
-            ResumeButton.onClick.AddListener(() => {
-                GameManager.I.ChageFlowState(Flow.FlowState.Gameplay);
-            });
+            ResumeButton.onClick.AddListener(() => { GameManager.I.ChageFlowState(Flow.FlowState.Gameplay); });
             ExitButton.onClick.AddListener(() => { GameManager.I.ChageFlowState(Flow.FlowState.ExitGameplay); });
         }
 

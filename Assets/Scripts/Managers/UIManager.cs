@@ -16,6 +16,8 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIGamePlayController GamePlayCtrl;
         [HideInInspector]
+        public UIEndGameplayController EndGameCtrl;
+        [HideInInspector]
         public CameraInput CamInput;
 
         ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
@@ -70,11 +72,15 @@ namespace DumbProject.UI
             // setup gameplay panel
             GamePlayCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "GameplayPanel"), transform).GetComponent<UIGamePlayController>();
             GamePlayCtrl.Init(this);
+            // endgameplay panel
+            EndGameCtrl = Instantiate(Resources.Load<GameObject>(PrefabPath + "EndGamePanel"), transform).GetComponent<UIEndGameplayController>();
+            EndGameCtrl.Init(this);
 
             UpdateUIOrientation();
 
             MenuController.Setup();
             GamePlayCtrl.Setup();
+            EndGameCtrl.Setup();
         }
 
         public void SetRectTransformParametersByData(RectTransform _rcTransform, UIPositionData _data)
@@ -117,6 +123,11 @@ namespace DumbProject.UI
         public void ActivateGamePlayPanel(bool _status)
         {
             GamePlayCtrl.gameObject.SetActive(_status);
+        }
+
+        public void ActivateEndGameplayPanel(bool _status)
+        {
+            EndGameCtrl.gameObject.SetActive(_status);
         }
 
         public void ActivateCameraPanel(bool _status)

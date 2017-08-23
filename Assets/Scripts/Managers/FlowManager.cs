@@ -43,23 +43,15 @@ namespace DumbProject.Flow
                 case FlowState.Pause:
                     GameManager.I.PauseActions(true);
                     break;
+                case FlowState.RecapGame:
+                    GameManager.I.RecapGameActions();
+                    break;
                 case FlowState.ExitGameplay:
                     GameManager.I.ExitGameplayActions();
-                    break;
-                case FlowState.EndGame:
-                    GameManager.I.EndGameActions();
                     break;
                 case FlowState.ExitGame:
                     GameManager.I.QuitGameActions();
                     break;
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ChageState(FlowState.Pause);
             }
         }
 
@@ -78,7 +70,7 @@ namespace DumbProject.Flow
         Gameplay,
         Pause,
         ExitGameplay,
-        EndGame,
+        RecapGame,
         ExitGame
     }
 }
