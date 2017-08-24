@@ -9,10 +9,11 @@ namespace DumbProject.Rooms
 {
     public class RoomGenerator : MonoBehaviour
     {
-        public RoomData MainRoomTypesData;
-        public RoomData ObjectiveRoomTypesData;
-        public RoomData RoomTypesData;
+        public RoomData MainRoomData;
+        public RoomData ObjectiveRoomData;
+        public RoomData RoomData;
 
+        // varibile usata per la distanza minima tra stanza di partenza e stanza obbiettivo
         public float Distance;
 
         [HideInInspector]
@@ -20,9 +21,9 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Room ObjectiveRoom;
 
-        RoomData MainRoomTypesInstance;
-        RoomData ObjectiveRoomTypesInstance;
-        RoomData RoomTypesInstance;
+        RoomData MainRoomDataInstance;
+        RoomData ObjectiveRoomDataInstance;
+        RoomData RoomDataInstance;
         List<SpawnsAssociation> SpawnsAssociations = new List<SpawnsAssociation>();
 
         //Variabile usata solo per differenziare il nome delle room 
@@ -30,24 +31,23 @@ namespace DumbProject.Rooms
 
         public void Setup()
         {
-            if(MainRoomTypesInstance == null)
-                MainRoomTypesInstance = Instantiate(MainRoomTypesData);
+            if(MainRoomDataInstance == null)
+                MainRoomDataInstance = Instantiate(MainRoomData);
 
-            if (ObjectiveRoomTypesInstance == null)
-                ObjectiveRoomTypesInstance = Instantiate(ObjectiveRoomTypesData);
+            if (ObjectiveRoomDataInstance == null)
+                ObjectiveRoomDataInstance = Instantiate(ObjectiveRoomData);
 
-            if (RoomTypesInstance == null)
-                RoomTypesInstance = Instantiate(RoomTypesData);
+            if (RoomDataInstance == null)
+                RoomDataInstance = Instantiate(RoomData);
 
-            //if (SpawnsAssociations.Count == 0)
             SetupSpawnsAssociations();
 
-            FirstRoom = InstantiateFirstRoom(MainRoomTypesInstance);
+            FirstRoom = InstantiateFirstRoom(MainRoomDataInstance);
 
-            ObjectiveRoom = InstantiateObjectiveRoom(ObjectiveRoomTypesInstance);
+            ObjectiveRoom = InstantiateObjectiveRoom(ObjectiveRoomDataInstance);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
-                InstantiateRoom(RoomTypesInstance);
+                InstantiateRoom(RoomDataInstance);
         }
 
         public void Clean()
@@ -59,6 +59,9 @@ namespace DumbProject.Rooms
                 if (SpawnsAssociations[i].Room != null)
                     Destroy(SpawnsAssociations[i].Room.gameObject);
 
+            FirstRoom = null;
+            ObjectiveRoom = null;
+
             SpawnsAssociations.Clear();
         }
 
@@ -66,7 +69,7 @@ namespace DumbProject.Rooms
         {
             if(GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
-                InstantiateRoom(RoomTypesInstance);
+                InstantiateRoom(RoomDataInstance);
             }
         }
 

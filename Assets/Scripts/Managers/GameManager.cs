@@ -76,10 +76,16 @@ namespace DumbProject.Generic
                 DumbyToTest = Instantiate<AI_Controller>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
             }
 
-            if (Input.GetKeyDown(KeyCode.W))
-                GameWon();
-            if (Input.GetKeyDown(KeyCode.L))
-                GameLost();
+            // per test
+            // --------------------------------------
+            if(CurrentState == FlowState.Gameplay)
+            {
+                if (Input.GetKeyDown(KeyCode.W))
+                    GameWon();
+                if (Input.GetKeyDown(KeyCode.L))
+                    GameLost();
+            }
+            // --------------------------------------
 
             if (Input.GetKeyDown(KeyCode.Escape))
                 ChageFlowState(FlowState.Pause);
