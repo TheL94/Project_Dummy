@@ -41,7 +41,6 @@ namespace DumbProject.Rooms
         public void Setup(RoomData _data, GridNode _centerNode, RoomMovement _roomMovment)
         {
             RoomMovment = _roomMovment;
-            RoomMovment.Init(this);
             Setup(_data, _centerNode);
         }
 

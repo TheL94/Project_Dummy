@@ -107,6 +107,7 @@ namespace DumbProject.Rooms
                 RoomMovement roomMovement = newRoomObj.AddComponent<RoomMovement>();
                 association.Room = room;
                 room.Setup(_data, association.GridSpawn.GetGridCenter(), roomMovement);
+                roomMovement.Init(room);
 
                 //Istanzia casualmente degli oggetti nella room
                 float randNum = Random.Range(0f, 1f);
