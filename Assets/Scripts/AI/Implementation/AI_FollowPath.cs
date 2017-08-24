@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Framework.Pathfinding;
 using System.Collections.Generic;
+using DumbProject.Generic;
 using UnityEngine;
 
 namespace Framework.AI
@@ -10,7 +11,7 @@ namespace Framework.AI
     {
         public float RunSpeed;
         public float RotationSpeed;
-        public float TurnRadius;
+        public float ProximityDetection = 0.01f;
         Transform ctrlTransform;
 
         protected override bool Act(AI_Controller _controller)
@@ -38,14 +39,15 @@ namespace Framework.AI
             }
 
             //Actually move
-            SmoothRotation(_pathfinder.Path[0].spacePosition);
-            SmoothTranslation(_pathfinder.Path[0].spacePosition);
+            SmoothRotation(_pathfinder.SmoothedPath[0]);
+            SmoothTranslation(_pathfinder.SmoothedPath[0]);
 
             //Each time a node is reached is set as current and removed from the current Path
-            if (Vector3.Distance(_pathfinder.Path[0].spacePosition, ctrlTransform.position) <= TurnRadius)
+            ChopPath(_pathfinder);
+            if(_pathfinder.SmoothedPath.Length <= 0)
             {
-                _pathfinder.CurrentNetworkable = _pathfinder.Path[0];
-                _pathfinder.Path = _pathfinder.Path.Skip(1).ToArray();
+                _pathfinder.CurrentNetworkable = _pathfinder.Path[_pathfinder.Path.Length - 1];
+                _pathfinder.Path = new INetworkable[0];
             }
         }
 
@@ -62,6 +64,16 @@ namespace Framework.AI
             //Vector3 positionToApply = Vector3.Lerp(ctrlTransform.position, objective, RunSpeed * Time.deltaTime);
             Vector3 positionToApply = ctrlTransform.position + (objective - ctrlTransform.position).normalized * Time.deltaTime * RunSpeed;
             ctrlTransform.position = positionToApply;
+        }
+
+        void ChopPath(IPathfinder _pathfinder)
+        {
+            //Check if distance has reached a minimum
+            if (Vector3.Distance(_pathfinder.SmoothedPath[0], ctrlTransform.position) <= ProximityDetection)
+            {
+                _pathfinder.CurrentNetworkable = GameManager.I.MainGridCtrl.GetSpecificGridNode(_pathfinder.SmoothedPath[0]);
+                _pathfinder.SmoothedPath = _pathfinder.SmoothedPath.Skip(1).ToArray();
+            }
         }
     }
 }

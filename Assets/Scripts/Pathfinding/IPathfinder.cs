@@ -10,5 +10,6 @@ namespace Framework.Pathfinding
         INetworkable CurrentNetworkable { get; set; }
 
         INetworkable[] Path { get; set; }
+        Vector3[] SmoothedPath { get; set; }
     }
 }

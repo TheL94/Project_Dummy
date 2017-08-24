@@ -19,6 +19,11 @@ namespace Framework.AI
                 (_controller as IPathfinder).Path = newPath;
                 return true;
             }
+            else if(start.spacePosition == target.spacePosition)
+            {
+                (_controller as IPathfinder).Path = new INetworkable[] { target };
+                return true;
+            }
             else
                 return false;
         }

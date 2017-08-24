@@ -2,6 +2,7 @@
 using Framework.AI;
 using Framework.Pathfinding;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace DumbProject.Generic
 {
@@ -40,7 +41,28 @@ namespace DumbProject.Generic
             }
         }
 
-        public INetworkable[] Path { get; set; }
+        private BezierPath BPath = new BezierPath();
+        private INetworkable[] _path;
+        public INetworkable[] Path { get { return _path; }
+            set
+            {
+                _path = value;
+                OnPathSet();
+            }
+        }
+        public Vector3[] SmoothedPath { get; set; }
+
+        protected void OnPathSet()
+        {
+            List<Vector3> pathPositions = new List<Vector3>();
+            foreach (INetworkable node in Path)
+            {
+                pathPositions.Add(node.spacePosition);
+            }
+
+            BPath.Interpolate(pathPositions, 100);
+            SmoothedPath = pathPositions.ToArray();
+        }
         #endregion
     }
 }
