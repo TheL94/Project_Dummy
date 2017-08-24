@@ -123,18 +123,21 @@ namespace DumbProject.Rooms
 
         void SafeSnap(Vector3 _nodePosition)
         {
-            if (_nodePosition == null || closerNode == null)
+            if (_nodePosition == null && closerNode == null)
                 return;
 
-            if (_nodePosition != closerNode.WorldPosition)
-            {
-                if (snap != null)
-                    snap.Complete();
-                if (!MovingToInitialPosition)
-                    snap = room.transform.DOMove(_nodePosition, 0);
-                else
-                    snap = room.transform.DOMove(_nodePosition,0).OnComplete(() => { MovingToInitialPosition = false; });
-            }
+            else if((_nodePosition != null && closerNode == null) || (_nodePosition != closerNode.WorldPosition))
+                Move(_nodePosition);
+        }
+
+        void Move(Vector3 _nodePosition)
+        {
+            if (snap != null)
+                snap.Complete();
+            if (!MovingToInitialPosition)
+                snap = room.transform.DOMove(_nodePosition, 0.3f);
+            else
+                snap = room.transform.DOMove(_nodePosition, 0).OnComplete(() => { MovingToInitialPosition = false; });
         }
 
         void CheckCollisions()
