@@ -16,11 +16,6 @@ namespace DumbProject.Rooms
         // varibile usata per la distanza minima tra stanza di partenza e stanza obbiettivo
         public float Distance;
 
-        [HideInInspector]
-        public Room FirstRoom;
-        [HideInInspector]
-        public Room ObjectiveRoom;
-
         RoomData MainRoomDataInstance;
         RoomData ObjectiveRoomDataInstance;
         RoomData RoomDataInstance;
@@ -42,9 +37,9 @@ namespace DumbProject.Rooms
 
             SetupSpawnsAssociations();
 
-            FirstRoom = InstantiateFirstRoom(MainRoomDataInstance);
+            GameManager.I.DungeonMng.FirstRoom = InstantiateFirstRoom(MainRoomDataInstance);
 
-            ObjectiveRoom = InstantiateObjectiveRoom(ObjectiveRoomDataInstance);
+            GameManager.I.DungeonMng.ObjectiveRoom = InstantiateObjectiveRoom(ObjectiveRoomDataInstance);
 
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 InstantiateRoom(RoomDataInstance);
@@ -58,9 +53,6 @@ namespace DumbProject.Rooms
             for (int i = 0; i < SpawnsAssociations.Count; i++)
                 if (SpawnsAssociations[i].Room != null)
                     Destroy(SpawnsAssociations[i].Room.gameObject);
-
-            FirstRoom = null;
-            ObjectiveRoom = null;
 
             SpawnsAssociations.Clear();
         }
@@ -142,15 +134,15 @@ namespace DumbProject.Rooms
         GridNode EvaluateGridPosition(GridController _grid)
         {
             GridPosition gridRandomPosition;
-            while (CalculateRandomGridPosition(_grid, out gridRandomPosition))
+            while (CalculateRandomGridPosition(_grid, out gridRandomPosition, GameManager.I.DungeonMng.FirstRoom))
                 continue;
             return _grid.GetSpecificGridNode(gridRandomPosition);
         }
 
-        bool CalculateRandomGridPosition(GridController _grid, out GridPosition _randomPosition)
+        bool CalculateRandomGridPosition(GridController _grid, out GridPosition _randomPosition, Room _firstRoom)
         {
             _randomPosition = new GridPosition(Random.Range(0, _grid.GridWidth), Random.Range(0, _grid.GridHeight));
-            foreach (Cell cell in FirstRoom.CellsInRoom)
+            foreach (Cell cell in _firstRoom.CellsInRoom)
             {
                 if (cell.RelativeNode.GridPosition == _randomPosition)
                     return true;
