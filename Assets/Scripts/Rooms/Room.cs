@@ -103,6 +103,7 @@ namespace DumbProject.Rooms
 
             AddNetNodesOnDoors();
             TrimCollidingEdges(GameManager.I.MainGridCtrl);
+            TrimCollidingAngles();
             GameManager.I.DungeonMng.SetupRoomInDungeon(this);
 
             Destroy(RoomMovment);
@@ -382,7 +383,7 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che distrugge gli edge in collisione con una porta
+        /// Funzione che distrugge gli edge in collisione
         /// </summary>
         /// <param name="_grid"></param>
         void TrimCollidingEdges(GridController _grid)
@@ -408,12 +409,41 @@ namespace DumbProject.Rooms
                         (edge.CollidingEdge as Door).AddAjdacentCell(edge.RelativeCell);
                         itemsToBeDestroyed.Add(edge);
                     }
+
+                    // muro collide con muro
+                    else if (edge.GetType() == typeof(Edge) && edge.CollidingEdge.GetType() == typeof(Edge))
+                    {
+                        itemsToBeDestroyed.Add(edge);
+                    }
                 }
             }
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
                 egdeToDestroy.DisableAndDestroyObject();
+            }
+        }
+
+        /// <summary>
+        /// Funzione che distrugge gli angle in collisione
+        /// </summary>
+        void TrimCollidingAngles()
+        {
+            List<Angle> itemsToBeDestroyed = new List<Angle>();
+            List<Angle> roomAngles = GetListOfAngles();
+
+            foreach (Angle angle in roomAngles)
+            {
+                angle.CheckCollisionWithOtherAngle();
+                if (!itemsToBeDestroyed.Contains(angle) && angle.CollidingAngle != null && !itemsToBeDestroyed.Contains(angle.CollidingAngle))
+                {
+                    itemsToBeDestroyed.Add(angle.CollidingAngle);
+                }
+            }
+
+            foreach (Angle angleToDestroy in itemsToBeDestroyed)
+            {
+                angleToDestroy.DisableAndDestroyObject();
             }
         }
 
