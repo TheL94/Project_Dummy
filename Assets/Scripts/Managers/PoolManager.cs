@@ -8,19 +8,22 @@ namespace DumbProject.Generic
 {
     public class PoolManager : MonoBehaviour
     {
-        public RoomData RoomTypesData;
-        RoomData roomTypesInstances;
+        List<RoomGraphicComponent> roomGraphicComponents;
         List<PoolType> gameObjPoolList = new List<PoolType>();
+
+        public void Init(List<RoomGraphicComponent> _roomGraphicComponents)
+        {
+            roomGraphicComponents = _roomGraphicComponents;
+        }
 
         public void Setup()
         {
-            roomTypesInstances = Instantiate(RoomTypesData);
             SetupPool();
         }
 
-        public GameObject GetGameObject(ObjType _type)
+        public GameObject GetGameObject(string _id)
         {
-            return GetPool(_type).Get();
+            return GetPool(_id).Get();
         }
 
         public void UpdatePools()
@@ -39,10 +42,10 @@ namespace DumbProject.Generic
             }
         }
 
-        GameObjectPool GetPool(ObjType _type)
+        GameObjectPool GetPool(string _id)
         {
             foreach (PoolType pool in gameObjPoolList)
-                if (pool.Type == _type)
+                if (pool.ID == _id)
                     return pool.Pool;
             return null;
         }
@@ -52,37 +55,23 @@ namespace DumbProject.Generic
             GameObjectPool gameObjPool = null;
             Vector3 containerPosition = Camera.main.transform.forward * -10000;
 
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Arch.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Arch.NumberOfObj);
-            gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Arch));
-
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Floor.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Floor.NumberOfObj);
-            gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Floor));
-
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Pillar.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Pillar.NumberOfObj);
-            gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Pillar));
-
-            gameObjPool = new GameObjectPool(roomTypesInstances.RoomElements.Wall.ObjPrefab, containerPosition, transform, roomTypesInstances.RoomElements.Wall.NumberOfObj);
-            gameObjPoolList.Add(new PoolType(gameObjPool, ObjType.Wall));
+            foreach (RoomGraphicComponent graphicComponent in roomGraphicComponents)
+            {
+                gameObjPool = new GameObjectPool(graphicComponent.ObjPrefab, containerPosition, transform, graphicComponent.NumberOfObj);
+                gameObjPoolList.Add(new PoolType(gameObjPool, graphicComponent.ID));
+            }
         }
     }
 
     public class PoolType
     {
         public GameObjectPool Pool;
-        public ObjType Type;
+        public string ID;
 
-        public PoolType(GameObjectPool _pool, ObjType _type)
+        public PoolType(GameObjectPool _pool, string _id)
         {
             Pool = _pool;
-            Type = _type;
+            ID = _id;
         }
-    }
-
-    public enum ObjType
-    {
-        Arch,
-        Floor,
-        Pillar,
-        Wall
     }
 }

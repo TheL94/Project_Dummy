@@ -51,9 +51,11 @@ namespace DumbProject.Generic
         public ItemsManager ItemManager;
         [HideInInspector]
         public PoolManager PoolMng;
+        [HideInInspector]
+        public DataManager DataMng;
 
         FlowManager FlowMng;
-
+        
         void Awake()
         {
             //Singleton paradigm
@@ -103,16 +105,28 @@ namespace DumbProject.Generic
 
         public void LoadingActions()
         {
+            DataMng = GetComponent<DataManager>();
+            DataMng.InitData();
+
             PoolMng = Instantiate(PoolManagerPrefab);
+            PoolMng.Init(DataMng.RoomGraphicComponentDatasInst);
             PoolMng.Setup();
+
             UIMng = Instantiate(UIManagerPrefab);
             UIMng.Init();
+
             MainGridCtrl = Instantiate(GridControllerPrefab);
+
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
+
             RoomGenerator = Instantiate(RoomGenertorPrefab);
+            RoomGenerator.Init(DataMng.MainRoomDataInst, DataMng.ObjectiveRoomDataInst, DataMng.RoomDataInst);
+
             DungeonMng = Instantiate(DungeonManagerPrefab);
+
             ItemManager = Instantiate(ItemManagerPrefab);
             ItemManager.Init();
+
             ChageFlowState(FlowState.Menu);
         }
 

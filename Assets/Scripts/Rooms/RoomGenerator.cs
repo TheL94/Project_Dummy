@@ -9,10 +9,6 @@ namespace DumbProject.Rooms
 {
     public class RoomGenerator : MonoBehaviour
     {
-        public RoomData MainRoomData;
-        public RoomData ObjectiveRoomData;
-        public RoomData RoomData;
-
         // varibile usata per la distanza minima tra stanza di partenza e stanza obbiettivo
         public float Distance;
 
@@ -24,17 +20,15 @@ namespace DumbProject.Rooms
         //Variabile usata solo per differenziare il nome delle room 
         int numberOfRoomsCreated;
 
+        public void Init(RoomData _mainRoomDataInstance, RoomData _objectiveRoomDataInstance, RoomData _roomDataInstance)
+        {
+            MainRoomDataInstance = _mainRoomDataInstance;
+            ObjectiveRoomDataInstance = _objectiveRoomDataInstance;
+            RoomDataInstance = _roomDataInstance;
+        }
+
         public void Setup()
         {
-            if(MainRoomDataInstance == null)
-                MainRoomDataInstance = Instantiate(MainRoomData);
-
-            if (ObjectiveRoomDataInstance == null)
-                ObjectiveRoomDataInstance = Instantiate(ObjectiveRoomData);
-
-            if (RoomDataInstance == null)
-                RoomDataInstance = Instantiate(RoomData);
-
             SetupSpawnsAssociations();
 
             GameManager.I.DungeonMng.FirstRoom = InstantiateFirstRoom(MainRoomDataInstance);

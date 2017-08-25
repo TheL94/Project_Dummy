@@ -16,6 +16,5 @@ namespace DumbProject.Rooms
         public float RoomExpansionPercentageDecay;
         [Range(0f, 4f)]
         public float DoorNumberPercentage;
-        public RoomElements RoomElements;
     }
 }
