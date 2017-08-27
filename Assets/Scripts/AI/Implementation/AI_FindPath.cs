@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewAction/FindPath")]
+    [CreateAssetMenu(menuName = "AI/NewAction/FindPath")]
     public class AI_FindPath : AI_Action
     {
         protected override bool Act(AI_Controller _controller)

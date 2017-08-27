@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewAction/Interact")]
+    [CreateAssetMenu(menuName = "AI/NewAction/Interact")]
     public class AI_Interact : AI_Action
     {
         protected override bool Act(AI_Controller _controller)

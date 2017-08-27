@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewAction/Wait")]
+    [CreateAssetMenu(menuName = "AI/NewAction/Wait")]
     public class AI_Wait : AI_Action
     {
         //#region test

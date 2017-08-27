@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewAction/ChooseObjective")]
+    [CreateAssetMenu(menuName = "AI/NewAction/ChooseObjective")]
     public class AI_ChooseObjective : AI_Action
     {
         public List<GenericType> PriorityList = new List<GenericType>();

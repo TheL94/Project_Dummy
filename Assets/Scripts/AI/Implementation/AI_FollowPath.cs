@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewAction/FollowPath")]
+    [CreateAssetMenu(menuName = "AI/NewAction/FollowPath")]
     public class AI_FollowPath : AI_Action
     {
         public float RunSpeed;
