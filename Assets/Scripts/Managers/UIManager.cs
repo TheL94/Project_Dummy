@@ -50,7 +50,7 @@ namespace DumbProject.UI
                 {
                     deviceOrientation = DeviceCurrentOrientation;
                 }
-                if(OnScreenOrientationChange != null)
+                //if(OnScreenOrientationChange != null)
                     OnScreenOrientationChange();
             }
         }
