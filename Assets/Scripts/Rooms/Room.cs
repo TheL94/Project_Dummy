@@ -134,11 +134,20 @@ namespace DumbProject.Rooms
             }
         }
 
+        public void HighlightRoomWalls(bool _toggle, Color _color)
+        {
+            List<Edge> roomEdges = GetEdges();
+            roomEdges.AddRange(GetDoors().ConvertAll(d => d as Edge));
+
+            foreach (Edge edge in roomEdges)
+                edge.ToggleEmissive(_toggle, _color);
+        }
+
         /// <summary>
         /// Ritorna la lista dei muri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        public List<Edge> GetListOfEdges()
+        public List<Edge> GetEdges()
         {
             List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
@@ -333,7 +342,7 @@ namespace DumbProject.Rooms
         void TrimCellEdges(GridController _grid)
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
-            List<Edge> edges = GetListOfEdges();
+            List<Edge> edges = GetEdges();
             foreach (Edge edge in edges)
                 edge.CheckCollisionWithOtherEdges(_grid);
 
@@ -389,7 +398,7 @@ namespace DumbProject.Rooms
         void TrimCollidingEdges(GridController _grid)
         {
             List<Edge> itemsToBeDestroyed = new List<Edge>();
-            List<Edge> roomEdges = GetListOfEdges();
+            List<Edge> roomEdges = GetEdges();
             roomEdges.AddRange(GetDoors().ConvertAll(d => d as Edge));
 
             foreach (Edge edge in roomEdges)
@@ -457,7 +466,7 @@ namespace DumbProject.Rooms
                 maxAmountOfDoors = 1;
             int numberOfDoors = Mathf.RoundToInt(Random.Range(1f, maxAmountOfDoors));
 
-            List<Edge> listOfEdges = GetListOfEdges();
+            List<Edge> listOfEdges = GetEdges();
             while (numberOfDoors > 0)
             {
                 int randomIndex = Random.Range(0, listOfEdges.Count);
@@ -466,7 +475,7 @@ namespace DumbProject.Rooms
                 if (relativeCell.ReplaceEdgeWithDoor(edgeToReplace))
                 {
                     numberOfDoors--;
-                    listOfEdges = GetListOfEdges();
+                    listOfEdges = GetEdges();
                 }
             }
         }

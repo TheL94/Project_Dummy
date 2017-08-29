@@ -22,7 +22,7 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_graphic"></param>
         /// <param name="_rotation"></param>
-        public void SetGraphic(GameObject _graphic, Quaternion _rotation)
+        public virtual void SetGraphic(GameObject _graphic, Quaternion _rotation)
         {
             DisableGraphic();
 

@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DumbProject.Grid;
-using DumbProject.Generic;
-using Framework.Pathfinding;
-using DumbProject.Items;
-using System;
 
 namespace DumbProject.Rooms
 {
@@ -13,6 +10,8 @@ namespace DumbProject.Rooms
     {
         [HideInInspector]
         public Edge CollidingEdge;
+
+        Material emissiveMaterial;
 
         /// <summary>
         /// Funzione che controlla la collisione con altri edge
@@ -57,6 +56,25 @@ namespace DumbProject.Rooms
             return (transform.position * 2) - _position;
         }
 
+        public override void SetGraphic(GameObject _graphic, Quaternion _rotation)
+        {
+            base.SetGraphic(_graphic, _rotation);
+            SetEmissiveMaterial(_graphic);
+        }
+
+        public void ToggleEmissive(bool _toggle, Color _color)
+        {
+            if (emissiveMaterial == null)
+                return;
+
+            emissiveMaterial.SetColor("_EmissionColor", _color);
+
+            if (_toggle)
+                emissiveMaterial.EnableKeyword("_EMISSION");
+            else
+                emissiveMaterial.DisableKeyword("_EMISSION");
+        }
+
         /// <summary>
         /// Funzione che disabilita l'oggetto
         /// </summary>
@@ -65,6 +83,17 @@ namespace DumbProject.Rooms
         {
             RelativeCell.Edges.Remove(this);
             base.DisableAndDestroyObject(_avoidDestruction);
+        }
+
+        void SetEmissiveMaterial(GameObject _graphic)
+        {
+            // TODO : logica da rivedere
+            MeshRenderer renderer = _graphic.GetComponentInChildren<MeshRenderer>();
+            List<Material> materials = null;
+            if (renderer != null)
+                materials = renderer.materials.ToList();
+            if (materials != null)
+                emissiveMaterial = materials.Find(m => m.name.Contains("emissive_mat"));
         }
     }
 }

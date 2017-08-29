@@ -82,6 +82,11 @@ namespace DumbProject.Rooms
                 room.transform.position = closerNode.WorldPosition;
             else
                 transform.position = mousePosition;
+
+            if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
+                room.HighlightRoomWalls(true, Color.green);
+            else
+                room.HighlightRoomWalls(true, Color.red);
         }
 
         /// <summary>
@@ -97,11 +102,13 @@ namespace DumbProject.Rooms
                 room.SetItemIndicator(false);
                 snap.Complete(true);
                 room.PlaceAction();
+                room.HighlightRoomWalls(false, Color.black);
                 return true;
             }
             else
             {
                 MovingToInitialPosition = true;
+                room.HighlightRoomWalls(false, Color.black);
                 return false;
             }
         }
