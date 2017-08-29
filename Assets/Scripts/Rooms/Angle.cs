@@ -22,11 +22,8 @@ namespace DumbProject.Rooms
             List<Angle> adjacentAngles = new List<Angle>();
 
             foreach (Room room in adjacentRooms)
-            {
                 adjacentAngles.AddRange(room.GetAngles());
-            }
 
-            adjacentAngles.Remove(this);
             foreach (Angle angleInFront in adjacentAngles)
             {
                 if (Vector3.Distance(angleInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
