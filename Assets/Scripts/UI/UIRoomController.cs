@@ -36,6 +36,7 @@ namespace DumbProject.UI
                 }
             }
         }
+
         //TODO: metti apposto ALberto
         //public void OnDrop(PointerEventData eventData)
         //{

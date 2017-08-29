@@ -123,31 +123,31 @@ namespace DumbProject.Rooms
 
         void SafeSnap(Vector3 _nodePosition)
         {
-            if (_nodePosition == null || closerNode == null)
+            if (_nodePosition == null && closerNode == null)
                 return;
 
-            if (_nodePosition != closerNode.WorldPosition)
+            else if ((_nodePosition != null && closerNode == null) || (_nodePosition != closerNode.WorldPosition))
             {
                 if (snap != null)
                     snap.Complete();
                 if (!MovingToInitialPosition)
-                    snap = room.transform.DOMove(_nodePosition, 0);
+                    snap = room.transform.DOMove(_nodePosition, 0.3f);
                 else
-                    snap = room.transform.DOMove(_nodePosition,0).OnComplete(() => { MovingToInitialPosition = false; });
+                    snap = room.transform.DOMove(_nodePosition, 0).OnComplete(() => { MovingToInitialPosition = false; });
             }
         }
 
         void CheckCollisions()
         {
+            List<Edge> cellEdges = null;
             foreach (Cell cell in room.CellsInRoom)
             {
-                List<Edge> cellEdges = new List<Edge>();
+                cellEdges = new List<Edge>();
                 cellEdges.AddRange(cell.Edges);
                 cellEdges.AddRange(cell.Doors.ConvertAll(d => d as Edge));
+
                 foreach (Edge edge in cellEdges)
-                {
                     edge.CheckCollisionWithOtherEdges(GameManager.I.MainGridCtrl);
-                }
             }
         }
     } 

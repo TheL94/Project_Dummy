@@ -15,6 +15,11 @@ namespace DumbProject.Generic
         public List<Room> RoomInDungeon;
         public Room ActualInExplorationRoom { get; protected set; }
 
+        [HideInInspector]
+        public Room FirstRoom;
+        [HideInInspector]
+        public Room ObjectiveRoom;
+
         #region API
         public void Setup()
         {
@@ -29,6 +34,9 @@ namespace DumbProject.Generic
 
             for (int i = 0; i < RoomInDungeon.Count; i++)
                 Destroy(RoomInDungeon[i].gameObject);
+
+            FirstRoom = null;
+            ObjectiveRoom = null;
         }
 
         #region Rooms

@@ -36,5 +36,39 @@ namespace DumbProject.Grid
             x = _x;
             z = _z;
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public static bool operator ==(GridPosition gp1, GridPosition gp2)
+        {
+            // If both are null, or both are same instance, return true.
+            if (ReferenceEquals(gp1, gp2))
+                return true;
+            
+            // If one is null, but not both, return false.
+            if (((object)gp1 == null) || ((object)gp2 == null))
+                return false;
+
+            // Return true if the fields match:
+            return gp1.x == gp2.x && gp1.z == gp2.z;
+        }
+
+        public static bool operator !=(GridPosition gp1, GridPosition gp2)
+        {
+            return !(gp1 == gp2);
+        }
     }
 }

@@ -3,68 +3,74 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 
-
 namespace DumbProject.Flow
 {
     public class FlowManager : MonoBehaviour
     {
-
-        private FlowState _currentState;
-
+        private FlowState _currentState = FlowState.None;
         public FlowState CurrentState
         {
             get { return _currentState; }
-            set {
-                _currentState = value;
-                Debug.Log(_currentState.ToString());
-                OnStateChange();
+            private set
+            {
+                if(_currentState != value)
+                {
+                    FlowState oldState = _currentState;
+                    _currentState = value;
+                    Debug.Log(_currentState.ToString());
+                    OnStateChange(_currentState ,oldState);
+                }
             }
         }
-
         
-        private void OnStateChange()
+        private void OnStateChange(FlowState _newState, FlowState _oldState)
         {
-            switch (CurrentState)
+            switch (_newState)
             {
                 case FlowState.Loading:
-                    GameManager.I.Init();
+                    GameManager.I.LoadingActions();
                     break;
-                case FlowState.MenuState:
-                    GameManager.I.UIMng.ActivateMenuPanel();
+                case FlowState.Menu:
+                    GameManager.I.MenuActions();
                     break;
-                case FlowState.GameplayState:
-                    // Fa partire il gioco
-                    GameManager.I.UIMng.ActivateGamePlayPanel();
-                    GameManager.I.EnterGameplayMode();
+                case FlowState.EnterGameplay:
+                    GameManager.I.EnterGameplayActions();
+                    break;
+                case FlowState.Gameplay:
+                    if(_oldState == FlowState.Pause)
+                        GameManager.I.PauseActions(false);
                     break;
                 case FlowState.Pause:
-                    // Blocca Dummy e attiva il menu di pausa
+                    GameManager.I.PauseActions(true);
+                    break;
+                case FlowState.RecapGame:
+                    GameManager.I.RecapGameActions();
                     break;
                 case FlowState.ExitGameplay:
-                    GameManager.I.ExitGameplayMode();
-                    CurrentState = FlowState.MenuState;
+                    GameManager.I.ExitGameplayActions();
                     break;
-                default:
+                case FlowState.ExitGame:
+                    GameManager.I.QuitGameActions();
                     break;
             }
         }
 
-        private void Update()
+        public void ChageState(FlowState _stateToSet)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                CurrentState = FlowState.Pause;
-            }
+            CurrentState = _stateToSet;
         }
-
     }
 
     public enum FlowState
     {
+        None,
         Loading,
-        MenuState,
-        GameplayState,
+        Menu,
+        EnterGameplay,
+        Gameplay,
         Pause,
         ExitGameplay,
+        RecapGame,
+        ExitGame
     }
 }

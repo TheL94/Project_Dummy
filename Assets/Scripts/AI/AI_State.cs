@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Framework.AI
 {
-    [CreateAssetMenu(menuName = "AI/State/NewState")]
+    [CreateAssetMenu(menuName = "AI/NewState")]
     public class AI_State : ScriptableObject
     {
         public List<ActionStructureForState> Actions = new List<ActionStructureForState>();

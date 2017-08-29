@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DumbProject.CameraController;
 using Multitouch.EventSystems.EventData;
@@ -8,30 +9,21 @@ using Multitouch.EventSystems.Gestures;
 
 namespace DumbProject.Generic
 {
-    public class CameraTouchInput : UIBehaviour, IPanHandler, IPinchHandler, IPointerDownHandler
+    public class CameraTouchInput : CameraInput, IPinchHandler, IDragHandler, IPointerDownHandler
     {
-        CameraHandler camMovement;
-
-        new private void Start()
+        public void OnDrag(PointerEventData eventData)
         {
-            if (GameManager.I.DeviceEnviroment == DeviceType.Desktop)
-                DestroyImmediate(this);
-            camMovement = Camera.main.transform.parent.GetComponent<CameraHandler>();
-        }
-
-        public void OnPan(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 delta)
-        {
-            camMovement.TouchPanning(sender, eventData, delta);
-        }
-
-        public void OnPinch(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 pinchDelta)
-        {
-            camMovement.PinchToZoom(sender, eventData, pinchDelta);
+            camHandler.OnDragEvent(eventData);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            
+            camHandler.OnClickEvent(eventData);
+        }
+
+        public void OnPinch(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 pinchDelta)
+        {
+            camHandler.PinchToZoom(sender, eventData, pinchDelta);
         }
     }
 }
