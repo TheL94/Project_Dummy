@@ -36,20 +36,6 @@ namespace DumbProject.Rooms
             }
         }
 
-        /// <summary>
-        /// Funzione che ritorna la posizione che sta di fronte a se stesso
-        /// </summary>
-        /// <returns></returns>
-        public Vector3 GetOppositeOfRelativeCellPosition()
-        {
-            return GetFrontPosition(RelativeCell.transform.position);
-        }
-
-        public Vector3 GetFrontPosition(Vector3 _position)
-        {
-            return (transform.position * 2) - _position;
-        }
-
         public virtual void SetLightingObject(GameObject _lightingObj, Vector3 _position)
         {
             lightingObject = _lightingObj;
