@@ -10,7 +10,8 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Cell RelativeCell;
 
-        protected GameObject graphicObj;
+        protected GameObject graphicElement;
+        protected GameObject fillerGraphic;
 
         public virtual void Setup(Cell _relativeCell)
         {
@@ -22,27 +23,41 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_graphic"></param>
         /// <param name="_rotation"></param>
-        public virtual void SetGraphic(GameObject _graphic, Quaternion _rotation)
+        public virtual void SetGraphicElement(GameObject _graphic, Quaternion _rotation)
         {
-            DisableGraphic();
+            DisableGraphicElement();
 
-            graphicObj = _graphic;
-            graphicObj.transform.position = transform.position;
-            graphicObj.transform.rotation = _rotation;
-            graphicObj.transform.parent = transform;
+            graphicElement = _graphic;
+            graphicElement.transform.position = transform.position;
+            graphicElement.transform.rotation = _rotation;
+            graphicElement.transform.parent = transform;
         }
 
         /// <summary>
         /// Funzione che disabilita la grafica e la ritorna al pool
         /// </summary>
-        public void DisableGraphic()
+        public virtual void DisableGraphicElement()
         {
-            if (graphicObj != null)
+            if (graphicElement != null)
             {
-                graphicObj.SetActive(false);
-                graphicObj = null;
+                graphicElement.SetActive(false);
+                graphicElement = null;
                 GameManager.I.PoolMng.UpdatePools();
             }
+
+            if (fillerGraphic != null)
+            {
+                fillerGraphic.SetActive(false);
+                fillerGraphic = null;
+                GameManager.I.PoolMng.UpdatePools();
+            }
+        }
+
+        public virtual void SetFillerGraphic(GameObject _graphic, Vector3 _position)
+        {
+            fillerGraphic = _graphic;
+            fillerGraphic.transform.position = _position;
+            fillerGraphic.transform.parent = transform;
         }
 
         /// <summary>
@@ -50,7 +65,7 @@ namespace DumbProject.Rooms
         /// </summary>
         public virtual void DisableAndDestroyObject(bool _destroyComponentOnly = false)
         {
-            DisableGraphic();
+            DisableGraphicElement();
             DestroyObject(_destroyComponentOnly);
         }
 

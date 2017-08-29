@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DumbProject.Grid;
+using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
@@ -11,12 +11,14 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Angle CollidingAngle;
 
+        GameObject lightingObject;
+
         /// <summary>
         /// Funzione che controlla la collisione con altri edge
         /// </summary>
         public void CheckCollisionWithOtherAngle()
         {
-            // TODO : evitare di usare il find (non saprei come fare per ora)
+            // TODO : evitare di usare il find ->  Possibile Soluzione : controllare solo le stanze adiacenti.
             List<Angle> anglesInFrontCell = FindObjectsOfType<Angle>().ToList();
             anglesInFrontCell.Remove(this);
             foreach (Angle angleInFront in anglesInFrontCell)
@@ -43,6 +45,25 @@ namespace DumbProject.Rooms
         public Vector3 GetFrontPosition(Vector3 _position)
         {
             return (transform.position * 2) - _position;
+        }
+
+        public virtual void SetLightingObject(GameObject _lightingObj, Vector3 _position)
+        {
+            lightingObject = _lightingObj;
+            lightingObject.transform.position = _position;
+            lightingObject.transform.parent = transform;
+        }
+
+        public override void DisableGraphicElement()
+        {
+            base.DisableGraphicElement();
+
+            if (lightingObject != null)
+            {
+                lightingObject.SetActive(false);
+                lightingObject = null;
+                GameManager.I.PoolMng.UpdatePools();
+            }
         }
 
         /// <summary>

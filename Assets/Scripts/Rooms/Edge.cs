@@ -56,9 +56,9 @@ namespace DumbProject.Rooms
             return (transform.position * 2) - _position;
         }
 
-        public override void SetGraphic(GameObject _graphic, Quaternion _rotation)
+        public override void SetGraphicElement(GameObject _graphic, Quaternion _rotation)
         {
-            base.SetGraphic(_graphic, _rotation);
+            base.SetGraphicElement(_graphic, _rotation);
             SetEmissiveMaterial(_graphic);
         }
 
@@ -87,7 +87,7 @@ namespace DumbProject.Rooms
 
         void SetEmissiveMaterial(GameObject _graphic)
         {
-            // TODO : logica da rivedere
+            // TODO : logica da rivedere (forse)
             MeshRenderer renderer = _graphic.GetComponentInChildren<MeshRenderer>();
             List<Material> materials = null;
             if (renderer != null)

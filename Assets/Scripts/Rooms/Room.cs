@@ -57,6 +57,7 @@ namespace DumbProject.Rooms
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
+            PlaceOtherGraphicElements();
         }
 
         /// <summary>
@@ -66,16 +67,16 @@ namespace DumbProject.Rooms
         {
             for (int i = 0; i < CellsInRoom.Count; i++)
             {
-                CellsInRoom[i].Floor.DisableGraphic();
+                CellsInRoom[i].Floor.DisableGraphicElement();
 
                 for (int j = 0; j < CellsInRoom[i].Angles.Count; j++)
-                    CellsInRoom[i].Angles[j].DisableGraphic();
+                    CellsInRoom[i].Angles[j].DisableGraphicElement();
 
                 for (int j = 0; j < CellsInRoom[i].Edges.Count; j++)
-                    CellsInRoom[i].Edges[j].DisableGraphic();
+                    CellsInRoom[i].Edges[j].DisableGraphicElement();
 
                 for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
-                    CellsInRoom[i].Doors[j].DisableGraphic();
+                    CellsInRoom[i].Doors[j].DisableGraphicElement();
             }
 
             for (int i = 0; i < CellsInRoom.Count; i++)
@@ -243,8 +244,41 @@ namespace DumbProject.Rooms
             InteractableList.Remove(_interactableToRemove);
         }
 
-        
+
         #endregion
+        #endregion
+
+        #region Cell Filler Graphic
+        public void PlaceOtherGraphicElements()
+        {
+            List<Edge> edges = GetEdges();
+            List<Angle> angles = GetAngles();
+
+            Edge edge = edges[Random.Range(0, edges.Count)];
+            Vector3 position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position);
+            edges.Remove(edge);
+
+            edge = edges[Random.Range(0, edges.Count)];
+            position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position);
+            edges.Remove(edge);
+
+            edge = edges[Random.Range(0, edges.Count)];
+            position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position);
+            edges.Remove(edge);
+
+            Angle angle = angles[Random.Range(0, angles.Count)];
+            position = ((angle.RelativeCell.transform.position + angle.transform.position) / 2);
+            angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
+            angles.Remove(angle);
+
+            angle = angles[Random.Range(0, angles.Count)];
+            position = ((angle.RelativeCell.transform.position + angle.transform.position) / 2);
+            angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
+            angles.Remove(angle);
+        }
         #endregion
 
         #region Cell Managment
@@ -369,7 +403,7 @@ namespace DumbProject.Rooms
         void TrimCellAngles()
         {
             List<Angle> itemsToBeDestroyed = new List<Angle>();
-            List<Angle> listOfPillars = GetListOfAngles();
+            List<Angle> listOfPillars = GetAngles();
 
             foreach (Angle angle1 in listOfPillars)
             {
@@ -439,7 +473,7 @@ namespace DumbProject.Rooms
         void TrimCollidingAngles()
         {
             List<Angle> itemsToBeDestroyed = new List<Angle>();
-            List<Angle> roomAngles = GetListOfAngles();
+            List<Angle> roomAngles = GetAngles();
 
             foreach (Angle angle in roomAngles)
             {
@@ -484,7 +518,7 @@ namespace DumbProject.Rooms
         /// Ritorna la lista dei pilastri contenuti in tutte le celle
         /// </summary>
         /// <returns></returns>
-        List<Angle> GetListOfAngles()
+        List<Angle> GetAngles()
         {
             List<Angle> listOfPillars = new List<Angle>();
             foreach (Cell cell in CellsInRoom)

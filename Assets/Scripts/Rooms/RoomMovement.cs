@@ -79,14 +79,18 @@ namespace DumbProject.Rooms
 
             closerNode = GameManager.I.MainGridCtrl.GetSpecificGridNode(mousePosition);
             if (closerNode != null)
+            {
                 room.transform.position = closerNode.WorldPosition;
+                if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
+                    room.HighlightRoomWalls(true, Color.green);
+                else
+                    room.HighlightRoomWalls(true, Color.red);
+            }
             else
+            {
                 transform.position = mousePosition;
-
-            if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
-                room.HighlightRoomWalls(true, Color.green);
-            else
                 room.HighlightRoomWalls(true, Color.red);
+            }
         }
 
         /// <summary>
@@ -98,7 +102,6 @@ namespace DumbProject.Rooms
         {
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
-                // TODO : controllare snap
                 room.SetItemIndicator(false);
                 snap.Complete(true);
                 room.PlaceAction();
