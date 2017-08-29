@@ -175,6 +175,20 @@ namespace DumbProject.Rooms
             return doors;
         }
 
+        /// <summary>
+        /// Ritorna la lista dei pilastri contenuti in tutte le celle
+        /// </summary>
+        /// <returns></returns>
+        public List<Angle> GetAngles()
+        {
+            List<Angle> listOfPillars = new List<Angle>();
+            foreach (Cell cell in CellsInRoom)
+                foreach (Angle wall in cell.Angles)
+                    listOfPillars.Add(wall);
+
+            return listOfPillars;
+        }
+
         public void SetItemIndicator(bool _isInUI)
         {
             foreach (ItemIndicator indicator in GetComponentsInChildren<ItemIndicator>())
@@ -512,20 +526,6 @@ namespace DumbProject.Rooms
                     listOfEdges = GetEdges();
                 }
             }
-        }
-
-        /// <summary>
-        /// Ritorna la lista dei pilastri contenuti in tutte le celle
-        /// </summary>
-        /// <returns></returns>
-        List<Angle> GetAngles()
-        {
-            List<Angle> listOfPillars = new List<Angle>();
-            foreach (Cell cell in CellsInRoom)
-                foreach (Angle wall in cell.Angles)
-                    listOfPillars.Add(wall);
-
-            return listOfPillars;
         }
         #endregion
 

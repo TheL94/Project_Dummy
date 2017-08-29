@@ -18,10 +18,16 @@ namespace DumbProject.Rooms
         /// </summary>
         public void CheckCollisionWithOtherAngle()
         {
-            // TODO : evitare di usare il find ->  Possibile Soluzione : controllare solo le stanze adiacenti.
-            List<Angle> anglesInFrontCell = FindObjectsOfType<Angle>().ToList();
-            anglesInFrontCell.Remove(this);
-            foreach (Angle angleInFront in anglesInFrontCell)
+            List<Room> adjacentRooms = GameManager.I.DungeonMng.GetAdjacentRoomsByDoors(RelativeCell.RelativeRoom);
+            List<Angle> adjacentAngles = new List<Angle>();
+
+            foreach (Room room in adjacentRooms)
+            {
+                adjacentAngles.AddRange(room.GetAngles());
+            }
+
+            adjacentAngles.Remove(this);
+            foreach (Angle angleInFront in adjacentAngles)
             {
                 if (Vector3.Distance(angleInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
                 {
