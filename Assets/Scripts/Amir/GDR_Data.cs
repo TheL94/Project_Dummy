@@ -38,8 +38,27 @@ namespace DumbProject.Rooms
             }
         }
 
-        public void SetExperienceForNextLevel() {
+        float tempExpLevel_0;
+        float tempExpLevel_1;
+        float tempExpLevel_2;
+        float tempExpLevel_3;
+        float tempExpLevel_4;
+        float tempExpLevel_5;
+        float tempExpLevel_6;
+        float tempExpLevel_7;
 
+        public void SetExperienceForNextLevel()
+        {
+
+            ExperienceForNextLevel = 10;
+            tempExpLevel_0 = ExperienceForNextLevel;
+            tempExpLevel_1 = tempExpLevel_0 + ExperienceForNextLevel * 1.2f;
+            tempExpLevel_2 = tempExpLevel_1 + tempExpLevel_1 * 1.2f;
+            tempExpLevel_3 = tempExpLevel_2 + tempExpLevel_2 * 1.2f;
+            tempExpLevel_4 = tempExpLevel_3 + tempExpLevel_3 * 1.2f;
+            tempExpLevel_5 = tempExpLevel_4 + tempExpLevel_4 * 1.2f;
+            tempExpLevel_6 = tempExpLevel_5 + tempExpLevel_5 * 1.2f;
+            tempExpLevel_7 = tempExpLevel_6 + tempExpLevel_6 * 1.2f;
 
         }
         /// <summary>
@@ -50,31 +69,68 @@ namespace DumbProject.Rooms
             if (ExperienceCounter >= ExperienceForNextLevel)
             {
                 PlayerLevel++;
+                CheckLevel(PlayerLevel);
             }
-            //if (ExperienceCounter < ExperienceForNextLevel && PlayerLevel != 0)
-            //{
-            //    PlayerLevel--;
-            //}
-            CheckLevel(PlayerLevel);
+            if (ExperienceCounter < tempExpLevel_0 && PlayerLevel != 0)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_1 && PlayerLevel > 1)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_2 && PlayerLevel > 2)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_3 && PlayerLevel > 3)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_4 && PlayerLevel > 4)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_5 && PlayerLevel > 5)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_6 && PlayerLevel > 6)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+            if (ExperienceCounter < tempExpLevel_7 && PlayerLevel > 7)
+            {
+                PlayerLevel--;
+                CheckLevel(PlayerLevel);
+            }
+
         }
 
 
         public int CheckLevel(int LevelToReturn)
         {
-            if (PlayerLevel <0)
+            if (PlayerLevel < 0)
             {
                 PlayerLevel = 0;
             }
 
             int tempLevel;
-            float tempExpLevel_0 = ExperienceForNextLevel;
-            float tempExpLevel_1 = tempExpLevel_0 + ExperienceForNextLevel * 1.2f;
-            float tempExpLevel_2 = tempExpLevel_1 + tempExpLevel_1 * 1.2f;
-            float tempExpLevel_3 = tempExpLevel_2 + tempExpLevel_2 * 1.2f;
-            float tempExpLevel_4 = tempExpLevel_3 + tempExpLevel_3 * 1.2f;
-            float tempExpLevel_5 = tempExpLevel_4 + tempExpLevel_4 * 1.2f;
-            float tempExpLevel_6 = tempExpLevel_5 + tempExpLevel_5 * 1.2f;
-            float tempExpLevel_7 = tempExpLevel_6 + tempExpLevel_6 * 1.2f;
+            //float tempExpLevel_0 = ExperienceForNextLevel;
+            //float tempExpLevel_1 = tempExpLevel_0 + ExperienceForNextLevel * 1.2f;
+            //float tempExpLevel_2 = tempExpLevel_1 + tempExpLevel_1 * 1.2f;
+            //float tempExpLevel_3 = tempExpLevel_2 + tempExpLevel_2 * 1.2f;
+            //float tempExpLevel_4 = tempExpLevel_3 + tempExpLevel_3 * 1.2f;
+            //float tempExpLevel_5 = tempExpLevel_4 + tempExpLevel_4 * 1.2f;
+            //float tempExpLevel_6 = tempExpLevel_5 + tempExpLevel_5 * 1.2f;
+            //float tempExpLevel_7 = tempExpLevel_6 + tempExpLevel_6 * 1.2f;
             switch (LevelToReturn)
             {
                 case 0:
@@ -106,7 +162,7 @@ namespace DumbProject.Rooms
 
             }
             tempLevel = LevelToReturn;
-            if (tempLevel == PlayerLevel && PlayerLevel!=0)
+            if (tempLevel == PlayerLevel && PlayerLevel != 0)
             {
                 isNextLevel = true;
                 ModifyPlayerStats();
@@ -117,6 +173,7 @@ namespace DumbProject.Rooms
                 ModifyPlayerStats();
             }
             PlayerLevel = LevelToReturn;
+            tempLevel = 0;
             return PlayerLevel;
         }
 

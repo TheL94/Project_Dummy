@@ -14,12 +14,13 @@ namespace DumbProject.Rooms
         public void Init(GDR_Data data)
         {
             data = gdr_Data;
+            data.SetExperienceForNextLevel();
             data.ExperienceCounter = 0;
             data.PlayerLevel = 0;
             data.Speed = 1;
             data.Life = 1;
             data.Attack = 1;
-            data.ExperienceForNextLevel = 10;
+            
         }
         private void Start()
         {
@@ -34,7 +35,10 @@ namespace DumbProject.Rooms
                 gdr_Data.ExperienceCounter ++;
             if (Input.GetKeyDown(KeyCode.DownArrow))
 
-                gdr_Data.ExperienceCounter--;
+                if (gdr_Data.ExperienceCounter >0)
+                {
+                    gdr_Data.ExperienceCounter--; 
+                }
 
         }
         #endregion
