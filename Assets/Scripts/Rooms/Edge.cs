@@ -67,6 +67,9 @@ namespace DumbProject.Rooms
             if (emissiveMaterial == null)
                 return;
 
+            if (emissiveMaterial.GetColor("_EmissionColor") == _color)
+                return;
+
             emissiveMaterial.SetColor("_EmissionColor", _color);
 
             if (_toggle)
