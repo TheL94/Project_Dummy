@@ -14,7 +14,7 @@ namespace Multitouch.EventSystems
     [AddComponentMenu("Event/Multiselect Event System")]
     public class MultiselectEventSystem : EventSystem
     {
-        public float ScreenPPI = 100.0f;
+        public float ScreenPPI { get { return Screen.dpi; } }
         public float MaxTouchClusterDistanceInches = 6f;
         public float MaxTouchClusterDistancePixels { get { return MaxTouchClusterDistanceInches * ScreenPPI; } }
 

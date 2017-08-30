@@ -156,7 +156,7 @@ namespace DumbProject.Rooms
         /// </summary>
         void InstantiateFloorElement()
         {
-            Floor.SetGraphic(GameManager.I.PoolMng.GetGameObject("Floor"), Quaternion.identity);
+            Floor.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("Floor"), Quaternion.identity);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace DumbProject.Rooms
         void InstantiatePilllarElements()
         {
             foreach (Angle angle in Angles)
-                angle.SetGraphic(GameManager.I.PoolMng.GetGameObject("Column"), Quaternion.identity);
+                angle.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("Column"), Quaternion.identity);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace DumbProject.Rooms
         {
             foreach (Edge edge in Edges)
             {
-                edge.SetGraphic(GameManager.I.PoolMng.GetGameObject("Wall"), Quaternion.LookRotation(transform.position - edge.transform.position));
+                edge.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("Wall"), Quaternion.LookRotation(transform.position - edge.transform.position));
             }
         }
         #endregion
@@ -222,7 +222,7 @@ namespace DumbProject.Rooms
             Door newDoor = edgeObj.AddComponent<Door>();
 
             newDoor.Setup(this);
-            newDoor.SetGraphic(GameManager.I.PoolMng.GetGameObject("WallDoor"), Quaternion.LookRotation(transform.position - newDoor.transform.position));
+            newDoor.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("WallDoor"), Quaternion.LookRotation(transform.position - newDoor.transform.position));
 
             if (_edge.name == "RightEdge")
                 newDoor.name = "RightDoor";

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DumbProject.Grid;
+using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
@@ -11,15 +11,20 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Angle CollidingAngle;
 
+        GameObject lightingObject;
+
         /// <summary>
         /// Funzione che controlla la collisione con altri edge
         /// </summary>
         public void CheckCollisionWithOtherAngle()
         {
-            // TODO : evitare di usare il find (non saprei come fare per ora)
-            List<Angle> anglesInFrontCell = FindObjectsOfType<Angle>().ToList();
-            anglesInFrontCell.Remove(this);
-            foreach (Angle angleInFront in anglesInFrontCell)
+            List<Room> adjacentRooms = GameManager.I.DungeonMng.GetAdjacentRoomsByDoors(RelativeCell.RelativeRoom);
+            List<Angle> adjacentAngles = new List<Angle>();
+
+            foreach (Room room in adjacentRooms)
+                adjacentAngles.AddRange(room.GetAngles());
+
+            foreach (Angle angleInFront in adjacentAngles)
             {
                 if (Vector3.Distance(angleInFront.transform.position, transform.position) <= RelativeCell.RelativeRoom.Data.PenetrationOffset)
                 {
@@ -31,18 +36,23 @@ namespace DumbProject.Rooms
             }
         }
 
-        /// <summary>
-        /// Funzione che ritorna la posizione che sta di fronte a se stesso
-        /// </summary>
-        /// <returns></returns>
-        public Vector3 GetOppositeOfRelativeCellPosition()
+        public virtual void SetLightingObject(GameObject _lightingObj, Vector3 _position)
         {
-            return GetFrontPosition(RelativeCell.transform.position);
+            lightingObject = _lightingObj;
+            lightingObject.transform.position = _position;
+            lightingObject.transform.parent = transform;
         }
 
-        public Vector3 GetFrontPosition(Vector3 _position)
+        public override void DisableGraphicElement()
         {
-            return (transform.position * 2) - _position;
+            base.DisableGraphicElement();
+
+            if (lightingObject != null)
+            {
+                lightingObject.SetActive(false);
+                lightingObject = null;
+                GameManager.I.PoolMng.UpdatePools();
+            }
         }
 
         /// <summary>

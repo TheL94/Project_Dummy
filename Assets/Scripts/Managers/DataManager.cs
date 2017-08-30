@@ -12,9 +12,13 @@ namespace DumbProject.Generic
         public RoomData RoomData;
         public List<RoomGraphicComponent> RoomGraphicComponentDatas = new List<RoomGraphicComponent>();
 
+        [HideInInspector]
         public RoomData MainRoomDataInst;
+        [HideInInspector]
         public RoomData ObjectiveRoomDataInst;
+        [HideInInspector]
         public RoomData RoomDataInst;
+        [HideInInspector]
         public List<RoomGraphicComponent> RoomGraphicComponentDatasInst = new List<RoomGraphicComponent>();
 
         public void InitData()
