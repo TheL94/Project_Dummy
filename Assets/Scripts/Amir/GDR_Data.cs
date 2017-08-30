@@ -7,6 +7,8 @@ namespace DumbProject.Rooms
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
     {
+        public bool IsInGame;
+        public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
 
@@ -218,7 +220,7 @@ namespace DumbProject.Rooms
             {
                 target = _target;
             }
-            _target.gdr_Data.ActualLife -= Attack;
+            _target.Data.ActualLife -= Attack;
         }
 
         /// <summary>
@@ -232,7 +234,7 @@ namespace DumbProject.Rooms
                 case ExperienceType.Enemy:
                     if (target != null)
                     {
-                        //ExperienceCounter += GetExperienceMultiplier();
+                        ExperienceCounter += GetExperienceMultiplier();
                         target = null;
                     }
                     break;
