@@ -270,17 +270,20 @@ namespace DumbProject.Rooms
 
             Edge edge = edges[Random.Range(0, edges.Count)];
             Vector3 position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position);
+            Quaternion rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position);
+            rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position);
+            rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);      
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position, rotation);
             edges.Remove(edge);
 
             Angle angle = angles[Random.Range(0, angles.Count)];
