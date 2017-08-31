@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -298,20 +299,22 @@ namespace DumbProject.Rooms
             List<Angle> anglesToReturn = new List<Angle>();
             List<Edge> roomEdges = GetEdges();
             roomEdges.AddRange(GetDoors().ConvertAll(d => d as Edge));
-
-            foreach (Angle angle in GetAngles())
+            float distance;
+            List<Angle> angleToCycle = GetAngles();
+            foreach (Angle angle in angleToCycle)
             {
                 foreach (Edge edge in roomEdges)
                 {
-                    if (Vector3.Distance(edge.transform.position, angle.transform.position) > GameManager.I.MainGridCtrl.CellSize)
+                    distance = Vector3.Distance(edge.transform.position, angle.transform.position);
+                    if (distance > GameManager.I.MainGridCtrl.CellSize/2)
                     {
                         if (!anglesToReturn.Contains(angle))
                             anglesToReturn.Add(angle);
                     }
                     else
                     {
-                        if(anglesToReturn.Remove(angle))
-                            break;
+                        anglesToReturn.Remove(angle);
+                        break;
                     }
                 }
             }
