@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -303,7 +304,7 @@ namespace DumbProject.Rooms
             {
                 foreach (Edge edge in roomEdges)
                 {
-                    if (Vector3.Distance(edge.transform.position, angle.transform.position) > GameManager.I.MainGridCtrl.CellSize)
+                    if (Vector3.Distance(edge.transform.position, angle.transform.position) > GameManager.I.MainGridCtrl.CellSize/2)
                     {
                         if (!anglesToReturn.Contains(angle))
                             anglesToReturn.Add(angle);
@@ -582,7 +583,8 @@ namespace DumbProject.Rooms
             Gizmos.color = Color.magenta;
             foreach (Angle angle in anglesWithoutWall)
             {
-                Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
+                if(angle != null)
+                    Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
             }
         }
     }
