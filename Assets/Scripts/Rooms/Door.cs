@@ -243,7 +243,7 @@ namespace DumbProject.Rooms
                 default:
                     break;
             }
-            Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), Vector3.one);
+            Gizmos.DrawWireCube(transform.position + new Vector3(0f, 3.5f, 0f), Vector3.one);
 
             Gizmos.color = Color.cyan;
             if(RelativeNetNode != null)

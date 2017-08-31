@@ -31,6 +31,9 @@ namespace DumbProject.Rooms
 
         float cellProbability = 1f;
 
+        // per test 
+        List<Angle> anglesWithoutWall;
+
         #region API
         /// <summary>
         /// Setup della room nella UI
@@ -57,6 +60,7 @@ namespace DumbProject.Rooms
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
+            anglesWithoutWall = FindAnglesWithoutWall();
             PlaceOtherGraphicElements();
         }
 
@@ -152,12 +156,7 @@ namespace DumbProject.Rooms
         {
             List<Edge> listOfEdges = new List<Edge>();
             foreach (Cell cell in CellsInRoom)
-            {
-                foreach (Edge edge in cell.Edges)
-                {
-                    listOfEdges.Add(edge);
-                }
-            }
+                listOfEdges.AddRange(cell.Edges);
             return listOfEdges;
         }
 
@@ -169,9 +168,7 @@ namespace DumbProject.Rooms
         {
             List<Door> doors = new List<Door>();
             foreach (Cell cell in CellsInRoom)
-            {
                 doors.AddRange(cell.Doors);
-            }
             return doors;
         }
 
@@ -181,12 +178,11 @@ namespace DumbProject.Rooms
         /// <returns></returns>
         public List<Angle> GetAngles()
         {
-            List<Angle> listOfPillars = new List<Angle>();
+            List<Angle> listOfAngles = new List<Angle>();
             foreach (Cell cell in CellsInRoom)
-                foreach (Angle wall in cell.Angles)
-                    listOfPillars.Add(wall);
+                listOfAngles.AddRange(cell.Angles);
 
-            return listOfPillars;
+            return listOfAngles;
         }
 
         public void SetItemIndicator(bool _isInUI)
@@ -270,17 +266,20 @@ namespace DumbProject.Rooms
 
             Edge edge = edges[Random.Range(0, edges.Count)];
             Vector3 position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position);
+            Quaternion rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position);
+            rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = ((edge.RelativeCell.transform.position + edge.transform.position) / 2);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position);
+            rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);      
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position, rotation);
             edges.Remove(edge);
 
             Angle angle = angles[Random.Range(0, angles.Count)];
@@ -292,6 +291,31 @@ namespace DumbProject.Rooms
             position = ((angle.RelativeCell.transform.position + angle.transform.position) / 2);
             angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
             angles.Remove(angle);
+        }
+
+        public List<Angle> FindAnglesWithoutWall()
+        {
+            List<Angle> anglesToReturn = new List<Angle>();
+            List<Edge> roomEdges = GetEdges();
+            roomEdges.AddRange(GetDoors().ConvertAll(d => d as Edge));
+
+            foreach (Angle angle in GetAngles())
+            {
+                foreach (Edge edge in roomEdges)
+                {
+                    if (Vector3.Distance(edge.transform.position, angle.transform.position) > GameManager.I.MainGridCtrl.CellSize)
+                    {
+                        if (!anglesToReturn.Contains(angle))
+                            anglesToReturn.Add(angle);
+                    }
+                    else
+                    {
+                        if(anglesToReturn.Remove(angle))
+                            break;
+                    }
+                }
+            }
+            return anglesToReturn;
         }
         #endregion
 
@@ -529,30 +553,38 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        //private void OnDrawGizmos()
-        //{
-        //    switch (StatusOfExploration)
-        //    {
-        //        case ExplorationStatus.NotInGame:
-        //            Gizmos.color = Color.white;
-        //            break;
-        //        case ExplorationStatus.Unavailable:
-        //            Gizmos.color = Color.red;
-        //            break;
-        //        case ExplorationStatus.NotExplored:
-        //            Gizmos.color = Color.yellow;
-        //            break;
-        //        case ExplorationStatus.InExploration:
-        //            Gizmos.color = Color.cyan;
-        //            break;
-        //        case ExplorationStatus.Explored:
-        //            Gizmos.color = Color.green;
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    Gizmos.DrawWireCube(transform.position + new Vector3(0f, 6f, 0f), new Vector3(5f, 1f, 5f));
-        //}
+        private void OnDrawGizmos()
+        {
+            //switch (statusofexploration)
+            //{
+            //    case explorationstatus.notingame:
+            //        gizmos.color = color.white;
+            //        break;
+            //    case explorationstatus.unavailable:
+            //        gizmos.color = color.red;
+            //        break;
+            //    case explorationstatus.notexplored:
+            //        gizmos.color = color.yellow;
+            //        break;
+            //    case explorationstatus.inexploration:
+            //        gizmos.color = color.cyan;
+            //        break;
+            //    case explorationstatus.explored:
+            //        gizmos.color = color.green;
+            //        break;
+            //    default:
+            //        break;
+            //}
+            //gizmos.drawwirecube(transform.position + new vector3(0f, 4f, 0f), new vector3(5f, 1f, 5f));
+            if (anglesWithoutWall == null)
+                return;
+
+            Gizmos.color = Color.magenta;
+            foreach (Angle angle in anglesWithoutWall)
+            {
+                Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
+            }
+        }
     }
 
     public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, NotExplored = 1, InExploration = 2, Explored = 3 }

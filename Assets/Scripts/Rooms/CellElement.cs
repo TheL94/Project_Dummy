@@ -53,10 +53,11 @@ namespace DumbProject.Rooms
             }
         }
 
-        public virtual void SetFillerGraphic(GameObject _graphic, Vector3 _position)
+        public virtual void SetFillerGraphic(GameObject _graphic, Vector3 _position, Quaternion _rotation)
         {
             fillerGraphic = _graphic;
             fillerGraphic.transform.position = _position;
+            fillerGraphic.transform.rotation = _rotation;
             fillerGraphic.transform.parent = transform;
         }
 
