@@ -32,9 +32,6 @@ namespace DumbProject.Rooms
 
         float cellProbability = 1f;
 
-        // per test 
-        List<Angle> anglesWithoutWall;
-
         #region API
         /// <summary>
         /// Setup della room nella UI
@@ -61,7 +58,6 @@ namespace DumbProject.Rooms
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
-            anglesWithoutWall = FindAnglesWithoutWall();
             PlaceOtherGraphicElements();
         }
 
@@ -579,8 +575,8 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        private void OnDrawGizmos()
-        {
+        //private void OnDrawGizmos()
+        //{
             //switch (statusofexploration)
             //{
             //    case explorationstatus.notingame:
@@ -602,16 +598,7 @@ namespace DumbProject.Rooms
             //        break;
             //}
             //gizmos.drawwirecube(transform.position + new vector3(0f, 4f, 0f), new vector3(5f, 1f, 5f));
-            if (anglesWithoutWall == null)
-                return;
-
-            Gizmos.color = Color.magenta;
-            foreach (Angle angle in anglesWithoutWall)
-            {
-                if(angle != null)
-                    Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
-            }
-        }
+        //}
     }
 
     public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, NotExplored = 1, InExploration = 2, Explored = 3 }
