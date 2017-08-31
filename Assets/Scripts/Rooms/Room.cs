@@ -317,6 +317,29 @@ namespace DumbProject.Rooms
             }
             return anglesToReturn;
         }
+
+        public void FindCornerEdges()
+        {
+            float distance = Mathf.Sqrt(Mathf.Pow(GameManager.I.MainGridCtrl.CellSize / 2, 2) * 2);
+            foreach (Edge edge1 in GetEdges())
+            {
+                foreach (Edge edge2 in GetEdges())
+                {
+                    if (edge1 == edge2)
+                        continue;
+                    if (Vector3.Distance(edge1.transform.position, edge2.transform.position) == distance)
+                    {
+                        Vector3 point = (edge1.transform.position + edge2.transform.position) / 2;
+                        GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(point);
+                        if(node.RelativeCell != null)
+                        {
+                            // i muri sono ad angolo rivolto vreso l'interno della stanza
+                            // TODO : salvare le coppie di muri
+                        }
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Cell Managment
@@ -582,7 +605,8 @@ namespace DumbProject.Rooms
             Gizmos.color = Color.magenta;
             foreach (Angle angle in anglesWithoutWall)
             {
-                Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
+                if(angle != null)
+                    Gizmos.DrawWireCube(angle.transform.position + new Vector3(0f, 4f, 0f), Vector3.one);
             }
         }
     }
