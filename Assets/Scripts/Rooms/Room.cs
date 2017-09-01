@@ -32,6 +32,9 @@ namespace DumbProject.Rooms
 
         float cellProbability = 1f;
 
+        // TEST
+        List<Edge[]> wallCouples;
+
         #region API
         /// <summary>
         /// Setup della room nella UI
@@ -58,6 +61,7 @@ namespace DumbProject.Rooms
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
+            wallCouples = FindCornerEdges();
             PlaceOtherGraphicElements();
         }
 
@@ -317,8 +321,9 @@ namespace DumbProject.Rooms
             return anglesToReturn;
         }
 
-        public void FindCornerEdges()
+        public List<Edge[]> FindCornerEdges()
         {
+            List<Edge[]> wallCouples = new List<Edge[]>();
             float distance = Mathf.Sqrt(Mathf.Pow(GameManager.I.MainGridCtrl.CellSize / 2, 2) * 2);
             foreach (Edge edge1 in GetEdges())
             {
@@ -328,17 +333,16 @@ namespace DumbProject.Rooms
                         continue;
                     if (Vector3.Distance(edge1.transform.position, edge2.transform.position) == distance)
                     {
-                        Vector3 point = (edge1.transform.position + edge2.transform.position) / 2;
-                        GridNode node = GameManager.I.MainGridCtrl.GetSpecificGridNode(point);
-                        if(node.RelativeCell != null)
-                        {
-                            // i muri sono ad angolo rivolto vreso l'interno della stanza
-                            // TODO : salvare le coppie di muri
-                        }
+                        wallCouples.Add(new Edge[2] { edge1, edge2 });
+                        // TODO : trovare modo di escluedere gli angoli al di fuori della cella
                     }
                 }
             }
+
+            return wallCouples;
         }
+
+
         #endregion
 
         #region Cell Managment
@@ -575,30 +579,39 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        //private void OnDrawGizmos()
-        //{
-            //switch (statusofexploration)
+        private void OnDrawGizmos()
+        {
+            //switch (StatusOfExploration)
             //{
-            //    case explorationstatus.notingame:
-            //        gizmos.color = color.white;
+            //    case ExplorationStatus.NotInGame:
+            //        Gizmos.color = Color.white;
             //        break;
-            //    case explorationstatus.unavailable:
-            //        gizmos.color = color.red;
+            //    case ExplorationStatus.Unavailable:
+            //        Gizmos.color = Color.red;
             //        break;
-            //    case explorationstatus.notexplored:
-            //        gizmos.color = color.yellow;
+            //    case ExplorationStatus.NotExplored:
+            //        Gizmos.color = Color.yellow;
             //        break;
-            //    case explorationstatus.inexploration:
-            //        gizmos.color = color.cyan;
+            //    case ExplorationStatus.InExploration:
+            //        Gizmos.color = Color.cyan;
             //        break;
-            //    case explorationstatus.explored:
-            //        gizmos.color = color.green;
+            //    case ExplorationStatus.Explored:
+            //        Gizmos.color = Color.green;
             //        break;
             //    default:
             //        break;
             //}
-            //gizmos.drawwirecube(transform.position + new vector3(0f, 4f, 0f), new vector3(5f, 1f, 5f));
-        //}
+            //Gizmos.DrawWireCube(transform.position + new Vector3(0f, 4f, 0f), new Vector3(5f, 1f, 5f));
+
+            Gizmos.color = Color.magenta;
+            foreach (Edge[] edge in wallCouples)
+            {
+                if(edge[0] != null && edge[1] != null)
+                {
+                    Gizmos.DrawLine(edge[0].transform.position + new Vector3(0, 1, 0), edge[1].transform.position + new Vector3(0, 1, 0));
+                }
+            }
+        }
     }
 
     public enum ExplorationStatus { NotInGame = -1, Unavailable = 0, NotExplored = 1, InExploration = 2, Explored = 3 }
