@@ -260,6 +260,9 @@ namespace DumbProject.Rooms
         #endregion
 
         #region Cell Filler Graphic
+        /// <summary>
+        /// Funzione che piazza elementi di grafica riempitiva nella stanza
+        /// </summary>
         public void PlaceOtherGraphicElements()
         {
             List<Edge> edges = GetEdges();
@@ -294,6 +297,10 @@ namespace DumbProject.Rooms
             angles.Remove(angle);
         }
 
+        /// <summary>
+        /// Funzione che ritorna una lista gi colonne che non hanno nessun muro adiacente
+        /// </summary>
+        /// <returns></returns>
         public List<Angle> FindAnglesWithoutWall()
         {
             List<Angle> anglesToReturn = new List<Angle>();
@@ -321,6 +328,10 @@ namespace DumbProject.Rooms
             return anglesToReturn;
         }
 
+        /// <summary>
+        /// Funzione che ritorna una lista di coppie di muri che formano un angolo
+        /// </summary>
+        /// <returns></returns>
         public List<Edge[]> FindCornerEdges()
         {
             List<Edge[]> wallCouples = new List<Edge[]>();
@@ -341,8 +352,6 @@ namespace DumbProject.Rooms
 
             return wallCouples;
         }
-
-
         #endregion
 
         #region Cell Managment
@@ -520,7 +529,23 @@ namespace DumbProject.Rooms
                     // muro collide con muro
                     else if (edge.GetType() == typeof(Edge) && edge.CollidingEdge.GetType() == typeof(Edge))
                     {
-                        itemsToBeDestroyed.Add(edge);
+                        // cerco di distruggere il muro senza oggetti di grafica, altrimenti cambio il parent di questi ultimi
+                        if (!edge.HasFillerGraphic())
+                        {
+                            itemsToBeDestroyed.Add(edge);
+                        }
+                        else
+                        {
+                            if (!edge.CollidingEdge.HasFillerGraphic())
+                            {
+                                itemsToBeDestroyed.Add(edge.CollidingEdge);
+                            }
+                            else
+                            {
+                                itemsToBeDestroyed.Add(edge);
+                                edge.SwapFillerGraphicParent(edge.CollidingEdge);
+                            }
+                        }
                     }
                 }
             }
@@ -544,7 +569,23 @@ namespace DumbProject.Rooms
                 angle.CheckCollisionWithOtherAngle();
                 if (!itemsToBeDestroyed.Contains(angle) && angle.CollidingAngle != null && !itemsToBeDestroyed.Contains(angle.CollidingAngle))
                 {
-                    itemsToBeDestroyed.Add(angle.CollidingAngle);
+                    // cerco di distruggere la colonna senza oggetti di illuminazione, altrimenti cambio il parent di questi ultimi
+                    if (!angle.HasLightingObject())
+                    {
+                        itemsToBeDestroyed.Add(angle);
+                    }
+                    else
+                    {
+                        if (!angle.CollidingAngle.HasLightingObject())
+                        {
+                            itemsToBeDestroyed.Add(angle.CollidingAngle);
+                        }
+                        else
+                        {
+                            itemsToBeDestroyed.Add(angle);
+                            angle.SwapLightingObjectParent(angle.CollidingAngle);
+                        }
+                    }
                 }
             }
 

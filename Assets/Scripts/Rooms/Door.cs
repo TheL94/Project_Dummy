@@ -9,8 +9,6 @@ namespace DumbProject.Rooms
 {
     public class Door : Edge, IInteractable
     {
-        GameObject lightingObject;
-
         public ExplorationStatus StatusOfExploration
         {
             get { return EvaluateStatus(); }
@@ -47,18 +45,6 @@ namespace DumbProject.Rooms
         {
             RelativeCell.Doors.Remove(this);
             base.DisableAndDestroyObject(_avoidDestruction);
-        }
-
-        public override void DisableGraphicElement()
-        {
-            base.DisableGraphicElement();
-
-            if (lightingObject != null)
-            {
-                lightingObject.SetActive(false);
-                lightingObject = null;
-                GameManager.I.PoolMng.UpdatePools();
-            }
         }
 
         /// <summary>

@@ -51,17 +51,32 @@ namespace DumbProject.Rooms
             return GetFrontPosition(RelativeCell.transform.position);
         }
 
+        /// <summary>
+        /// Funzione che ritorna la posizione che sta di fronte a quella passata come parametro
+        /// </summary>
+        /// <param name="_position"></param>
+        /// <returns></returns>
         public Vector3 GetFrontPosition(Vector3 _position)
         {
             return (transform.position * 2) - _position;
         }
 
+        /// <summary>
+        /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio di Edge
+        /// </summary>
+        /// <param name="_graphic"></param>
+        /// <param name="_rotation"></param>
         public override void SetGraphicElement(GameObject _graphic, Quaternion _rotation)
         {
             base.SetGraphicElement(_graphic, _rotation);
             SetEmissiveMaterial(_graphic);
         }
 
+        /// <summary>
+        /// Funzione che accende o spegne l'emissive presente su un materiale dell'oggetto e ne cambia il colore
+        /// </summary>
+        /// <param name="_toggle"></param>
+        /// <param name="_color"></param>
         public void ToggleEmissive(bool _toggle, Color _color)
         {
             if (emissiveMaterial == null)
@@ -85,7 +100,11 @@ namespace DumbProject.Rooms
             RelativeCell.Edges.Remove(this);
             base.DisableAndDestroyObject(_avoidDestruction);
         }
-
+        
+        /// <summary>
+        /// Funzione che cerca nei figli un mteriale usabile come emissive
+        /// </summary>
+        /// <param name="_graphic"></param>
         void SetEmissiveMaterial(GameObject _graphic)
         {
             // TODO : logica da rivedere (forse)

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using DumbProject.Generic;
 
@@ -10,8 +9,6 @@ namespace DumbProject.Rooms
     {
         [HideInInspector]
         public Angle CollidingAngle;
-
-        GameObject lightingObject;
 
         /// <summary>
         /// Funzione che controlla la collisione con altri edge
@@ -33,25 +30,6 @@ namespace DumbProject.Rooms
                 }
                 else
                     CollidingAngle = null;
-            }
-        }
-
-        public virtual void SetLightingObject(GameObject _lightingObj, Vector3 _position)
-        {
-            lightingObject = _lightingObj;
-            lightingObject.transform.position = _position;
-            lightingObject.transform.parent = transform;
-        }
-
-        public override void DisableGraphicElement()
-        {
-            base.DisableGraphicElement();
-
-            if (lightingObject != null)
-            {
-                lightingObject.SetActive(false);
-                lightingObject = null;
-                GameManager.I.PoolMng.UpdatePools();
             }
         }
 
