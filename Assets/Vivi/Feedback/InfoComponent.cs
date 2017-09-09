@@ -1,21 +1,15 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 using Framework.AI;
-using DumbProject.Generic;
+
 public class InfoComponent: MonoBehaviour {
 
     public List<SpriteRenderer> IconsPrefabs;
     public SpriteRenderer IconToGet;
-    public static InfoComponent I;
-
-
+ 
     private void Awake()
-    {
-        if (I == null)
-        {
-            I = this;
-        }
+    {    
         // per ora è nell'awake, forse c'è un evento di setup generale?
         Setup();
     }
@@ -42,7 +36,7 @@ public class InfoComponent: MonoBehaviour {
         transform.LookAt(Camera.main.transform.position);
     }
 
-    public void ShowActionPopUp (AI_State _state)
+    public void ShowStatePopUp (AI_State _state)
     {
         foreach (var i in IconsPrefabs)
         {
@@ -50,6 +44,7 @@ public class InfoComponent: MonoBehaviour {
             {  
                 if (IconToGet)
                 {
+					
                     IconToGet.sprite = i.sprite;
                 }
             }

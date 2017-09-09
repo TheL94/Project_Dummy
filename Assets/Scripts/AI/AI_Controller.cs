@@ -18,10 +18,7 @@ namespace Framework.AI
             get { return _currentState; }
             set { _currentState = OnCurrentStateSet(CurrentState, value);
 
-                #region ViviTest
-                //InfoComponent.I.ShowActionPopUp(CurrentState);
-                #endregion
-            }
+			}
         }
 
         public void Init(AI_State currentState)

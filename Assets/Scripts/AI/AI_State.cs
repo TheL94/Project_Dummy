@@ -105,8 +105,9 @@ namespace Framework.AI
 
         void HandleOnEnd(AI_Controller _controller)
         {
-            if(OnCompleteTransition != null)
-                _controller.CurrentState = OnCompleteTransition;
-        }
+			if (OnCompleteTransition != null)
+				_controller.CurrentState = OnCompleteTransition;
+		
+		}
     }
 }
