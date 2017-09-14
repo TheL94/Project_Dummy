@@ -32,9 +32,6 @@ namespace DumbProject.Rooms
 
         float cellProbability = 1f;
 
-        // TEST
-        List<Edge[]> wallCouples;
-
         #region API
         /// <summary>
         /// Setup della room nella UI
@@ -61,7 +58,6 @@ namespace DumbProject.Rooms
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
             TrimCellAngles();
-            wallCouples = FindCornerEdges();
             PlaceOtherGraphicElements();
         }
 
@@ -265,6 +261,7 @@ namespace DumbProject.Rooms
         /// </summary>
         public void PlaceOtherGraphicElements()
         {
+            // TODO : alla distruzione causa blocco del gioco
             List<Edge> edges = GetEdges();
             List<Angle> angles = GetAngles();
 
@@ -643,15 +640,6 @@ namespace DumbProject.Rooms
             //        break;
             //}
             //Gizmos.DrawWireCube(transform.position + new Vector3(0f, 4f, 0f), new Vector3(5f, 1f, 5f));
-
-            Gizmos.color = Color.magenta;
-            foreach (Edge[] edge in wallCouples)
-            {
-                if(edge[0] != null && edge[1] != null)
-                {
-                    Gizmos.DrawLine(edge[0].transform.position + new Vector3(0, 1, 0), edge[1].transform.position + new Vector3(0, 1, 0));
-                }
-            }
         }
     }
 
