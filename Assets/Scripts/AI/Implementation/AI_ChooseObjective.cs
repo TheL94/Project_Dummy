@@ -11,6 +11,7 @@ namespace Framework.AI
     public class AI_ChooseObjective : AI_Action
     {
         public List<GenericType> PriorityList = new List<GenericType>();
+        public bool GameOverIfNothigFound = false;
 
         protected override bool Act(AI_Controller _controller)
         {
@@ -34,7 +35,11 @@ namespace Framework.AI
                 return true;
             }
             else
+            {
+                if (GameOverIfNothigFound)
+                    GameManager.I.GameLost();
                 return false;
+            }
 
         }
 
