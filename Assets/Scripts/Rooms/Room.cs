@@ -68,16 +68,16 @@ namespace DumbProject.Rooms
         {
             for (int i = 0; i < CellsInRoom.Count; i++)
             {
-                CellsInRoom[i].Floor.DisableGraphicElement();
+                CellsInRoom[i].Floor.DisableAllGraphics();
 
                 for (int j = 0; j < CellsInRoom[i].Angles.Count; j++)
-                    CellsInRoom[i].Angles[j].DisableGraphicElement();
+                    CellsInRoom[i].Angles[j].DisableAllGraphics();
 
                 for (int j = 0; j < CellsInRoom[i].Edges.Count; j++)
-                    CellsInRoom[i].Edges[j].DisableGraphicElement();
+                    CellsInRoom[i].Edges[j].DisableAllGraphics();
 
                 for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
-                    CellsInRoom[i].Doors[j].DisableGraphicElement();
+                    CellsInRoom[i].Doors[j].DisableAllGraphics();
             }
 
             for (int i = 0; i < CellsInRoom.Count; i++)
