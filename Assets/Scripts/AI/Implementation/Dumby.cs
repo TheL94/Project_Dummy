@@ -36,7 +36,11 @@ namespace DumbProject.Generic
             set
             {
                 if (GameManager.I.MainGridCtrl.GetSpecificNetNode(value.spacePosition) == null)
-                    CurrentRoom = GameManager.I.MainGridCtrl.GetSpecificGridNode(value.spacePosition).RelativeCell.RelativeRoom;
+                {
+                    Cell currentCell = GameManager.I.MainGridCtrl.GetSpecificGridNode(value.spacePosition).RelativeCell;
+                    if(currentCell != null)
+                        CurrentRoom = GameManager.I.MainGridCtrl.GetSpecificGridNode(value.spacePosition).RelativeCell.RelativeRoom;
+                }
                 _currentNetworkable = value;
             }
         }
