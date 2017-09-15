@@ -60,9 +60,9 @@ namespace DumbProject.Rooms
                 if (fillerGraphics[i] != null)
                 {
                     fillerGraphics[i].SetActive(false);
-                    GameManager.I.PoolMng.UpdatePools();
                 }
             }
+            GameManager.I.PoolMng.UpdatePools();
             fillerGraphics.Clear();
         }
 
@@ -126,9 +126,9 @@ namespace DumbProject.Rooms
                 if (lightingObjects[i] != null)
                 {
                     lightingObjects[i].SetActive(false);
-                    GameManager.I.PoolMng.UpdatePools();
                 }
             }
+            GameManager.I.PoolMng.UpdatePools();
             lightingObjects.Clear();
         }
 
@@ -178,15 +178,19 @@ namespace DumbProject.Rooms
                 return true;
         }
         #endregion
+        public void DisableAllGraphics()
+        {
+            DisableGraphicElement();
+            DisableAllFillerGraphic();
+            DisableAllLightingObject();
+        }
 
         /// <summary>
         /// Funzione che disabilita l'oggetto
         /// </summary>
         public virtual void DisableAndDestroyObject(bool _destroyComponentOnly = false)
         {
-            DisableGraphicElement();
-            DisableAllFillerGraphic();
-            DisableAllLightingObject();
+            DisableAllGraphics();
             DestroyObject(_destroyComponentOnly);
         }
 
