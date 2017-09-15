@@ -159,6 +159,7 @@ namespace DumbProject.Generic
 
         public void PauseActions(bool _status)
         {
+            PauseAllAI(_status);
             UIMng.GamePlayCtrl.ActivatePausePanel(_status);
         }
 
@@ -203,6 +204,13 @@ namespace DumbProject.Generic
             UIMng.EndGameCtrl.SetRecapText("Defeat");
         }
         #endregion
+
+        public void PauseAllAI(bool _status)
+        {
+            DumbyToTest.IsActive = !_status;
+            // TODO : da modificare quando viene cambiato il modo di inserire dumby
+            // TODO : aggiungere eventuali nuove AI
+        }
         #endregion
     }
 }
