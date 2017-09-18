@@ -10,7 +10,7 @@ namespace Framework.AI
     /// </summary>
     public class AI_Controller : MonoBehaviour
     {
-        public bool IsActive;
+        public bool IsActive = false;
         public AI_State InitialDefaultState;
         private AI_State _currentState;
         public AI_State CurrentState

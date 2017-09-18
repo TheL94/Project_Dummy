@@ -16,7 +16,7 @@ namespace DumbProject.Generic
         [HideInInspector]
         public static GameManager I;
 
-        public AI_Controller DumbyToTest;
+        public AI_Controller DumbyPrefab;
         public RoomGenerator RoomGenertorPrefab;
         public GridController GridControllerPrefab;
         public UIManager UIManagerPrefab;
@@ -54,6 +54,9 @@ namespace DumbProject.Generic
         [HideInInspector]
         public DataManager DataMng;
 
+        [HideInInspector]
+        public AI_Controller Dumby;
+
         FlowManager FlowMng;
         
         void Awake()
@@ -73,24 +76,9 @@ namespace DumbProject.Generic
 
         void Update()
         {
+            // TODO : per test 
             if(Input.GetKeyDown(KeyCode.Space))
-            {
-                DumbyToTest = Instantiate<AI_Controller>(DumbyToTest, MainGridCtrl.GetGridCenter().WorldPosition, Quaternion.identity);
-            }
-
-            // per test
-            // --------------------------------------
-            if(CurrentState == FlowState.Gameplay)
-            {
-                if (Input.GetKeyDown(KeyCode.W))
-                    GameWon();
-                if (Input.GetKeyDown(KeyCode.L))
-                    GameLost();
-            }
-            // --------------------------------------
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-                ChageFlowState(FlowState.Pause);
+                Dumby.IsActive = true;
         }
 
         #region API
@@ -154,17 +142,20 @@ namespace DumbProject.Generic
             UIMng.GamePlayCtrl.ActivateLateralGUI(true);
             UIMng.GamePlayCtrl.ActivatePauseButton(true);
 
+            Dumby = Instantiate(DumbyPrefab, DungeonMng.RoomInDungeon[0].CellsInRoom[0].RelativeNode.WorldPosition, Quaternion.identity);
+
             ChageFlowState(FlowState.Gameplay);
         }
 
         public void PauseActions(bool _status)
         {
-            PauseAllAI(_status);
+            SetAllAIStatus(!_status);
             UIMng.GamePlayCtrl.ActivatePausePanel(_status);
         }
 
         public void RecapGameActions()
         {
+            SetAllAIStatus(false);
             UIMng.ActivateEndGameplayPanel(true);
             UIMng.ActivateGamePlayPanel(false);
         }
@@ -180,7 +171,7 @@ namespace DumbProject.Generic
             RoomPreviewCtrl.DestroyUIGrid();
             UIMng.GamePlayCtrl.LateralGUI.InventoryController.CleanInventory();
             //------------------
-            Destroy(DumbyToTest.gameObject);
+            Destroy(Dumby.gameObject);
             //------------------
             UIMng.GamePlayCtrl.ActivateLateralGUI(false);
             UIMng.GamePlayCtrl.ActivatePausePanel(false);
@@ -205,11 +196,9 @@ namespace DumbProject.Generic
         }
         #endregion
 
-        public void PauseAllAI(bool _status)
+        public void SetAllAIStatus(bool _status)
         {
-            DumbyToTest.IsActive = !_status;
-            // TODO : da modificare quando viene cambiato il modo di inserire dumby
-            // TODO : aggiungere eventuali nuove AI
+            Dumby.IsActive = _status;
         }
         #endregion
     }

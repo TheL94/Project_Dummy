@@ -62,7 +62,7 @@ namespace DumbProject.Grid
             {
                 for (int j = 0; j < GridHeight; j++)
                 {
-                    if (Vector3.Distance(Grid[i, j].WorldPosition, _worldPosition) < CellSize/2)
+                    if (Vector3.Distance(Grid[i, j].WorldPosition, _worldPosition) <= CellSize / 2)
                         return Grid[i, j];
                 }
             }
