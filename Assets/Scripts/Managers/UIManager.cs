@@ -95,9 +95,9 @@ namespace DumbProject.UI
             }
             else if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
             {
-                if (DeviceCurrentOrientation == ScreenOrientation.Landscape)
+                if (DeviceCurrentOrientation == ScreenOrientation.Landscape || DeviceCurrentOrientation == ScreenOrientation.LandscapeLeft || DeviceCurrentOrientation == ScreenOrientation.LandscapeRight)
                     values = _data.orizontalRectValues;
-                else
+                else if(DeviceCurrentOrientation == ScreenOrientation.Portrait || DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
                     values = _data.verticalRectValues;
             }
 
