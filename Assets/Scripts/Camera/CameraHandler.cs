@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DumbProject.Generic;
-using Multitouch.EventSystems.EventData;
-using Multitouch.EventSystems.Gestures;
 
 namespace DumbProject.CameraController
 {
@@ -37,7 +35,7 @@ namespace DumbProject.CameraController
         }
 
         #region Touch Input
-        public void TouchPanning(SimpleGestures _sender, MultiTouchPointerEventData _eventData, Vector2 _delta)
+        public void TouchPanning()
         {
             wasZoomingLastFrame = false;
 
@@ -55,7 +53,7 @@ namespace DumbProject.CameraController
             }
         }
 
-        public void PinchToZoom(SimpleGestures _sender, MultiTouchPointerEventData _eventData, Vector2 _delta)
+        public void PinchToZoom()
         {
             Vector2[] newPositions = new Vector2[] { Input.GetTouch(0).position, Input.GetTouch(1).position };
             if (!wasZoomingLastFrame)

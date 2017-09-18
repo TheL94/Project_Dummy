@@ -4,12 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DumbProject.CameraController;
-using Multitouch.EventSystems.EventData;
-using Multitouch.EventSystems.Gestures;
 
 namespace DumbProject.Generic
 {
-    public class CameraTouchInput : CameraInput, IPinchHandler, IDragHandler, IPointerDownHandler
+    public class CameraTouchInput : CameraInput, IDragHandler, IPointerDownHandler
     {
         public void OnDrag(PointerEventData eventData)
         {
@@ -19,11 +17,6 @@ namespace DumbProject.Generic
         public void OnPointerDown(PointerEventData eventData)
         {
             camHandler.OnClickEvent(eventData);
-        }
-
-        public void OnPinch(SimpleGestures sender, MultiTouchPointerEventData eventData, Vector2 pinchDelta)
-        {
-            camHandler.PinchToZoom(sender, eventData, pinchDelta);
         }
     }
 }
