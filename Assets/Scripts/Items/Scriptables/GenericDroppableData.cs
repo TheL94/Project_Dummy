@@ -12,6 +12,7 @@ namespace DumbProject.Items
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
         public float TimeToSpend;
+        public string Name;
 
         public ItemType SpecificItemType;
         public EnemyType SpecificEnemyType;

@@ -83,6 +83,35 @@ namespace DumbProject.Editors
             InitCategories();
             //DrawGenericTabs();
 
+            GUILayout.Space(15);
+            //The sprite to show in the Inventory
+            GUILayout.BeginHorizontal();
+            Data.Name = EditorGUILayout.TextField("Name", Data.Name);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(15);
+            //The sprite to show in the Inventory
+            GUILayout.BeginHorizontal();
+            Data.ItemInUI = (Sprite)EditorGUILayout.ObjectField("Sprite for Invetory", Data.ItemInUI, typeof(Sprite), false);
+            GUILayout.EndHorizontal();
+
+            // The prefab to instantiate
+            GUILayout.BeginHorizontal();
+            Data.ItemPrefab = (GameObject)EditorGUILayout.ObjectField("ItemPrefab", Data.ItemPrefab, typeof(GameObject), false);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Time to spend");
+            GUILayout.Space(130);
+            (Data as GenericDroppableData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericDroppableData).TimeToSpend);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Percentage to Spawn");
+            GUILayout.Space(100);
+            (Data as GenericDroppableData).PercentageToSpawn = EditorGUILayout.FloatField((Data as GenericDroppableData).PercentageToSpawn);
+            GUILayout.EndHorizontal();
+
             if(Data.GetType() == typeof(EnemyData))
             {
                 DrawEnemyTabs();
@@ -144,37 +173,8 @@ namespace DumbProject.Editors
                 GUILayout.EndHorizontal();
             }
 
-            GUILayout.Space(15);
-            //The sprite to show in the Inventory
-            GUILayout.BeginHorizontal();
-            Data.ItemInUI = (Sprite)EditorGUILayout.ObjectField("Sprite for Invetory", Data.ItemInUI, typeof(Sprite), false);
-            GUILayout.EndHorizontal();
-
-            // The prefab to instantiate
-            GUILayout.BeginHorizontal();
-            Data.ItemPrefab = (GameObject)EditorGUILayout.ObjectField("ItemPrefab", Data.ItemPrefab, typeof(GameObject), false);
-            GUILayout.EndHorizontal();
-
-            //The Material to apply at the floor in the room
-            GUILayout.BeginHorizontal();
-            Data.ShowMateriaInRoom = (Material)EditorGUILayout.ObjectField("Material For Room", Data.ShowMateriaInRoom, typeof(Material), false);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Time to spend");
-            GUILayout.Space(130);
-            (Data as GenericDroppableData).TimeToSpend = EditorGUILayout.FloatField((Data as GenericDroppableData).TimeToSpend);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Percentage to pawn");
-            GUILayout.Space(100);
-            (Data as GenericDroppableData).PercentageToSpawn = EditorGUILayout.FloatField((Data as GenericDroppableData).PercentageToSpawn);
-            GUILayout.EndHorizontal();
-
             if (GUI.changed)
                 EditorUtility.SetDirty(target);
-            
         }
 
         private void DrawGenericTabs()
