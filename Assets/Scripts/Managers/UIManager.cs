@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DumbProject.Generic;
-using DumbProject.CameraController;
 
 namespace DumbProject.UI
 {
@@ -18,7 +17,7 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIEndGameplayController EndGameCtrl;
         [HideInInspector]
-        public CameraInput CamInput;
+        public GameObject CameraPanel;
 
         ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
         public ScreenOrientation DeviceCurrentOrientation { get { return Screen.orientation; } }
@@ -50,8 +49,8 @@ namespace DumbProject.UI
                 {
                     deviceOrientation = DeviceCurrentOrientation;
                 }
-                //if(OnScreenOrientationChange != null)
-                    OnScreenOrientationChange();
+
+                OnScreenOrientationChange();
             }
         }
 
@@ -61,11 +60,7 @@ namespace DumbProject.UI
             CanvasScaler scaler = GetComponent<CanvasScaler>();
             scaler.referenceResolution = DeviceReferenceResolution;
             // setup camera panel
-            GameObject cameraInputObj = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
-            SetupCameraByEnvironment(cameraInputObj);
-            // TODO : trovare un modo migliore per passare il riferimento della camera
-            CameraHandler cameraHandler = Camera.main.transform.parent.GetComponent<CameraHandler>();
-            CamInput.Init(this, cameraHandler);
+            CameraPanel = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
             MenuController.Init(this);
@@ -132,24 +127,7 @@ namespace DumbProject.UI
 
         public void ActivateCameraPanel(bool _status)
         {
-            CamInput.gameObject.SetActive(_status);
-        }
-
-        /// <summary>
-        /// Controlla il dispositivo su cui è e setta di conseguenza il tipo di input per la camera 
-        /// </summary>
-        void SetupCameraByEnvironment(GameObject _camInputObj)
-        {
-            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-            {
-                CamInput = _camInputObj.AddComponent<CameraMouseInput>();
-            }
-            else if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
-            {
-                CamInput = _camInputObj.AddComponent<CameraTouchInput>();
-            }
-            else
-                Debug.LogWarning("Device Type Not Valid");
+            CameraPanel.gameObject.SetActive(_status);
         }
 
         /// <summary>
