@@ -11,8 +11,8 @@ namespace DumbProject.Items
         public GenericType Type;
         public Sprite ItemInUI;
         public GameObject ItemPrefab;
-        public Material ShowMateriaInRoom;
         public float TimeToSpend;
+        public string Name;
 
         public ItemType SpecificItemType;
         public EnemyType SpecificEnemyType;

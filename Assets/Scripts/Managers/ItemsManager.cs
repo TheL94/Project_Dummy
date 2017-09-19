@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms;
@@ -8,58 +9,60 @@ namespace DumbProject.Items
 {
     public class ItemsManager : MonoBehaviour
     {
-        public List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
-        List<DataPercentage> DatasWithPercentage = new List<DataPercentage>();
+        List<ItemData> itemDatasCollection = new List<ItemData>();
 
+        List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> itemDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> enemyDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> trapDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> timeWasterDatas = new List<GenericDroppableData>();
 
-        float percentageSum;
 
         public void Init()
         {
-            // TODO : questo metodo fa piantare in modo irrimediabile la versione buildata al primo confronto che trova.
-            // Possibile errore nel tipo di scriptable 
+            AllDatas = Resources.LoadAll<GenericDroppableData>("Data/ItemsData").ToList();
+
             foreach (GenericDroppableData _data in AllDatas)
             {
-                //if (_data.GetType() == typeof(EnemyData))
-                //{
-                //    enemyDatas.Add(Instantiate(_data));
-                //}
-                //else 
                 if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
                 {
                     itemDatas.Add(Instantiate(_data));
+                }else if(_data.GetType() == typeof(EnemyData))
+                {
+                    enemyDatas.Add(Instantiate(_data));
                 }
-                //else if (_data.GetType() == typeof(TrapData))
-                //{
-                //    trapDatas.Add(Instantiate(_data));
-                //}
-                //else if (_data.GetType() == typeof(TimeWasterData))
-                //{
-                //    timeWasterDatas.Add(Instantiate(_data));
-                //}
-
-                percentageSum += _data.PercentageToSpawn;
+                else if(_data.GetType() == typeof(TrapData))
+                {
+                    trapDatas.Add(Instantiate(_data));
+                }
+                else if(_data.GetType() == typeof(TimeWasterData))
+                {
+                    timeWasterDatas.Add(Instantiate(_data));
+                }
             }
 
-            // Se la lista di strutture è vuota la riempie.
-            if (DatasWithPercentage.Count == 0)
-            {
-                AssignPercentageToData(); 
-            }
+            CreateItemData();
         }
 
         /// <summary>
-        /// Per ogni elemento contenuto nella lista AllDatas crea una nuova struttura DataPercentage con il data e il calcolo della sua percentuale di spawn
+        /// Per ogni elemento contenuto nella lista AllDatas crea una nuova struttura ItemData con il data e il calcolo della sua percentuale di spawn
         /// </summary>
-        void AssignPercentageToData()
+        void CreateItemData()
         {
+            float percentageSum = 0;
+
             foreach (GenericDroppableData _data in AllDatas)
             {
-                DatasWithPercentage.Add(new DataPercentage() { data = _data, percentage = ( _data.PercentageToSpawn * 100) / percentageSum });
+                percentageSum += _data.PercentageToSpawn;
+            }
+
+            foreach (GenericDroppableData _data in AllDatas)
+            {
+                itemDatasCollection.Add(new ItemData()
+                {
+                    data = _data,
+                    percentage = percentageSum != 0 ? ( _data.PercentageToSpawn * 100) / percentageSum : 0
+                });
             }
         }
 
@@ -69,13 +72,10 @@ namespace DumbProject.Items
         /// <returns></returns>
         GenericDroppableData ChooseItem()
         {
-            //int randNum = Random.Range(0, itemDatas.Count);
-            //return itemDatas[randNum];
-
             float minValue = 0;
             float randNum = Random.Range(0f, 100f);
 
-            foreach (DataPercentage _data in DatasWithPercentage)
+            foreach (ItemData _data in itemDatasCollection)
             {
                 if (randNum > minValue && randNum <= (minValue + _data.percentage))
                     return _data.data;
@@ -84,14 +84,6 @@ namespace DumbProject.Items
             }
             Debug.LogError("No Item to instantiate");
             return null;
-        }
-
-        /// <summary>
-        /// Sceglie il tipo di oggetto da istanziare nella stanza
-        /// </summary>
-        GenericType ChoseTypeToSpawn()
-        {
-            return GenericType.Item;
         }
 
         public void InstantiateItemInRoom(Room _room)
@@ -128,20 +120,17 @@ namespace DumbProject.Items
             else if (_data.GetType() == typeof(WeaponData))
             {
                 item = newObj.AddComponent<Weapon>();
-                newObj.AddComponent<ItemIndicator>();
-                item.name = "Weapon";
+                item.name = _data.Name;
             }
             else if (_data.GetType() == typeof(PotionData))
             {
                 item = newObj.AddComponent<Potion>();
-                newObj.AddComponent<ItemIndicator>();
-                item.name = "Potion";
+                item.name = _data.Name;
             }
             else if (_data.GetType() == typeof(ArmorData))
             {
                 item = newObj.AddComponent<Armor>();
-                newObj.AddComponent<ItemIndicator>();
-                item.name = "Armor";
+                item.name = _data.Name;
             }
             else if (_data.GetType() == typeof(TrapData))
             {
@@ -169,7 +158,7 @@ namespace DumbProject.Items
     /// <summary>
     /// Struttura che contiente il data e la relativa percentuale (usata per la scelta dell'item con percentuale di spawn)
     /// </summary>
-    struct DataPercentage
+    struct ItemData
     {
         public GenericDroppableData data;
         public float percentage;

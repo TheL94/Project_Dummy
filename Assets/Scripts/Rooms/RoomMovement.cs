@@ -102,7 +102,6 @@ namespace DumbProject.Rooms
         {
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {
-                room.SetItemIndicator(false);
                 snap.Complete(true);
                 room.PlaceAction();
                 room.HighlightRoomWalls(false, Color.black);

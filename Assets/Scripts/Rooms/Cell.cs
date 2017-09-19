@@ -6,7 +6,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
-    public class Cell : MonoBehaviour, IChangeColor
+    public class Cell : MonoBehaviour
     {
         GridNode _relativeNode;
         public GridNode RelativeNode
@@ -253,15 +253,6 @@ namespace DumbProject.Rooms
                 door.UpdateLinks();
             }
         }
-
-        #region IChangeColor Interface
-
-        public void ChangeFloorColor(Material _newMaterial)
-        {
-            Floor.GetComponentInChildren<MeshRenderer>().material = _newMaterial;
-        }
-
-        #endregion
         #endregion
 
         private void OnDrawGizmos()
