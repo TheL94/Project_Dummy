@@ -182,14 +182,6 @@ namespace DumbProject.Rooms
             return listOfAngles;
         }
 
-        public void SetItemIndicator(bool _isInUI)
-        {
-            foreach (ItemIndicator indicator in GetComponentsInChildren<ItemIndicator>())
-            {
-                indicator.inUI = _isInUI;
-            }
-        }
-
         #region IDroppableHolder
         List<IInteractable> _interactableList = new List<IInteractable>();
         /// <summary>
@@ -224,7 +216,6 @@ namespace DumbProject.Rooms
             List<Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
             Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
             freeCell.ActualInteractable = _droppableToAdd;
-            freeCell.ChangeFloorColor(_droppableToAdd.Data.ShowMateriaInRoom);
             InteractableList.Add(_droppableToAdd);
             return _droppableToAdd;
         }

@@ -9,7 +9,7 @@ namespace DumbProject.Items
     public class ItemsManager : MonoBehaviour
     {
         public List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
-        List<DataPercentage> DatasWithPercentage = new List<DataPercentage>();
+        List<ItemData> DatasWithPercentage = new List<ItemData>();
 
         List<GenericDroppableData> itemDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> enemyDatas = new List<GenericDroppableData>();
@@ -59,7 +59,7 @@ namespace DumbProject.Items
         {
             foreach (GenericDroppableData _data in AllDatas)
             {
-                DatasWithPercentage.Add(new DataPercentage() { data = _data, percentage = ( _data.PercentageToSpawn * 100) / percentageSum });
+                DatasWithPercentage.Add(new ItemData() { data = _data, percentage = ( _data.PercentageToSpawn * 100) / percentageSum });
             }
         }
 
@@ -75,7 +75,7 @@ namespace DumbProject.Items
             float minValue = 0;
             float randNum = Random.Range(0f, 100f);
 
-            foreach (DataPercentage _data in DatasWithPercentage)
+            foreach (ItemData _data in DatasWithPercentage)
             {
                 if (randNum > minValue && randNum <= (minValue + _data.percentage))
                     return _data.data;
@@ -84,14 +84,6 @@ namespace DumbProject.Items
             }
             Debug.LogError("No Item to instantiate");
             return null;
-        }
-
-        /// <summary>
-        /// Sceglie il tipo di oggetto da istanziare nella stanza
-        /// </summary>
-        GenericType ChoseTypeToSpawn()
-        {
-            return GenericType.Item;
         }
 
         public void InstantiateItemInRoom(Room _room)
@@ -128,19 +120,16 @@ namespace DumbProject.Items
             else if (_data.GetType() == typeof(WeaponData))
             {
                 item = newObj.AddComponent<Weapon>();
-                newObj.AddComponent<ItemIndicator>();
                 item.name = "Weapon";
             }
             else if (_data.GetType() == typeof(PotionData))
             {
                 item = newObj.AddComponent<Potion>();
-                newObj.AddComponent<ItemIndicator>();
                 item.name = "Potion";
             }
             else if (_data.GetType() == typeof(ArmorData))
             {
                 item = newObj.AddComponent<Armor>();
-                newObj.AddComponent<ItemIndicator>();
                 item.name = "Armor";
             }
             else if (_data.GetType() == typeof(TrapData))
@@ -169,7 +158,7 @@ namespace DumbProject.Items
     /// <summary>
     /// Struttura che contiente il data e la relativa percentuale (usata per la scelta dell'item con percentuale di spawn)
     /// </summary>
-    struct DataPercentage
+    struct ItemData
     {
         public GenericDroppableData data;
         public float percentage;
