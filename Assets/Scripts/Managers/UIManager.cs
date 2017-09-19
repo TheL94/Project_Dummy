@@ -17,12 +17,13 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIEndGameplayController EndGameCtrl;
         [HideInInspector]
-        public GameObject CameraPanel;
+        public UICameraPanelController CameraPanel;
 
         ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
         public ScreenOrientation DeviceCurrentOrientation { get { return Screen.orientation; } }
 
         public Vector2 DeviceReferenceResolution { get { return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height); } }
+        public Vector2 CurrentResolution { get { return new Vector2(Screen.width, Screen.height); } }
 
         const string PrefabPath = "Prefabs/UI/";
 
@@ -60,7 +61,7 @@ namespace DumbProject.UI
             CanvasScaler scaler = GetComponent<CanvasScaler>();
             scaler.referenceResolution = DeviceReferenceResolution;
             // setup camera panel
-            CameraPanel = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform);
+            CameraPanel = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform).GetComponent<UICameraPanelController>();
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
             MenuController.Init(this);

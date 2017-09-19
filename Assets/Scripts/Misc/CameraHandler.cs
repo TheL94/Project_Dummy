@@ -24,22 +24,30 @@ namespace DumbProject.Generic
 
         Camera cam;
 
+        Vector3 lastPanPosition;
+
         public void Init()
         {
             cam = GetComponentInChildren<Camera>();
         }
 
+        public void SetLastPanPosition(Vector3 _lastPanPosition)
+        {
+            lastPanPosition = _lastPanPosition;
+        }
+
         #region Actions
-        public void PanCamera(Vector3 _lastPanPosition, Vector3 _newPanPosition)
+        public void PanCamera(Vector3 _newPanPosition)
         {
             // Determine how much to move the camera
-            Vector3 offset = cam.ScreenToViewportPoint(_lastPanPosition - _newPanPosition);
+            Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - _newPanPosition);
 
             float panSpeed;
             if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
                 panSpeed = TouchPanSpeed;
             else
                 panSpeed = MousePanSpeed;
+
             Vector3 move = new Vector3(offset.x * panSpeed, 0, offset.y * panSpeed);
             //compensate the eventual camera rotation;
             move = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, 0f) * move;
@@ -53,7 +61,7 @@ namespace DumbProject.Generic
             transform.position = pos;
 
             // Cache the position
-            _lastPanPosition = _newPanPosition;
+            lastPanPosition = _newPanPosition;
         }
 
         public void ZoomCamera(float _offset)
