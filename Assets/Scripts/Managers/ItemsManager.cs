@@ -9,6 +9,7 @@ namespace DumbProject.Items
 {
     public class ItemsManager : MonoBehaviour
     {
+        #region Variables
         List<ItemData> itemDatasCollection = new List<ItemData>();
 
         List<GenericDroppableData> AllDatas = new List<GenericDroppableData>();
@@ -16,10 +17,19 @@ namespace DumbProject.Items
         List<GenericDroppableData> enemyDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> trapDatas = new List<GenericDroppableData>();
         List<GenericDroppableData> timeWasterDatas = new List<GenericDroppableData>();
+        #endregion
 
-
+        #region SETUP
         public void Init()
         {
+            GetAllItemsData();
+            CreateItemData();
+        } 
+        #endregion
+
+        #region API
+
+        public void GetAllItemsData() {
             AllDatas = Resources.LoadAll<GenericDroppableData>("Data/ItemsData").ToList();
 
             foreach (GenericDroppableData _data in AllDatas)
@@ -27,43 +37,27 @@ namespace DumbProject.Items
                 if (_data.GetType() == typeof(WeaponData) || _data.GetType() == typeof(PotionData) || _data.GetType() == typeof(ArmorData))
                 {
                     itemDatas.Add(Instantiate(_data));
-                }else if(_data.GetType() == typeof(EnemyData))
+                }
+                else if (_data.GetType() == typeof(EnemyData))
                 {
                     enemyDatas.Add(Instantiate(_data));
                 }
-                else if(_data.GetType() == typeof(TrapData))
+                else if (_data.GetType() == typeof(TrapData))
                 {
                     trapDatas.Add(Instantiate(_data));
                 }
-                else if(_data.GetType() == typeof(TimeWasterData))
+                else if (_data.GetType() == typeof(TimeWasterData))
                 {
                     timeWasterDatas.Add(Instantiate(_data));
                 }
             }
-
-            CreateItemData();
         }
-
-        /// <summary>
-        /// Per ogni elemento contenuto nella lista AllDatas crea una nuova struttura ItemData con il data e il calcolo della sua percentuale di spawn
-        /// </summary>
-        void CreateItemData()
+        public void InstantiateItemInRoom(Room _room)
         {
-            float percentageSum = 0;
-
-            foreach (GenericDroppableData _data in AllDatas)
-            {
-                percentageSum += _data.PercentageToSpawn;
-            }
-
-            foreach (GenericDroppableData _data in AllDatas)
-            {
-                itemDatasCollection.Add(new ItemData()
-                {
-                    data = _data,
-                    percentage = percentageSum != 0 ? ( _data.PercentageToSpawn * 100) / percentageSum : 0
-                });
-            }
+            GenericDroppableData genericaDroppableData = ChooseItem();
+            IDroppable droppable = CreateIDroppable(genericaDroppableData);
+            droppable.Data = genericaDroppableData;
+            _room.AddInteractable(droppable);
         }
 
         /// <summary>
@@ -85,15 +79,27 @@ namespace DumbProject.Items
             Debug.LogError("No Item to instantiate");
             return null;
         }
-
-        public void InstantiateItemInRoom(Room _room)
+        /// <summary>
+        /// Per ogni elemento contenuto nella lista AllDatas crea una nuova struttura ItemData con il data e il calcolo della sua percentuale di spawn
+        /// </summary>
+        void CreateItemData()
         {
-            GenericDroppableData data = ChooseItem();
-            IDroppable droppable = CreateIDroppable(data);
-            droppable.Data = data;
-            _room.AddInteractable(droppable);
-        }
+            float percentageSum = 0;
 
+            foreach (GenericDroppableData _data in AllDatas)
+            {
+                percentageSum += _data.PercentageToSpawn;
+            }
+
+            foreach (GenericDroppableData _data in AllDatas)
+            {
+                itemDatasCollection.Add(new ItemData()
+                {
+                    data = _data,
+                    percentage = percentageSum != 0 ? (_data.PercentageToSpawn * 100) / percentageSum : 0
+                });
+            }
+        }
         /// <summary>
         /// A seconda del tipo del data entra all'interno del sottotipo e viene aggiunto il component corrispondente
         /// chiamandone anche l'init dove vengono passati i valori relativi all'oggetto
@@ -134,7 +140,7 @@ namespace DumbProject.Items
             }
             else if (_data.GetType() == typeof(TrapData))
             {
-                
+
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
@@ -152,7 +158,8 @@ namespace DumbProject.Items
             Instantiate(_data.ItemPrefab, item.Transf.position, item.Transf.rotation, item.Transf);
             item.Init(_data);
             return item;
-        }
+        } 
+        #endregion
     }
 
     /// <summary>
