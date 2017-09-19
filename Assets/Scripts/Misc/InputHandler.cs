@@ -30,6 +30,8 @@ namespace DumbProject.Generic
 
         void HandleInput()
         {
+            if (GameManager.I.IsGamePaused)
+                return;
             if (GameManager.I.IsTouchAvailable)
             {
                 if(Input.touchCount == 1 && CheckIfInputIsForCamera(Input.GetTouch(0).position))
@@ -38,11 +40,25 @@ namespace DumbProject.Generic
                     PinchToZoom();
                 else              
                     wasZoomingLastFrame = false;
+                // TODO : aggiungere supporto a piu di due tocchi
             }
             else
             {
                 HandleMouse();
             }
+        }
+
+        bool CheckIfInputIsForCamera(Vector2 _position)
+        {
+            Vector2 deviceResolution = GameManager.I.UIMng.CurrentResolution;
+            Vector2 cameraPanelPercentage = new Vector2(GameManager.I.UIMng.CameraPanel.AnchorMax.x - GameManager.I.UIMng.CameraPanel.AnchorMin.x,
+                GameManager.I.UIMng.CameraPanel.AnchorMax.y - GameManager.I.UIMng.CameraPanel.AnchorMin.y);
+            Vector2 cameraPanelResolution = new Vector2(deviceResolution.x * cameraPanelPercentage.x, deviceResolution.y * cameraPanelPercentage.y);
+
+            if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
+                return true;
+            else
+                return false;
         }
 
         #region Touch Input
@@ -55,12 +71,20 @@ namespace DumbProject.Generic
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                cameraHandler.SetLastPanPosition(touch.position);
-                panFingerId = touch.fingerId;
+                clickOrigin = touch.position;
+                if (CheckIfInputIsForCamera(clickOrigin))
+                {
+                    panFingerId = touch.fingerId;
+                    cameraHandler.SetLastPanPosition(touch.position);
+                }
+                    
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
             {
-                cameraHandler.PanCamera(touch.position);
+                if (CheckIfInputIsForCamera(clickOrigin))
+                {
+                    cameraHandler.PanCamera(touch.position);
+                }
             }
         }
 
@@ -95,9 +119,9 @@ namespace DumbProject.Generic
 
             if (Input.GetMouseButtonDown(0) && !isDragging)
             {
-                if (CheckIfInputIsForCamera(Input.mousePosition))
+                clickOrigin = Input.mousePosition;
+                if (CheckIfInputIsForCamera(clickOrigin))
                 {
-                    clickOrigin = Input.mousePosition;
                     cameraHandler.SetLastPanPosition(Input.mousePosition);
                 }
             }
@@ -119,19 +143,6 @@ namespace DumbProject.Generic
             cameraHandler.ZoomCamera(scroll);
         }
         #endregion
-
-        bool CheckIfInputIsForCamera(Vector2 _position)
-        {
-            Vector2 deviceResolution = GameManager.I.UIMng.CurrentResolution;
-            Vector2 cameraPanelPercentage = new Vector2(GameManager.I.UIMng.CameraPanel.AnchorMax.x - GameManager.I.UIMng.CameraPanel.AnchorMin.x,
-                GameManager.I.UIMng.CameraPanel.AnchorMax.y - GameManager.I.UIMng.CameraPanel.AnchorMin.y);
-            Vector2 cameraPanelResolution = new Vector2(deviceResolution.x * cameraPanelPercentage.x, deviceResolution.y * cameraPanelPercentage.y);
-
-            if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
-                return true;
-            else
-                return false;
-        }
     }
 }
 

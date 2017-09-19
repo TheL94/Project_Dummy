@@ -25,11 +25,19 @@ namespace DumbProject.Generic
         Camera cam;
 
         Vector3 lastPanPosition;
+        Vector3 startPosition;
 
         public void Init()
         {
             cam = GetComponentInChildren<Camera>();
+            startPosition = transform.position;
         }
+
+        public void ResetValues()
+        {
+            transform.position = startPosition;
+        }
+
 
         public void SetLastPanPosition(Vector3 _lastPanPosition)
         {

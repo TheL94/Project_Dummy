@@ -185,6 +185,7 @@ namespace DumbProject.Generic
             //------------------
             UIMng.GamePlayCtrl.ActivateLateralGUI(false);
             UIMng.GamePlayCtrl.ActivatePausePanel(false);
+            CameraHndl.ResetValues();
             ChageFlowState(FlowState.Menu);
         }
 
