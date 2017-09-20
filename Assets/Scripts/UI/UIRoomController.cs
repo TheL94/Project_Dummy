@@ -8,6 +8,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
+    // TODO : da rivedere quando rifaremo la UI
     public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler/* IDropHandler*/
     {
         [HideInInspector]
