@@ -34,9 +34,9 @@ namespace DumbProject.Generic
                 return;
             if (GameManager.I.IsTouchAvailable)
             {
-                if(Input.touchCount == 1 && CheckIfInputIsForCamera(Input.GetTouch(0).position))
+                if(Input.touchCount == 1 && GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(Input.GetTouch(0).position))
                     TouchPanning();
-                else if(Input.touchCount == 2 && CheckIfInputIsForCamera(Input.GetTouch(0).position))
+                else if(Input.touchCount == 2 && GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(Input.GetTouch(0).position))
                     PinchToZoom();
                 else              
                     wasZoomingLastFrame = false;
@@ -48,19 +48,6 @@ namespace DumbProject.Generic
             }
         }
 
-        bool CheckIfInputIsForCamera(Vector2 _position)
-        {
-            Vector2 deviceResolution = GameManager.I.UIMng.CurrentResolution;
-            Vector2 cameraPanelPercentage = new Vector2(GameManager.I.UIMng.CameraPanel.AnchorMax.x - GameManager.I.UIMng.CameraPanel.AnchorMin.x,
-                GameManager.I.UIMng.CameraPanel.AnchorMax.y - GameManager.I.UIMng.CameraPanel.AnchorMin.y);
-            Vector2 cameraPanelResolution = new Vector2(deviceResolution.x * cameraPanelPercentage.x, deviceResolution.y * cameraPanelPercentage.y);
-
-            if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
-                return true;
-            else
-                return false;
-        }
-
         #region Touch Input
         void TouchPanning()
         {
@@ -69,22 +56,26 @@ namespace DumbProject.Generic
             // If the touch began, capture its position and its finger ID.
             // Otherwise, if the finger ID of the touch doesn't match, skip it.
             Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && !isDragging)
             {
                 clickOrigin = touch.position;
-                if (CheckIfInputIsForCamera(clickOrigin))
+                panFingerId = touch.fingerId;
+                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
                 {
-                    panFingerId = touch.fingerId;
                     cameraHandler.SetLastPanPosition(touch.position);
-                }
-                    
+                }               
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
             {
-                if (CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
                 {
                     cameraHandler.PanCamera(touch.position);
+                    isDragging = true;
                 }
+            }
+            else
+            {
+                isDragging = false;
             }
         }
 
@@ -120,14 +111,14 @@ namespace DumbProject.Generic
             if (Input.GetMouseButtonDown(0) && !isDragging)
             {
                 clickOrigin = Input.mousePosition;
-                if (CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
                 {
                     cameraHandler.SetLastPanPosition(Input.mousePosition);
                 }
             }
             else if (Input.GetMouseButton(0))
             {
-                if (CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
                 {
                     cameraHandler.PanCamera(Input.mousePosition);
                     isDragging = true;
