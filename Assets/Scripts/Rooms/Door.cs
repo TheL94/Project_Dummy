@@ -210,37 +210,6 @@ namespace DumbProject.Rooms
             }
             return status;
         }
-
-        private void OnDrawGizmos()
-        {
-            switch (StatusOfExploration)
-            {
-                case ExplorationStatus.NotInGame:
-                    Gizmos.color = Color.white;
-                    break;
-                case ExplorationStatus.Unavailable:
-                    Gizmos.color = Color.red;
-                    break;
-                case ExplorationStatus.NotExplored:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case ExplorationStatus.Explored:
-                    Gizmos.color = Color.green;
-                    break;
-                default:
-                    break;
-            }
-            Gizmos.DrawWireCube(transform.position + new Vector3(0f, 3.5f, 0f), new Vector3(0.5f, 0.5f, 0.5f));
-
-            //Gizmos.color = Color.cyan;
-            //if(RelativeNetNode != null)
-            //{
-            //    foreach (INetworkable node in RelativeNetNode.Links)
-            //    {
-            //        Gizmos.DrawLine(RelativeNetNode.spacePosition + new Vector3(0f, 1f, 0f), node.spacePosition + new Vector3(0f, 1f, 0f));
-            //    }
-            //}
-        }
     }
 }
 

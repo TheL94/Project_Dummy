@@ -20,7 +20,8 @@ namespace DumbProject.Generic
         public float[] BoundsZ { get { return new float[] { 0f - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta,
             GameManager.I.MainGridCtrl.GridHeight * GameManager.I.MainGridCtrl.CellSize - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta }; } }
 
-        public float[] ZoomBounds = new float[] { 10f, 85f };
+        public float[] PerspectiveZoomBounds = new float[] { 25f, 85f };
+        public float[] OrthographicZoomBounds = new float[] { 8f, 18f };
 
         Camera cam;
 
@@ -84,7 +85,14 @@ namespace DumbProject.Generic
             else
                 zoomSpeed = ZoomSpeedMouse;
 
-            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), ZoomBounds[0], ZoomBounds[1]);
+            if (cam.orthographic)
+            {
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicZoomBounds[0], OrthographicZoomBounds[1]);
+            }
+            else
+            {
+                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveZoomBounds[0], PerspectiveZoomBounds[1]);
+            }
         }
         #endregion
     }
