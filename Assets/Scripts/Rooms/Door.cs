@@ -24,6 +24,8 @@ namespace DumbProject.Rooms
         Cell[] _adjacentCells = new Cell[2];
         public Cell[] AdjacentCells { get { return _adjacentCells; } }
 
+        DoorIndicator indicator;
+
         #region API
         public override void Setup(Cell _relativeCell)
         {
@@ -35,6 +37,9 @@ namespace DumbProject.Rooms
 
             base.Setup(_relativeCell);
             AddAjdacentCell(RelativeCell);
+
+            indicator = gameObject.AddComponent<DoorIndicator>();
+            indicator.Init(this);
         }
 
         /// <summary>

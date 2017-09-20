@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
@@ -12,7 +13,9 @@ namespace DumbProject.Rooms
         public void Init(Door _relativeDoor)
         {
             relativeDoor = _relativeDoor;
-            objectToColor = Instantiate(objectToColor, relativeDoor.transform.position + new Vector3(0f, 3.5f, 0f), Quaternion.identity, relativeDoor.transform);
+            objectToColor = GameManager.I.PoolMng.GetGameObject("Pyramid");
+            objectToColor.transform.position = relativeDoor.transform.position + new Vector3(0f, 3.5f, 0f);
+            objectToColor.transform.parent = relativeDoor.transform;
         }
 
         private void Update()
@@ -25,7 +28,7 @@ namespace DumbProject.Rooms
 
         public void ShowExplorationStatus()
         {
-            Color color;
+            Color color = new Color();
             switch (relativeDoor.StatusOfExploration)
             {
                 case ExplorationStatus.NotInGame:
@@ -42,7 +45,28 @@ namespace DumbProject.Rooms
                     break;
             }
 
-            //objectToColor
+            MeshRenderer renderer = objectToColor.GetComponentInChildren<MeshRenderer>();
+            Material material = null;
+            if (renderer == null)
+                return;
+
+            material = renderer.material;
+            material.color = color;
+            material.SetColor("_EmissionColor", color);
+        }
+
+        private void OnDisable()
+        {
+            objectToColor.transform.parent = null;
+            objectToColor.SetActive(false);
+            GameManager.I.PoolMng.UpdatePools();
+        }
+
+        private void OnDestroy()
+        {
+            objectToColor.transform.parent = null;
+            objectToColor.SetActive(false);
+            GameManager.I.PoolMng.UpdatePools();
         }
     }
 }
