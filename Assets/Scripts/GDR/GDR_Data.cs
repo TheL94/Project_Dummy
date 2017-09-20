@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Rooms;
 using DumbProject.Generic;
 using Framework.AI;
 
@@ -9,24 +10,21 @@ namespace DumbProject.GDR
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
     {
-        public bool IsInGame;
         public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
         public InventoryController iC;
         public AI_Controller ai_Controller;
 
+        List<float> ExpLevel = new List<float>();
 
         public float Life;
         public float ActualLife;
         public float Speed;
         public float Attack;
-        bool isNextLevel;
-
 
         public float ExperienceToGive;
-
-        public float ExperienceMuliplier;
+        public float ExperienceMuliplier = 1;
 
         GDR_Controller target;
 
@@ -41,160 +39,54 @@ namespace DumbProject.GDR
             {
                 experienceCounter = value;
                 GetExperienceMultiplier();
-                CheckExperience();
+                AddLevel();
+                UpdateLevels();
             }
         }
 
-        float tempExpLevel_0;
-        float tempExpLevel_1;
-        float tempExpLevel_2;
-        float tempExpLevel_3;
-        float tempExpLevel_4;
-        float tempExpLevel_5;
-        float tempExpLevel_6;
-        float tempExpLevel_7;
+        
 
-        public void SetExperienceForNextLevel()
+        /// <summary>
+        /// Aggiunge un livello ogni volta che viene superata l'ExperienceForNextLevel
+        /// </summary>
+        public void AddLevel()
         {
-
-            ExperienceForNextLevel = 10;
-            tempExpLevel_0 = ExperienceForNextLevel;
-            tempExpLevel_1 = tempExpLevel_0 + ExperienceForNextLevel * 1.2f;
-            tempExpLevel_2 = tempExpLevel_1 + tempExpLevel_1 * 1.2f;
-            tempExpLevel_3 = tempExpLevel_2 + tempExpLevel_2 * 1.2f;
-            tempExpLevel_4 = tempExpLevel_3 + tempExpLevel_3 * 1.2f;
-            tempExpLevel_5 = tempExpLevel_4 + tempExpLevel_4 * 1.2f;
-            tempExpLevel_6 = tempExpLevel_5 + tempExpLevel_5 * 1.2f;
-            tempExpLevel_7 = tempExpLevel_6 + tempExpLevel_6 * 1.2f;
-
+            if (ExpLevel.Count == 0)
+            {
+                ExpLevel.Add(ExperienceForNextLevel); 
+            }
+            else
+            {
+                ExpLevel.Add(ExpLevel[ExpLevel.Count - 1] * 1.2f);
+            }
         }
         /// <summary>
-        /// Check the experience for the next Player Level
+        /// Aggiorna l'esperienza necessaria per il livello successivo
         /// </summary>
-        public void CheckExperience()
+        public void UpdateLevels()
         {
-            if (ExperienceCounter >= ExperienceForNextLevel)
+            for (int i = 0; i < ExpLevel.Count; i++)
             {
-                PlayerLevel++;
-                CheckLevel(PlayerLevel);
+                if (ExpLevel[i]>= ExperienceCounter)
+                {
+                    ModifyPlayerStats(PlayerLevel,i);
+                    PlayerLevel = i;
+                }
             }
-            if (ExperienceCounter < tempExpLevel_0 && PlayerLevel != 0)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_1 && PlayerLevel > 1)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_2 && PlayerLevel > 2)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_3 && PlayerLevel > 3)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_4 && PlayerLevel > 4)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_5 && PlayerLevel > 5)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_6 && PlayerLevel > 6)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-            if (ExperienceCounter < tempExpLevel_7 && PlayerLevel > 7)
-            {
-                PlayerLevel--;
-                CheckLevel(PlayerLevel);
-            }
-
-        }
-
-
-        public int CheckLevel(int LevelToReturn)
-        {
-            if (PlayerLevel < 0)
-            {
-                PlayerLevel = 0;
-            }
-
-            int tempLevel;
-            //float tempExpLevel_0 = ExperienceForNextLevel;
-            //float tempExpLevel_1 = tempExpLevel_0 + ExperienceForNextLevel * 1.2f;
-            //float tempExpLevel_2 = tempExpLevel_1 + tempExpLevel_1 * 1.2f;
-            //float tempExpLevel_3 = tempExpLevel_2 + tempExpLevel_2 * 1.2f;
-            //float tempExpLevel_4 = tempExpLevel_3 + tempExpLevel_3 * 1.2f;
-            //float tempExpLevel_5 = tempExpLevel_4 + tempExpLevel_4 * 1.2f;
-            //float tempExpLevel_6 = tempExpLevel_5 + tempExpLevel_5 * 1.2f;
-            //float tempExpLevel_7 = tempExpLevel_6 + tempExpLevel_6 * 1.2f;
-            switch (LevelToReturn)
-            {
-                case 0:
-                    ExperienceForNextLevel = tempExpLevel_0;
-                    break;
-                case 1:
-                    ExperienceForNextLevel = tempExpLevel_1;
-                    break;
-                case 2:
-                    ExperienceForNextLevel = tempExpLevel_2;
-                    break;
-                case 3:
-                    ExperienceForNextLevel = tempExpLevel_3;
-                    break;
-                case 4:
-                    ExperienceForNextLevel = tempExpLevel_4;
-                    break;
-                case 5:
-                    ExperienceForNextLevel = tempExpLevel_5;
-                    break;
-                case 6:
-                    ExperienceForNextLevel = tempExpLevel_6;
-                    break;
-                case 7:
-                    ExperienceForNextLevel = tempExpLevel_7;
-                    break;
-                default:
-                    break;
-
-            }
-            tempLevel = LevelToReturn;
-            if (tempLevel == PlayerLevel && PlayerLevel != 0)
-            {
-                isNextLevel = true;
-                ModifyPlayerStats();
-            }
-            if (tempLevel != PlayerLevel)
-            {
-                isNextLevel = false;
-                ModifyPlayerStats();
-            }
-            PlayerLevel = LevelToReturn;
-            tempLevel = 0;
-            return PlayerLevel;
         }
 
         /// <summary>
         /// Modify the Player statistic each time he reach a new level.
         /// </summary>
-        public void ModifyPlayerStats()
+        public void ModifyPlayerStats(int _previousLevel, int _newLevel)
         {
-            if (isNextLevel)
+  
+            if (_previousLevel< _newLevel)
             {
                 Speed = Speed * 1.05f;
                 Attack = Attack + 0.25f;
             }
-            if (!isNextLevel && PlayerLevel != 0)
+            if (_previousLevel > _newLevel)
             {
                 Speed = Speed * (-1.05f);
                 Attack = Attack + 0.25f;
@@ -290,6 +182,7 @@ namespace DumbProject.GDR
             }
         }
     }
+
 
     public enum ExperienceType
     {
