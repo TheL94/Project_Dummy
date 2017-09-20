@@ -5,7 +5,7 @@ using DumbProject.Grid;
 using DumbProject.Generic;
 using DumbProject.Items;
 
-namespace DumbProject.Rooms
+namespace DumbProject.GDR
 {
     public class GDR_Controller : MonoBehaviour
     {
@@ -14,12 +14,7 @@ namespace DumbProject.Rooms
         public void Init(GDR_Data data)
         {
             data = Data;
-            data.SetExperienceForNextLevel();
-            //data.ExperienceCounter = 0;
-            //data.PlayerLevel = 0;
-            //data.Speed = 1;
-            //data.Life = 1;
-            //data.Attack = 1;
+
 
         }
         private void Start()
@@ -58,13 +53,12 @@ namespace DumbProject.Rooms
                 NewIstanceGDRData = Instantiate(_gdr_Data);
                 GDR_Controller NewIstanceGDR = Instantiate(NewIstanceGDRData.GDRPrefab);
                 NewIstanceGDR.Init(NewIstanceGDRData);
-                _gdr_Data.IsInGame = true;
                 return NewIstanceGDR;  
             }
             return null;
         }
 
-
+      
     }
 }
 

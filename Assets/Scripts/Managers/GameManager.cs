@@ -26,6 +26,7 @@ namespace DumbProject.Generic
         public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
+        public bool IsTouchAvailable { get { return Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer; } }
         public FlowState CurrentState { get { return FlowMng.CurrentState; } }
         public bool IsGamePaused {
             get
@@ -53,6 +54,10 @@ namespace DumbProject.Generic
         public PoolManager PoolMng;
         [HideInInspector]
         public DataManager DataMng;
+        [HideInInspector]
+        public InputHandler InputHndl;
+
+        public CameraHandler CameraHndl;
 
         [HideInInspector]
         public AI_Controller Dumby;
@@ -93,6 +98,11 @@ namespace DumbProject.Generic
 
         public void LoadingActions()
         {
+            CameraHndl.Init();
+
+            InputHndl = GetComponent<InputHandler>();
+            InputHndl.Init(CameraHndl);
+
             DataMng = GetComponent<DataManager>();
             DataMng.InitData();
 
@@ -175,6 +185,7 @@ namespace DumbProject.Generic
             //------------------
             UIMng.GamePlayCtrl.ActivateLateralGUI(false);
             UIMng.GamePlayCtrl.ActivatePausePanel(false);
+            CameraHndl.ResetValues();
             ChageFlowState(FlowState.Menu);
         }
 
