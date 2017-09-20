@@ -5,7 +5,7 @@ using DumbProject.Grid;
 using DumbProject.Generic;
 using DumbProject.Items;
 
-namespace DumbProject.Rooms
+namespace DumbProject.GDR
 {
     public class GDR_Controller : MonoBehaviour
     {

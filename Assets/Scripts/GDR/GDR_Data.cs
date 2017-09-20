@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
-namespace DumbProject.Rooms
+using Framework.AI;
+
+namespace DumbProject.GDR
 {
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
@@ -11,6 +13,9 @@ namespace DumbProject.Rooms
         public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
+        public InventoryController iC;
+        public AI_Controller ai_Controller;
+
 
         public float Life;
         public float ActualLife;
