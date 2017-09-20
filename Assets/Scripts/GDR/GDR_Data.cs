@@ -38,13 +38,13 @@ namespace DumbProject.GDR
             set
             {
                 experienceCounter = value;
-                GetExperienceMultiplier();
+                GetExperience(experienceType);
                 AddLevel();
                 UpdateLevels();
             }
         }
 
-        
+
 
         /// <summary>
         /// Aggiunge un livello ogni volta che viene superata l'ExperienceForNextLevel
@@ -53,7 +53,7 @@ namespace DumbProject.GDR
         {
             if (ExpLevel.Count == 0)
             {
-                ExpLevel.Add(ExperienceForNextLevel); 
+                ExpLevel.Add(ExperienceForNextLevel);
             }
             else
             {
@@ -63,13 +63,13 @@ namespace DumbProject.GDR
         /// <summary>
         /// Aggiorna l'esperienza necessaria per il livello successivo
         /// </summary>
-        public void UpdateLevels()
+        void UpdateLevels()
         {
             for (int i = 0; i < ExpLevel.Count; i++)
             {
-                if (ExpLevel[i]>= ExperienceCounter)
+                if (ExpLevel[i] >= ExperienceCounter)
                 {
-                    ModifyPlayerStats(PlayerLevel,i);
+                    ModifyPlayerStats(PlayerLevel, i);
                     PlayerLevel = i;
                 }
             }
@@ -78,10 +78,10 @@ namespace DumbProject.GDR
         /// <summary>
         /// Modify the Player statistic each time he reach a new level.
         /// </summary>
-        public void ModifyPlayerStats(int _previousLevel, int _newLevel)
+        void ModifyPlayerStats(int _previousLevel, int _newLevel)
         {
-  
-            if (_previousLevel< _newLevel)
+
+            if (_previousLevel < _newLevel)
             {
                 Speed = Speed * 1.05f;
                 Attack = Attack + 0.25f;
@@ -97,7 +97,7 @@ namespace DumbProject.GDR
         // Get the Experience from the Difficulty of the Enemy
         // </summary>
         // <returns></returns>
-        public float GetExperienceMultiplier()
+        float GetExperienceMultiplierFromEnemy()
         {
             if (ExperienceMuliplier > 1)
             {
@@ -131,7 +131,7 @@ namespace DumbProject.GDR
                 case ExperienceType.Enemy:
                     if (target != null)
                     {
-                        ExperienceCounter += GetExperienceMultiplier();
+                        ExperienceCounter += GetExperienceMultiplierFromEnemy();
                         target = null;
                     }
                     break;
@@ -139,26 +139,20 @@ namespace DumbProject.GDR
                     GetObstacleExperience(obstacleType);
                     break;
                 case ExperienceType.Room:
-                    GetExperienceFromNewRoom(dumby.CurrentRoom);
+                    GetExperienceFromNewRoom();
                     break;
                 default:
                     break;
             }
-
         }
+
         /// <summary>
         /// Get the Experience when the room status id Explored.
         /// </summary>
         /// <param name="_room"></param>
-        void GetExperienceFromNewRoom(Room _room)
+        void GetExperienceFromNewRoom()
         {
-            if (_room != null)
-            {
-                if (_room.StatusOfExploration == ExplorationStatus.Explored)
-                {
-                    ExperienceCounter++;
-                }
-            }
+            ExperienceCounter++;
         }
         /// <summary>
         /// Get the experience from the Obstacles
