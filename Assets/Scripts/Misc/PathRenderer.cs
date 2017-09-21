@@ -19,20 +19,14 @@ namespace DumbProject.Generic
             path = dumby.Path.GetSmoothedPath();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            if(path != null)
+            path = dumby.Path.GetSmoothedPath();
+
+            if(path!= null)
             {
                 renderer.positionCount = path.Length;
                 renderer.SetPositions(path);
-                //for (int i = 0; i < path.Length; i++)
-                //{
-                //    renderer.SetPosition(i, path[i].spacePosition + Vector3.up);
-                //}
-            }
-            else
-            {
-                path = dumby.Path.GetSmoothedPath();
             }
         }
     }

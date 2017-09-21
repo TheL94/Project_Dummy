@@ -14,6 +14,7 @@ namespace Framework.Pathfinding
         protected void OnPathSet()
         {
             List<Vector3> pathPositions = new List<Vector3>();
+
             foreach (INetworkable node in originalPath)
             {
                 pathPositions.Add(node.spacePosition);
@@ -45,15 +46,24 @@ namespace Framework.Pathfinding
             return smoothedPath[indexOnSmoothedPath];
         }
 
-        public void ProceedOneForwardOnSmoothedPath()
+        public bool ProceedOneForwardOnSmoothedPath()
         {
             indexOnSmoothedPath++;
+            if(indexOnSmoothedPath < smoothedPath.Length)
+            {
+                return true;
+            }
+            else
+            {
+                indexOnSmoothedPath--;
+                return false;
+            }
         }
 
         public INetworkable GetCloserINetworkableOfPath()
         {
-            INetworkable outcome = originalPath[originalPath.Length];
-            float distance = Vector3.Distance(originalPath[originalPath.Length].spacePosition, smoothedPath[indexOnSmoothedPath]);
+            INetworkable outcome = originalPath[originalPath.Length -1];
+            float distance = Vector3.Distance(originalPath[originalPath.Length-1].spacePosition, smoothedPath[indexOnSmoothedPath]);
             for (int i = 0; i < originalPath.Length -1; i++)
             {
                 float tempDis = Vector3.Distance(originalPath[i].spacePosition, smoothedPath[indexOnSmoothedPath]);

@@ -45,7 +45,8 @@ namespace DumbProject.Generic
             }
         }
 
-        public Path Path { get; set; }
+        private Path _path = new Path();
+        public Path Path { get { return _path; } set { _path = value; } }
         #endregion
     }
 }

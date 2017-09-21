@@ -19,7 +19,7 @@ namespace Framework.AI
             ctrlTransform = _controller.transform;
 
             FollowPath(_controller as IPathfinder);
-            if ((_controller as IPathfinder).Path.GetSmoothedPath().Length > 0)
+            if ((_controller as IPathfinder).Path.GetOriginalPath().Length > 0)
                 return false;
             else
                 return true;
@@ -32,7 +32,7 @@ namespace Framework.AI
         public void FollowPath(IPathfinder _pathfinder)
         {
             //Prevent movement if there is no path
-            if (_pathfinder.Path.GetSmoothedPath().Length <= 0)
+            if (_pathfinder.Path.GetOriginalPath().Length <= 0)
             {
                 Debug.LogWarning("Trying to follow a Path of 0 nodes");
                 return;
@@ -43,10 +43,9 @@ namespace Framework.AI
             SmoothTranslation(_pathfinder.Path.GetNextPosition());
 
             //Each time a node is reached is set as current and removed from the current Path
-            ChopPath(_pathfinder);
-            if(_pathfinder.Path.GetSmoothedPath().Length <= 0)
+            ProceedOnPath(_pathfinder);
+            if(_pathfinder.Path.GetNextPosition() == _pathfinder.CurrentNetworkable.spacePosition)
             {
-                _pathfinder.CurrentNetworkable = _pathfinder.Path.GetCloserINetworkableOfPath();
                 _pathfinder.Path = new Path();
             }
         }
@@ -66,7 +65,7 @@ namespace Framework.AI
             ctrlTransform.position = positionToApply;
         }
 
-        void ChopPath(IPathfinder _pathfinder)
+        void ProceedOnPath(IPathfinder _pathfinder)
         {
             //Check if distance has reached a minimum
             if (Vector3.Distance(_pathfinder.Path.GetNextPosition(), ctrlTransform.position) <= ProximityDetection)
