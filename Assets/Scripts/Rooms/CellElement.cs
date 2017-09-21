@@ -10,7 +10,8 @@ namespace DumbProject.Rooms
         [HideInInspector]
         public Cell RelativeCell;
 
-        protected GameObject graphicElement;
+        protected GameObject _graphicElement;
+        public GameObject GraphicElement { get { return _graphicElement; } private set { _graphicElement = value; } }
         protected List<GameObject> fillerGraphics = new List<GameObject>();
         protected List<GameObject> lightingObjects = new List<GameObject>();
 
@@ -29,10 +30,10 @@ namespace DumbProject.Rooms
         {
             DisableGraphicElement();
 
-            graphicElement = _graphic;
-            graphicElement.transform.position = transform.position;
-            graphicElement.transform.rotation = _rotation;
-            graphicElement.transform.parent = transform;
+            GraphicElement = _graphic;
+            GraphicElement.transform.position = transform.position;
+            GraphicElement.transform.rotation = _rotation;
+            GraphicElement.transform.parent = transform;
         }
 
         /// <summary>
@@ -40,10 +41,10 @@ namespace DumbProject.Rooms
         /// </summary>
         public virtual void DisableGraphicElement()
         {
-            if (graphicElement != null)
+            if (GraphicElement != null)
             {
-                graphicElement.SetActive(false);
-                graphicElement = null;
+                GraphicElement.SetActive(false);
+                GraphicElement = null;
                 GameManager.I.PoolMng.UpdatePools();
             }
         }
@@ -178,7 +179,7 @@ namespace DumbProject.Rooms
                 return true;
         }
         #endregion
-        public void DisableAllGraphics()
+        public virtual void DisableAllGraphics()
         {
             DisableGraphicElement();
             DisableAllFillerGraphic();
@@ -186,19 +187,10 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        public virtual void DisableAndDestroyObject(bool _destroyComponentOnly = false)
-        {
-            DisableAllGraphics();
-            DestroyObject(_destroyComponentOnly);
-        }
-
-        /// <summary>
         /// Funzione che distrugge l'oggetto
         /// </summary>
         /// <param name="_destroyComponentOnly"></param>
-        public void DestroyObject(bool _destroyComponentOnly = false)
+        public virtual void DestroyObject(bool _destroyComponentOnly = false)
         {
             if (_destroyComponentOnly)
                 Destroy(this);

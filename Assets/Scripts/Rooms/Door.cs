@@ -42,14 +42,11 @@ namespace DumbProject.Rooms
             indicator.Init(this);
         }
 
-        /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        /// <param name="_avoidDestruction"></param>
-        public override void DisableAndDestroyObject(bool _avoidDestruction = false)
+        public override void DestroyObject(bool _destroyComponentOnly = false)
         {
             RelativeCell.Doors.Remove(this);
-            base.DisableAndDestroyObject(_avoidDestruction);
+            indicator.DisableGraphic();
+            base.DestroyObject(_destroyComponentOnly);
         }
 
         /// <summary>

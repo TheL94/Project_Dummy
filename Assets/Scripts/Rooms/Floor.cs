@@ -7,14 +7,10 @@ namespace DumbProject.Rooms
 {
     public class Floor : CellElement
     {
-        /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        /// <param name="_avoidDestruction"></param>
-        public override void DisableAndDestroyObject(bool _avoidDestruction = false)
+        public override void DestroyObject(bool _destroyComponentOnly = false)
         {
             RelativeCell.Floor = null;
-            base.DisableAndDestroyObject(_avoidDestruction);
+            base.DestroyObject(_destroyComponentOnly);
         }
     }
 }

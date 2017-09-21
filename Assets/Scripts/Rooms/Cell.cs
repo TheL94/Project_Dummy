@@ -218,11 +218,12 @@ namespace DumbProject.Rooms
                 return false;
 
             GameObject edgeObj = _edge.gameObject;
-            _edge.DisableAndDestroyObject(true);
+            _edge.DisableAllGraphics();
+            _edge.DestroyObject(true);
             Door newDoor = edgeObj.AddComponent<Door>();
 
-            newDoor.Setup(this);
             newDoor.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("WallDoor"), Quaternion.LookRotation(transform.position - newDoor.transform.position));
+            newDoor.Setup(this);
 
             if (_edge.name == "RightEdge")
                 newDoor.name = "RightDoor";
