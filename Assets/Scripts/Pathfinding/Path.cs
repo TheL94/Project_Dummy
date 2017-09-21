@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace Framework.Pathfinding
     {
         protected INetworkable[] originalPath = new INetworkable[0];
         protected Vector3[] smoothedPath;
-        protected int indexOnSmoothedPath;
+        protected int smoothedPathIndex;
 
         protected BezierPath BPath = new BezierPath();
         protected void OnPathSet()
@@ -41,21 +41,34 @@ namespace Framework.Pathfinding
             return smoothedPath;
         }
 
+        public Vector3[] GetRemainingSmoothedPath()
+        {
+            List<Vector3> choppedPath = new List<Vector3>();
+            if (smoothedPath == null)
+                return null;
+
+            choppedPath.AddRange(smoothedPath);
+
+            choppedPath.RemoveRange(0, smoothedPathIndex);
+
+            return choppedPath.ToArray();
+        }
+
         public Vector3 GetNextPosition()
         {
-            return smoothedPath[indexOnSmoothedPath];
+            return smoothedPath[smoothedPathIndex];
         }
 
         public bool ProceedOneForwardOnSmoothedPath()
         {
-            indexOnSmoothedPath++;
-            if(indexOnSmoothedPath < smoothedPath.Length)
+            smoothedPathIndex++;
+            if(smoothedPathIndex < smoothedPath.Length)
             {
                 return true;
             }
             else
             {
-                indexOnSmoothedPath--;
+                smoothedPathIndex--;
                 return false;
             }
         }
@@ -63,10 +76,10 @@ namespace Framework.Pathfinding
         public INetworkable GetCloserINetworkableOfPath()
         {
             INetworkable outcome = originalPath[originalPath.Length -1];
-            float distance = Vector3.Distance(originalPath[originalPath.Length-1].spacePosition, smoothedPath[indexOnSmoothedPath]);
+            float distance = Vector3.Distance(originalPath[originalPath.Length-1].spacePosition, smoothedPath[smoothedPathIndex]);
             for (int i = 0; i < originalPath.Length -1; i++)
             {
-                float tempDis = Vector3.Distance(originalPath[i].spacePosition, smoothedPath[indexOnSmoothedPath]);
+                float tempDis = Vector3.Distance(originalPath[i].spacePosition, smoothedPath[smoothedPathIndex]);
                 if(tempDis < distance)
                 {
                     distance = tempDis;
