@@ -49,6 +49,7 @@ namespace DumbProject.Rooms
         public override void DisableAndDestroyObject(bool _avoidDestruction = false)
         {
             RelativeCell.Doors.Remove(this);
+            indicator.DisableGraphic();
             base.DisableAndDestroyObject(_avoidDestruction);
         }
 

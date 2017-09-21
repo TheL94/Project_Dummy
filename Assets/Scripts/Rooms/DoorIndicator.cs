@@ -5,22 +5,37 @@ using DumbProject.Generic;
 
 namespace DumbProject.Rooms
 {
+    // TODO : ottimizzare tutta la classe
     public class DoorIndicator : MonoBehaviour
     {
-        GameObject objectToColor;
+        GameObject pyramid;
+        Material doorFrameMaterial;
         Door relativeDoor;
 
         public void Init(Door _relativeDoor)
         {
             relativeDoor = _relativeDoor;
-            objectToColor = GameManager.I.PoolMng.GetGameObject("Pyramid");
-            objectToColor.transform.position = relativeDoor.transform.position + new Vector3(0f, 3.5f, 0f);
-            objectToColor.transform.parent = relativeDoor.transform;
+            pyramid = GameManager.I.PoolMng.GetGameObject("Pyramid");
+            pyramid.transform.position = relativeDoor.transform.position + new Vector3(0f, 3.5f, 0f);
+            pyramid.transform.parent = relativeDoor.transform;
+
+            MeshRenderer[] renderers = relativeDoor.GraphicElement.GetComponentsInChildren<MeshRenderer>();
+            List<Material> materials = new List<Material>();
+            if (renderers != null)
+            {
+                foreach (MeshRenderer mRend in renderers)
+                {
+                    if(materials != null)
+                        materials.AddRange(mRend.materials.ToList());
+                }
+            }
+            if (materials != null)
+                doorFrameMaterial = materials.Find(m => m.name.Contains("IndicatorMaterial"));
         }
 
         private void Update()
         {
-            if (relativeDoor == null || objectToColor == null)
+            if (relativeDoor == null || pyramid == null)
                 return;
 
             ShowExplorationStatus();
@@ -45,7 +60,7 @@ namespace DumbProject.Rooms
                     break;
             }
 
-            MeshRenderer renderer = objectToColor.GetComponentInChildren<MeshRenderer>();
+            MeshRenderer renderer = pyramid.GetComponentInChildren<MeshRenderer>();
             Material material = null;
             if (renderer == null)
                 return;
@@ -53,19 +68,17 @@ namespace DumbProject.Rooms
             material = renderer.material;
             material.color = color;
             material.SetColor("_EmissionColor", color);
+
+            if (doorFrameMaterial == null)
+                return;
+            doorFrameMaterial.color = color;
+            doorFrameMaterial.SetColor("_EmissionColor", color);
         }
 
-        private void OnDisable()
+        public void DisableGraphic()
         {
-            objectToColor.transform.parent = null;
-            objectToColor.SetActive(false);
-            GameManager.I.PoolMng.UpdatePools();
-        }
-
-        private void OnDestroy()
-        {
-            objectToColor.transform.parent = null;
-            objectToColor.SetActive(false);
+            pyramid.transform.parent = null;
+            pyramid.SetActive(false);
             GameManager.I.PoolMng.UpdatePools();
         }
     }
