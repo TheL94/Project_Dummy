@@ -179,7 +179,7 @@ namespace DumbProject.Rooms
                 return true;
         }
         #endregion
-        public void DisableAllGraphics()
+        public virtual void DisableAllGraphics()
         {
             DisableGraphicElement();
             DisableAllFillerGraphic();
@@ -187,19 +187,10 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        public virtual void DisableAndDestroyObject(bool _destroyComponentOnly = false)
-        {
-            DisableAllGraphics();
-            DestroyObject(_destroyComponentOnly);
-        }
-
-        /// <summary>
         /// Funzione che distrugge l'oggetto
         /// </summary>
         /// <param name="_destroyComponentOnly"></param>
-        public void DestroyObject(bool _destroyComponentOnly = false)
+        public virtual void DestroyObject(bool _destroyComponentOnly = false)
         {
             if (_destroyComponentOnly)
                 Destroy(this);

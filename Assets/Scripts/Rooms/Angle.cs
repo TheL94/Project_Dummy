@@ -33,14 +33,10 @@ namespace DumbProject.Rooms
             }
         }
 
-        /// <summary>
-        /// Funzione che disabilita l'oggetto
-        /// </summary>
-        /// <param name="_avoidDestruction"></param>
-        public override void DisableAndDestroyObject(bool _avoidDestruction = false)
+        public override void DestroyObject(bool _destroyComponentOnly = false)
         {
             RelativeCell.Angles.Remove(this);
-            base.DisableAndDestroyObject(_avoidDestruction);
+            base.DestroyObject(_destroyComponentOnly);
         }
     }
 }

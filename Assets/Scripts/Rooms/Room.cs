@@ -252,9 +252,7 @@ namespace DumbProject.Rooms
         /// </summary>
         public void PlaceOtherGraphicElements()
         {
-            // TODO : alla distruzione causa blocco del gioco
             List<Edge> edges = GetEdges();
-            List<Angle> angles = GetAngles();
 
             Edge edge = edges[Random.Range(0, edges.Count)];
             Vector3 position = edge.transform.position;
@@ -274,15 +272,11 @@ namespace DumbProject.Rooms
             edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position, rotation);
             edges.Remove(edge);
 
-            Angle angle = angles[Random.Range(0, angles.Count)];
-            position = angle.transform.position;
-            angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
-            angles.Remove(angle);
-
-            angle = angles[Random.Range(0, angles.Count)];
-            position = angle.transform.position;
-            angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
-            angles.Remove(angle);
+            foreach (Angle angle in FindAnglesWithoutWall())
+            {
+                position = angle.transform.position;
+                angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
+            }
         }
 
         /// <summary>
@@ -454,7 +448,8 @@ namespace DumbProject.Rooms
 
             foreach (Edge wallToRemove in itemsToBeDestroyed)
             {
-                wallToRemove.DisableAndDestroyObject();
+                wallToRemove.DisableAllGraphics();
+                wallToRemove.DestroyObject();
             }
         }
 
@@ -482,7 +477,8 @@ namespace DumbProject.Rooms
 
             foreach (Angle angle in itemsToBeDestroyed)
             {
-                angle.DisableAndDestroyObject();
+                angle.DisableAllGraphics();
+                angle.DestroyObject();
             }
         }
 
@@ -540,7 +536,8 @@ namespace DumbProject.Rooms
 
             foreach (Edge egdeToDestroy in itemsToBeDestroyed)
             {
-                egdeToDestroy.DisableAndDestroyObject();
+                egdeToDestroy.DisableAllGraphics();
+                egdeToDestroy.DestroyObject();
             }
         }
 
@@ -579,7 +576,8 @@ namespace DumbProject.Rooms
 
             foreach (Angle angleToDestroy in itemsToBeDestroyed)
             {
-                angleToDestroy.DisableAndDestroyObject();
+                angleToDestroy.DisableAllGraphics();
+                angleToDestroy.DestroyObject();
             }
         }
 
