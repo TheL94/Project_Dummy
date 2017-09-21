@@ -45,28 +45,8 @@ namespace DumbProject.Generic
             }
         }
 
-        private BezierPath BPath = new BezierPath();
-        private INetworkable[] _path;
-        public INetworkable[] Path { get { return _path; }
-            set
-            {
-                _path = value;
-                OnPathSet();
-            }
-        }
-        public Vector3[] SmoothedPath { get; set; }
-
-        protected void OnPathSet()
-        {
-            List<Vector3> pathPositions = new List<Vector3>();
-            foreach (INetworkable node in Path)
-            {
-                pathPositions.Add(node.spacePosition);
-            }
-
-            BPath.Interpolate(pathPositions, 100);
-            SmoothedPath = pathPositions.ToArray();
-        }
+        private Path _path = new Path();
+        public Path Path { get { return _path; } set { _path = value; } }
         #endregion
     }
 }

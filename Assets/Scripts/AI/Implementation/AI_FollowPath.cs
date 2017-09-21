@@ -19,7 +19,7 @@ namespace Framework.AI
             ctrlTransform = _controller.transform;
 
             FollowPath(_controller as IPathfinder);
-            if ((_controller as IPathfinder).Path.Length > 0)
+            if ((_controller as IPathfinder).Path.GetOriginalPath().Length > 0)
                 return false;
             else
                 return true;
@@ -32,22 +32,21 @@ namespace Framework.AI
         public void FollowPath(IPathfinder _pathfinder)
         {
             //Prevent movement if there is no path
-            if (_pathfinder.Path.Length <= 0)
+            if (_pathfinder.Path.GetOriginalPath().Length <= 0)
             {
                 Debug.LogWarning("Trying to follow a Path of 0 nodes");
                 return;
             }
 
             //Actually move
-            SmoothRotation(_pathfinder.SmoothedPath[0]);
-            SmoothTranslation(_pathfinder.SmoothedPath[0]);
+            SmoothRotation(_pathfinder.Path.GetNextPosition());
+            SmoothTranslation(_pathfinder.Path.GetNextPosition());
 
             //Each time a node is reached is set as current and removed from the current Path
-            ChopPath(_pathfinder);
-            if(_pathfinder.SmoothedPath.Length <= 0)
+            ProceedOnPath(_pathfinder);
+            if(_pathfinder.Path.GetNextPosition() == _pathfinder.CurrentNetworkable.spacePosition)
             {
-                _pathfinder.CurrentNetworkable = _pathfinder.Path[_pathfinder.Path.Length - 1];
-                _pathfinder.Path = new INetworkable[0];
+                _pathfinder.Path = new Path();
             }
         }
 
@@ -66,13 +65,13 @@ namespace Framework.AI
             ctrlTransform.position = positionToApply;
         }
 
-        void ChopPath(IPathfinder _pathfinder)
+        void ProceedOnPath(IPathfinder _pathfinder)
         {
             //Check if distance has reached a minimum
-            if (Vector3.Distance(_pathfinder.SmoothedPath[0], ctrlTransform.position) <= ProximityDetection)
+            if (Vector3.Distance(_pathfinder.Path.GetNextPosition(), ctrlTransform.position) <= ProximityDetection)
             {
-                _pathfinder.CurrentNetworkable = GameManager.I.MainGridCtrl.GetSpecificGridNode(_pathfinder.SmoothedPath[0]);
-                _pathfinder.SmoothedPath = _pathfinder.SmoothedPath.Skip(1).ToArray();
+                _pathfinder.CurrentNetworkable = _pathfinder.Path.GetCloserINetworkableOfPath();
+                _pathfinder.Path.ProceedOneForwardOnSmoothedPath();
             }
         }
     }

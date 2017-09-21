@@ -16,12 +16,12 @@ namespace Framework.AI
             INetworkable[] newPath = Pathfinder.FindPath(target, start).ToArray();
             if (newPath != null && newPath.Length > 0)
             {
-                (_controller as IPathfinder).Path = newPath;
+                (_controller as IPathfinder).Path.SetOriginalPath(newPath);
                 return true;
             }
             else if(start.spacePosition == target.spacePosition)
             {
-                (_controller as IPathfinder).Path = new INetworkable[] { target };
+                (_controller as IPathfinder).Path.SetOriginalPath(new INetworkable[] { target });
                 return true;
             }
             else
