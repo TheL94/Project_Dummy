@@ -14,28 +14,46 @@ namespace DumbProject.UI
         public bool CheckIfInputIsForCamera(Vector2 _position)
         {
             Vector2 deviceResolution = GameManager.I.UIMng.CurrentResolution;
-            Vector2 cameraPanelPercentage;
-            Vector2 cameraPanelResolution;
-            if(GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
-            {
-                cameraPanelPercentage = new Vector2(AnchorMin.y, AnchorMin.x);
-                cameraPanelResolution = new Vector2(deviceResolution.y * cameraPanelPercentage.y, deviceResolution.x * cameraPanelPercentage.x);
 
-                if (_position.y > cameraPanelResolution.y && _position.x > cameraPanelResolution.x)
-                    return true;
+            if(GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    return CheckPortraitPosition(_position, deviceResolution);
                 else
-                    return false;
+                    return CheckLandscapePosition(_position, deviceResolution);
             }
             else
             {
-                cameraPanelPercentage = new Vector2(AnchorMax.x - AnchorMin.x, AnchorMax.y - AnchorMin.y);
-                cameraPanelResolution = new Vector2(deviceResolution.x * cameraPanelPercentage.x, deviceResolution.y * cameraPanelPercentage.y);
-
-                if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
-                    return true;
+                if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                    return CheckPortraitPosition(_position, deviceResolution);
                 else
-                    return false;
+                    return CheckLandscapePosition(_position, deviceResolution);
             }
+
+        }
+
+        bool CheckPortraitPosition(Vector2 _position, Vector2 _deviceResolution)
+        {
+            Vector2 cameraPanelPercentage = new Vector2(AnchorMin.y, AnchorMin.x);
+            Vector2 cameraPanelResolution = new Vector2(_deviceResolution.y * cameraPanelPercentage.y, _deviceResolution.x * cameraPanelPercentage.x);
+
+            if (_position.y > cameraPanelResolution.y && _position.x > cameraPanelResolution.x)
+                return true;
+            else
+                return false;
+        }
+
+        bool CheckLandscapePosition(Vector2 _position, Vector2 _deviceResolution)
+        {
+            Vector2 cameraPanelPercentage = new Vector2(AnchorMax.x - AnchorMin.x, AnchorMax.y - AnchorMin.y);
+            Vector2 cameraPanelResolution = new Vector2(_deviceResolution.x * cameraPanelPercentage.x, _deviceResolution.y * cameraPanelPercentage.y);
+
+            Debug.Log(_position + " / " + cameraPanelResolution);
+
+            if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
+                return true;
+            else
+                return false;
         }
     }
 }
