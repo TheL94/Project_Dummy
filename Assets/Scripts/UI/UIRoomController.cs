@@ -38,6 +38,12 @@ namespace DumbProject.UI
             }
         }
 
+        private void OnApplicationFocus(bool focus)
+        {
+            if (!focus)
+                ActualRoom.RoomMovment.MovingToInitialPosition = true;
+        }
+
         //TODO: metti apposto ALberto
         //public void OnDrop(PointerEventData eventData)
         //{
