@@ -215,16 +215,14 @@ namespace DumbProject.Generic
         }
         #endregion
 
-        private void OnApplicationPause(bool pause)
-        {
-            ChageFlowState(FlowState.Pause);
+        //private void OnApplicationPause(bool pause)
+        //{
+        //    ChageFlowState(FlowState.Pause);
+        //}
 
-        }
-
-        private void OnApplicationFocus(bool focus)
-        {
-            ChageFlowState(FlowState.Pause);
-
-        }
+        //private void OnApplicationFocus(bool focus)
+        //{
+        //    ChageFlowState(FlowState.Pause);
+        //}
     }
 }
