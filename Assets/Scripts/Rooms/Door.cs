@@ -42,10 +42,16 @@ namespace DumbProject.Rooms
             indicator.Init(this);
         }
 
+        public override void DisableAllGraphics()
+        {
+            if(indicator != null)
+                indicator.DisableGraphic();
+            base.DisableAllGraphics();
+        }
+
         public override void DestroyObject(bool _destroyComponentOnly = false)
         {
             RelativeCell.Doors.Remove(this);
-            indicator.DisableGraphic();
             base.DestroyObject(_destroyComponentOnly);
         }
 

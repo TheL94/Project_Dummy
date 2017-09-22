@@ -63,8 +63,8 @@ namespace DumbProject.Rooms
                     fillerGraphics[i].SetActive(false);
                 }
             }
-            GameManager.I.PoolMng.UpdatePools();
             fillerGraphics.Clear();
+            GameManager.I.PoolMng.UpdatePools();
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace DumbProject.Rooms
                     lightingObjects[i].SetActive(false);
                 }
             }
-            GameManager.I.PoolMng.UpdatePools();
             lightingObjects.Clear();
+            GameManager.I.PoolMng.UpdatePools();
         }
 
         /// <summary>
@@ -179,6 +179,7 @@ namespace DumbProject.Rooms
                 return true;
         }
         #endregion
+
         public virtual void DisableAllGraphics()
         {
             DisableGraphicElement();

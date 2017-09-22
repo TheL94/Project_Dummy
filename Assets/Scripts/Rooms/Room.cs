@@ -62,9 +62,9 @@ namespace DumbProject.Rooms
         }
 
         /// <summary>
-        /// Funzione che ritorna tutti gli oggetti grafici al pool prima di distruggere la stanza e le relative celle
+        /// Funzione che ritorna tutti gli oggetti grafici al pool
         /// </summary>
-        public void DestroyChildrenObject()
+        public void ResetChildrenGraphics()
         {
             for (int i = 0; i < CellsInRoom.Count; i++)
             {
@@ -79,7 +79,13 @@ namespace DumbProject.Rooms
                 for (int j = 0; j < CellsInRoom[i].Doors.Count; j++)
                     CellsInRoom[i].Doors[j].DisableAllGraphics();
             }
+        }
 
+        /// <summary>
+        /// Funzione che distrugge la stanza e le relative celle
+        /// </summary>
+        public void DestroyChildrenObject()
+        {
             for (int i = 0; i < CellsInRoom.Count; i++)
             {
                 CellsInRoom[i].Floor.DestroyObject();

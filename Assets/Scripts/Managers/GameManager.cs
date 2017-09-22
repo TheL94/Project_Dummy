@@ -175,6 +175,8 @@ namespace DumbProject.Generic
         /// </summary>
         public void ExitGameplayActions()
         {
+            DungeonMng.ResetGraphics();
+            RoomGenerator.ResetGraphics();
             DungeonMng.Clean();
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
@@ -212,5 +214,17 @@ namespace DumbProject.Generic
             Dumby.IsActive = _status;
         }
         #endregion
+
+        private void OnApplicationPause(bool pause)
+        {
+            ChageFlowState(FlowState.Pause);
+
+        }
+
+        private void OnApplicationFocus(bool focus)
+        {
+            ChageFlowState(FlowState.Pause);
+
+        }
     }
 }

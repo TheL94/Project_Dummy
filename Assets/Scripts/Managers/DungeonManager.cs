@@ -27,6 +27,12 @@ namespace DumbProject.Generic
             RoomInDungeon = new List<Room>();
         }
 
+        public void ResetGraphics()
+        {
+            foreach (Room room in RoomInDungeon)
+                room.ResetChildrenGraphics();
+        }
+
         public void Clean()
         {
             foreach (Room room in RoomInDungeon)

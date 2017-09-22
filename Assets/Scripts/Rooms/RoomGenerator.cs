@@ -39,6 +39,12 @@ namespace DumbProject.Rooms
                 InstantiateRoom(RoomDataInstance);
         }
 
+        public void ResetGraphics()
+        {
+            foreach (SpawnsAssociation association in SpawnsAssociations)
+                association.Room.ResetChildrenGraphics();
+        }
+
         public void Clean()
         {
             foreach (SpawnsAssociation association in SpawnsAssociations)

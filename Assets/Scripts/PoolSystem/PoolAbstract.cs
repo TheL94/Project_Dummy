@@ -24,7 +24,6 @@ namespace Framework.PoolSystem
                 activePool.Add(item);
                 return item;
             }
-
         }
 
         public virtual void UpdatePools()
