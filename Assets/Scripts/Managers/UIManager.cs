@@ -22,8 +22,46 @@ namespace DumbProject.UI
         ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
         public ScreenOrientation DeviceCurrentOrientation { get { return Screen.orientation; } }
 
-        public Vector2 DeviceReferenceResolution { get { return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height); } }
-        public Vector2 CurrentResolution { get { return new Vector2(Screen.width, Screen.height); } }
+        public Vector2 DeviceReferenceResolution
+        {
+            get
+            {
+                if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+                {
+                    if (ForceVerticalUI)
+                        return new Vector2(Screen.currentResolution.height, Screen.currentResolution.width);
+                    else
+                        return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+                }
+                else
+                {
+                    if (DeviceCurrentOrientation == ScreenOrientation.Portrait || DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        return new Vector2(Screen.currentResolution.height, Screen.currentResolution.width);
+                    else
+                        return new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+                }
+            }
+        }
+        public Vector2 CurrentResolution
+        {
+            get
+            {
+                if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+                {
+                    if(ForceVerticalUI)
+                        return new Vector2(Screen.height, Screen.width);
+                    else
+                        return new Vector2(Screen.width, Screen.height);
+                }
+                else
+                {
+                    if (DeviceCurrentOrientation == ScreenOrientation.Portrait || DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        return new Vector2(Screen.height, Screen.width);
+                    else
+                        return new Vector2(Screen.width, Screen.height);
+                }
+            }
+        }
 
         const string PrefabPath = "Prefabs/UI/";
 

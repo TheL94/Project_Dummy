@@ -34,9 +34,9 @@ namespace DumbProject.Generic
                 return;
             if (GameManager.I.IsTouchAvailable)
             {
-                if(Input.touchCount == 1 && GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(Input.GetTouch(0).position))
+                if(Input.touchCount == 1)
                     TouchPanning();
-                else if(Input.touchCount == 2 && GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(Input.GetTouch(0).position))
+                else if(Input.touchCount == 2)
                     PinchToZoom();
                 else              
                     wasZoomingLastFrame = false;
