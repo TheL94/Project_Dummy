@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.09.00">
     <object class="Workspace" id="{b350b922-c21d-4b85-b9ab-51cf788af5f0}">
+        <property name="builtBanksOutputDirectory">
+            <value>Build</value>
+        </property>
         <relationship name="masterEventFolder">
             <destination>{db3f78de-5ac7-445c-baee-b69f20d63175}</destination>
         </relationship>
@@ -18,6 +21,7 @@
         </relationship>
         <relationship name="platforms">
             <destination>{fffca0cc-2e65-4a96-853c-5a6c8937f686}</destination>
+            <destination>{6507468a-ef3a-4440-96ce-b781d5be87b8}</destination>
         </relationship>
     </object>
     <object class="Platform" id="{fffca0cc-2e65-4a96-853c-5a6c8937f686}">
@@ -32,6 +36,20 @@
         </property>
         <property name="speakerFormat">
             <value>6</value>
+        </property>
+    </object>
+    <object class="Platform" id="{6507468a-ef3a-4440-96ce-b781d5be87b8}">
+        <property name="hardwareType">
+            <value>1</value>
+        </property>
+        <property name="name">
+            <value>Mobile</value>
+        </property>
+        <property name="subDirectory">
+            <value>Mobile</value>
+        </property>
+        <property name="speakerFormat">
+            <value>3</value>
         </property>
     </object>
 </objects>

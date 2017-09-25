@@ -1,8 +1,6 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using DumbProject.Grid;
 using DumbProject.Generic;
 using DumbProject.Items;
@@ -263,19 +261,19 @@ namespace DumbProject.Rooms
             Edge edge = edges[Random.Range(0, edges.Count)];
             Vector3 position = edge.transform.position;
             Quaternion rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel1"), position, rotation);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("BarrelSet1"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = edge.transform.position;
             rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Barrel2"), position, rotation);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("ChimneySet1"), position, rotation);
             edges.Remove(edge);
 
             edge = edges[Random.Range(0, edges.Count)];
             position = edge.transform.position;
             rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);      
-            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Chest"), position, rotation);
+            edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("TableSet1"), position, rotation);
             edges.Remove(edge);
 
             foreach (Angle angle in FindAnglesWithoutWall())
