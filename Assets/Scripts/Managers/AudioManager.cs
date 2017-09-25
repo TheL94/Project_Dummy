@@ -4,26 +4,26 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 
-public class AudioManager : MonoBehaviour {
+namespace DumbProject.Generic
+{
+    public class AudioManager : MonoBehaviour
+    {
+        [EventRef]
+        public string inputSound = "event:/TestEvent";
+        EventInstance testMusic;
 
-    [EventRef]
-    public string inputSound = "event:/TestMusic";
-    EventInstance testMusic;
-    ParameterInstance tremolo;
-    [Range(0f, 1f)]
-    public float tremParam;
-    // Use this for initialization
-    void Start() {
-        testMusic = RuntimeManager.CreateInstance(inputSound);
-        testMusic.getParameter("TestParam", out tremolo);
-    }
+        public void Init()
+        {
+            testMusic = RuntimeManager.CreateInstance(inputSound);
+        }
 
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
-            testMusic.start();
-
-        tremolo.setValue(tremParam);
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+                testMusic.start();
+            if (Input.GetKeyDown(KeyCode.S))
+                testMusic.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 }
+
