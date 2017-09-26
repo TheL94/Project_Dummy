@@ -19,19 +19,29 @@ namespace DumbProject.GDR
 
         List<float> ExpLevel = new List<float>();
 
-        public float TotalLife;
-        private float actualLife;
-
-        public float ActualLife
+        float _maxLife;
+        public float MaxLife
         {
-            get { return actualLife; }
-            set { actualLife = value;
-                if (ActualLife > TotalLife)
-                {
-                    ActualLife = TotalLife;
-                }
+            get { return _maxLife; }
+            set
+            {
+                _maxLife = value;
+                Life = MaxLife;
             }
         }
+        public float Life { get; private set; }
+
+        float _maxArmor;
+        public float MaxArmor
+        {
+            get { return _maxArmor; }
+            set
+            {
+                _maxArmor = value;
+                Armor = MaxArmor;
+            }
+        }
+        public float Armor { get; private set; }
 
         public float Speed;
         public float Attack;
@@ -57,7 +67,29 @@ namespace DumbProject.GDR
             }
         }
 
+        public void GetDamage(float _damage)
+        {
+            _damage -= Armor;
+            if(_damage > 0)
+            {
+                Life -= _damage;
+                iC.BreakArmor();
+                if (Life <= 0)
+                {
+                    Life = 0;
+                    Debug.LogWarning("Dumby is dead");
+                }
+            }
+        }
 
+        public void GetCure(float _cure)
+        {
+            Life += _cure;
+            if (Life > MaxLife)
+            {
+                Life = MaxLife;
+            }
+        }
 
         /// <summary>
         /// Aggiunge un livello ogni volta che viene superata l'ExperienceForNextLevel
@@ -73,6 +105,7 @@ namespace DumbProject.GDR
                 ExpLevel.Add(ExpLevel[ExpLevel.Count - 1] * 1.2f);
             }
         }
+
         /// <summary>
         /// Aggiorna l'esperienza necessaria per il livello successivo
         /// </summary>
@@ -93,7 +126,6 @@ namespace DumbProject.GDR
         /// </summary>
         void ModifyPlayerStats(int _previousLevel, int _newLevel)
         {
-
             if (_previousLevel < _newLevel)
             {
                 Speed = Speed * 1.05f;
@@ -130,7 +162,7 @@ namespace DumbProject.GDR
             {
                 target = _target;
             }
-            _target.Data.ActualLife -= Attack;
+            _target.Data.Life -= Attack;
         }
 
         /// <summary>
@@ -167,6 +199,7 @@ namespace DumbProject.GDR
         {
             ExperienceCounter++;
         }
+
         /// <summary>
         /// Get the experience from the Obstacles
         /// </summary>
@@ -189,7 +222,6 @@ namespace DumbProject.GDR
             }
         }
     }
-
 
     public enum ExperienceType
     {

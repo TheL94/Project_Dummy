@@ -18,10 +18,10 @@ namespace DumbProject.GDR
             data = Data;
             Data.ai_Controller = GetComponent<AI_Controller>();//Da capire se la logica è corretta.
         }
+
         private void Start()
         {
             Init(Data);
-            Data.ActualLife = 3;
             Data.iC.Init();
         }
 
@@ -30,7 +30,6 @@ namespace DumbProject.GDR
         /// </summary>
         public GDR_Controller CreateGDR(GDR_Data _gdr_Data)
         {
-
             if (_gdr_Data)
             {
                 GDR_Data NewIstanceGDRData;
@@ -41,6 +40,7 @@ namespace DumbProject.GDR
             }
             return null;
         }
+
         /// <summary>
         /// Chiamata quando viene raccolto un oggetto da una cella.
         /// </summary>
@@ -53,13 +53,17 @@ namespace DumbProject.GDR
             }
             if (_itemGeneric.GetType() == typeof(Potion))
             {
-                Data.ActualLife += (_itemGeneric as Potion).PotionValues.HealtRestore;
-                Debug.Log(Data.ActualLife);
+                Data.GetCure((_itemGeneric as Potion).PotionValues.HealtRestore);
+                Debug.Log(Data.Life);
             }
             else
             {
                 Data.iC.OnPickUpItem(this, _itemGeneric);
                 Debug.Log(_itemGeneric);
+                if(_itemGeneric.GetType() == typeof(Armor))
+                {
+                    Data.MaxArmor = (_itemGeneric as Armor).ArmoryValues.Protection;
+                }
             }
         }
     }

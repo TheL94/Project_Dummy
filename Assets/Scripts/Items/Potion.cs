@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
+using Framework.AI;
 
 namespace DumbProject.Items
 {
@@ -13,6 +14,12 @@ namespace DumbProject.Items
         {
             PotionValues = _values as PotionData;
             PotionValues.Type = GenericType.Item;
+        }
+
+        public override void Interact(AI_Controller _controller)
+        {
+            base.Interact(_controller);
+            Destroy(gameObject);
         }
     }
 }

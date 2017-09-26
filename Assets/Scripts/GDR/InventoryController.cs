@@ -11,11 +11,13 @@ namespace DumbProject.GDR
     public class InventoryController : MonoBehaviour
     {
         List<ItemGeneric> Inventory;
-        #region API
 
-        public void Init() {
+        #region API
+        public void Init()
+        {
             Inventory = new List<ItemGeneric>();
         }
+
         /// <summary>
         /// Raccoglie l'oggetto nella cella selezionata
         /// </summary>
@@ -27,6 +29,7 @@ namespace DumbProject.GDR
             HeldItem(_gdrController, itemToPick);
             Inventory.Add(itemToPick);
         }
+
         /// <summary>
         /// Droppa l'oggetto in base al tipo nella cella in cui si trova nel momento in cui viene raccolto il nuovo oggetto.
         /// </summary>
@@ -46,12 +49,28 @@ namespace DumbProject.GDR
                 }
             }
         }
+
+        public void BreakArmor()
+        {
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                if (Inventory[i].GetType() == typeof(Armor))
+                {
+                    ItemGeneric item = Inventory[i];
+                    Inventory.Remove(item);
+                    Destroy(item.gameObject);
+                    break;
+                }
+            }
+        }
+
         /// <summary>
         /// Impugna l'oggetto che raccoglie 
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="itemToPick"></param>
-        void HeldItem(GDR_Controller _gdrController,ItemGeneric itemToPick) {
+        void HeldItem(GDR_Controller _gdrController, ItemGeneric itemToPick)
+        {
             itemToPick.transform.parent = _gdrController.transform;
         }
         #endregion

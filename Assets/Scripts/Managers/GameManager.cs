@@ -159,6 +159,7 @@ namespace DumbProject.Generic
 
         public void StartGameplayActions()
         {
+            // TODO : implementare bene questa perte del flow
             InputHndl.enabled = false;
             CameraHndl.GetComponent<Camera_CinematicController>().Execute(DungeonMng.ObjectiveRoom.transform.position);
         }
