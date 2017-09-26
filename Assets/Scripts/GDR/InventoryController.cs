@@ -47,7 +47,7 @@ namespace DumbProject.GDR
             }
         }
         /// <summary>
-        /// Impugna l'oggetto che raccoglie
+        /// Impugna l'oggetto che raccoglie 
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="itemToPick"></param>
