@@ -36,6 +36,9 @@ namespace DumbProject.Flow
                 case FlowState.EnterGameplay:
                     GameManager.I.EnterGameplayActions();
                     break;
+                case FlowState.StartGameplay:
+                    GameManager.I.StartGameplayActions();
+                    break;
                 case FlowState.Gameplay:
                     if(_oldState == FlowState.Pause)
                         GameManager.I.PauseActions(false);
@@ -67,6 +70,7 @@ namespace DumbProject.Flow
         Loading,
         Menu,
         EnterGameplay,
+        StartGameplay,
         Gameplay,
         Pause,
         ExitGameplay,

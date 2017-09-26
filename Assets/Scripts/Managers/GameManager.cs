@@ -154,7 +154,13 @@ namespace DumbProject.Generic
 
             Dumby = Instantiate(DumbyPrefab, DungeonMng.RoomInDungeon[0].CellsInRoom[0].RelativeNode.WorldPosition, Quaternion.identity);
 
-            ChageFlowState(FlowState.Gameplay);
+            ChageFlowState(FlowState.StartGameplay);
+        }
+
+        public void StartGameplayActions()
+        {
+            InputHndl.enabled = false;
+            CameraHndl.GetComponent<Camera_CinematicController>().Execute(DungeonMng.ObjectiveRoom.transform.position);
         }
 
         public void PauseActions(bool _status)
