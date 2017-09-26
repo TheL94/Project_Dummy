@@ -10,10 +10,12 @@ namespace DumbProject.GDR
 {
     public class InventoryController : MonoBehaviour
     {
-        List<ItemGeneric> Inventory = new List<ItemGeneric>();
+        List<ItemGeneric> Inventory;
         #region API
 
-
+        public void Init() {
+            Inventory = new List<ItemGeneric>();
+        }
         /// <summary>
         /// Raccoglie l'oggetto nella cella selezionata
         /// </summary>
@@ -31,13 +33,14 @@ namespace DumbProject.GDR
         /// <param name="PickedItem"></param>
         public void OnDropPreviousItem(GDR_Controller _gdrController, ItemGeneric PickedItem)
         {
-            foreach (ItemGeneric item in Inventory)
+            for (int i = 0; i < Inventory.Count; i++)
             {
-                if (item.GetType() == PickedItem.GetType())
+                if (Inventory[i].GetType() == PickedItem.GetType())
                 {
                     Cell actualPosition = GameManager.I.MainGridCtrl.GetSpecificGridNode(_gdrController.Data.ai_Controller.transform.position).RelativeCell;
-                    item.transform.position = actualPosition.transform.position;
-                    item.transform.parent = actualPosition.transform;
+                    Inventory[i].transform.position = actualPosition.transform.position;
+                    Inventory[i].transform.parent = actualPosition.transform;
+                    Inventory.Remove(Inventory[i]);
                     break;
                 }
             }

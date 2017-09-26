@@ -14,35 +14,16 @@ namespace DumbProject.GDR
         public GDR_Data Data;
 
         public void Init(GDR_Data data)
-        {
+        { 
             data = Data;
             Data.ai_Controller = GetComponent<AI_Controller>();//Da capire se la logica è corretta.
-
         }
         private void Start()
         {
             Init(Data);
             Data.ActualLife = 3;
+            Data.iC.Init();
         }
-        #region Debug
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-
-                Data.ExperienceCounter++;
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-
-                if (Data.ExperienceCounter > 0)
-                {
-                    Data.ExperienceCounter--;
-                }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                CreateGDR(Data);
-            }
-        }
-        #endregion
 
         /// <summary>
         /// Create and Instantiate a new GDR Data

@@ -29,7 +29,8 @@ namespace DumbProject.Items
 
         #region API
 
-        public void GetAllItemsData() {
+        public void GetAllItemsData()
+        {
             AllDatas = Resources.LoadAll<GenericDroppableData>("Data/ItemsData").ToList();
 
             foreach (GenericDroppableData _data in AllDatas)
