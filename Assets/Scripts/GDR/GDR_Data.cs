@@ -4,6 +4,7 @@ using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Generic;
 using Framework.AI;
+using DumbProject.Items;
 
 namespace DumbProject.GDR
 {
@@ -18,8 +19,20 @@ namespace DumbProject.GDR
 
         List<float> ExpLevel = new List<float>();
 
-        public float Life;
-        public float ActualLife;
+        public float TotalLife;
+        private float actualLife;
+
+        public float ActualLife
+        {
+            get { return actualLife; }
+            set { actualLife = value;
+                if (ActualLife > TotalLife)
+                {
+                    ActualLife = TotalLife;
+                }
+            }
+        }
+
         public float Speed;
         public float Attack;
 
@@ -180,6 +193,7 @@ namespace DumbProject.GDR
 
     public enum ExperienceType
     {
+        None,
         Enemy,
         Obstacle,
         Room
@@ -187,6 +201,7 @@ namespace DumbProject.GDR
 
     public enum Obstacle
     {
+        None,
         BananaPeel,
         Kitties,
         ShirtPresss

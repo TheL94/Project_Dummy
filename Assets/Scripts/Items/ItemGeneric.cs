@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.GDR;
 using Framework.AI;
 
 namespace DumbProject.Items
@@ -24,6 +25,11 @@ namespace DumbProject.Items
         public virtual void Interact(AI_Controller _controller)
         {
             IsInteractable = false;
+            GDR_Controller gdr_controller = _controller.GetComponent<GDR_Controller>();
+            if (gdr_controller != null)
+            {
+                gdr_controller.OnInteract(this);
+            }
         }
 
         private void OnDrawGizmos()
@@ -33,4 +39,5 @@ namespace DumbProject.Items
                 Gizmos.DrawCube(transform.position + new Vector3(0, 2, 0), Vector3.one);
         }
     }
+
 }
