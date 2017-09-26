@@ -17,7 +17,7 @@ namespace DumbProject.UI
         public void Init(GenericDroppableData _droppableData, Slot _ownSlot)
         {
             DroppableData = _droppableData;
-            GetComponent<Image>().sprite = _droppableData.ItemInUI;
+
             mySlot = _ownSlot;
         }
 

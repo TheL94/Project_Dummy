@@ -8,12 +8,11 @@ namespace DumbProject.Items
     public class GenericDroppableData : ScriptableObject
     {
         public string Name;
-        public Sprite ItemInUI;
         public GameObject ItemPrefab;
         public float TimeToSpend;
         public float PercentageToSpawn;
-        public GenericType Type;
 
+        public GenericType Type;
         public ItemType SpecificItemType;
         public EnemyType SpecificEnemyType;
         public TrapType SpecificTrapType;

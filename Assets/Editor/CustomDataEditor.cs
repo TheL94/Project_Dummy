@@ -90,10 +90,6 @@ namespace DumbProject.Editors
             GUILayout.EndHorizontal();
 
             GUILayout.Space(15);
-            //The sprite to show in the Inventory
-            GUILayout.BeginHorizontal();
-            Data.ItemInUI = (Sprite)EditorGUILayout.ObjectField("Sprite for Invetory", Data.ItemInUI, typeof(Sprite), false);
-            GUILayout.EndHorizontal();
 
             // The prefab to instantiate
             GUILayout.BeginHorizontal();
