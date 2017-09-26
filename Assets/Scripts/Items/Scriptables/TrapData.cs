@@ -8,6 +8,7 @@ namespace DumbProject.Items
     public class TrapData : GenericDroppableData
     {
         public float Damage;
+        public float ActivationRadius;
         public float TimeToLeave;
     }
 }
