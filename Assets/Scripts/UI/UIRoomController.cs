@@ -16,18 +16,24 @@ namespace DumbProject.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
+                return;
             if (!eventData.dragging && ActualRoom != null)
                 ActualRoom.RoomMovment.RotateClockwise();
         }
 
         public void OnDrag(PointerEventData eventData)
         {
+            if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
+                return;
             if (eventData.dragging && ActualRoom != null)
                 ActualRoom.RoomMovment.DragActions(eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
+                return;
             if (eventData.dragging && ActualRoom != null)
             {
                 if (ActualRoom.RoomMovment.DropActions(eventData))
