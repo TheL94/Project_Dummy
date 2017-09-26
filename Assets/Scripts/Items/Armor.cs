@@ -12,6 +12,7 @@ namespace DumbProject.Items
         public override void Init(GenericDroppableData _values)
         {
             ArmoryValues = _values as ArmorData;
+            ArmoryValues.Type = GenericType.Item;
         }
     }
 }
