@@ -14,7 +14,7 @@ namespace DumbProject.Generic {
             //move.SmoothRewind();
 
             move.OnComplete(() => { GameManager.I.ChageFlowState(FlowState.Gameplay);
-                GameManager.I.InputHndl.enabled = false;
+                GameManager.I.InputHndl.enabled = true;
             });
         }
     }
