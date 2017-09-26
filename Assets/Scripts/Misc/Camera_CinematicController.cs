@@ -9,17 +9,18 @@ namespace DumbProject.Generic {
 
         public float Duration;
 
-        public void Execute(Vector3 _target)
+        public void Execute(Vector3 _start, Vector3 _target)
         {
-            Transform initialTransform = transform;
+            Vector3 initialPos = transform.position;
+            Vector3 defferedTarget = _target - (_start - transform.position);
 
-            transform.DOMove(new Vector3(_target.x, initialTransform.position.y, _target.z), Duration / 2).OnComplete(() =>
+            Tween movement = transform.DOMove(defferedTarget, Duration/2);
+            movement.OnComplete(() =>
             {
-                transform.DOMove(initialTransform.position, Duration / 2).OnComplete(() =>
-                {
-                    GameManager.I.ChageFlowState(FlowState.Gameplay);
-                    GameManager.I.InputHndl.enabled = true;
-                });
+                transform.DOMove(initialPos, Duration/2);
+                GameManager.I.ChageFlowState(FlowState.Gameplay);
+                GameManager.I.InputHndl.enabled = true;
+                movement.Kill();
             });
         }
     }
