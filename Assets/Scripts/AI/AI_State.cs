@@ -10,7 +10,6 @@ namespace Framework.AI
         public List<ActionStructureForState> Actions = new List<ActionStructureForState>();
 
         protected bool isToSetUp = true;
-        protected bool isNoLoopActionsRunt = false;
 
         /// <summary>
         /// Initialize the state with starting settings
@@ -22,7 +21,6 @@ namespace Framework.AI
                 sAction.Init(isToSetUp);
             }
             isToSetUp = false;
-            isNoLoopActionsRunt = false; //Reset the NoLoopActions runs
         }
 
         /// <summary>
@@ -41,30 +39,9 @@ namespace Framework.AI
         /// <param name="_controller"></param>
         public void Run(AI_Controller _controller)
         {
-            if (!isNoLoopActionsRunt)
-            {
-                ExecuteNoLoopActions(_controller);
-                isNoLoopActionsRunt = true;
-            }
-
-            ExecuteLoopActions(_controller);
-        }
-
-        void ExecuteNoLoopActions(AI_Controller _controller)
-        {
             foreach (ActionStructureForState sAction in Actions)
             {
-                if (!sAction.LoopAction)
-                    sAction.Action.DoAct(_controller);
-            }
-        }
-
-        void ExecuteLoopActions(AI_Controller _controller)
-        {
-            foreach (ActionStructureForState sAction in Actions)
-            {
-                if(sAction.LoopAction)
-                    sAction.Action.DoAct(_controller);
+                sAction.Run(_controller);
             }
         }
     }
@@ -75,7 +52,10 @@ namespace Framework.AI
     [System.Serializable]
     public class ActionStructureForState
     {
-        public bool LoopAction;
+        public float Delay;
+        private float timer;
+        public bool Loop;
+        private bool runtOnce;
         public AI_Action Action;
         public AI_State OnCompleteTransition;
 
@@ -93,6 +73,15 @@ namespace Framework.AI
                 onEndHandler = new AI_Action.OnLifeFlow(HandleOnEnd);
             }
 
+            if(Delay > 0)
+            {
+                if (!Loop)
+                    runtOnce = false;
+                
+
+                timer = Delay;
+            }
+
             if (onEndHandler != null)
                 Action.OnEnd += onEndHandler;
         }
@@ -101,6 +90,20 @@ namespace Framework.AI
         {
             if (onEndHandler != null)
                 Action.OnEnd -= onEndHandler;
+        }
+
+        public void Run(AI_Controller _controller)
+        {
+            if (timer <= 0)
+            {
+                if(Loop || (runtOnce == false))
+                {
+                    Action.DoAct(_controller);
+                    runtOnce = true;
+                }
+            }
+            else
+                timer -= Time.deltaTime;
         }
 
         void HandleOnEnd(AI_Controller _controller)

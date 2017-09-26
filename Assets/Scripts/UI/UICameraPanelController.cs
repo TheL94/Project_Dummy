@@ -48,8 +48,6 @@ namespace DumbProject.UI
             Vector2 cameraPanelPercentage = new Vector2(AnchorMax.x - AnchorMin.x, AnchorMax.y - AnchorMin.y);
             Vector2 cameraPanelResolution = new Vector2(_deviceResolution.x * cameraPanelPercentage.x, _deviceResolution.y * cameraPanelPercentage.y);
 
-            Debug.Log(_position + " / " + cameraPanelResolution);
-
             if (_position.x < cameraPanelResolution.x && _position.y < cameraPanelResolution.y)
                 return true;
             else
