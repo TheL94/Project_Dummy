@@ -10,8 +10,10 @@ namespace DumbProject.GDR
 {
     public class InventoryController : MonoBehaviour
     {
-        List<ItemGeneric> Inventory;
+        List<ItemGeneric> Inventory = new List<ItemGeneric>();
         #region API
+
+
         /// <summary>
         /// Raccoglie l'oggetto nella cella selezionata
         /// </summary>
@@ -39,7 +41,7 @@ namespace DumbProject.GDR
                     break;
                 }
             }
-        } 
+        }
         #endregion
     }
 }
