@@ -31,13 +31,5 @@ namespace DumbProject.Items
                 gdr_controller.OnInteract(this);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.grey;
-            if (!IsInteractable)
-                Gizmos.DrawCube(transform.position + new Vector3(0, 2, 0), Vector3.one);
-        }
     }
-
 }
