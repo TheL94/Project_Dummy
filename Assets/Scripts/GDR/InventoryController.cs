@@ -24,6 +24,7 @@ namespace DumbProject.GDR
         public void OnPickUpItem(GDR_Controller _gdrController, ItemGeneric itemToPick)
         {
             OnDropPreviousItem(_gdrController, itemToPick);
+            HeldItem(_gdrController, itemToPick);
             Inventory.Add(itemToPick);
         }
         /// <summary>
@@ -44,6 +45,14 @@ namespace DumbProject.GDR
                     break;
                 }
             }
+        }
+        /// <summary>
+        /// Impugna l'oggetto che raccoglie 
+        /// </summary>
+        /// <param name="_gdrController"></param>
+        /// <param name="itemToPick"></param>
+        void HeldItem(GDR_Controller _gdrController,ItemGeneric itemToPick) {
+            itemToPick.transform.parent = _gdrController.transform;
         }
         #endregion
     }
