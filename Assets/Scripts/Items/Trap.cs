@@ -31,7 +31,11 @@ namespace DumbProject.Items
         public void Action()
         {
             GDR_Controller controller = GameManager.I.Dumby.GetComponent<GDR_Controller>();
-            controller.Data.GetDamage(Data.Damage);
+            if (controller.Data.GetDamage(Data.Damage))
+            {
+                controller.Data.GetExperience(ExperienceType.Trap, Data);
+                //TODO : Da riposizionare(forse)
+            }
         }
     }
 }

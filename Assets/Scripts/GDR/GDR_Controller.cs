@@ -16,7 +16,7 @@ namespace DumbProject.GDR
         public void Init(GDR_Data data)
         { 
             data = Data;
-            Data.ai_Controller = GetComponent<AI_Controller>();//Da capire se la logica è corretta.
+           // Data.ai_Controller = GetComponent<AI_Controller>();
         }
 
         private void Start()

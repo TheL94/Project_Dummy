@@ -15,7 +15,7 @@ namespace DumbProject.GDR
         public float ExperienceForNextLevel;
         public int PlayerLevel;
         public InventoryController iC;
-        public AI_Controller ai_Controller;
+       // public AI_Controller ai_Controller;
 
         List<float> ExpLevel = new List<float>();
 
@@ -52,7 +52,6 @@ namespace DumbProject.GDR
         GDR_Controller target;
 
         public ExperienceType experienceType;
-        public Obstacle obstacleType;
 
         private float experienceCounter;
         public float ExperienceCounter
@@ -67,7 +66,7 @@ namespace DumbProject.GDR
             }
         }
 
-        public void GetDamage(float _damage)
+        public bool GetDamage(float _damage)
         {
             _damage -= Armor;
             if(_damage > 0)
@@ -78,8 +77,10 @@ namespace DumbProject.GDR
                 {
                     Life = 0;
                     Debug.LogWarning("Dumby is dead");
+                    return false;
                 }
             }
+            return true;
         }
 
         public void GetCure(float _cure)
@@ -168,7 +169,7 @@ namespace DumbProject.GDR
         /// <summary>
         /// Get the experience from the Enemy
         /// </summary>
-        public void GetExperience(ExperienceType _experienceType)
+        public void GetExperience(ExperienceType _experienceType, GenericDroppableData _data = null)
         {
             Dumby dumby = FindObjectOfType<Dumby>();
             switch (_experienceType)
@@ -180,63 +181,31 @@ namespace DumbProject.GDR
                         target = null;
                     }
                     break;
-                case ExperienceType.Obstacle:
-                    GetObstacleExperience(obstacleType);
+                case ExperienceType.None:
+                    break;
+                case ExperienceType.Item:
+                    break;
+                case ExperienceType.Trap:               
+                case ExperienceType.TimeWaster:
+                    ExperienceCounter += _data.ExperienceToGive;
                     break;
                 case ExperienceType.Room:
-                    GetExperienceFromNewRoom();
-                    break;
-                default:
+                    ExperienceCounter++;
                     break;
             }
         }
+        
 
-        /// <summary>
-        /// Get the Experience when the room status id Explored.
-        /// </summary>
-        /// <param name="_room"></param>
-        void GetExperienceFromNewRoom()
-        {
-            ExperienceCounter++;
-        }
-
-        /// <summary>
-        /// Get the experience from the Obstacles
-        /// </summary>
-        /// <param name="_obstacle"></param>
-        void GetObstacleExperience(Obstacle _obstacle)
-        {
-            switch (_obstacle)
-            {
-                case Obstacle.BananaPeel:
-                    experienceCounter += 0.5f;
-                    break;
-                case Obstacle.Kitties:
-                    experienceCounter += 0.75f;
-                    break;
-                case Obstacle.ShirtPresss:
-                    experienceCounter += 1;
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     public enum ExperienceType
     {
         None,
         Enemy,
-        Obstacle,
-        Room
-    }
-
-    public enum Obstacle
-    {
-        None,
-        BananaPeel,
-        Kitties,
-        ShirtPresss
+        Trap,
+        Room,
+        Item,
+        TimeWaster
     }
 }
 
