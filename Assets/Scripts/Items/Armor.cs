@@ -8,11 +8,11 @@ namespace DumbProject.Items
 {
     public class Armor : ItemGeneric
     {
-        public ArmorData ArmoryValues;
+        new public ArmorData Data;
         public override void Init(GenericDroppableData _values)
         {
-            ArmoryValues = _values as ArmorData;
-            ArmoryValues.Type = GenericType.Item;
+            Data = _values as ArmorData;
+            Data.Type = GenericType.Item;
         }
     }
 }

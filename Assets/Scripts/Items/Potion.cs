@@ -9,11 +9,11 @@ namespace DumbProject.Items
 {
     public class Potion : ItemGeneric
     {
-        public PotionData PotionValues;
+        new public PotionData Data;
         public override void Init(GenericDroppableData _values)
         {
-            PotionValues = _values as PotionData;
-            PotionValues.Type = GenericType.Item;
+            Data = _values as PotionData;
+            Data.Type = GenericType.Item;
         }
 
         public override void Interact(AI_Controller _controller)

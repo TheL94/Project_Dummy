@@ -5,35 +5,33 @@ using DumbProject.Rooms;
 using DumbProject.Generic;
 using DumbProject.GDR;
 
-
 namespace DumbProject.Items
 {
     public class Trap : MonoBehaviour
     {
-        public TrapData TrapValues;
-        public Room RelativeRoom; // o forse Cell ??
+        public TrapData Data;
+        public Cell RelativeCell;
         public bool IsActive { get; private set; }
 
-        public void Init(GenericDroppableData _values, Room _relativeRoom)
+        public void Init(GenericDroppableData _values, Cell _relativeCell)
         {
-            TrapValues = _values as TrapData;
-            TrapValues.Type = GenericType.Trap;
-            RelativeRoom = _relativeRoom;
+            Data = _values as TrapData;
+            RelativeCell = _relativeCell;
         }
 
         private void Update()
         {
-            if (RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
+            if (RelativeCell.RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
                 return;
 
-            if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= TrapValues.ActivationRadius)
+            if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= Data.ActivationRadius)
                 Action();
         }
 
         public void Action()
         {
             GDR_Controller controller = GameManager.I.Dumby.GetComponent<GDR_Controller>();
-            controller.Data.GetDamage(TrapValues.Damage);
+            controller.Data.GetDamage(Data.Damage);
         }
     }
 }

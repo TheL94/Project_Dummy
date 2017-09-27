@@ -53,7 +53,7 @@ namespace DumbProject.GDR
             }
             if (_itemGeneric.GetType() == typeof(Potion))
             {
-                Data.GetCure((_itemGeneric as Potion).PotionValues.HealtRestore);
+                Data.GetCure((_itemGeneric as Potion).Data.HealtRestore);
                 Debug.Log(Data.Life);
             }
             else
@@ -62,7 +62,7 @@ namespace DumbProject.GDR
                 Debug.Log(_itemGeneric);
                 if(_itemGeneric.GetType() == typeof(Armor))
                 {
-                    Data.MaxArmor = (_itemGeneric as Armor).ArmoryValues.Protection;
+                    Data.MaxArmor = (_itemGeneric as Armor).Data.Protection;
                 }
             }
         }

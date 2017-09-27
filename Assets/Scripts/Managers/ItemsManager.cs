@@ -113,16 +113,7 @@ namespace DumbProject.Items
 
             if (_data.GetType() == typeof(EnemyData))
             {
-                switch ((_data as GenericDroppableData).SpecificEnemyType)
-                {
-                    case EnemyType.None:
-                        break;
-                    case EnemyType.Dragon:
-                        // AddComponente<Drago>().Init((Data as GenericData).DragonDataValues)
-                        break;
-                    case EnemyType.Goblin:
-                        break;
-                }
+
             }
             else if (_data.GetType() == typeof(WeaponData))
             {
@@ -145,15 +136,7 @@ namespace DumbProject.Items
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
-                switch ((_data as GenericDroppableData).SpecificTrapType)
-                {
-                    case TrapType.None:
-                        break;
-                    case TrapType.Type1:
-                        break;
-                    case TrapType.Type2:
-                        break;
-                }
+
             }
 
             Instantiate(_data.ItemPrefab, item.Transf.position, item.Transf.rotation, item.Transf);

@@ -13,9 +13,9 @@ namespace DumbProject.Items
         public float PercentageToSpawn;
 
         public GenericType Type;
-        public ItemType SpecificItemType;
-        public EnemyType SpecificEnemyType;
-        public TrapType SpecificTrapType;
+        //public ItemType SpecificItemType;
+        //public EnemyType SpecificEnemyType;
+        //public TrapType SpecificTrapType;
     }
 
     public enum GenericType
@@ -25,27 +25,27 @@ namespace DumbProject.Items
         Trap = 2,
         TimeWaster = 3
     }
-    
-    public enum ItemType
-    {
-        None = 0,
-        Weapon = 1,
-        Potion = 2,
-        Armor = 3
-    }
 
-    public enum EnemyType
-    {
-        None = 0,
-        Dragon = 1,
-        Goblin = 2
-    }
+    //public enum ItemType
+    //{
+    //    None = 0,
+    //    Weapon = 1,
+    //    Potion = 2,
+    //    Armor = 3
+    //}
 
-    public enum TrapType
-    {
-        None = 0,
-        Type1 = 1,
-        Type2 = 2
-    }
-    
+    //public enum EnemyType
+    //{
+    //    None = 0,
+    //    Dragon = 1,
+    //    Goblin = 2
+    //}
+
+    //public enum TrapType
+    //{
+    //    None = 0,
+    //    Type1 = 1,
+    //    Type2 = 2
+    //}
+
 }
