@@ -41,7 +41,7 @@ namespace DumbProject.GDR
             {
                 if (Inventory[i].GetType() == PickedItem.GetType())
                 {
-                    Cell actualPosition = GameManager.I.MainGridCtrl.GetSpecificGridNode(_gdrController.Data.ai_Controller.transform.position).RelativeCell;
+                    Cell actualPosition = GameManager.I.MainGridCtrl.GetSpecificGridNode(_gdrController.transform.position).RelativeCell;
                     Inventory[i].transform.position = actualPosition.transform.position;
                     Inventory[i].transform.parent = actualPosition.transform;
                     Inventory.Remove(Inventory[i]);

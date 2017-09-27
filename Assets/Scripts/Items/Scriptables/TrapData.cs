@@ -9,6 +9,5 @@ namespace DumbProject.Items
     {
         public float Damage;
         public float ActivationRadius;
-        public float TimeToLeave;
     }
 }

@@ -145,6 +145,11 @@ namespace DumbProject.Generic
         public void UpdateRoomStatus(Room _room, ExplorationStatus _newStatus)
         {
             _room.StatusOfExploration = _newStatus;
+            if (_newStatus == ExplorationStatus.Explored)
+            {
+                GameManager.I.Dumby.GetComponent<GDR.GDR_Controller>().Data.GetExperience(GDR.ExperienceType.Room);
+                //TODO : Da rivedere la chiamata in una posizione migliore.
+            }
             _room.LinkCells();
             //Eventually set the current inExplorationRoom
             if (_room.StatusOfExploration == ExplorationStatus.InExploration)
