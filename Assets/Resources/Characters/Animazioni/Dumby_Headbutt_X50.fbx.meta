@@ -221,7 +221,7 @@ ModelImporter:
     4300002: dumby:dumby_armor
     4300004: dumby:dumby_head
     4300006: dumby:dumby_legs
-    7400000: Take 001
+    7400000: Dumby_Headbutt
     9500000: //RootNode
     13700000: dumby:dumby_armor
     13700002: dumby:dumby_arms
@@ -249,7 +249,247 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Dumby_Headbutt
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: dumby:dumby_geo_GRP
+        weight: 1
+      - path: dumby:dumby_geo_GRP/dumby:dumby_armor
+        weight: 1
+      - path: dumby:dumby_geo_GRP/dumby:dumby_arms
+        weight: 1
+      - path: dumby:dumby_geo_GRP/dumby:dumby_head
+        weight: 1
+      - path: dumby:dumby_geo_GRP/dumby:dumby_legs
+        weight: 1
+      - path: dumby:GLOBAL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR/dumby:L_biceb_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR/dumby:L_biceb_CTRL/dumby:L_forearm_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR/dumby:L_biceb_CTRL/dumby:L_forearm_CTRL_GPR/dumby:L_forearm_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR/dumby:L_biceb_CTRL/dumby:L_forearm_CTRL_GPR/dumby:L_forearm_CTRL/dumby:L_wristle_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:L_shoulder_CTRL_GPR/dumby:L_shoulder_CTRL/dumby:L_biceb_CTRL_GPR/dumby:L_biceb_CTRL/dumby:L_forearm_CTRL_GPR/dumby:L_forearm_CTRL/dumby:L_wristle_CTRL_GPR/dumby:L_wristle_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR/dumby:neck_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR/dumby:neck_CTRL/dumby:head_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR/dumby:neck_CTRL/dumby:head_CTRL_GPR/dumby:head_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR/dumby:neck_CTRL/dumby:head_CTRL_GPR/dumby:head_CTRL/dumby:duck_jnt_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:neck_CTRL_GPR/dumby:neck_CTRL/dumby:head_CTRL_GPR/dumby:head_CTRL/dumby:duck_jnt_CTRL_GPR/dumby:duck_jnt_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR/dumby:R_biceb_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR/dumby:R_biceb_CTRL/dumby:R_forearm_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR/dumby:R_biceb_CTRL/dumby:R_forearm_CTRL_GPR/dumby:R_forearm_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR/dumby:R_biceb_CTRL/dumby:R_forearm_CTRL_GPR/dumby:R_forearm_CTRL/dumby:R_wristle_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:hips_CTRL_GPR/dumby:hips_CTRL/dumby:stomach_CTRL_GPR/dumby:stomach_CTRL/dumby:torso_CTRL_GPR/dumby:torso_CTRL/dumby:R_shoulder_CTRL_GPR/dumby:R_shoulder_CTRL/dumby:R_biceb_CTRL_GPR/dumby:R_biceb_CTRL/dumby:R_forearm_CTRL_GPR/dumby:R_forearm_CTRL/dumby:R_wristle_CTRL_GPR/dumby:R_wristle_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_ankle_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_ankle_CTRL_GPR/dumby:L_ankle_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_ankle_CTRL_GPR/dumby:L_ankle_CTRL/dumby:locator1
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_ankle_CTRL_GPR/dumby:L_ankle_CTRL/dumby:locator3
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_leg_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:L_leg_CTRL_GPR/dumby:L_leg_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_ankle_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_ankle_CTRL_GPR/dumby:R_ankle_CTRL
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_ankle_CTRL_GPR/dumby:R_ankle_CTRL/dumby:locator2
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_ankle_CTRL_GPR/dumby:R_ankle_CTRL/dumby:locator4
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_leg_CTRL_GPR
+        weight: 1
+      - path: dumby:GLOBAL_GPR/dumby:GLOBAL/dumby:R_leg_CTRL_GPR/dumby:R_leg_CTRL
+        weight: 1
+      - path: dumby:jnt_GRP
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:duck_jnt
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:L_top_leg
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:L_top_leg/dumby:L_leg
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:L_top_leg/dumby:L_leg/dumby:L_ankle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:L_top_leg/dumby:L_leg/dumby:L_ankle/dumby:L_foot
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:L_top_leg/dumby:L_leg/dumby:L_ankle/dumby:L_foot/dumby:L_foot_finger
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:R_top_leg
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:R_top_leg/dumby:R_leg
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:R_top_leg/dumby:R_leg/dumby:R_ankle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:R_top_leg/dumby:R_leg/dumby:R_ankle/dumby:R_foot
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:R_top_leg/dumby:R_leg/dumby:R_ankle/dumby:R_foot/dumby:R_foot_finger
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_index
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_index/dumby:L_index1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_index/dumby:L_index1/dumby:L_index2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_middle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_middle/dumby:L_middle1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_middle/dumby:L_middle1/dumby:L_middle2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_pinky
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_pinky/dumby:L_pinky1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_pinky/dumby:L_pinky1/dumby:L_pinky2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_ring
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_ring/dumby:L_ring1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_ring/dumby:L_ring1/dumby:L_ring2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_thumb
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_thumb/dumby:L_thumb1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:L_shoulder/dumby:L_biceb/dumby:L_forearm/dumby:L_wristle/dumby:L_hand/dumby:L_thumb/dumby:L_thumb1/dumby:L_thumb2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:neck
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:neck/dumby:head
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:neck/dumby:head/dumby:head_null
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_index
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_index/dumby:R_index1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_index/dumby:R_index1/dumby:R_index2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_middle
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_middle/dumby:R_middle1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_middle/dumby:R_middle1/dumby:R_middle2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_pinky
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_pinky/dumby:R_pinky1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_pinky/dumby:R_pinky1/dumby:R_pinky2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_ring
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_ring/dumby:R_ring1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_ring/dumby:R_ring1/dumby:R_ring2
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_thumb
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_thumb/dumby:R_thumb1
+        weight: 1
+      - path: dumby:jnt_GRP/dumby:hips/dumby:stomach/dumby:torso/dumby:R_shoulder/dumby:R_biceb/dumby:R_forearm/dumby:R_wristle/dumby:R_hand/dumby:R_thumb/dumby:R_thumb1/dumby:R_thumb2
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

@@ -24,7 +24,10 @@ namespace Framework.AI
         public void Init(AI_State currentState)
         {
             CurrentState = currentState;
+            OnInit();
         }
+
+        protected virtual void OnInit() { }
 
         private void Update()
         {

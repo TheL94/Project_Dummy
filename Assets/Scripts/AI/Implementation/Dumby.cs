@@ -20,6 +20,37 @@ namespace DumbProject.Generic
             protected set { _currentRoom = value; }
         }
 
+        protected override void OnInit()
+        {
+            animator = GetComponentInChildren<Animator>();
+
+            AnimationState uno = AnimationState.Idle1;
+            AnimationState due = AnimationState.Idle2;
+            AnimationState tre = AnimationState.Headbutt;
+            Debug.Log((int)uno + (int)due + (int)tre);
+        }
+
+        #region Animation
+        Animator animator;
+        private AnimationState _animState;
+        public AnimationState AnimState
+        {
+            get { return _animState; }
+            set
+            {
+                _animState = value;
+                if (animator != null)
+                    animator.SetInteger("AnimatorState", (int)_animState);
+            }
+        }
+        public enum AnimationState
+        {
+            Idle1 = 1,
+            Idle2,
+            Headbutt
+        }
+        #endregion
+
         #region IPathfinder
         public INetworkable Objective { get; set; }
         private INetworkable _currentNetworkable;
