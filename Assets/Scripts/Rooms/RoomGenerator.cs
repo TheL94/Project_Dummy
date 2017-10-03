@@ -157,10 +157,10 @@ namespace DumbProject.Rooms
         void SetupSpawnsAssociations()
         {
             for (int i = 0; i < GameManager.I.RoomPreviewCtrl.GridCtrls.Count || 
-                i < GameManager.I.UIMng.GamePlayCtrl.LateralGUI.RoomPreviewController.UISpawns.Count; i++)
+                i < GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.UISpawns.Count; i++)
             {
                 SpawnsAssociations.Add(new SpawnsAssociation(GameManager.I.RoomPreviewCtrl.GridCtrls[i],
-                    GameManager.I.UIMng.GamePlayCtrl.LateralGUI.RoomPreviewController.UISpawns[i]));
+                    GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.UISpawns[i]));
             }
         }
 

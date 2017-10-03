@@ -20,6 +20,11 @@ namespace DumbProject.Rooms
             RelativeCell = _relativeCell;
         }
 
+        private void OnBecameInvisible()
+        {
+            DisableAllGraphics();
+        }
+
         #region Graphic Element
         /// <summary>
         /// Funzione che mette l'oggetto di grafica nella posizione giusta e lo mette figlio di CellElement
