@@ -5,7 +5,7 @@ using DumbProject.Rooms;
 
 namespace DumbProject.Generic
 {
-    public class DataManager : MonoBehaviour
+    public class RoomDataManager : MonoBehaviour
     {
         public RoomData MainRoomData;
         public RoomData ObjectiveRoomData;

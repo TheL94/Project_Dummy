@@ -10,7 +10,7 @@ namespace DumbProject.Items
     public class Potion : ItemGeneric
     {
         new public PotionData Data;
-        public override void Init(GenericDroppableData _values)
+        public override void Init(ItemGenericData _values)
         {
             Data = _values as PotionData;
             Data.Type = GenericType.Item;

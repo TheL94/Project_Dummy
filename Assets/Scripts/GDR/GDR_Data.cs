@@ -169,7 +169,7 @@ namespace DumbProject.GDR
         /// <summary>
         /// Get the experience from the Enemy
         /// </summary>
-        public void GetExperience(ExperienceType _experienceType, GenericDroppableData _data = null)
+        public void GetExperience(ExperienceType _experienceType, GDR.GDR_Data_Experience _data = null)
         {
             Dumby dumby = FindObjectOfType<Dumby>();
             switch (_experienceType)

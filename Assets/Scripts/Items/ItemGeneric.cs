@@ -9,8 +9,8 @@ namespace DumbProject.Items
 {
     public abstract class ItemGeneric : MonoBehaviour, IDroppable
     {
-        GenericDroppableData _data;
-        public GenericDroppableData Data
+        ItemGenericData _data;
+        public ItemGenericData Data
         {
             get { return _data; } 
             set { _data = value; }
@@ -21,7 +21,7 @@ namespace DumbProject.Items
 
         public Transform Transf { get { return transform; } }
 
-        public abstract void Init(GenericDroppableData _data);
+        public abstract void Init(ItemGenericData _data);
         public virtual void Interact(AI_Controller _controller)
         {
             IsInteractable = false;

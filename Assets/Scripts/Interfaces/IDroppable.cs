@@ -7,7 +7,7 @@ namespace DumbProject.Items
 {
     public interface IDroppable : IInteractable
     {
-        GenericDroppableData Data { get; set; }
-        void Init(GenericDroppableData _data);
+        ItemGenericData Data { get; set; }
+        void Init(ItemGenericData _data);
     }
 }
