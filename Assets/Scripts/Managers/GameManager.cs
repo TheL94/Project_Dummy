@@ -188,7 +188,6 @@ namespace DumbProject.Generic
             RoomGenerator.Clean();
             MainGridCtrl.DestroyGrid();
             RoomPreviewCtrl.DestroyUIGrid();
-            UIMng.GamePlayCtrl.LateralGUI.InventoryController.CleanInventory();
             //------------------
             Destroy(Dumby.gameObject);
             //------------------

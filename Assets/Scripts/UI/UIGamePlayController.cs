@@ -10,7 +10,7 @@ namespace DumbProject.UI
     {
         UIManager uiManager;
 
-        public LateralGUIContainer LateralGUI;
+        public RoomPanelContainer RoomPanelContainer;
         public PausePanelController PausePanel;
         public Button PauseButton;
 
@@ -19,7 +19,7 @@ namespace DumbProject.UI
         {
             uiManager = _uiManager;
 
-            LateralGUI.Init(this);
+            RoomPanelContainer.Setup();
             PausePanel.Init(this);
             //InitPauseButton();
         }
@@ -54,7 +54,7 @@ namespace DumbProject.UI
         /// </summary>
         public void ActivateLateralGUI(bool _status)
         {
-            LateralGUI.gameObject.SetActive(_status);
+            RoomPanelContainer.gameObject.SetActive(_status);
         }
 
         /// <summary>
