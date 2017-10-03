@@ -31,23 +31,23 @@ namespace DumbProject.UI
             ActivatePauseButton(false);
         }
 
-        void InitPauseButton()
-        {
-            float xMin = -3f;
-            float yMin = 0.9f;
+        //void InitPauseButton()
+        //{
+        //    float xMin = -3f;
+        //    float yMin = 0.9f;
 
-            float xMax;
-            float yMax = 1f;
+        //    float xMax;
+        //    float yMax = 1f;
 
-            if (uiManager.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-                 xMax = (xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f));
-            else
-                 xMax = 1 / ((xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f)));
+        //    if (uiManager.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+        //         xMax = (xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f));
+        //    else
+        //         xMax = 1 / ((xMin) + (yMax - yMin) * (uiManager.DeviceReferenceResolution.y / (uiManager.DeviceReferenceResolution.x * 0.25f)));
 
-            Vector2 anchorMin = new Vector2(xMin, yMin);
-            Vector2 anchorMax = new Vector2(xMax, yMax);
-            uiManager.SetRectTransformParametersByValues(PauseButton.transform as RectTransform, anchorMin, anchorMax, Vector2.zero, Vector2.zero);
-        }
+        //    Vector2 anchorMin = new Vector2(xMin, yMin);
+        //    Vector2 anchorMax = new Vector2(xMax, yMax);
+        //    FlexibleUIManager.SetRectTransformParametersByValues(PauseButton.transform as RectTransform, anchorMin, anchorMax, Vector2.zero, Vector2.zero);
+        //}
 
         /// <summary>
         /// Attiva il pannello della GUI laterale
