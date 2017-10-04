@@ -13,9 +13,9 @@ namespace DumbProject.Items
         public Cell RelativeCell;
         public bool IsActive { get; private set; }
 
-        public void Init(GenericDroppableData _values, Cell _relativeCell)
+        public void Init(TrapData _values, Cell _relativeCell)
         {
-            Data = _values as TrapData;
+            Data = _values;
             RelativeCell = _relativeCell;
         }
 

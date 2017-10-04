@@ -22,7 +22,7 @@ namespace DumbProject.Generic
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
-        public ItemsManager ItemManagerPrefab;
+        public RoomFillerManager ItemManagerPrefab;
         public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
@@ -49,11 +49,13 @@ namespace DumbProject.Generic
         [HideInInspector]
         public DungeonManager DungeonMng;
         [HideInInspector]
-        public ItemsManager ItemManager;
+        public RoomFillerManager RoomFillerMng;
         [HideInInspector]
         public PoolManager PoolMng;
         [HideInInspector]
-        public DataManager DataMng;
+        public RoomDataManager RoomDataMng;
+        [HideInInspector]
+        public FillerDataManger FillerDataMng;
         [HideInInspector]
         public InputHandler InputHndl;
 
@@ -103,11 +105,14 @@ namespace DumbProject.Generic
             InputHndl = GetComponent<InputHandler>();
             InputHndl.Init(CameraHndl);
 
-            DataMng = GetComponent<DataManager>();
-            DataMng.InitData();
+            RoomDataMng = GetComponent<RoomDataManager>();
+            RoomDataMng.InitData();
+
+            FillerDataMng = GetComponent<FillerDataManger>();
+            FillerDataMng.InitData();
 
             PoolMng = Instantiate(PoolManagerPrefab);
-            PoolMng.Init(DataMng.RoomGraphicComponentDatasInst);
+            PoolMng.Init(RoomDataMng.RoomGraphicComponentDatasInst);
             PoolMng.Setup();
 
             UIMng = Instantiate(UIManagerPrefab);
@@ -118,12 +123,12 @@ namespace DumbProject.Generic
             RoomPreviewCtrl = Instantiate(RoomPreviewControllerPrefab);
 
             RoomGenerator = Instantiate(RoomGenertorPrefab);
-            RoomGenerator.Init(DataMng.MainRoomDataInst, DataMng.ObjectiveRoomDataInst, DataMng.RoomDataInst);
+            RoomGenerator.Init(RoomDataMng.MainRoomDataInst, RoomDataMng.ObjectiveRoomDataInst, RoomDataMng.RoomDataInst);
 
             DungeonMng = Instantiate(DungeonManagerPrefab);
 
-            ItemManager = Instantiate(ItemManagerPrefab);
-            ItemManager.Init();
+            RoomFillerMng = Instantiate(ItemManagerPrefab);
+            RoomFillerMng.Init(FillerDataMng.Istances_itemsData, FillerDataMng.Istances_gdr_data);
 
             ChageFlowState(FlowState.Menu);
         }

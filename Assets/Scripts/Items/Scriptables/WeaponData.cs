@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Items/Weapon Data", order = 1)]
-    public class WeaponData : GenericDroppableData
+    public class WeaponData : ItemGenericData
     {
         public float Damage;
     }

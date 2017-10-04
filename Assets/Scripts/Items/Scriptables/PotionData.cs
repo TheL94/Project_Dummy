@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DumbProject.Items
 {
     [CreateAssetMenu(fileName = "Potion", menuName = "Items/Potion Data", order = 0)]
-    public class PotionData : GenericDroppableData
+    public class PotionData : ItemGenericData
     {
         public float HealtRestore;
     }
