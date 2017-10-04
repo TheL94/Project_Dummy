@@ -31,9 +31,12 @@ namespace DumbProject.Items
         public void InstantiateItemInRoom(Room _room)
         {
             ItemGenericData genericaDroppableData = ChooseItem();
-            IDroppable droppable = CreateIDroppable(genericaDroppableData);
-            droppable.Data = genericaDroppableData;
-            _room.AddInteractable(droppable);
+            if (genericaDroppableData != null)
+            {
+                IDroppable droppable = CreateIDroppable(genericaDroppableData);
+                droppable.Data = genericaDroppableData;
+                _room.AddInteractable(droppable); 
+            }
         }
 
         /// <summary>

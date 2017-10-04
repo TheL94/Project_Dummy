@@ -24,8 +24,8 @@ namespace DumbProject.Generic
         {
             animator = GetComponentInChildren<Animator>();
 
-            AnimationState uno = AnimationState.Idle1;
-            AnimationState due = AnimationState.Idle2;
+            AnimationState uno = AnimationState.Idle;
+            AnimationState due = AnimationState.Run;
             AnimationState tre = AnimationState.Headbutt;
             Debug.Log((int)uno + (int)due + (int)tre);
         }
@@ -40,13 +40,24 @@ namespace DumbProject.Generic
             {
                 _animState = value;
                 if (animator != null)
-                    animator.SetInteger("AnimatorState", (int)_animState);
+                    switch (_animState)
+                    {
+                        case AnimationState.Idle:
+                            animator.SetTrigger("Idle");
+                            break;
+                        case AnimationState.Run:
+                            animator.SetTrigger("Run");
+                            break;
+                        case AnimationState.Headbutt:
+                            animator.SetTrigger("Headbutt");
+                            break;
+                    }
             }
         }
         public enum AnimationState
         {
-            Idle1 = 1,
-            Idle2,
+            Idle,
+            Run,
             Headbutt
         }
         #endregion
