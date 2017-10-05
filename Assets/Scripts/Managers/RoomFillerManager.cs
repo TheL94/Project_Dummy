@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Rooms;
 using DumbProject.GDR;
+using DumbProject.Rooms;
 
 namespace DumbProject.Items
 {
@@ -12,6 +12,7 @@ namespace DumbProject.Items
         #region Variables
         [HideInInspector] public List<ItemGenericData> Istances_itemsData; //lista di Weapons,Potions e Armors.
         [HideInInspector] public List<TrapData> Istances_gdr_data;// lista di Traps e TimeWaster.
+        [HideInInspector] public List<GDR_Controller> Istances_Enemy;// lista di enemy.
         #endregion
 
         #region Setup
@@ -23,12 +24,11 @@ namespace DumbProject.Items
         #endregion
 
         #region API
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="_room"></param>
-        public void InstantiateItemInRoom(Room _room)
+        public void InstantiateObjectsInRoom(Room _room)
         {
             ItemGenericData genericaDroppableData = ChooseItem();
             if (genericaDroppableData != null)
@@ -36,6 +36,11 @@ namespace DumbProject.Items
                 IDroppable droppable = CreateIDroppable(genericaDroppableData);
                 droppable.Data = genericaDroppableData;
                 _room.AddInteractable(droppable); 
+            }
+            TrapData trapData = ChooseTraps();
+            if (trapData != null)
+            {
+                CreateTrap(trapData, _room.CellsInRoom[Random.Range(0, _room.CellsInRoom.Count)]);
             }
         }
 
@@ -57,7 +62,26 @@ namespace DumbProject.Items
                 else
                     minValue += percentage;
             }
-            Debug.LogError("No Item to instantiate");
+            return null;
+        }
+        /// <summary>
+        /// Ritorna l'item da istanziare nella ui in base alla percentuale di spawn
+        /// </summary>
+        /// <returns></returns>
+        GDR_Controller ChoseEnemy()
+        {
+            float percentage;
+            float minValue = 0;
+            float randNum = Random.Range(0f, 100f);
+
+            foreach (GDR_Controller controller in Istances_Enemy)
+            {
+                percentage = controller.Data.PercentageToSpawn;
+                if (randNum > minValue && randNum <= (minValue + percentage))
+                    return controller;
+                else
+                    minValue += percentage;
+            }
             return null;
         }
 
@@ -75,7 +99,6 @@ namespace DumbProject.Items
                 else
                     minValue += percentage;
             }
-            Debug.LogError("No Trap to instantiate");
             return null;
         }
         /// <summary>
@@ -107,7 +130,21 @@ namespace DumbProject.Items
             Instantiate(_data.ItemPrefab, item.Transf.position, item.Transf.rotation, item.Transf);
             item.Init(_data);
             return item;
-        } 
+        }
+        /// <summary>
+        /// Creazione della trappola o Time Waster
+        /// </summary>
+        /// <param name="_trapData"></param>
+        /// <param name="_cell"></param>
+        /// <returns></returns>
+        Trap CreateTrap(TrapData _trapData, Cell _cell) {
+
+            Trap newTrap = Instantiate(_trapData.ItemPrefab, _cell.transform).AddComponent<Trap>();
+            newTrap.transform.position = _cell.transform.position;
+            newTrap.Init(_trapData, _cell);
+            return newTrap;
+
+        }
         #endregion
     }
 }

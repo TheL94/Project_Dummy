@@ -11,15 +11,16 @@ namespace DumbProject.GDR
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
     {
+
         public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
         public InventoryController iC;
-       // public AI_Controller ai_Controller;
+        public float PercentageToSpawn;
 
         List<float> ExpLevel = new List<float>();
 
-        float _maxLife;
+        [SerializeField] float _maxLife;// rischio.
         public float MaxLife
         {
             get { return _maxLife; }
@@ -27,9 +28,10 @@ namespace DumbProject.GDR
             {
                 _maxLife = value;
                 Life = MaxLife;
+
             }
         }
-        public float Life { get; private set; }
+      public float Life { get; private set; }
 
         float _maxArmor;
         public float MaxArmor
@@ -73,6 +75,7 @@ namespace DumbProject.GDR
             {
                 Life -= _damage;
                 iC.BreakArmor();
+                Debug.Log(Life);
                 if (Life <= 0)
                 {
                     Life = 0;

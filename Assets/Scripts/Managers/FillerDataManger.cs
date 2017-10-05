@@ -10,7 +10,7 @@ namespace DumbProject.Generic
     public class FillerDataManger : MonoBehaviour {
 
         public List<ItemGenericData> itemsData = new List<ItemGenericData>();
-        public List<GDR_Data_Experience> gdr_data = new List<GDR_Data_Experience>();
+        public List<TrapData> TrapDatas = new List<TrapData>();
 
         [HideInInspector] public List<ItemGenericData> Istances_itemsData = new List<ItemGenericData>();
         [HideInInspector] public List<TrapData> Istances_gdr_data = new List<TrapData>();
@@ -21,7 +21,7 @@ namespace DumbProject.Generic
             {
                 Istances_itemsData.Add(Instantiate(item));
             }
-            foreach (TrapData item in gdr_data)
+            foreach (TrapData item in TrapDatas)
             {
                 Istances_gdr_data.Add(Instantiate(item));
             }
