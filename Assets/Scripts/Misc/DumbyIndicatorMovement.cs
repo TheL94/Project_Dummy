@@ -1,31 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.Generic;
+using UnityEngine.UI;
 
-public class DumbyIndicatorMovement : MonoBehaviour {
-
-    bool isIncrementig = true;
-    Vector3 lowerInitialPosition;
-    public float Hight;
-    public float Speed;
-
-    private void Start()
+namespace DumbProject.UI
+{
+    public class DumbyIndicatorMovement : MonoBehaviour
     {
-        lowerInitialPosition = transform.localPosition;
-    }
+        UIManager uiManager;
+        public GameObject DumbyIconPrefab;
+        GameObject DumbyIcon;
 
-    // Update is called once per frame
-    void Update () {
+        private void Start()
+        {
+            uiManager = GameManager.I.UIMng;
+            Vector3 vector = Camera.main.WorldToScreenPoint(transform.position) ;
+            if (uiManager != null) {
+                DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 100, Quaternion.identity, uiManager.transform).gameObject;
+            }
+        }
 
-        if(!isIncrementig)
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 1 * Time.deltaTime * Speed, transform.localPosition.z);
-        else
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 1 * Time.deltaTime * Speed, transform.localPosition.z);
+        private void Update()
+        {
+            UpdateIndicatorPosition();
+            if (GameManager.I.CurrentState == Flow.FlowState.Pause)
+                DumbyIcon.GetComponent<Image>().enabled = false;
+            else if (GameManager.I.CurrentState == Flow.FlowState.Gameplay)
+                DumbyIcon.GetComponent<Image>().enabled = true;
+        }
 
-        if (transform.localPosition.y >= (lowerInitialPosition.y + Hight))
-            isIncrementig = false;
-        if (transform.localPosition.y <= (lowerInitialPosition.y))
-            isIncrementig = true;
+        /// <summary>
+        /// Setta la posizione dell'indicare in UI
+        /// </summary>
+        void UpdateIndicatorPosition()
+        {
+            DumbyIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 100;
+        }
 
     }
 }
