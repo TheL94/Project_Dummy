@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms;
-using DumbProject.GDR;
 
 namespace DumbProject.Items
 {
@@ -23,12 +22,11 @@ namespace DumbProject.Items
         #endregion
 
         #region API
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="_room"></param>
-        public void InstantiateItemInRoom(Room _room)
+        public void InstantiateObjectsInRoom(Room _room)
         {
             ItemGenericData genericaDroppableData = ChooseItem();
             if (genericaDroppableData != null)
