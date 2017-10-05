@@ -35,6 +35,11 @@ namespace DumbProject.Items
                 droppable.Data = genericaDroppableData;
                 _room.AddInteractable(droppable); 
             }
+            TrapData trapData = ChooseTraps();
+            if (trapData != null)
+            {
+                CreateTrap(trapData, _room.CellsInRoom[Random.Range(0, _room.CellsInRoom.Count)]);
+            }
         }
 
         /// <summary>
@@ -105,7 +110,15 @@ namespace DumbProject.Items
             Instantiate(_data.ItemPrefab, item.Transf.position, item.Transf.rotation, item.Transf);
             item.Init(_data);
             return item;
-        } 
+        }
+        Trap CreateTrap(TrapData _trapData, Cell _cell) {
+
+            Trap newTrap = Instantiate(_trapData.ItemPrefab, _cell.transform).AddComponent<Trap>();
+            newTrap.transform.position = _cell.transform.position;
+            newTrap.Init(_trapData, _cell);
+            return newTrap;
+
+        }
         #endregion
     }
 }
