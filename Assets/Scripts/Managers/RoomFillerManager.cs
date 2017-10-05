@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.GDR;
 using DumbProject.Rooms;
 
 namespace DumbProject.Items
@@ -11,6 +12,7 @@ namespace DumbProject.Items
         #region Variables
         [HideInInspector] public List<ItemGenericData> Istances_itemsData; //lista di Weapons,Potions e Armors.
         [HideInInspector] public List<TrapData> Istances_gdr_data;// lista di Traps e TimeWaster.
+        [HideInInspector] public List<GDR_Controller> Istances_Enemy;// lista di enemy.
         #endregion
 
         #region Setup
@@ -57,6 +59,26 @@ namespace DumbProject.Items
                 percentage = _data.PercentageToSpawn;
                 if (randNum > minValue && randNum <= (minValue + percentage))
                     return _data;
+                else
+                    minValue += percentage;
+            }
+            return null;
+        }
+        /// <summary>
+        /// Ritorna l'item da istanziare nella ui in base alla percentuale di spawn
+        /// </summary>
+        /// <returns></returns>
+        GDR_Controller ChoseEnemy()
+        {
+            float percentage;
+            float minValue = 0;
+            float randNum = Random.Range(0f, 100f);
+
+            foreach (GDR_Controller controller in Istances_Enemy)
+            {
+                percentage = controller.Data.PercentageToSpawn;
+                if (randNum > minValue && randNum <= (minValue + percentage))
+                    return controller;
                 else
                     minValue += percentage;
             }
@@ -109,6 +131,12 @@ namespace DumbProject.Items
             item.Init(_data);
             return item;
         }
+        /// <summary>
+        /// Creazione della trappola o Time Waster
+        /// </summary>
+        /// <param name="_trapData"></param>
+        /// <param name="_cell"></param>
+        /// <returns></returns>
         Trap CreateTrap(TrapData _trapData, Cell _cell) {
 
             Trap newTrap = Instantiate(_trapData.ItemPrefab, _cell.transform).AddComponent<Trap>();
