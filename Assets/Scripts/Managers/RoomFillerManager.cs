@@ -14,7 +14,7 @@ namespace DumbProject.Items
         [HideInInspector] public List<TrapData> Istances_gdr_data;// lista di Traps e TimeWaster.
         #endregion
 
-        #region SETUP
+        #region Setup
         public void Init(List<ItemGenericData> _Istances_itemsData, List<TrapData> _Istances_gdr_data)
         {
             Istances_gdr_data = _Istances_gdr_data;
@@ -75,7 +75,7 @@ namespace DumbProject.Items
                 else
                     minValue += percentage;
             }
-            Debug.LogError("No Item to instantiate");
+            Debug.LogError("No Trap to instantiate");
             return null;
         }
         /// <summary>
@@ -110,5 +110,4 @@ namespace DumbProject.Items
         } 
         #endregion
     }
-
 }
