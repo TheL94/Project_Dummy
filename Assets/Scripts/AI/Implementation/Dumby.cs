@@ -40,25 +40,15 @@ namespace DumbProject.Generic
             {
                 _animState = value;
                 if (animator != null)
-                    switch (_animState)
-                    {
-                        case AnimationState.Idle:
-                            animator.SetTrigger("Idle");
-                            break;
-                        case AnimationState.Run:
-                            animator.SetTrigger("Run");
-                            break;
-                        case AnimationState.Headbutt:
-                            animator.SetTrigger("Headbutt");
-                            break;
-                    }
+                    animator.SetInteger("AnimationState", (int)_animState);
             }
         }
         public enum AnimationState
         {
             Idle,
             Run,
-            Headbutt
+            Headbutt,
+            Dive
         }
         #endregion
 
