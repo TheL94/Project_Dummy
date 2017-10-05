@@ -73,6 +73,7 @@ namespace DumbProject.GDR
             {
                 Life -= _damage;
                 iC.BreakArmor();
+                Debug.Log(Life);
                 if (Life <= 0)
                 {
                     Life = 0;

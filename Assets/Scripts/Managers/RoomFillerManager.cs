@@ -60,7 +60,6 @@ namespace DumbProject.Items
                 else
                     minValue += percentage;
             }
-            Debug.LogError("No Item to instantiate");
             return null;
         }
 
@@ -78,7 +77,6 @@ namespace DumbProject.Items
                 else
                     minValue += percentage;
             }
-            Debug.LogError("No Trap to instantiate");
             return null;
         }
         /// <summary>
