@@ -38,9 +38,31 @@ namespace DumbProject.Generic
             get { return _animState; }
             set
             {
+                if (_animState == value)
+                    return;
+
                 _animState = value;
                 if (animator != null)
-                    animator.SetInteger("AnimationState", (int)_animState);
+                {
+                    switch (_animState)
+                    {
+                        case AnimationState.Idle:
+                            animator.SetTrigger("Idle");
+                            break;
+                        case AnimationState.Run:
+                            animator.SetTrigger("Run");
+                            break;
+                        case AnimationState.Headbutt:
+                            animator.SetTrigger("Headbutt");
+                            break;
+                        case AnimationState.Dive:
+                            animator.SetTrigger("Dive");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                    //animator.SetInteger("AnimationState", (int)_animState);
             }
         }
         public enum AnimationState

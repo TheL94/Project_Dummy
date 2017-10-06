@@ -78,7 +78,6 @@ namespace Framework.AI
                 if (!Loop)
                     runtOnce = false;
                 
-
                 timer = Delay;
             }
 
