@@ -11,7 +11,7 @@ namespace DumbProject.GDR
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
     {
-
+        public string ID;
         public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
@@ -33,7 +33,7 @@ namespace DumbProject.GDR
         }
       public float Life { get; private set; }
 
-        float _maxArmor;
+        [SerializeField] float _maxArmor;// rischio.
         public float MaxArmor
         {
             get { return _maxArmor; }
@@ -79,7 +79,7 @@ namespace DumbProject.GDR
                 if (Life <= 0)
                 {
                     Life = 0;
-                    Debug.LogWarning("Dumby is dead");
+                    Debug.LogWarning(ID+" is dead");
                     return false;
                 }
             }
@@ -210,6 +210,7 @@ namespace DumbProject.GDR
         Item,
         TimeWaster
     }
+    
 }
 
 
