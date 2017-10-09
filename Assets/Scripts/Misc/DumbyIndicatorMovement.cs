@@ -13,6 +13,7 @@ namespace DumbProject.UI
         public GameObject DumbyIconPrefab;
         GameObject DumbyIcon;
         Rect screenRect;
+        Vector3 dumbyPosition;
 
         private Vector3 lastVaiablePosition;
 
@@ -57,7 +58,6 @@ namespace DumbProject.UI
             if (GetComponentInParent<Renderer>().isVisible)
                 currentStatus = 0;
 
-            Vector3 dumbyPosition;
             switch (currentStatus)
             {
                 case ScreenIndicatorStatus.OnScreen:
@@ -75,6 +75,7 @@ namespace DumbProject.UI
                     lastVaiablePosition = DumbyIcon.transform.position;
                     break;
                 case ScreenIndicatorStatus.BothOutScreen:
+                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
                     DumbyIcon.transform.position = lastVaiablePosition;
                     break;
             }
@@ -92,15 +93,23 @@ namespace DumbProject.UI
                 if(!screenRect.Contains(corner))
                 {
                     DumbyIcon.transform.position = lastVaiablePosition;
-                    //if (/*corner.x <= 0 && corner.y <= 0 || corner.x >= screenRect.width && corner.y <= 0 || */
-                    //    corner.x <= 0 && corner.y >= screenRect.height /*|| corner.x >= screenRect.width && corner.y >= screenRect.height*/)
-                    //{
-                    //    return ScreenIndicatorStatus.BothOutScreen;
-                    //}
+                    if (corner.x <= 0 && corner.y <= 0 || corner.x >= screenRect.width && corner.y <= 0 ||
+                        corner.x <= 0 && corner.y >= screenRect.height || corner.x >= screenRect.width && corner.y >= screenRect.height)
+                    {
+                        if (dumbyPosition.x > 0 && dumbyPosition.x < screenRect.width)
+                            return ScreenIndicatorStatus.YOutScreen;
+                        
+                        if (dumbyPosition.y < screenRect.height && dumbyPosition.y > 0)
+                            return ScreenIndicatorStatus.XOutScreen;
+                        
+                        return ScreenIndicatorStatus.BothOutScreen;
+                    }
                     if (corner.x <= 0 || corner.x >= screenRect.width)
                         return ScreenIndicatorStatus.XOutScreen;
+                    
                     if (corner.y >= screenRect.height || corner.y <= 0)
                         return ScreenIndicatorStatus.YOutScreen;
+                    
                 }
             }
             
