@@ -15,9 +15,9 @@ namespace Framework.AI
         /// </summary>
         public void Init()
         {
-            foreach (ActionStructureForState sAction in Actions)
+            for (int i = 0; i < Actions.Count; i++)
             {
-                sAction.Init(isToSetUp);
+                Actions[i].Init(isToSetUp);
             }
             isToSetUp = false;
         }
@@ -27,9 +27,9 @@ namespace Framework.AI
         /// </summary>
         public void Clean()
         {
-            foreach (ActionStructureForState sAction in Actions)
+            for (int i = 0; i < Actions.Count; i++)
             {
-                sAction.Clean();
+                Actions[i].Clean();
             }
         }
         /// <summary>
@@ -38,9 +38,9 @@ namespace Framework.AI
         /// <param name="_controller"></param>
         public void Run(AI_Controller _controller)
         {
-            foreach (ActionStructureForState sAction in Actions)
+            for (int i = 0; i < Actions.Count; i++)
             {
-                sAction.Run(_controller);
+                Actions[i].Run(_controller);
             }
         }
     }

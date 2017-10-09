@@ -28,22 +28,17 @@ namespace Framework.AI
                 Action = GameObject.Instantiate(originalAction);
             }
 
+            if (!Loop)
+                runtOnce = false;
             if (Delay > 0)
-            {
-                if (!Loop)
-                    runtOnce = false;
-
                 timer = Delay;
-            }
 
-            //if (Action.OnEnd != null)
-                Action.OnEnd += HandleOnEnd;
+            Action.OnEnd += HandleOnEnd;
         }
 
         public void Clean()
         {
-            //if (Action.OnEnd != null)
-                Action.OnEnd -= HandleOnEnd;
+            Action.OnEnd -= HandleOnEnd;
         }
 
         public void Run(AI_Controller _controller)
@@ -64,7 +59,6 @@ namespace Framework.AI
         {
             if (OnCompleteTransition != null)
                 _controller.CurrentState = OnCompleteTransition;
-
         }
     }
 }
