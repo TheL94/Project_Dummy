@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Framework.AI
@@ -44,72 +43,5 @@ namespace Framework.AI
                 sAction.Run(_controller);
             }
         }
-    }
-
-    /// <summary>
-    /// Class the add some property to the normal Action in order to make it easy manageable by the Unity Editor and State class.
-    /// </summary>
-    [System.Serializable]
-    public class ActionStructureForState
-    {
-        public float Delay;
-        private float timer;
-        public bool Loop;
-        private bool runtOnce;
-        public AI_Action Action;
-        public AI_State OnCompleteTransition;
-
-        private AI_Action originalAction;
-        private AI_Action.OnLifeFlow onEndHandler;
-
-        public void Init(bool toSetUp)
-        {
-            if (toSetUp)
-            {
-                if (originalAction == null)
-                    originalAction = Action;
-
-                Action = GameObject.Instantiate(originalAction);
-                onEndHandler = new AI_Action.OnLifeFlow(HandleOnEnd);
-            }
-
-            if(Delay > 0)
-            {
-                if (!Loop)
-                    runtOnce = false;
-                
-                timer = Delay;
-            }
-
-            if (onEndHandler != null)
-                Action.OnEnd += onEndHandler;
-        }
-
-        public void Clean()
-        {
-            if (onEndHandler != null)
-                Action.OnEnd -= onEndHandler;
-        }
-
-        public void Run(AI_Controller _controller)
-        {
-            if (timer <= 0)
-            {
-                if(Loop || (runtOnce == false))
-                {
-                    Action.DoAct(_controller);
-                    runtOnce = true;
-                }
-            }
-            else
-                timer -= Time.deltaTime;
-        }
-
-        void HandleOnEnd(AI_Controller _controller)
-        {
-			if (OnCompleteTransition != null)
-				_controller.CurrentState = OnCompleteTransition;
-		
-		}
     }
 }
