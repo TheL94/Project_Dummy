@@ -16,13 +16,7 @@ namespace Framework.AI
         public AI_State CurrentState
         {
             get { return _currentState; }
-            set
-            {
-                if (value != null)
-                {
-                    _currentState = OnCurrentStateSet(CurrentState, value);
-                }
-            }
+            set { _currentState = OnCurrentStateSet(CurrentState, value); }
         }
 
         public void Init(AI_State currentState)
@@ -53,10 +47,14 @@ namespace Framework.AI
         {
             if (oldState != null)
             {
-                if (newState.GetInstanceID() == oldState.GetInstanceID())
-                    return null;
                 oldState.Clean(); //Clean the old State as soon as the state change in order to prevent multiple State changes called by events
+                
+                //Prevent incorrect state changes
+                if (newState == null)
+                    if(oldState.name == newState.name)
+                        return oldState;
             }
+
 
             AI_State newStateInstance = AI_DataManager.GetState(this, newState);
             newStateInstance.Init();

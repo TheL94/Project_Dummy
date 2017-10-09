@@ -23,11 +23,6 @@ namespace DumbProject.Generic
         protected override void OnInit()
         {
             animator = GetComponentInChildren<Animator>();
-
-            AnimationState uno = AnimationState.Idle;
-            AnimationState due = AnimationState.Run;
-            AnimationState tre = AnimationState.Headbutt;
-            Debug.Log((int)uno + (int)due + (int)tre);
         }
 
         #region Animation
