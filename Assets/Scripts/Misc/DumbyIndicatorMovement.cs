@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace DumbProject.UI
 {
@@ -13,9 +14,16 @@ namespace DumbProject.UI
         GameObject DumbyIcon;
         Rect screenRect;
 
-        bool dumbyIsVisibile = true;
+        private Vector3 lastVaiablePosition;
 
-        Vector3 lastVaiablePosition;
+        //public Vector3 LastVaiablePosition
+        //{
+        //    get { return lastVaiablePosition; }
+        //    set { lastVaiablePosition = value;
+        //        CheckIfInsideTheScreen();
+        //    }
+        //}
+
 
         private void Start()
         {
@@ -43,27 +51,38 @@ namespace DumbProject.UI
         /// </summary>
         void UpdateIndicatorPosition()
         {
-            //lastVaiablePosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 100;
-            if (dumbyIsVisibile)
-            {
-                DumbyIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
-                if (CheckIfInsideTheScreen())
-                    lastVaiablePosition = DumbyIcon.transform.position;
-            }
+            ScreenIndicatorStatus currentStatus = CheckIfInsideTheScreen();
 
+            //lastVaiablePosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 100;
             if (GetComponentInParent<Renderer>().isVisible)
+                currentStatus = 0;
+
+            Vector3 dumbyPosition;
+            switch (currentStatus)
             {
-                dumbyIsVisibile = true;
+                case ScreenIndicatorStatus.OnScreen:
+                    DumbyIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
+                    lastVaiablePosition = DumbyIcon.transform.position;
+                    break;
+                case ScreenIndicatorStatus.XOutScreen:
+                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
+                    DumbyIcon.transform.position = new Vector3(lastVaiablePosition.x, dumbyPosition.y);
+                    lastVaiablePosition = DumbyIcon.transform.position;
+                    break;
+                case ScreenIndicatorStatus.YOutScreen:
+                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
+                    DumbyIcon.transform.position = new Vector3(dumbyPosition.x, lastVaiablePosition.y);
+                    lastVaiablePosition = DumbyIcon.transform.position;
+                    break;
+                case ScreenIndicatorStatus.BothOutScreen:
+                    DumbyIcon.transform.position = lastVaiablePosition;
+                    break;
             }
-            else
-            {
-                dumbyIsVisibile = false;
-            }
-            //else
-            //    DumbyIcon.transform.position = lastVaiablePosition;
+            //Debug.Log(lastVaiablePosition);
+            Debug.Log(currentStatus);
         }
 
-        bool CheckIfInsideTheScreen()
+        ScreenIndicatorStatus CheckIfInsideTheScreen()
         {
             Vector3[] Corners = new Vector3[4];
             DumbyIcon.GetComponent<RectTransform>().GetWorldCorners(Corners);
@@ -72,12 +91,28 @@ namespace DumbProject.UI
             {
                 if(!screenRect.Contains(corner))
                 {
-                    return false;
+                    DumbyIcon.transform.position = lastVaiablePosition;
+                    //if (/*corner.x <= 0 && corner.y <= 0 || corner.x >= screenRect.width && corner.y <= 0 || */
+                    //    corner.x <= 0 && corner.y >= screenRect.height /*|| corner.x >= screenRect.width && corner.y >= screenRect.height*/)
+                    //{
+                    //    return ScreenIndicatorStatus.BothOutScreen;
+                    //}
+                    if (corner.x <= 0 || corner.x >= screenRect.width)
+                        return ScreenIndicatorStatus.XOutScreen;
+                    if (corner.y >= screenRect.height || corner.y <= 0)
+                        return ScreenIndicatorStatus.YOutScreen;
                 }
             }
-            return true;
+            
+            return ScreenIndicatorStatus.OnScreen;
         }
 
-
+        enum ScreenIndicatorStatus
+        {
+            OnScreen = 0,
+            XOutScreen = 1,
+            YOutScreen = 2,
+            BothOutScreen = 3,
+        }
     }
 }
