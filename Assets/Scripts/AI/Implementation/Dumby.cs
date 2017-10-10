@@ -47,6 +47,9 @@ namespace DumbProject.Generic
                         case AnimationState.Run:
                             animator.SetTrigger("Run");
                             break;
+                        case AnimationState.Fall:
+                            animator.SetTrigger("Fall");
+                            break;
                         case AnimationState.Headbutt:
                             animator.SetTrigger("Headbutt");
                             break;
@@ -57,13 +60,13 @@ namespace DumbProject.Generic
                             break;
                     }
                 }
-                    //animator.SetInteger("AnimationState", (int)_animState);
             }
         }
         public enum AnimationState
         {
             Idle,
             Run,
+            Fall,
             Headbutt,
             Dive
         }
