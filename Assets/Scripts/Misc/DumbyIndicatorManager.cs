@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DumbProject.UI
 {
-    public class DumbyIndicatorMovement : MonoBehaviour
+    public class DumbyIndicatorManager : MonoBehaviour
     {
         UIManager uiManager;
         public GameObject DumbyIconPrefab;
@@ -33,6 +33,7 @@ namespace DumbProject.UI
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position) ;
             if (uiManager != null) {
                 DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
+                DumbyIcon.GetComponent<DumbyIndicatorRepositioning>().Init(this);
             }
         }
 
