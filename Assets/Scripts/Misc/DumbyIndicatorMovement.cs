@@ -15,21 +15,28 @@ namespace DumbProject.UI
         Rect screenRect;
         Vector3 dumbyPosition;
 
-        private Vector3 lastVaiablePosition;
+        Vector3 lastVaiablePosition;
 
-        //public Vector3 LastVaiablePosition
+        //private Rect _screenRect;
+        //public Rect ScreenRect
         //{
-        //    get { return lastVaiablePosition; }
-        //    set { lastVaiablePosition = value;
-        //        CheckIfInsideTheScreen();
+        //    get { return _screenRect; }
+        //    set
+        //    {
+        //        /// Calcoli per determinare la dimensione della rect
+        //        /// Di base restituisce lo screenRect, necessita delle ancore del camera panel per impostare le misure
+        //        _screenRect = value;
         //    }
         //}
 
 
         private void Start()
         {
-            screenRect = new Rect(0f, 0f, Screen.width, Screen.height);
             uiManager = GameManager.I.UIMng;
+            RectTransform cameraPanelRectTransform = uiManager.CameraPanel.GetComponent<RectTransform>();
+            
+            screenRect = new Rect(cameraPanelRectTransform.anchorMin.x * Screen.width, cameraPanelRectTransform.anchorMin.y * Screen.height, cameraPanelRectTransform.anchorMax.x * Screen.width, cameraPanelRectTransform.anchorMax.y * Screen.height);
+            
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position) ;
             if (uiManager != null) {
                 DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
@@ -58,31 +65,31 @@ namespace DumbProject.UI
             if (GetComponentInParent<Renderer>().isVisible)
                 currentStatus = 0;
 
+            dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
+
             switch (currentStatus)
             {
                 case ScreenIndicatorStatus.OnScreen:
-                    DumbyIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
-                    lastVaiablePosition = DumbyIcon.transform.position;
+                    DumbyIcon.transform.position = dumbyPosition;
                     break;
                 case ScreenIndicatorStatus.XOutScreen:
-                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
                     DumbyIcon.transform.position = new Vector3(lastVaiablePosition.x, dumbyPosition.y);
-                    lastVaiablePosition = DumbyIcon.transform.position;
                     break;
                 case ScreenIndicatorStatus.YOutScreen:
-                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
                     DumbyIcon.transform.position = new Vector3(dumbyPosition.x, lastVaiablePosition.y);
-                    lastVaiablePosition = DumbyIcon.transform.position;
                     break;
                 case ScreenIndicatorStatus.BothOutScreen:
-                    dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
                     DumbyIcon.transform.position = lastVaiablePosition;
                     break;
             }
-            //Debug.Log(lastVaiablePosition);
-            Debug.Log(currentStatus);
+            if(currentStatus != ScreenIndicatorStatus.BothOutScreen)
+                lastVaiablePosition = DumbyIcon.transform.position;
         }
 
+        /// <summary>
+        /// Controlla se l'indicatore di Dumby si trova all'interno dello schermo
+        /// </summary>
+        /// <returns>Ritorna quale asse si trova fuori dallo schermo</returns>
         ScreenIndicatorStatus CheckIfInsideTheScreen()
         {
             Vector3[] Corners = new Vector3[4];
