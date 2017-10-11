@@ -9,12 +9,12 @@ namespace DumbProject.GDR
 {
     public class InventoryController : MonoBehaviour
     {
-        List<ItemGeneric> Inventory;
+        List<I_GDR_Interactable> Inventory;
 
         #region API
         public void Init()
         {
-            Inventory = new List<ItemGeneric>();
+            Inventory = new List<I_GDR_Interactable>();
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace DumbProject.GDR
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="itemToPick"></param>
-        public void OnPickUpItem(GDR_Controller _gdrController, ItemGeneric itemToPick)
+        public void OnPickUpItem(GDR_Controller _gdrController, I_GDR_Interactable itemToPick)
         {
             OnDropPreviousItem(_gdrController, itemToPick);
             HeldItem(_gdrController, itemToPick);
@@ -34,7 +34,7 @@ namespace DumbProject.GDR
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="PickedItem"></param>
-        public void OnDropPreviousItem(GDR_Controller _gdrController, ItemGeneric PickedItem)
+        public void OnDropPreviousItem(GDR_Controller _gdrController, I_GDR_Interactable PickedItem)
         {
             for (int i = 0; i < Inventory.Count; i++)
             {
@@ -55,7 +55,7 @@ namespace DumbProject.GDR
             {
                 if (Inventory[i].GetType() == typeof(Armor))
                 {
-                    ItemGeneric item = Inventory[i];
+                    I_GDR_Interactable item = Inventory[i];
                     Inventory.Remove(item);
                     Destroy(item.gameObject);
                     break;
@@ -68,7 +68,7 @@ namespace DumbProject.GDR
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="itemToPick"></param>
-        void HeldItem(GDR_Controller _gdrController, ItemGeneric itemToPick)
+        void HeldItem(GDR_Controller _gdrController, I_GDR_InteractableitemToPick)
         {
             itemToPick.transform.parent = _gdrController.transform;
         }

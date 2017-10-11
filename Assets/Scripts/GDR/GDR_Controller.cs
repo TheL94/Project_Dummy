@@ -44,25 +44,37 @@ namespace DumbProject.GDR
         /// <summary>
         /// Chiamata quando viene raccolto un oggetto da una cella.
         /// </summary>
-        public void OnInteract(ItemGeneric _itemGeneric)
+        public void OnInteract(I_GDR_Interactable _GDR_Interactable)
         {
-            if (_itemGeneric == null)
+            if (_GDR_Interactable == null)
             {
                 Debug.LogWarning("item nullo");
                 return;
             }
-            if (_itemGeneric.GetType() == typeof(Potion))
+            if (_GDR_Interactable.GetType() == typeof(Potion))
             {
-                Data.GetCure((_itemGeneric as Potion).Data.HealtRestore);
+                Data.GetCure((_GDR_Interactable as Potion).Data.HealtRestore);
                 Debug.Log(Data.Life);
+            }
+            else if (_GDR_Interactable.GetType() == typeof(Trap))
+            {
+                Trap trap = (_GDR_Interactable as Trap);
+                if (Data.GetDamage(trap.Data.Damage))
+                {
+                    Data.GetExperience(ExperienceType.Trap, trap.Data);
+                }
+            }
+            else if (_GDR_Interactable.GetType() == typeof(TimeWaster))
+            {
+                Data.GetExperience(ExperienceType.Trap, (_GDR_Interactable as TimeWaster).Data);
             }
             else
             {
-                Data.iC.OnPickUpItem(this, _itemGeneric);
-                Debug.Log(_itemGeneric);
-                if(_itemGeneric.GetType() == typeof(Armor))
+                Data.iC.OnPickUpItem(this, _GDR_Interactable);
+                Debug.Log(_GDR_Interactable);
+                if(_GDR_Interactable.GetType() == typeof(Armor))
                 {
-                    Data.MaxArmor = (_itemGeneric as Armor).Data.Protection;
+                    Data.MaxArmor = (_GDR_Interactable as Armor).Data.Protection;
                 }
             }
         }

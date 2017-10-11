@@ -13,9 +13,9 @@ namespace DumbProject.GDR_System
         [HideInInspector] public List<GDR_Element_Generic_Data> Istances_GDR_Element_Data;
 
         #region Setup
-        public void Init(List<GDR_Element_Generic_Data> _Istances_itemsData)
+        public void Init(List<GDR_Element_Generic_Data> _istances_GDR_Element_Data)
         {
-            Istances_GDR_Element_Data = _Istances_itemsData;
+            Istances_GDR_Element_Data = _istances_GDR_Element_Data;
         } 
         #endregion
 

@@ -22,7 +22,7 @@ namespace DumbProject.Generic
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
-        public GDR_Element_Manager ItemManagerPrefab;
+        public GDR_Element_Manager GDR_Element_ManagerPrefab;
         public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
@@ -38,6 +38,8 @@ namespace DumbProject.Generic
             }
         }
 
+        public CameraHandler CameraHndl;
+
         [HideInInspector]
         public RoomGenerator RoomGenerator;
         [HideInInspector]
@@ -49,7 +51,7 @@ namespace DumbProject.Generic
         [HideInInspector]
         public DungeonManager DungeonMng;
         [HideInInspector]
-        public GDR_Element_Manager RoomFillerMng;
+        public GDR_Element_Manager GDR_Element_Mng;
         [HideInInspector]
         public PoolManager PoolMng;
         [HideInInspector]
@@ -58,8 +60,6 @@ namespace DumbProject.Generic
         public GDR_ElementDataManger FillerDataMng;
         [HideInInspector]
         public InputHandler InputHndl;
-
-        public CameraHandler CameraHndl;
 
         [HideInInspector]
         public AI_Controller Dumby;
@@ -127,8 +127,8 @@ namespace DumbProject.Generic
 
             DungeonMng = Instantiate(DungeonManagerPrefab);
 
-            RoomFillerMng = Instantiate(ItemManagerPrefab);
-            RoomFillerMng.Init(FillerDataMng.Istances_GDR_Element_Data, FillerDataMng.Istances_gdr_data);
+            GDR_Element_Mng = Instantiate(GDR_Element_ManagerPrefab);
+            GDR_Element_Mng.Init(FillerDataMng.Istances_GDR_Element_Data);
 
             ChageFlowState(FlowState.Menu);
         }
@@ -141,9 +141,6 @@ namespace DumbProject.Generic
             UIMng.ActivateCameraPanel(false);
         }
 
-        /// <summary>
-        /// Crea la griglia chiamando vari setup e impostando lo stato di gameplay
-        /// </summary>
         public void EnterGameplayActions()
         {
             DungeonMng.Setup();

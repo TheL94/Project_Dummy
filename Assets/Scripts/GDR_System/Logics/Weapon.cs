@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using Framework.AI;
+using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
-    public class Weapon : MonoBehaviour, IInteractable
+    public class Weapon : MonoBehaviour, IInteractable, I_GDR_Interactable
     {
         public WeaponData Data { get; private set; }
 
@@ -22,11 +23,13 @@ namespace DumbProject.GDR_System
         public void Interact(AI_Controller _controller)
         {
             IsInteractable = false;
-            //GDR_Controller gdr_controller = _controller.GetComponent<GDR_Controller>();
-            //if (gdr_controller != null)
-            //{
-            //    gdr_controller.OnInteract(this);
-            //}
+            GDR_Interact(_controller.GetComponent<GDR_Controller>());
+        }
+
+        public void GDR_Interact(GDR_Controller _GDR_Controller)
+        {
+            if (_GDR_Controller != null)
+                _GDR_Controller.OnInteract(this);
         }
     }
 }
