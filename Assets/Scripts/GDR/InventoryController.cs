@@ -68,7 +68,7 @@ namespace DumbProject.GDR
         /// </summary>
         /// <param name="_gdrController"></param>
         /// <param name="itemToPick"></param>
-        void HeldItem(GDR_Controller _gdrController, I_GDR_InteractableitemToPick)
+        void HeldItem(GDR_Controller _gdrController, I_GDR_Interactable itemToPick)
         {
             itemToPick.transform.parent = _gdrController.transform;
         }
