@@ -58,7 +58,7 @@ namespace Framework.AI
 
             AI_State newStateInstance = AI_DataManager.GetState(this, newState);
             newStateInstance.Init();
-            Debug.Log(newStateInstance.name + " instance: " + newStateInstance.GetInstanceID()); //TODO: cut this line off once finished testing phase
+            //Debug.Log(newStateInstance.name + " instance: " + newStateInstance.GetInstanceID());
 
             return newStateInstance;
         }

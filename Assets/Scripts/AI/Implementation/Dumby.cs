@@ -39,29 +39,30 @@ namespace DumbProject.Generic
                 _animState = value;
                 if (animator != null)
                 {
-                    switch (_animState)
-                    {
-                        case AnimationState.Idle:
-                            animator.SetTrigger("Idle");
-                            break;
-                        case AnimationState.Run:
-                            animator.SetTrigger("Run");
-                            break;
-                        case AnimationState.Fall:
-                            animator.SetTrigger("Fall");
-                            break;
-                        case AnimationState.Headbutt:
-                            animator.SetTrigger("Headbutt");
-                            break;
-                        case AnimationState.Dive:
-                            animator.SetTrigger("Dive");
-                            break;
-                        case AnimationState.Death:
-                            animator.SetTrigger("Death");
-                            break;
-                        default:
-                            break;
-                    }
+                    animator.SetInteger("AnimationState", (int)_animState);
+                    //switch (_animState)
+                    //{
+                    //    case AnimationState.Idle:
+                    //        animator.SetTrigger("Idle");
+                    //        break;
+                    //    case AnimationState.Run:
+                    //        animator.SetTrigger("Run");
+                    //        break;
+                    //    case AnimationState.Fall:
+                    //        animator.SetTrigger("Fall");
+                    //        break;
+                    //    case AnimationState.Headbutt:
+                    //        animator.SetTrigger("Headbutt");
+                    //        break;
+                    //    case AnimationState.Dive:
+                    //        animator.SetTrigger("Dive");
+                    //        break;
+                    //    case AnimationState.Death:
+                    //        animator.SetTrigger("Death");
+                    //        break;
+                    //    default:
+                    //        break;
+                    //}
                 }
             }
         }
