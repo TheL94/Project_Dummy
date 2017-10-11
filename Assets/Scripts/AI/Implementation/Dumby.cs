@@ -39,6 +39,7 @@ namespace DumbProject.Generic
                 _animState = value;
                 if (animator != null)
                 {
+                    //animator.SetInteger("AnimationState", (int)_animState);
                     switch (_animState)
                     {
                         case AnimationState.Idle:
