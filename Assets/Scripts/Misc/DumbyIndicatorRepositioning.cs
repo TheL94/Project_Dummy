@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using DumbProject.Generic;
+
 
 namespace DumbProject.UI
 {
@@ -14,11 +15,12 @@ namespace DumbProject.UI
             dumbyIndicatorMovement = _indicator;
         }
 
-
-        public void Repositioning()
+        /// <summary>
+        /// Take Dumby positin and call the function in Camera Cinematic Controller to move the camera.
+        /// </summary>
+        public void CameraRepositioning()
         {
-            /// Da le coordinate di dumby tramite dumby indicator ( a meno che il manager non conosce questa informazione)
-            /// alla camera per riposizionarla sulla sua posizione
+            GameManager.I.CameraHndl.GetComponent<Camera_CinematicController>().MoveTo(dumbyIndicatorMovement.transform.position);
         }
     }
 }
