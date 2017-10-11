@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using DumbProject.Items;
+using DumbProject.GDR_System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,10 +11,10 @@ namespace DumbProject.UI
     {
         Vector3 _startPosition;
         [HideInInspector]
-        public ItemGenericData DroppableData;
+        public GDR_Element_Generic_Data DroppableData;
         Slot mySlot;
 
-        public void Init(ItemGenericData _droppableData, Slot _ownSlot)
+        public void Init(GDR_Element_Generic_Data _droppableData, Slot _ownSlot)
         {
             DroppableData = _droppableData;
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 
-namespace DumbProject.Items
+namespace DumbProject.GDR_System
 {
     public interface IDroppable : IInteractable
     {
-        ItemGenericData Data { get; set; }
-        void Init(ItemGenericData _data);
+        GDR_Element_Generic_Data Data { get; set; }
+        void Init(GDR_Element_Generic_Data _data);
     }
 }

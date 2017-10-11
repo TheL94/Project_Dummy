@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DumbProject.Items
+namespace DumbProject.GDR_System
 {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Items/Weapon Data", order = 1)]
-    public class WeaponData : ItemGenericData
+    public class WeaponData : GDR_Element_Generic_Data
     {
         public float Damage;
     }

@@ -1,17 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.GDR;
 
-namespace DumbProject.Items
+namespace DumbProject.GDR_System
 {
     [System.Serializable]
-    public class ItemGenericData : GDR_Data_Experience
+    public abstract class GDR_Element_Generic_Data : ScriptableObject
     {
-        public string Name;
-        public GameObject ItemPrefab;
-        public float TimeToSpend;
+        public GameObject ElementPrefab;
         public float PercentageToSpawn;
+        public float ExperienceToGive;
         public GenericType Type;
     }
 

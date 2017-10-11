@@ -6,7 +6,7 @@ using DumbProject.Rooms;
 using DumbProject.Grid;
 using DumbProject.UI;
 using DumbProject.Flow;
-using DumbProject.Items;
+using DumbProject.GDR_System;
 
 namespace DumbProject.Generic
 {
@@ -22,7 +22,7 @@ namespace DumbProject.Generic
         public UIManager UIManagerPrefab;
         public RoomPreviewController RoomPreviewControllerPrefab;
         public DungeonManager DungeonManagerPrefab;
-        public RoomFillerManager ItemManagerPrefab;
+        public GDR_Element_Manager ItemManagerPrefab;
         public PoolManager PoolManagerPrefab;
 
         public DeviceType DeviceEnvironment { get { return SystemInfo.deviceType; } }
@@ -49,13 +49,13 @@ namespace DumbProject.Generic
         [HideInInspector]
         public DungeonManager DungeonMng;
         [HideInInspector]
-        public RoomFillerManager RoomFillerMng;
+        public GDR_Element_Manager RoomFillerMng;
         [HideInInspector]
         public PoolManager PoolMng;
         [HideInInspector]
         public RoomDataManager RoomDataMng;
         [HideInInspector]
-        public FillerDataManger FillerDataMng;
+        public GDR_ElementDataManger FillerDataMng;
         [HideInInspector]
         public InputHandler InputHndl;
 
@@ -108,7 +108,7 @@ namespace DumbProject.Generic
             RoomDataMng = GetComponent<RoomDataManager>();
             RoomDataMng.InitData();
 
-            FillerDataMng = GetComponent<FillerDataManger>();
+            FillerDataMng = GetComponent<GDR_ElementDataManger>();
             FillerDataMng.InitData();
 
             PoolMng = Instantiate(PoolManagerPrefab);
@@ -128,7 +128,7 @@ namespace DumbProject.Generic
             DungeonMng = Instantiate(DungeonManagerPrefab);
 
             RoomFillerMng = Instantiate(ItemManagerPrefab);
-            RoomFillerMng.Init(FillerDataMng.Istances_itemsData, FillerDataMng.Istances_gdr_data);
+            RoomFillerMng.Init(FillerDataMng.Istances_GDR_Element_Data, FillerDataMng.Istances_gdr_data);
 
             ChageFlowState(FlowState.Menu);
         }

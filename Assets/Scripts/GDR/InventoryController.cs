@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms;
-using System.Linq;
-using DumbProject.Items;
+using DumbProject.GDR_System;
 using DumbProject.Generic;
 
 namespace DumbProject.GDR

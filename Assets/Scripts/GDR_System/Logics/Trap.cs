@@ -4,19 +4,22 @@ using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Generic;
 using DumbProject.GDR;
+using Framework.AI;
 
-namespace DumbProject.Items
+namespace DumbProject.GDR_System
 {
-    public class Trap : MonoBehaviour
+    public class Trap : MonoBehaviour, IInteractable
     {
-        public TrapData Data;
         public Cell RelativeCell;
-        public bool IsActive { get; private set; }
 
-        public void Init(TrapData _values, Cell _relativeCell)
+        public TrapData Data { get; private set; }
+        public bool IsInteractable { get; set; }
+        public Transform Transf { get { return transform; } }
+
+        public void Init(GDR_Element_Generic_Data _data)
         {
-            Data = _values;
-            RelativeCell = _relativeCell;
+            Data = _data as TrapData;
+            IsInteractable = false;
         }
 
         private void Update()
@@ -34,8 +37,13 @@ namespace DumbProject.Items
             if (controller.Data.GetDamage(Data.Damage))
             {
                 controller.Data.GetExperience(ExperienceType.Trap, Data);
-                //TODO : Da riposizionare(forse)
+                //TODO : Da rivedere
             }
+        }
+
+        public void Interact(AI_Controller _controller)
+        {
+
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DumbProject.Generic;
 using UnityEngine;
 
-namespace DumbProject.Items {
+namespace DumbProject.GDR_System {
     public interface IInteractableHolder
     {
         /// <summary>

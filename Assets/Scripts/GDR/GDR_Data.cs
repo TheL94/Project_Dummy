@@ -4,7 +4,7 @@ using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Generic;
 using Framework.AI;
-using DumbProject.Items;
+using DumbProject.GDR_System;
 
 namespace DumbProject.GDR
 {

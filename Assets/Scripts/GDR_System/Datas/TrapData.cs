@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace DumbProject.Items
+namespace DumbProject.GDR_System
 {
     [CreateAssetMenu(fileName = "Trap", menuName = "Items/Trap Data", order = 4)]
-    public class TrapData : GDR.GDR_Data_Experience
+    public class TrapData : GDR_Element_Generic_Data
     {
         public float Damage;
         public float ActivationRadius;
-        public float TimeToLeave;
-        public string Name;
-        public GameObject ItemPrefab;
-        public float PercentageToSpawn;
     }
 }
