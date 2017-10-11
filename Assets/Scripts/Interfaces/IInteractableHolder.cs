@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using DumbProject.Generic;
 using UnityEngine;
 
-namespace DumbProject.GDR_System {
+namespace DumbProject.Generic
+{
     public interface IInteractableHolder
     {
         /// <summary>
@@ -17,8 +17,8 @@ namespace DumbProject.GDR_System {
         /// <summary>
         /// Add a IDroppable
         /// </summary>
-        /// <param name="_droppableToAdd"></param>
-        IInteractable AddInteractable(IDroppable _droppableToAdd);
+        /// <param name="_interactableToAdd"></param>
+        IInteractable AddInteractable(IInteractable _interactableToAdd);
         /// <summary>
         /// Remove a held IInteractable
         /// </summary>

@@ -24,19 +24,13 @@ namespace DumbProject.GDR_System
         /// 
         /// </summary>
         /// <param name="_room"></param>
-        public void InstantiateObjectsInRoom(Room _room)
+        public void AddGDR_ElementInRoom(Room _room)
         {
-            GDR_Element_Generic_Data genericaDroppableData = ChooseElement();
-            if (genericaDroppableData != null)
+            GDR_Element_Generic_Data element_Generic_Data = ChooseElement();
+            if (element_Generic_Data != null)
             {
-                IDroppable droppable = CreateInteractable(genericaDroppableData);
-                droppable.Data = genericaDroppableData;
-                _room.AddInteractable(droppable); 
-            }
-            TrapData trapData = ChooseTraps();
-            if (trapData != null)
-            {
-                CreateTrap(trapData, _room.CellsInRoom[Random.Range(0, _room.CellsInRoom.Count)]);
+                IInteractable element = CreateInteractable(element_Generic_Data);
+                _room.AddInteractable(element); 
             }
         }
 
@@ -63,7 +57,7 @@ namespace DumbProject.GDR_System
 
         /// <summary>
         /// A seconda del tipo del data entra all'interno del sottotipo e viene aggiunto il component corrispondente
-        /// chiamandone anche l'init dove vengono passati i valori relativi all'oggetto
+        /// chiamandone anche l'init dove vengono passati i dati relativi all'oggetto
         /// </summary>
         /// <param name="_data">Il data relativo all'oggetto che viene istanziato</param>
         IInteractable CreateInteractable(GDR_Element_Generic_Data _data)
@@ -102,7 +96,9 @@ namespace DumbProject.GDR_System
             //    (item as Enemy).Init(_data)
             //}
 
-            Instantiate(_data.ElementPrefab, item.Transf.position, item.Transf.rotation, item.Transf);
+            // TODO : da collegare al pool
+            GameObject graphicObj = Instantiate(_data.ElementPrefab, item.Transf);
+            graphicObj.transform.position = item.Transf.position;
             return item;
         }
         #endregion

@@ -56,26 +56,26 @@ namespace DumbProject.GDR
                 Data.GetCure((_GDR_Interactable as Potion).Data.HealtRestore);
                 Debug.Log(Data.Life);
             }
-            else if (_GDR_Interactable.GetType() == typeof(Trap))
+            else if(_GDR_Interactable.GetType() == typeof(Armor) || _GDR_Interactable.GetType() == typeof(Weapon))
             {
-                Trap trap = (_GDR_Interactable as Trap);
-                if (Data.GetDamage(trap.Data.Damage))
-                {
-                    Data.GetExperience(ExperienceType.Trap, trap.Data);
-                }
-            }
-            else if (_GDR_Interactable.GetType() == typeof(TimeWaster))
-            {
-                Data.GetExperience(ExperienceType.Trap, (_GDR_Interactable as TimeWaster).Data);
-            }
-            else
-            {
-                Data.iC.OnPickUpItem(this, _GDR_Interactable);
+                
+                Data.iC.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
                 Debug.Log(_GDR_Interactable);
                 if(_GDR_Interactable.GetType() == typeof(Armor))
                 {
                     Data.MaxArmor = (_GDR_Interactable as Armor).Data.Protection;
                 }
+            }
+            else if (_GDR_Interactable.GetType() == typeof(Trap))
+            {
+                if (Data.GetDamage((_GDR_Interactable as Trap).Data.Damage))
+                {
+                    Data.GetExperience(ExperienceType.Trap, (_GDR_Interactable as Trap).Data);
+                }
+            }
+            else if (_GDR_Interactable.GetType() == typeof(TimeWaster))
+            {
+                Data.GetExperience(ExperienceType.Trap, (_GDR_Interactable as TimeWaster).Data);
             }
         }
     }

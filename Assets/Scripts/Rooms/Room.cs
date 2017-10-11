@@ -186,7 +186,7 @@ namespace DumbProject.Rooms
             return listOfAngles;
         }
 
-        #region IDroppableHolder
+        #region IInteractableHolder
         List<IInteractable> _interactableList = new List<IInteractable>();
         /// <summary>
         /// Do not ADD on this property. Use AddInteractable function instead
@@ -215,13 +215,20 @@ namespace DumbProject.Rooms
             return listToReturn;
         }
 
-        public IInteractable AddInteractable(IDroppable _droppableToAdd)
+        public IInteractable AddInteractable(IInteractable _interactableToAdd)
         {
             List<Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
             Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
-            freeCell.ActualInteractable = _droppableToAdd;
-            InteractableList.Add(_droppableToAdd);
-            return _droppableToAdd;
+
+            // TODO : non molto bello, ma necessario
+            if(_interactableToAdd.GetType() == typeof(Trap))
+            {
+                (_interactableToAdd as Trap).SetRelativeCell(freeCell);
+            }
+
+            freeCell.ActualInteractable = _interactableToAdd;
+            InteractableList.Add(_interactableToAdd);
+            return _interactableToAdd;
         }
 
         public void RemoveInteractable(IInteractable _interactableToRemove)
@@ -238,9 +245,6 @@ namespace DumbProject.Rooms
             if(cell != null)
             {
                 cell.ActualInteractable = null;
-                //_______
-                //TODO: ricolorare pavimento?
-                //__________
             }
 
             InteractableList.Remove(_interactableToRemove);

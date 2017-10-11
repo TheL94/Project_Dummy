@@ -49,10 +49,11 @@ namespace Framework.AI
             {
                 foreach (IInteractable avaibleItem in _room.InteractableAvailable)
                 {
-                    ItemGeneric item = (avaibleItem as MonoBehaviour).GetComponent<ItemGeneric>();
-                    if(item != null)
+                    // casting necessario
+                    I_GDR_Interactable GDR_element = (avaibleItem as I_GDR_Interactable);
+                    if(GDR_element != null)
                     {
-                        if (item.Data.Type == priorityType)
+                        if (GDR_element.GDR_Data.Type == priorityType)
                             return avaibleItem;
                     }
                 }
