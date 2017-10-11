@@ -56,6 +56,9 @@ namespace DumbProject.Generic
                         case AnimationState.Dive:
                             animator.SetTrigger("Dive");
                             break;
+                        case AnimationState.Death:
+                            animator.SetTrigger("Death");
+                            break;
                         default:
                             break;
                     }
@@ -68,7 +71,8 @@ namespace DumbProject.Generic
             Run,
             Fall,
             Headbutt,
-            Dive
+            Dive,
+            Death
         }
         #endregion
 

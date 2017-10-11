@@ -221,7 +221,7 @@ ModelImporter:
     4300002: dumby_armor
     4300004: dumby_head
     4300006: dumby_legs
-    7400000: Take 001
+    7400000: T-Pose
     9500000: //RootNode
     13700000: dumby_armor
     13700002: dumby_arms
@@ -249,7 +249,247 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: T-Pose
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: dumby_geo_GRP
+        weight: 1
+      - path: dumby_geo_GRP/dumby_armor
+        weight: 1
+      - path: dumby_geo_GRP/dumby_arms
+        weight: 1
+      - path: dumby_geo_GRP/dumby_head
+        weight: 1
+      - path: dumby_geo_GRP/dumby_legs
+        weight: 1
+      - path: GLOBAL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR/L_biceb_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR/L_biceb_CTRL/L_forearm_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR/L_biceb_CTRL/L_forearm_CTRL_GPR/L_forearm_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR/L_biceb_CTRL/L_forearm_CTRL_GPR/L_forearm_CTRL/L_wristle_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/L_shoulder_CTRL_GPR/L_shoulder_CTRL/L_biceb_CTRL_GPR/L_biceb_CTRL/L_forearm_CTRL_GPR/L_forearm_CTRL/L_wristle_CTRL_GPR/L_wristle_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR/neck_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR/neck_CTRL/head_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR/neck_CTRL/head_CTRL_GPR/head_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR/neck_CTRL/head_CTRL_GPR/head_CTRL/duck_jnt_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/neck_CTRL_GPR/neck_CTRL/head_CTRL_GPR/head_CTRL/duck_jnt_CTRL_GPR/duck_jnt_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR/R_biceb_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR/R_biceb_CTRL/R_forearm_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR/R_biceb_CTRL/R_forearm_CTRL_GPR/R_forearm_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR/R_biceb_CTRL/R_forearm_CTRL_GPR/R_forearm_CTRL/R_wristle_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/hips_CTRL_GPR/hips_CTRL/stomach_CTRL_GPR/stomach_CTRL/torso_CTRL_GPR/torso_CTRL/R_shoulder_CTRL_GPR/R_shoulder_CTRL/R_biceb_CTRL_GPR/R_biceb_CTRL/R_forearm_CTRL_GPR/R_forearm_CTRL/R_wristle_CTRL_GPR/R_wristle_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_ankle_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_ankle_CTRL_GPR/L_ankle_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_ankle_CTRL_GPR/L_ankle_CTRL/locator1
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_ankle_CTRL_GPR/L_ankle_CTRL/locator3
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_leg_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/L_leg_CTRL_GPR/L_leg_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_ankle_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_ankle_CTRL_GPR/R_ankle_CTRL
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_ankle_CTRL_GPR/R_ankle_CTRL/locator2
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_ankle_CTRL_GPR/R_ankle_CTRL/locator4
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_leg_CTRL_GPR
+        weight: 1
+      - path: GLOBAL_GPR/GLOBAL/R_leg_CTRL_GPR/R_leg_CTRL
+        weight: 1
+      - path: jnt_GRP
+        weight: 1
+      - path: jnt_GRP/duck_jnt
+        weight: 1
+      - path: jnt_GRP/hips
+        weight: 1
+      - path: jnt_GRP/hips/L_top_leg
+        weight: 1
+      - path: jnt_GRP/hips/L_top_leg/L_leg
+        weight: 1
+      - path: jnt_GRP/hips/L_top_leg/L_leg/L_ankle
+        weight: 1
+      - path: jnt_GRP/hips/L_top_leg/L_leg/L_ankle/L_foot
+        weight: 1
+      - path: jnt_GRP/hips/L_top_leg/L_leg/L_ankle/L_foot/L_foot_finger
+        weight: 1
+      - path: jnt_GRP/hips/R_top_leg
+        weight: 1
+      - path: jnt_GRP/hips/R_top_leg/R_leg
+        weight: 1
+      - path: jnt_GRP/hips/R_top_leg/R_leg/R_ankle
+        weight: 1
+      - path: jnt_GRP/hips/R_top_leg/R_leg/R_ankle/R_foot
+        weight: 1
+      - path: jnt_GRP/hips/R_top_leg/R_leg/R_ankle/R_foot/R_foot_finger
+        weight: 1
+      - path: jnt_GRP/hips/stomach
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_index
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_index/L_index1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_index/L_index1/L_index2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_middle
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_middle/L_middle1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_middle/L_middle1/L_middle2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_pinky
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_pinky/L_pinky1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_pinky/L_pinky1/L_pinky2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_ring
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_ring/L_ring1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_ring/L_ring1/L_ring2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_thumb
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_thumb/L_thumb1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/L_shoulder/L_biceb/L_forearm/L_wristle/L_hand/L_thumb/L_thumb1/L_thumb2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/neck
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/neck/head
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/neck/head/head_null
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_index
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_index/R_index1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_index/R_index1/R_index2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_middle
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_middle/R_middle1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_middle/R_middle1/R_middle2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_pinky
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_pinky/R_pinky1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_pinky/R_pinky1/R_pinky2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_ring
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_ring/R_ring1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_ring/R_ring1/R_ring2
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_thumb
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_thumb/R_thumb1
+        weight: 1
+      - path: jnt_GRP/hips/stomach/torso/R_shoulder/R_biceb/R_forearm/R_wristle/R_hand/R_thumb/R_thumb1/R_thumb2
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
