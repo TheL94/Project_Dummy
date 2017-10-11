@@ -3,13 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using UnityEngine.UI;
-using System.Linq;
+using FlexibleUI;
 
 namespace DumbProject.UI
 {
     public class DumbyIndicatorManager : MonoBehaviour
     {
         UIManager uiManager;
+        RectTransform cameraPanelRectTransform;
+
+        private ScreenOrientation _tempDeviceOrientation;
+        private ScreenOrientation TempDeviceOrientation {
+            get
+            {
+                return _tempDeviceOrientation;
+            }
+            set
+            {
+                if (_tempDeviceOrientation != value)
+                {
+                    _tempDeviceOrientation = value;
+                    UpdateScreenRectSize();
+                }
+            }
+        }
+
+        ScreenOrientation DeviceOrientation
+        {
+            get
+            {
+                return uiManager.DeviceCurrentOrientation;
+            }
+        }
+
+
+
         public GameObject DumbyIconPrefab;
         GameObject DumbyIcon;
         Rect screenRect;
@@ -24,12 +52,12 @@ namespace DumbProject.UI
         bool YNeg;
 
 
-        private void Start()
+        public void Init()
         {
             offset = 5;
             uiManager = GameManager.I.UIMng;
-            RectTransform cameraPanelRectTransform = uiManager.CameraPanel.GetComponent<RectTransform>();
-            screenRect = new Rect(cameraPanelRectTransform.anchorMin.x * Screen.width, cameraPanelRectTransform.anchorMin.y * Screen.height, cameraPanelRectTransform.anchorMax.x * Screen.width, cameraPanelRectTransform.anchorMax.y * Screen.height);
+            cameraPanelRectTransform = uiManager.CameraPanel.GetComponent<RectTransform>();
+            UpdateScreenRectSize();
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position) ;
             if (uiManager != null) {
                 DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
@@ -39,13 +67,27 @@ namespace DumbProject.UI
 
         private void Update()
         {
-            UpdateIndicatorPosition();
+            if (uiManager != null)
+            {
+                _tempDeviceOrientation = DeviceOrientation; 
+            }
+
             if (GameManager.I.CurrentState == Flow.FlowState.Pause)
                 DumbyIcon.GetComponent<Image>().enabled = false;
             else if (GameManager.I.CurrentState == Flow.FlowState.Gameplay)
+            {
                 DumbyIcon.GetComponent<Image>().enabled = true;
+                UpdateIndicatorPosition();
+            }
             else if (GameManager.I.CurrentState == Flow.FlowState.RecapGame)
                 Destroy(DumbyIcon);
+        }
+
+
+        void UpdateScreenRectSize()
+        {
+            screenRect = new Rect(cameraPanelRectTransform.anchorMin.x * Screen.width, cameraPanelRectTransform.anchorMin.y * Screen.height,
+            cameraPanelRectTransform.anchorMax.x * Screen.width, cameraPanelRectTransform.anchorMax.y * Screen.height);
         }
 
         /// <summary>
@@ -57,7 +99,7 @@ namespace DumbProject.UI
             CheckIfInsideTheScreen();
 
 
-            if (GetComponentInParent<Renderer>().isVisible)
+            if (GetComponentInParent<Renderer>().isVisible && DumbyIcon != null)
             {
                 DumbyIcon.transform.position = dumbyPosition;
                 XPos=false;
