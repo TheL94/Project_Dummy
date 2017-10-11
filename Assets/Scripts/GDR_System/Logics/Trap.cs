@@ -8,7 +8,7 @@ using Framework.AI;
 
 namespace DumbProject.GDR_System
 {
-    public class Trap : MonoBehaviour, IInteractable
+    public class Trap : MonoBehaviour, IInteractable, I_GDR_Interactable
     {
         public Cell RelativeCell;
 
@@ -24,26 +24,28 @@ namespace DumbProject.GDR_System
 
         private void Update()
         {
+            ProximityCheck();
+        }
+
+        void ProximityCheck()
+        {
+            //TODO : Da rivedere
             if (RelativeCell.RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
                 return;
 
             if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= Data.ActivationRadius)
-                Action();
-        }
-
-        public void Action()
-        {
-            GDR_Controller controller = GameManager.I.Dumby.GetComponent<GDR_Controller>();
-            if (controller.Data.GetDamage(Data.Damage))
-            {
-                controller.Data.GetExperience(ExperienceType.Trap, Data);
-                //TODO : Da rivedere
-            }
+                Interact(GameManager.I.Dumby);
         }
 
         public void Interact(AI_Controller _controller)
         {
+            GDR_Interact(_controller.GetComponent<GDR_Controller>());
+        }
 
+        public void GDR_Interact(GDR_Controller _GDR_Controller)
+        {
+            if (_GDR_Controller != null)
+                _GDR_Controller.OnInteract(this);
         }
     }
 }
