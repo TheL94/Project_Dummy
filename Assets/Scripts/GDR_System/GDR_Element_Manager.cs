@@ -90,11 +90,11 @@ namespace DumbProject.GDR_System
                 item = newObj.AddComponent<Trap>();
                 (item as Trap).Init(_data);
             }
-            //else if (_data.GetType() == typeof(EnemyData))
-            //{
-            //    item = newObj.AddComponent<Enemy>();
-            //    (item as Enemy).Init(_data)
-            //}
+            else if (_data.GetType() == typeof(EnemyData))
+            {
+                item = newObj.AddComponent<Enemy>();
+                (item as Enemy).Init(_data);
+            }
 
             // TODO : da collegare al pool
             GameObject graphicObj = Instantiate(_data.ElementPrefab, item.Transf);

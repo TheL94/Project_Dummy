@@ -54,13 +54,10 @@ namespace DumbProject.GDR
             if (_GDR_Interactable.GetType() == typeof(Potion))
             {
                 Data.GetCure((_GDR_Interactable as Potion).Data.HealtRestore);
-                Debug.Log(Data.Life);
             }
             else if(_GDR_Interactable.GetType() == typeof(Armor) || _GDR_Interactable.GetType() == typeof(Weapon))
-            {
-                
+            {               
                 Data.iC.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
-                Debug.Log(_GDR_Interactable);
                 if(_GDR_Interactable.GetType() == typeof(Armor))
                 {
                     Data.MaxArmor = (_GDR_Interactable as Armor).Data.Protection;
@@ -75,7 +72,14 @@ namespace DumbProject.GDR
             }
             else if (_GDR_Interactable.GetType() == typeof(TimeWaster))
             {
-                Data.GetExperience(ExperienceType.Trap, (_GDR_Interactable as TimeWaster).Data);
+                Data.GetExperience(ExperienceType.TimeWaster, (_GDR_Interactable as TimeWaster).Data);
+            }
+            else if (_GDR_Interactable.GetType() == typeof(Enemy))
+            {
+                if (Data.GetDamage((_GDR_Interactable as Enemy).Data.Damage))
+                {
+                    Data.GetExperience(ExperienceType.Enemy, (_GDR_Interactable as Enemy).Data);
+                }
             }
         }
     }

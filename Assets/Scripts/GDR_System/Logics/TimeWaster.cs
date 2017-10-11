@@ -14,6 +14,7 @@ namespace DumbProject.GDR_System
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as TimeWasterData;
+            IsInteractable = true;
         }
 
         #region IInteractable

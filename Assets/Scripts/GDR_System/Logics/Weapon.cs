@@ -15,6 +15,7 @@ namespace DumbProject.GDR_System
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as WeaponData;
+            IsInteractable = true;
         }
 
         #region IInteractable
