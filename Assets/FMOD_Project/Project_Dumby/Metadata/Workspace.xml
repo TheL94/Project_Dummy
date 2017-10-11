@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.09.00">
+<objects serializationModel="Studio.01.10.00">
     <object class="Workspace" id="{b350b922-c21d-4b85-b9ab-51cf788af5f0}">
         <property name="builtBanksOutputDirectory">
             <value>Build</value>
@@ -9,6 +9,12 @@
         </relationship>
         <relationship name="masterTagFolder">
             <destination>{1b977cb2-6f81-47a9-b2ad-5cca624ebf4e}</destination>
+        </relationship>
+        <relationship name="masterEffectPresetFolder">
+            <destination>{f3547f82-4a97-0882-0e08-92758a013651}</destination>
+        </relationship>
+        <relationship name="masterParameterPresetFolder">
+            <destination>{fbeb624b-c47e-01ae-0e4e-539e3a4ba93b}</destination>
         </relationship>
         <relationship name="masterBankFolder">
             <destination>{3232c0c7-31bf-417b-9860-2ff01d704ba6}</destination>
@@ -23,33 +29,5 @@
             <destination>{fffca0cc-2e65-4a96-853c-5a6c8937f686}</destination>
             <destination>{6507468a-ef3a-4440-96ce-b781d5be87b8}</destination>
         </relationship>
-    </object>
-    <object class="Platform" id="{fffca0cc-2e65-4a96-853c-5a6c8937f686}">
-        <property name="hardwareType">
-            <value>0</value>
-        </property>
-        <property name="name">
-            <value>Desktop</value>
-        </property>
-        <property name="subDirectory">
-            <value>Desktop</value>
-        </property>
-        <property name="speakerFormat">
-            <value>6</value>
-        </property>
-    </object>
-    <object class="Platform" id="{6507468a-ef3a-4440-96ce-b781d5be87b8}">
-        <property name="hardwareType">
-            <value>1</value>
-        </property>
-        <property name="name">
-            <value>Mobile</value>
-        </property>
-        <property name="subDirectory">
-            <value>Mobile</value>
-        </property>
-        <property name="speakerFormat">
-            <value>3</value>
-        </property>
     </object>
 </objects>
