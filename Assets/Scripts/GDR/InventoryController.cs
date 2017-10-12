@@ -7,12 +7,12 @@ using DumbProject.Generic;
 
 namespace DumbProject.GDR
 {
-    public class InventoryController : MonoBehaviour
+    public class InventoryController
     {
         List<I_GDR_Equippable> Inventory;
 
         #region API
-        public void Init()
+        public InventoryController()
         {
             Inventory = new List<I_GDR_Equippable>();
         }
@@ -57,7 +57,7 @@ namespace DumbProject.GDR
                 {
                     I_GDR_Equippable item = Inventory[i];
                     Inventory.Remove(item);
-                    Destroy(item.GameObj);
+                    GameObject.Destroy(item.GameObj);
                     break;
                 }
             }

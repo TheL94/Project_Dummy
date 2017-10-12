@@ -22,7 +22,7 @@ namespace DumbProject.GDR
         private void Start()
         {
             Init(Data);
-            Data.iC.Init();
+            Data.inventoryCtrl = new InventoryController();
         }
 
         /// <summary>
@@ -57,11 +57,11 @@ namespace DumbProject.GDR
             }
             else if(_GDR_Interactable.GetType() == typeof(Weapon))
             {               
-                Data.iC.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
+                Data.inventoryCtrl.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
             }
             else if (_GDR_Interactable.GetType() == typeof(Armor))
             {
-                Data.iC.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
+                Data.inventoryCtrl.OnPickUpItem(this, (_GDR_Interactable as I_GDR_Equippable));
                 Data.MaxArmor = (_GDR_Interactable as Armor).Data.Protection;
             }
             else if (_GDR_Interactable.GetType() == typeof(Trap))
@@ -77,7 +77,7 @@ namespace DumbProject.GDR
             }
             else if (_GDR_Interactable.GetType() == typeof(Enemy))
             {
-                if (Data.GetDamage((_GDR_Interactable as Enemy).Data.Damage))
+                if (Data.GetDamage((_GDR_Interactable as Enemy).gdrController.Data.Attack))
                 {
                     Data.GetExperience(ExperienceType.Enemy, _GDR_Interactable.GDR_Data);
                 }

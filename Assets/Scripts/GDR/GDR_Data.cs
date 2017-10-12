@@ -15,7 +15,7 @@ namespace DumbProject.GDR
         public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
-        public InventoryController iC;
+        public InventoryController inventoryCtrl;
         public float PercentageToSpawn;
 
         List<float> ExpLevel = new List<float>();
@@ -74,7 +74,7 @@ namespace DumbProject.GDR
             if(_damage > 0)
             {
                 Life -= _damage;
-                iC.BreakArmor();
+                inventoryCtrl.BreakArmor();
                 Debug.Log(Life);
                 if (Life <= 0)
                 {
