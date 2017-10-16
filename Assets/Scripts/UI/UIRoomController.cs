@@ -40,10 +40,10 @@ namespace DumbProject.UI
 
         bool CheckPortraitPosition(Vector2 _position, Vector2 _deviceResolution)
         {
-            float Xmin = AnchorMin.x * _deviceResolution.x;
-            float Xmax = AnchorMax.x * _deviceResolution.x;
-            float Ymin = AnchorMin.y * _deviceResolution.y;
-            float Ymax = AnchorMax.y * _deviceResolution.y;
+            float Xmin = AnchorMin.x * _deviceResolution.y;
+            float Xmax = AnchorMax.x * _deviceResolution.y;
+            float Ymin = AnchorMin.y * _deviceResolution.x;
+            float Ymax = AnchorMax.y * _deviceResolution.x;
 
             if (_position.x < Xmax && _position.x > Xmin && _position.y < Ymax && _position.y > Ymin)
                 return true;
