@@ -43,22 +43,22 @@ namespace DumbProject.Generic
                     switch (_animState)
                     {
                         case AnimationState.Idle:
-                            animator.SetTrigger("Idle");
+                            animator.CrossFade("Idle",0.3f);
                             break;
                         case AnimationState.Run:
-                            animator.SetTrigger("Run");
+                            animator.CrossFade("Run",0.3f);
                             break;
                         case AnimationState.Fall:
-                            animator.SetTrigger("Fall");
+                            animator.CrossFade("Fall", 0.3f);
                             break;
                         case AnimationState.Headbutt:
-                            animator.SetTrigger("Headbutt");
+                            animator.CrossFade("Headbutt", 0.3f);
                             break;
                         case AnimationState.Dive:
-                            animator.SetTrigger("Dive");
+                            animator.CrossFade("Dive", 0.3f);
                             break;
                         case AnimationState.Death:
-                            animator.SetTrigger("Death");
+                            animator.CrossFade("Death", 0.3f);
                             break;
                         default:
                             break;
