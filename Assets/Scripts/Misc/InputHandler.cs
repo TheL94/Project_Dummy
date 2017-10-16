@@ -136,7 +136,7 @@ namespace DumbProject.Generic
         #endregion
 
         #region Mouse Input
-        float timer = 0.3f;
+        float timer = 0.25f;
 
         UIRoomController draggedRoom;
 
@@ -197,7 +197,7 @@ namespace DumbProject.Generic
                     }
                 }
                 isDraggingCamera = false;
-                timer = 0.3f;
+                timer = 0.25f;
             }
             else 
             {
