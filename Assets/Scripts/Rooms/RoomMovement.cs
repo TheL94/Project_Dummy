@@ -67,11 +67,11 @@ namespace DumbProject.Rooms
         /// Azioni eseguite durante il drag della stanza
         /// </summary>
         /// <param name="_eventData"></param>
-        public void DragActions(PointerEventData _eventData)
+        public void DragActions(Vector2 _mousePosition)
         {
-            mousePosition = Camera.main.ScreenToWorldPoint(_eventData.position);
+            mousePosition = Camera.main.ScreenToWorldPoint(_mousePosition);
             //------------Sistem con Raycast--------
-            mouseProjection = Camera.main.ScreenPointToRay(_eventData.position);
+            mouseProjection = Camera.main.ScreenPointToRay(_mousePosition);
             float distance;
             if (gridLevel.Raycast(mouseProjection, out distance))
                 mousePosition = mouseProjection.GetPoint(distance);
@@ -98,7 +98,7 @@ namespace DumbProject.Rooms
         /// </summary>
         /// <param name="_eventData"></param>
         /// <returns></returns>
-        public bool DropActions(PointerEventData _eventData)
+        public bool DropActions()
         {
             if (GameManager.I.DungeonMng.DropCtrl.CheckRoomValidPosition(room))
             {

@@ -19,7 +19,7 @@ namespace DumbProject.UI
         {
             uiManager = _uiManager;
 
-            RoomPanelContainer.Setup(_uiManager.ForceVerticalUI);
+            RoomPanelContainer.Setup(uiManager.DeviceCurrentOrientation);
             PausePanel.Init(this);
             //InitPauseButton();
         }
