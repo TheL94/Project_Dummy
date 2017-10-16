@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DumbProject.UI;
 
 namespace DumbProject.Generic
 {
@@ -10,13 +11,15 @@ namespace DumbProject.Generic
 
         Vector3 clickOrigin;
 
+        
+
         // ---  Touch mode only ----------
         int panFingerId;
         bool wasZoomingLastFrame;
         Vector2[] lastZoomPositions;
         // -------------------------------
 
-        bool isDragging;
+        bool isDraggingCamera;
 
         public void Init(CameraHandler _camera)
         {
@@ -52,30 +55,60 @@ namespace DumbProject.Generic
         void TouchPanning()
         {
             wasZoomingLastFrame = false;
-
+            UIRoomController roomPreview;
             // If the touch began, capture its position and its finger ID.
             // Otherwise, if the finger ID of the touch doesn't match, skip it.
             Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began && !isDragging)
+            if (touch.phase == TouchPhase.Began && !isDraggingCamera)
             {
                 clickOrigin = touch.position;
                 panFingerId = touch.fingerId;
-                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                 {
+                    if (roomPreview != null)
+                        roomPreview.CallRotateRoom();
+                }
+                else
                     cameraHandler.SetLastPanPosition(touch.position);
-                }               
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
             {
-                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                {
+                    if (roomPreview != null)
+                    {
+                        roomPreview.OnDrag(touch.position);
+                    }
+                }
+                else
                 {
                     cameraHandler.PanCamera(touch.position);
-                    isDragging = true;
+                    isDraggingCamera = true;
                 }
+            }
+            else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Ended)
+            {
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                {
+                    if (roomPreview != null)
+                    {
+                        roomPreview.CallRotateRoom();
+                        roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
+                    }
+                }
+                else
+                {
+                    if (draggedRoom != null)
+                    {
+                        draggedRoom.CallPlaceRoom();
+                        draggedRoom = null;
+                    }
+                }
+                isDraggingCamera = false;
             }
             else
             {
-                isDragging = false;
+                isDraggingCamera = false;
             }
         }
 
@@ -103,30 +136,72 @@ namespace DumbProject.Generic
         #endregion
 
         #region Mouse Input
+        float timer = 0.3f;
+
+        UIRoomController draggedRoom;
+
         void HandleMouse()
         {
             // On mouse down, capture it's position.
             // Otherwise, if the mouse is still down, pan the camera.
+            UIRoomController roomPreview;
 
-            if (Input.GetMouseButtonDown(0) && !isDragging)
+            if (Input.GetMouseButtonDown(0) && !isDraggingCamera)
             {
                 clickOrigin = Input.mousePosition;
-                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
-                {
-                    cameraHandler.SetLastPanPosition(Input.mousePosition);
-                }
+                if (!GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                    cameraHandler.SetLastPanPosition(clickOrigin);
             }
             else if (Input.GetMouseButton(0))
             {
-                if (GameManager.I.UIMng.CameraPanel.CheckIfInputIsForCamera(clickOrigin))
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                {
+                    timer -= Time.deltaTime;
+                    if (timer <= 0)
+                    {
+                        if (roomPreview != null)
+                        {
+                            draggedRoom = roomPreview;
+                            draggedRoom.OnDrag(Input.mousePosition);
+                        } 
+                    }
+                }
+                else
                 {
                     cameraHandler.PanCamera(Input.mousePosition);
-                    isDragging = true;
+                    isDraggingCamera = true;
                 }
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(Input.mousePosition, out roomPreview))
+                {
+                    if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                    {
+                        if(roomPreview != null)
+                        {
+                            roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
+                            if(roomPreview.ActualRoom.RoomMovment.RoomInitialPosition == roomPreview.ActualRoom.transform.position)
+                                roomPreview.CallRotateRoom();
+                            else
+                                draggedRoom.CallPlaceRoom();
+                        }
+                    }
+                }
+                else
+                {
+                    if (draggedRoom != null)
+                    {
+                        draggedRoom.CallPlaceRoom();
+                        draggedRoom = null;
+                    }
+                }
+                isDraggingCamera = false;
+                timer = 0.3f;
             }
             else 
             {
-                isDragging = false;
+                isDraggingCamera = false;
             }
             
             // Check for scrolling to zoom the camera

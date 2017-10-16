@@ -9,34 +9,84 @@ using DumbProject.Generic;
 namespace DumbProject.UI
 {
     // TODO : da rivedere quando rifaremo la UI
-    public class UIRoomController : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler/* IDropHandler*/
+    public class UIRoomController : MonoBehaviour /*, IPointerClickHandler, IDragHandler, IPointerUpHandler, IDropHandler*/
     {
         [HideInInspector]
         public Room ActualRoom;
 
-        public void OnPointerClick(PointerEventData eventData)
+        public Vector2 AnchorMin { get { return (transform as RectTransform).anchorMin; } }
+        public Vector2 AnchorMax { get { return (transform as RectTransform).anchorMax; } }
+
+        public bool CheckIfInputIsForRoomPreview(Vector2 _position)
+        {
+            Vector2 deviceResolution = GameManager.I.UIMng.CurrentResolution;
+
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    return CheckPortraitPosition(_position, deviceResolution);
+                else
+                    return CheckLandscapePosition(_position, deviceResolution);
+            }
+            else
+            {
+                if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                    return CheckPortraitPosition(_position, deviceResolution);
+                else
+                    return CheckLandscapePosition(_position, deviceResolution);
+            }
+
+        }
+
+        bool CheckPortraitPosition(Vector2 _position, Vector2 _deviceResolution)
+        {
+            float Xmin = AnchorMin.x * _deviceResolution.x;
+            float Xmax = AnchorMax.x * _deviceResolution.x;
+            float Ymin = AnchorMin.y * _deviceResolution.y;
+            float Ymax = AnchorMax.y * _deviceResolution.y;
+
+            if (_position.x < Xmax && _position.x > Xmin && _position.y < Ymax && _position.y > Ymin)
+                return true;
+            else
+                return false;
+        }
+
+        bool CheckLandscapePosition(Vector2 _position, Vector2 _deviceResolution)
+        {
+            float Xmin = AnchorMin.x * _deviceResolution.x;
+            float Xmax = AnchorMax.x * _deviceResolution.x;
+            float Ymin = AnchorMin.y * _deviceResolution.y;
+            float Ymax = AnchorMax.y * _deviceResolution.y;
+
+            if (_position.x < Xmax && _position.x > Xmin &&  _position.y < Ymax && _position.y > Ymin)
+                return true;
+            else
+                return false;
+        }
+
+        public void CallRotateRoom()
         {
             if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
                 return;
-            if (!eventData.dragging && ActualRoom != null)
+            if (ActualRoom != null)
                 ActualRoom.RoomMovment.RotateClockwise();
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public void OnDrag(Vector2 _mousePosition)
         {
             if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
                 return;
-            if (eventData.dragging && ActualRoom != null)
-                ActualRoom.RoomMovment.DragActions(eventData);
+            if (ActualRoom != null)
+                ActualRoom.RoomMovment.DragActions(_mousePosition);
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        public void CallPlaceRoom()
         {
             if (GameManager.I.CurrentState != Flow.FlowState.Gameplay)
                 return;
-            if (eventData.dragging && ActualRoom != null)
+            if (ActualRoom != null)
             {
-                if (ActualRoom.RoomMovment.DropActions(eventData))
+                if (ActualRoom.RoomMovment.DropActions())
                 {
                     GameManager.I.RoomGenerator.ReleaseRoomSpawn(ActualRoom);
                     GameManager.I.RoomGenerator.CreateNewRoom();
@@ -50,7 +100,6 @@ namespace DumbProject.UI
                 ActualRoom.RoomMovment.MovingToInitialPosition = true;
         }
 
-        //TODO: metti apposto ALberto
         //public void OnDrop(PointerEventData eventData)
         //{
         //    if (eventData.pointerDrag.GetComponent<IventoryItem>() != null)

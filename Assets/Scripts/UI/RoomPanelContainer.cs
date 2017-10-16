@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
@@ -10,17 +11,15 @@ namespace DumbProject.UI
         public Sprite VerticalUI;
         public Sprite HorizontalUI;
 
-        Image gamePlayImage;
-
-
-        List<UIRoomController> _uiSpawns = new List<UIRoomController>();
-
         public List<UIRoomController> UISpawns { get { return _uiSpawns; } }
 
-        public void Setup(bool _isVertical)
+        Image gamePlayImage;
+        List<UIRoomController> _uiSpawns = new List<UIRoomController>();
+
+        public void Setup(ScreenOrientation _orientation)
         {
             gamePlayImage = GetComponent<Image>();
-            SwitchGamePlayMenuImage(_isVertical);
+            SwitchGamePlayMenuImage(_orientation);
             foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
             {
                 if(!UISpawns.Contains(uiCtrl))
@@ -28,16 +27,40 @@ namespace DumbProject.UI
             }
         }
 
+        public bool CheckIfInputIsForRoomPreviews(Vector2 _position, out UIRoomController _UIRoomController)
+        {
+            foreach (UIRoomController roomPreview in UISpawns)
+            {
+                if (roomPreview.CheckIfInputIsForRoomPreview(_position))
+                {
+                    _UIRoomController = roomPreview;
+                    return true;
+                }
+            }
+            _UIRoomController = null;
+            return false;
+        }
+
         /// <summary>
         /// Cambia l'immagine della UI di gioco in base all'orientamento
         /// </summary>
-        /// <param name="_isVertical"></param>
-        void SwitchGamePlayMenuImage(bool _isVertical)
+        /// <param name="_orientation"></param>
+        void SwitchGamePlayMenuImage(ScreenOrientation _orientation)
         {
-            if (_isVertical)
-                gamePlayImage.sprite = VerticalUI;
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    gamePlayImage.sprite = VerticalUI;
+                else
+                    gamePlayImage.sprite = HorizontalUI;
+            }
             else
-                gamePlayImage.sprite = HorizontalUI;
+            {
+                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
+                    gamePlayImage.sprite = VerticalUI;
+                else
+                    gamePlayImage.sprite = HorizontalUI;
+            }
         }
 
     }
