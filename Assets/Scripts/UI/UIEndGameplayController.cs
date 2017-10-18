@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DumbProject.Generic;
-using TMPro;
 
 namespace DumbProject.UI
 {
     public class UIEndGameplayController : MonoBehaviour
     {
         public Button SkipButton;
-        public TMP_Text RecapText;
+        public Text RecapText;
 
         UIManager uiManager;
 
