@@ -63,12 +63,7 @@ namespace DumbProject.Generic
             {
                 clickOrigin = touch.position;
                 panFingerId = touch.fingerId;
-                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
-                {
-                    if (roomPreview != null)
-                        roomPreview.CallRotateRoom();
-                }
-                else
+                if (!GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                     cameraHandler.SetLastPanPosition(touch.position);
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
@@ -88,12 +83,18 @@ namespace DumbProject.Generic
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Ended)
             {
-                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(Input.mousePosition, out roomPreview))
                 {
-                    if (roomPreview != null)
+                    if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                     {
-                        roomPreview.CallRotateRoom();
-                        roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
+                        if (roomPreview != null)
+                        {
+                            roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
+                            if (roomPreview.ActualRoom.RoomMovment.RoomInitialPosition == roomPreview.ActualRoom.transform.position)
+                                roomPreview.CallRotateRoom();
+                            else
+                                draggedRoom.CallPlaceRoom();
+                        }
                     }
                 }
                 else
