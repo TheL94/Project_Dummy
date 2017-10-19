@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
@@ -10,9 +11,15 @@ namespace DumbProject.UI
         UIMenuController menuController;
         public Button ExitButton;
 
-        public void Init(UIMenuController _controller)
+        Image creditMenuImage;
+        public Sprite VerticalUI;
+        public Sprite HorizontalUI;
+
+        public void Init(UIMenuController _controller, ScreenOrientation _orientation)
         {
             menuController = _controller;
+            creditMenuImage = GetComponent<Image>();
+            SwitchCreditMenuImage(_orientation);
         }
 
         private void OnEnable()
@@ -23,6 +30,24 @@ namespace DumbProject.UI
         private void OnDisable()
         {
             ExitButton.onClick.RemoveAllListeners();
+        }
+
+        void SwitchCreditMenuImage(ScreenOrientation _orientation)
+        {
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    creditMenuImage.sprite = VerticalUI;
+                else
+                    creditMenuImage.sprite = HorizontalUI;
+            }
+            else
+            {
+                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
+                    creditMenuImage.sprite = VerticalUI;
+                else
+                    creditMenuImage.sprite = HorizontalUI;
+            }
         }
     }
 }

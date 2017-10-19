@@ -11,13 +11,20 @@ namespace DumbProject.UI
     {
         UIMenuController menuController;
 
+        Image menuImage;
+        public Sprite VerticalUI;
+        public Sprite HorizontalUI;
+
+
         public Button PlayButton;
         public Button CreditsButton;
         public Button ExitButton;
 
-        public void Init(UIMenuController _controller)
+        public void Init(UIMenuController _controller, ScreenOrientation _orientation)
         {
             menuController = _controller;
+            menuImage = GetComponent<Image>();
+            SwitchMainMenuImage(_orientation);
         }
 
         private void OnEnable()
@@ -33,5 +40,24 @@ namespace DumbProject.UI
             CreditsButton.onClick.RemoveAllListeners();
             ExitButton.onClick.RemoveAllListeners();
         }
+
+        void SwitchMainMenuImage(ScreenOrientation _orientation)
+        {
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    menuImage.sprite = VerticalUI;
+                else
+                    menuImage.sprite = HorizontalUI;
+            }
+            else
+            {
+                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
+                    menuImage.sprite = VerticalUI;
+                else
+                    menuImage.sprite = HorizontalUI;
+            }
+        }
+
     }
 }
