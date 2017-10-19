@@ -81,7 +81,7 @@ namespace DumbProject.Generic
                     isDraggingCamera = true;
                 }
             }
-            else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Ended)
+            else if (touch.fingerId == panFingerId && (touch.phase == TouchPhase.Ended) || (touch.phase == TouchPhase.Canceled))
             {
                 if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(Input.mousePosition, out roomPreview))
                 {
