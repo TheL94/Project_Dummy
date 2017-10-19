@@ -9,7 +9,7 @@ namespace FlexibleUI
         /// <summary>
         /// Forza la UI verticale, per debug solo su pc.
         /// </summary>
-        public static bool ForceVerticalUI = true;
+        public static bool ForceVerticalUI = false;
 
         static ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
         /// <summary>
