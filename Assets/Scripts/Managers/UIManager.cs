@@ -25,6 +25,16 @@ namespace DumbProject.UI
 
         const string PrefabPath = "Prefabs/UI/";
 
+        private void OnEnable()
+        {
+            FlexibleUIManager.OnScreenOrientationChange += SetChildrensPanelsOrientation;
+        }
+
+        private void OnDisable()
+        {
+            FlexibleUIManager.OnScreenOrientationChange -= SetChildrensPanelsOrientation;
+        }
+
         public void Init()
         {
             //setta la risoluzione di riferimento del canvas in base a quella dello schermo del dispositivo in uso
@@ -67,6 +77,14 @@ namespace DumbProject.UI
         public void ActivateCameraPanel(bool _status)
         {
             CameraPanel.gameObject.SetActive(_status);
+        }
+
+        /// <summary>
+        /// Ogni volta che viene scatenato l'evento on screen orientation change, vengono avvisati tutti i pannelli che devono modificare la propria immagine.
+        /// </summary>
+        void SetChildrensPanelsOrientation()
+        {
+            //TODO: chiamare ai pannelli figli, changeImage (Magari con un'interfaccia);
         }
 
         /// <summary>
