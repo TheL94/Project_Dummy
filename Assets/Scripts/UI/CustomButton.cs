@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomButton : MonoBehaviour {
+namespace DumbProject.UI
+{
+    public class CustomButton : MonoBehaviour
+    {
 
-
+    }
 }
