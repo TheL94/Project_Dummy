@@ -84,7 +84,11 @@ namespace DumbProject.UI
         /// </summary>
         void SetChildrensPanelsOrientation()
         {
-            //TODO: chiamare ai pannelli figli, changeImage (Magari con un'interfaccia);
+            IUIChanger[] tempArray = GetComponents<IUIChanger>();
+            foreach (IUIChanger changer in tempArray)
+            {
+                changer.SetUIOrientation(DeviceCurrentOrientation);
+            }
         }
 
         /// <summary>

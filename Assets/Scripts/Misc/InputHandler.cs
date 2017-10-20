@@ -83,7 +83,7 @@ namespace DumbProject.Generic
             }
             else if (touch.fingerId == panFingerId && (touch.phase == TouchPhase.Ended) || (touch.phase == TouchPhase.Canceled))
             {
-                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(Input.mousePosition, out roomPreview))
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(touch.position, out roomPreview))
                 {
                     if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                     {

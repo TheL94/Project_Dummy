@@ -6,7 +6,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class CreditsMenuController : MonoBehaviour
+    public class CreditsMenuController : MonoBehaviour, IUIChanger
     {
         UIMenuController menuController;
         public Button ExitButton;
@@ -19,7 +19,7 @@ namespace DumbProject.UI
         {
             menuController = _controller;
             creditMenuImage = GetComponent<Image>();
-            SwitchCreditMenuImage(_orientation);
+            SetUIOrientation(_orientation);
         }
 
         private void OnEnable()
@@ -31,8 +31,9 @@ namespace DumbProject.UI
         {
             ExitButton.onClick.RemoveAllListeners();
         }
+        
 
-        void SwitchCreditMenuImage(ScreenOrientation _orientation)
+        public void SetUIOrientation(ScreenOrientation _orientation)
         {
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {

@@ -7,7 +7,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class MainMenuController : MonoBehaviour
+    public class MainMenuController : MonoBehaviour, IUIChanger
     {
         UIMenuController menuController;
 
@@ -24,7 +24,7 @@ namespace DumbProject.UI
         {
             menuController = _controller;
             menuImage = GetComponent<Image>();
-            SwitchMainMenuImage(_orientation);
+            SetUIOrientation(_orientation);
         }
 
         private void OnEnable()
@@ -40,8 +40,8 @@ namespace DumbProject.UI
             CreditsButton.onClick.RemoveAllListeners();
             ExitButton.onClick.RemoveAllListeners();
         }
-
-        void SwitchMainMenuImage(ScreenOrientation _orientation)
+        
+        public void SetUIOrientation(ScreenOrientation _orientation)
         {
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {
@@ -58,6 +58,5 @@ namespace DumbProject.UI
                     menuImage.sprite = HorizontalUI;
             }
         }
-
     }
 }
