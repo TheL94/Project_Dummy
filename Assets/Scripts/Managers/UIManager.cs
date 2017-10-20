@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexibleUI;
 using DumbProject.Generic;
+using System.Linq;
 
 namespace DumbProject.UI
 {
@@ -55,7 +56,7 @@ namespace DumbProject.UI
             EndGameCtrl.Init(this);
 
             FlexibleUIManager.UpdateUIOrientation();
-
+            UIchangers = GetComponentsInChildren<IUIChanger>().ToList();
             SetChildrensPanelsOrientation();
 
             MenuController.Setup();
