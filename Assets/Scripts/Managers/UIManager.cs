@@ -95,6 +95,18 @@ namespace DumbProject.UI
         /// Evento che viene scatenato al cambio di orientamento del dispositivo
         /// </summary>
         public LayoutEvent OnScreenOrientationChange;
+
+
+        public enum UIButton
+        {
+            Play,
+            Option,
+            Credits,
+            Back,
+            Pause,
+            NextTurn
+        }
+
     }
 
     [System.Serializable]
