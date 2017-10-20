@@ -10,6 +10,9 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
+
+        public Text DebugText;
+
         public bool ForceVerticalUI { get { return FlexibleUIManager.ForceVerticalUI; } }
         public ScreenOrientation DeviceCurrentOrientation { get { return FlexibleUIManager.DeviceCurrentOrientation;  } }
         public Vector2 DeviceReferenceResolution { get { return FlexibleUIManager.DeviceReferenceResolution; } }
