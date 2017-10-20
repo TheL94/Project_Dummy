@@ -25,6 +25,8 @@ namespace DumbProject.UI
 
         const string PrefabPath = "Prefabs/UI/";
 
+        List<IUIChanger> UIchangers = new List<IUIChanger>();
+
         private void OnEnable()
         {
             FlexibleUIManager.OnScreenOrientationChange += SetChildrensPanelsOrientation;
@@ -53,6 +55,8 @@ namespace DumbProject.UI
             EndGameCtrl.Init(this);
 
             FlexibleUIManager.UpdateUIOrientation();
+
+            SetChildrensPanelsOrientation();
 
             MenuController.Setup();
             GamePlayCtrl.Setup();
@@ -84,8 +88,7 @@ namespace DumbProject.UI
         /// </summary>
         void SetChildrensPanelsOrientation()
         {
-            IUIChanger[] tempArray = GetComponents<IUIChanger>();
-            foreach (IUIChanger changer in tempArray)
+            foreach (IUIChanger changer in UIchangers)
             {
                 changer.SetUIOrientation(DeviceCurrentOrientation);
             }
