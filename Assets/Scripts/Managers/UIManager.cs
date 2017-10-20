@@ -100,17 +100,15 @@ namespace DumbProject.UI
         /// </summary>
         public LayoutEvent OnScreenOrientationChange;
 
-
         public enum UIButton
         {
-            Play,
-            Option,
-            Credits,
             Back,
+            Play,
             Pause,
+            Options,
+            Credits,
             NextTurn
         }
-
     }
 
     [System.Serializable]
