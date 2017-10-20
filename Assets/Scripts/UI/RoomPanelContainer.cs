@@ -6,14 +6,20 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class RoomPanelContainer : MonoBehaviour
+    public class RoomPanelContainer : MonoBehaviour, IUIChanger
     {
         public List<UIRoomController> UISpawns { get { return _uiSpawns; } }
 
         List<UIRoomController> _uiSpawns = new List<UIRoomController>();
 
+        Image gamePlayImage;
+        public Sprite VerticalUI;
+        public Sprite HorizontalUI;
+
+
         public void Setup(ScreenOrientation _orientation)
         {
+            gamePlayImage = GetComponent<Image>();
             foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
             {
                 if(!UISpawns.Contains(uiCtrl))
@@ -33,6 +39,24 @@ namespace DumbProject.UI
             }
             _UIRoomController = null;
             return false;
+        }
+
+        public void SetUIOrientation(ScreenOrientation _orientation)
+        {
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                    gamePlayImage.sprite = VerticalUI;
+                else
+                    gamePlayImage.sprite = HorizontalUI;
+            }
+            else
+            {
+                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
+                    gamePlayImage.sprite = VerticalUI;
+                else
+                    gamePlayImage.sprite = HorizontalUI;
+            }
         }
     }
 }

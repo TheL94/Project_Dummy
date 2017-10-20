@@ -11,7 +11,7 @@ namespace FlexibleUI
         /// </summary>
         public static bool ForceVerticalUI = false;
 
-        static ScreenOrientation deviceOrientation = ScreenOrientation.Unknown;
+        static ScreenOrientation deviceOrientation;
         /// <summary>
         /// Orientamento del dispositivo
         /// </summary>
@@ -64,7 +64,7 @@ namespace FlexibleUI
                 }
             }
         }
-
+        //TODO: (X LUCA) inserire setup con inizializzazione della rotazione
         private void LateUpdate()
         {
             UpdateUIOrientation();
@@ -76,20 +76,26 @@ namespace FlexibleUI
         #region API
         public static void UpdateUIOrientation()
         {
-            if (deviceOrientation != DeviceCurrentOrientation)
+            if (SystemInfo.deviceType == DeviceType.Desktop)
             {
-                if (SystemInfo.deviceType == DeviceType.Desktop)
+                if (ForceVerticalUI && deviceOrientation != ScreenOrientation.Portrait)
                 {
-                    if (ForceVerticalUI)
-                        deviceOrientation = ScreenOrientation.Portrait;
-                    else
-                        deviceOrientation = ScreenOrientation.Landscape;
+                    deviceOrientation = ScreenOrientation.Portrait;
+                    OnScreenOrientationChange();
                 }
-                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                else if (!ForceVerticalUI && deviceOrientation != ScreenOrientation.Landscape)
+                {
+                    deviceOrientation = ScreenOrientation.Landscape;
+                    OnScreenOrientationChange();
+                }
+            }
+            else if (SystemInfo.deviceType == DeviceType.Handheld) 
+            {
+                if (deviceOrientation != DeviceCurrentOrientation)
                 {
                     deviceOrientation = DeviceCurrentOrientation;
+                    OnScreenOrientationChange();
                 }
-                OnScreenOrientationChange();
             }
         }
 
