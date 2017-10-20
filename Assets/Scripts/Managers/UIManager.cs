@@ -57,7 +57,7 @@ namespace DumbProject.UI
 
             FlexibleUIManager.UpdateUIOrientation();
             UIchangers = GetComponentsInChildren<IUIChanger>().ToList();
-            SetChildrensPanelsOrientation();
+            //SetChildrensPanelsOrientation();
 
             MenuController.Setup();
             GamePlayCtrl.Setup();
