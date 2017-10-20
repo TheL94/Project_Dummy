@@ -15,11 +15,10 @@ namespace DumbProject.UI
         public Sprite VerticalUI;
         public Sprite HorizontalUI;
 
-        public void Init(UIMenuController _controller, ScreenOrientation _orientation)
+        public void Init(UIMenuController _controller)
         {
             menuController = _controller;
             creditMenuImage = GetComponent<Image>();
-            SetUIOrientation(_orientation);
         }
 
         private void OnEnable()

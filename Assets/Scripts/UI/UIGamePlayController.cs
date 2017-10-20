@@ -19,8 +19,8 @@ namespace DumbProject.UI
         {
             uiManager = _uiManager;
 
-            RoomPanelContainer.Setup(uiManager.DeviceCurrentOrientation);
-            PausePanel.Init(this, uiManager.DeviceCurrentOrientation);
+            RoomPanelContainer.Setup();
+            PausePanel.Init(this);
         }
 
         public void Setup()

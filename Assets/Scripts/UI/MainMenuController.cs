@@ -20,11 +20,10 @@ namespace DumbProject.UI
         public Button CreditsButton;
         public Button ExitButton;
 
-        public void Init(UIMenuController _controller, ScreenOrientation _orientation)
+        public void Init(UIMenuController _controller)
         {
             menuController = _controller;
             menuImage = GetComponent<Image>();
-            SetUIOrientation(_orientation);
         }
 
         private void OnEnable()

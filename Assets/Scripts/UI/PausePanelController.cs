@@ -17,11 +17,10 @@ namespace DumbProject.UI
         public Sprite VerticalUI;
         public Sprite HorizontalUI;
 
-        public void Init(UIGamePlayController _controller, ScreenOrientation _orientation)
+        public void Init(UIGamePlayController _controller)
         {
             controller = _controller;
             gamePlayImage = GetComponent<Image>();
-            SetUIOrientation(_orientation);
         }
 
         private void OnEnable()

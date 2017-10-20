@@ -17,7 +17,7 @@ namespace DumbProject.UI
         public Sprite HorizontalUI;
 
 
-        public void Setup(ScreenOrientation _orientation)
+        public void Setup()
         {
             gamePlayImage = GetComponent<Image>();
             foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
