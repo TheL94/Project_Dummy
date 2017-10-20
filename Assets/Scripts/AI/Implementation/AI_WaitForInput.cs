@@ -48,7 +48,8 @@ namespace Framework.AI
             Button[] buttons = FindObjectsOfType<Button>();
             foreach (Button button in buttons)
             {
-                if(button.GetComponent<LabelContainer>().ButtonLabel == EndTurn)
+                LabelContainer lc = button.GetComponent<LabelContainer>();
+                if (lc != null && lc.ButtonLabel == EndTurn)
                     nextTurn = button;
             }
 
