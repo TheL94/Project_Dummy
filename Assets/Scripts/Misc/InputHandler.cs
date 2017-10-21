@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.UI;
+using UnityEngine.UI;
 
 namespace DumbProject.Generic
 {
@@ -11,7 +12,7 @@ namespace DumbProject.Generic
 
         Vector3 clickOrigin;
 
-        
+        Text DebugText;
 
         // ---  Touch mode only ----------
         int panFingerId;
@@ -24,11 +25,17 @@ namespace DumbProject.Generic
         public void Init(CameraHandler _camera)
         {
             cameraHandler = _camera;
+            
         }
 
         void Update()
         {
             HandleInput();
+        }
+
+        public void SetupLogger()
+        {
+            DebugText = GameManager.I.UIMng.DebugText;
         }
 
         void HandleInput()
@@ -61,6 +68,7 @@ namespace DumbProject.Generic
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began && !isDraggingCamera)
             {
+
                 clickOrigin = touch.position;
                 panFingerId = touch.fingerId;
                 if (!GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
@@ -68,11 +76,13 @@ namespace DumbProject.Generic
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved)
             {
+
                 if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                 {
                     if (roomPreview != null)
                     {
-                        roomPreview.OnDrag(touch.position);
+                        draggedRoom = roomPreview;
+                        draggedRoom.OnDrag(touch.position);
                     }
                 }
                 else
@@ -83,17 +93,25 @@ namespace DumbProject.Generic
             }
             else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Ended)
             {
-                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(Input.mousePosition, out roomPreview))
+                
+                if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(touch.position, out roomPreview))
                 {
+
                     if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                     {
+
                         if (roomPreview != null)
                         {
+
                             roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
                             if (roomPreview.ActualRoom.RoomMovment.RoomInitialPosition == roomPreview.ActualRoom.transform.position)
+                            {
                                 roomPreview.CallRotateRoom();
+                            }
                             else
+                            {
                                 draggedRoom.CallPlaceRoom();
+                            }
                         }
                     }
                 }

@@ -18,8 +18,6 @@ namespace DumbProject.UI
             uiManager = _uiManager;
             MainMenuPanel.Init(this);
             CreditsPanel.Init(this);
-
-            ShowMainMenu();
         }
 
         public void Setup()

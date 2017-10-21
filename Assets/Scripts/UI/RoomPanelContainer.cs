@@ -6,20 +6,20 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class RoomPanelContainer : MonoBehaviour
+    public class RoomPanelContainer : MonoBehaviour, IUIChanger
     {
+        public List<UIRoomController> UISpawns { get { return _uiSpawns; } }
+
+        List<UIRoomController> _uiSpawns = new List<UIRoomController>();
+
+        Image gamePlayImage;
         public Sprite VerticalUI;
         public Sprite HorizontalUI;
 
-        public List<UIRoomController> UISpawns { get { return _uiSpawns; } }
 
-        Image gamePlayImage;
-        List<UIRoomController> _uiSpawns = new List<UIRoomController>();
-
-        public void Setup(ScreenOrientation _orientation)
+        public void Setup()
         {
             gamePlayImage = GetComponent<Image>();
-            SwitchGamePlayMenuImage(_orientation);
             foreach (UIRoomController uiCtrl in GetComponentsInChildren<UIRoomController>())
             {
                 if(!UISpawns.Contains(uiCtrl))
@@ -41,11 +41,7 @@ namespace DumbProject.UI
             return false;
         }
 
-        /// <summary>
-        /// Cambia l'immagine della UI di gioco in base all'orientamento
-        /// </summary>
-        /// <param name="_orientation"></param>
-        void SwitchGamePlayMenuImage(ScreenOrientation _orientation)
+        public void SetUIOrientation(ScreenOrientation _orientation)
         {
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {
@@ -62,6 +58,5 @@ namespace DumbProject.UI
                     gamePlayImage.sprite = HorizontalUI;
             }
         }
-
     }
 }

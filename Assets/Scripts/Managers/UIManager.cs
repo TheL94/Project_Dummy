@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexibleUI;
 using DumbProject.Generic;
+using System.Linq;
 
 namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
+
+        public Text DebugText;
+
         public bool ForceVerticalUI { get { return FlexibleUIManager.ForceVerticalUI; } }
         public ScreenOrientation DeviceCurrentOrientation { get { return FlexibleUIManager.DeviceCurrentOrientation;  } }
         public Vector2 DeviceReferenceResolution { get { return FlexibleUIManager.DeviceReferenceResolution; } }
@@ -24,6 +28,18 @@ namespace DumbProject.UI
         public UICameraPanelController CameraPanel;
 
         const string PrefabPath = "Prefabs/UI/";
+
+        List<IUIChanger> UIchangers = new List<IUIChanger>();
+
+        private void OnEnable()
+        {
+            FlexibleUIManager.OnScreenOrientationChange += SetChildrensPanelsOrientation;
+        }
+
+        private void OnDisable()
+        {
+            FlexibleUIManager.OnScreenOrientationChange -= SetChildrensPanelsOrientation;
+        }
 
         public void Init()
         {
@@ -43,10 +59,14 @@ namespace DumbProject.UI
             EndGameCtrl.Init(this);
 
             FlexibleUIManager.UpdateUIOrientation();
+            UIchangers = GetComponentsInChildren<IUIChanger>().ToList();
+
+            SetChildrensPanelsOrientation();
 
             MenuController.Setup();
             GamePlayCtrl.Setup();
             EndGameCtrl.Setup();
+
         }
 
         public void ActivateMenuPanel(bool _status)
@@ -70,6 +90,17 @@ namespace DumbProject.UI
         }
 
         /// <summary>
+        /// Ogni volta che viene scatenato l'evento on screen orientation change, vengono avvisati tutti i pannelli che devono modificare la propria immagine.
+        /// </summary>
+        void SetChildrensPanelsOrientation()
+        {
+            foreach (IUIChanger changer in UIchangers)
+            {
+                changer.SetUIOrientation(DeviceCurrentOrientation);
+            }
+        }
+
+        /// <summary>
         /// Delegato che gestisce gli eventi relativi al layout
         /// </summary>
         public delegate void LayoutEvent();
@@ -77,6 +108,16 @@ namespace DumbProject.UI
         /// Evento che viene scatenato al cambio di orientamento del dispositivo
         /// </summary>
         public LayoutEvent OnScreenOrientationChange;
+
+        public enum UIButton
+        {
+            Back,
+            Play,
+            Pause,
+            Options,
+            Credits,
+            NextTurn
+        }
     }
 
     [System.Serializable]
