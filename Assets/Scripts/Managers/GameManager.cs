@@ -117,6 +117,9 @@ namespace DumbProject.Generic
 
             UIMng = Instantiate(UIManagerPrefab);
             UIMng.Init();
+            //-----------------------------------------
+            InputHndl.SetupLogger();
+            //-----------------------------------------
 
             MainGridCtrl = Instantiate(GridControllerPrefab);
 

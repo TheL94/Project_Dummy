@@ -10,6 +10,9 @@ namespace DumbProject.UI
 {
     public class UIManager : MonoBehaviour
     {
+
+        public Text DebugText;
+
         public bool ForceVerticalUI { get { return FlexibleUIManager.ForceVerticalUI; } }
         public ScreenOrientation DeviceCurrentOrientation { get { return FlexibleUIManager.DeviceCurrentOrientation;  } }
         public Vector2 DeviceReferenceResolution { get { return FlexibleUIManager.DeviceReferenceResolution; } }
@@ -57,11 +60,13 @@ namespace DumbProject.UI
 
             FlexibleUIManager.UpdateUIOrientation();
             UIchangers = GetComponentsInChildren<IUIChanger>().ToList();
-            //SetChildrensPanelsOrientation();
+
+            SetChildrensPanelsOrientation();
 
             MenuController.Setup();
             GamePlayCtrl.Setup();
             EndGameCtrl.Setup();
+
         }
 
         public void ActivateMenuPanel(bool _status)

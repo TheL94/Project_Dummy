@@ -16,10 +16,8 @@ namespace DumbProject.UI
         public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
-            MainMenuPanel.Init(this, uiManager.DeviceCurrentOrientation);
-            CreditsPanel.Init(this, uiManager.DeviceCurrentOrientation);
-
-            ShowMainMenu();
+            MainMenuPanel.Init(this);
+            CreditsPanel.Init(this);
         }
 
         public void Setup()
