@@ -10,10 +10,12 @@ namespace DumbProject.Generic {
         public float Duration;
         Plane gridLevel;
         Ray centralRay;
+        Vector2 screenCenter;
 
         public void Init()
         {
             gridLevel = new Plane(Vector3.up, GameManager.I.MainGridCtrl.transform.position.y + GameManager.I.MainGridCtrl.GridOffsetY);
+            screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
         }
 
         public void Execute(Vector3 _start, Vector3 _target)
@@ -38,9 +40,9 @@ namespace DumbProject.Generic {
         /// <param name="_target">The position to reach</param>
         public void MoveTo(Vector3 _target)
         {
-            Vector3 startPosition = new Vector3(0,0,0);
+            Vector3 startPosition = new Vector3();
 
-            centralRay = Camera.main.ScreenPointToRay(Camera.main.transform.forward);
+            centralRay = Camera.main.ScreenPointToRay(screenCenter);
             float distance;
             if (gridLevel.Raycast(centralRay, out distance))
                 startPosition = centralRay.GetPoint(distance);
