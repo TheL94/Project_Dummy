@@ -35,10 +35,24 @@ namespace DumbProject.UI
             }
         }
 
+        private IconStatus _currentStatus;
+
+        public IconStatus CurrentStatus
+        {
+            get { return _currentStatus; }
+            set {
+                _currentStatus = value;
+                SetIconImage();
+            }
+        }
+
         public Vector2 UpLeftFrameCorner;
 
         public GameObject DumbyIconPrefab;
+
+        Image iconImage;
         GameObject DumbyIcon;
+
         Vector3 dumbyPosition;
         float offset;
 
@@ -51,6 +65,7 @@ namespace DumbProject.UI
             {
                 DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
                 DumbyIcon.GetComponent<DumbyIndicatorRepositioning>().Init(this);
+                iconImage = GetComponent<Image>();
             }
         }
 
@@ -136,13 +151,35 @@ namespace DumbProject.UI
             return false;
         }
 
-        private void OnDrawGizmos()
+        void SetIconImage()
         {
-            Gizmos.color = Color.magenta;
-            //Draw della orizzontale
-            Gizmos.DrawLine(UpLeftFrameCorner, new Vector2(UpLeftFrameCorner.x, Screen.width));
-            //Draw della Verticale
-            Gizmos.DrawLine(UpLeftFrameCorner, new Vector2(UpLeftFrameCorner.x, 0));
+            if (iconImage != null)
+            {
+                switch (CurrentStatus)
+                {
+                    case IconStatus.Walk:
+                        // iconImage = walkImage
+                        break;
+                    case IconStatus.Fight:
+                        // iconImage = fightImage
+                        break;
+                    case IconStatus.Interact:
+                        break;
+                    case IconStatus.FindingPath:
+                        break;
+                    default:
+                        break;
+                } 
+            }
+        }
+
+
+        public enum IconStatus
+        {
+            Walk,
+            Fight,
+            Interact,
+            FindingPath,
         }
     }
 }
