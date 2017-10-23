@@ -342,42 +342,6 @@ namespace DumbProject.Rooms
 
             return wallCouples;
         }
-
-        // DA LASCAIRE !
-        //void CalculateGraphicElementsPercentage()
-        //{
-        //    List<PowerupsPercentage> tempPowerUpsPercentage = new List<PowerupsPercentage>();
-        //    foreach (PowerupsPercentage powerUpPercentage in powerUpsOptions.Percentages)
-        //    {
-        //        PowerupRatioSum += powerUpPercentage.Percentage;
-        //        tempPowerUpsPercentage.Add(powerUpPercentage);
-        //    }
-
-        //    for (int i = 0; i < tempPowerUpsPercentage.Count; i++)
-        //    {
-        //        powerUpPercentages.Add(new PowerupsPercentage { PowerUpID = tempPowerUpsPercentage[i].PowerUpID, Percentage = (tempPowerUpsPercentage[i].Percentage * 100) / PowerupRatioSum });
-        //    }
-        //}
-
-        //GameObject ChooseGraphicElements()
-        //{
-        //    float randNum = Random.Range(0, PowerupRatioSum);
-        //    float tempMinValue = 0f;
-
-        //    for (int i = 0; i < powerUpPercentages.Count; i++)
-        //    {
-        //        if (randNum < (powerUpPercentages[i].Percentage + tempMinValue) && randNum >= tempMinValue)
-        //        {
-        //            foreach (GameObject item in PowerUps)
-        //            {
-        //                if (item.GetComponent<PowerUpBase>().ID == powerUpPercentages[i].PowerUpID)
-        //                    return item;
-        //            }
-        //        }
-        //        tempMinValue += powerUpPercentages[i].Percentage;
-        //    }
-        //    return null;
-        //}
         #endregion
 
         #region Cell Managment
