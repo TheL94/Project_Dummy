@@ -49,43 +49,48 @@ namespace DumbProject.GDR_System
         /// <param name="_data">Il data relativo all'oggetto che viene istanziato</param>
         IInteractable CreateInteractable(GDR_Element_Generic_Data _data)
         {
-            GameObject newObj = new GameObject();
+            GameObject graphicObj = Instantiate(_data.ElementPrefab);
+
+            GameObject previewObj = Instantiate(_data.ElementPrefab, graphicObj.transform.position, graphicObj.transform.rotation, graphicObj.transform);
+            previewObj.layer = 9; // Preview Layer
+            foreach (Transform obj in previewObj.GetComponentsInChildren<Transform>())
+            {
+                obj.gameObject.layer = 9; // Preview Layer
+            }       
+            previewObj.transform.localScale = new Vector3(5f, 5f, 5f);
+
             IInteractable item = null;
 
             if (_data.GetType() == typeof(WeaponData))
             {
-                item = newObj.AddComponent<Weapon>();
+                item = graphicObj.AddComponent<Weapon>();
                 (item as Weapon).Init(_data);
             }
             else if (_data.GetType() == typeof(PotionData))
             {
-                item = newObj.AddComponent<Potion>();
+                item = graphicObj.AddComponent<Potion>();
                 (item as Potion).Init(_data);
             }
             else if (_data.GetType() == typeof(ArmorData))
             {
-                item = newObj.AddComponent<Armor>();
+                item = graphicObj.AddComponent<Armor>();
                 (item as Armor).Init(_data);
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
-                item = newObj.AddComponent<TimeWaster>();
+                item = graphicObj.AddComponent<TimeWaster>();
                 (item as TimeWaster).Init(_data);
             }
             else if (_data.GetType() == typeof(TrapData))
             {
-                item = newObj.AddComponent<Trap>();
+                item = graphicObj.AddComponent<Trap>();
                 (item as Trap).Init(_data);
             }
             else if (_data.GetType() == typeof(EnemyData))
             {
-                item = newObj.AddComponent<Enemy>();
+                item = graphicObj.AddComponent<Enemy>();
                 (item as Enemy).Init(_data);
             }
-
-            // TODO : da collegare al pool
-            GameObject graphicObj = Instantiate(_data.ElementPrefab, item.Transf);
-            graphicObj.transform.position = item.Transf.position;
             return item;
         }
         #endregion
