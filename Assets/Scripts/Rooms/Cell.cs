@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Grid;
 using DumbProject.Generic;
+using DumbProject.GDR_System;
 
 namespace DumbProject.Rooms
 {
@@ -54,9 +55,15 @@ namespace DumbProject.Rooms
             {
                 // TODO : posizionare bene l'oggetto
                 _actualInteractable = value;
-                _actualInteractable.Transf.parent = RelativeRoom.transform;
+                _actualInteractable.Transf.parent = transform;
                 _actualInteractable.Transf.position = transform.position;
-                _actualInteractable.Transf.rotation = transform.rotation;
+                if((_actualInteractable.GetType() == typeof(Weapon)) || (_actualInteractable.GetType() == typeof(Armor)) || (_actualInteractable.GetType() == typeof(Potion)))
+                {
+                    GameObject chest = GameManager.I.PoolMng.GetGameObject("Chest");
+                    chest.transform.position = _actualInteractable.Transf.position;
+                    chest.transform.parent = transform;
+                }
+
             }
         }
 
