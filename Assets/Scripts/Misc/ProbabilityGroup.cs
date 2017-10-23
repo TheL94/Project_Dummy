@@ -38,8 +38,10 @@ public class ProbabilityGroup<T> {
 
                 tempMinValue += Elements[i].Percentage;
             }
+            return Elements[0].Obj;
         }
-        return Elements[0].Obj;
+        else
+            return default(T);
     }
     #endregion
 
