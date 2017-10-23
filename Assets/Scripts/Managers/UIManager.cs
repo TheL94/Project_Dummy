@@ -24,8 +24,6 @@ namespace DumbProject.UI
         public UIGamePlayController GamePlayCtrl;
         [HideInInspector]
         public UIEndGameplayController EndGameCtrl;
-        [HideInInspector]
-        public UICameraPanelController CameraPanel;
 
         const string PrefabPath = "Prefabs/UI/";
 
@@ -46,8 +44,6 @@ namespace DumbProject.UI
             //setta la risoluzione di riferimento del canvas in base a quella dello schermo del dispositivo in uso
             CanvasScaler scaler = GetComponent<CanvasScaler>();
             scaler.referenceResolution = DeviceReferenceResolution;
-            // setup camera panel
-            CameraPanel = Instantiate(Resources.Load<GameObject>(PrefabPath + "CameraMovementPanel"), transform).GetComponent<UICameraPanelController>();
             // setup menu panel
             MenuController = Instantiate(Resources.Load<GameObject>(PrefabPath + "MenuController"), transform).GetComponent<UIMenuController>();
             MenuController.Init(this);
@@ -82,11 +78,6 @@ namespace DumbProject.UI
         public void ActivateEndGameplayPanel(bool _status)
         {
             EndGameCtrl.gameObject.SetActive(_status);
-        }
-
-        public void ActivateCameraPanel(bool _status)
-        {
-            CameraPanel.gameObject.SetActive(_status);
         }
 
         /// <summary>

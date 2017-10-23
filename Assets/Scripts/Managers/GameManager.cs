@@ -141,7 +141,6 @@ namespace DumbProject.Generic
             UIMng.ActivateMenuPanel(true);
             UIMng.ActivateGamePlayPanel(false);
             UIMng.ActivateEndGameplayPanel(false);
-            UIMng.ActivateCameraPanel(false);
         }
 
         public void EnterGameplayActions()
@@ -153,11 +152,11 @@ namespace DumbProject.Generic
 
             UIMng.ActivateGamePlayPanel(true);
             UIMng.ActivateMenuPanel(false);
-            UIMng.ActivateCameraPanel(true);
             UIMng.GamePlayCtrl.ActivateLateralGUI(true);
             UIMng.GamePlayCtrl.ActivatePauseButton(true);
 
             Dumby = Instantiate(DumbyPrefab, DungeonMng.RoomInDungeon[0].CellsInRoom[0].RelativeNode.WorldPosition, Quaternion.identity);
+            SetAllAIStatus(true);
 
             ChageFlowState(FlowState.StartGameplay);
         }
