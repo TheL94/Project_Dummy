@@ -10,12 +10,20 @@ namespace DumbProject.GDR_System
 {
     public class GDR_Element_Manager : MonoBehaviour
     {
-        [HideInInspector] public List<GDR_Element_Generic_Data> Istances_GDR_Element_Data;
+        [HideInInspector]
+        public List<GDR_Element_Generic_Data> Istances_GDR_Element_Data;
+        [HideInInspector]
+        public ProbabilityGroup<GDR_Element_Generic_Data> ProbGroup;
 
         #region Setup
         public void Init(List<GDR_Element_Generic_Data> _istances_GDR_Element_Data)
         {
             Istances_GDR_Element_Data = _istances_GDR_Element_Data;
+            ProbGroup = new ProbabilityGroup<GDR_Element_Generic_Data>(new List<ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>>());
+            foreach (GDR_Element_Generic_Data item in Istances_GDR_Element_Data)
+            {
+                ProbGroup.Add(new ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>(item, item.PercentageToSpawn));
+            }
         } 
         #endregion
 
@@ -26,33 +34,12 @@ namespace DumbProject.GDR_System
         /// <param name="_room"></param>
         public void AddGDR_ElementInRoom(Room _room)
         {
-            GDR_Element_Generic_Data element_Generic_Data = ChooseElement();
+            GDR_Element_Generic_Data element_Generic_Data = ProbGroup.PickRandom();
             if (element_Generic_Data != null)
             {
                 IInteractable element = CreateInteractable(element_Generic_Data);
                 _room.AddInteractable(element); 
             }
-        }
-
-        /// <summary>
-        /// Ritorna l'item da istanziare nella ui in base alla percentuale di spawn
-        /// </summary>
-        /// <returns></returns>
-        GDR_Element_Generic_Data ChooseElement()
-        {
-            float percentage;
-            float minValue = 0;
-            float randNum = Random.Range(0f, 100f);
-
-            foreach (GDR_Element_Generic_Data _data in Istances_GDR_Element_Data)
-            {
-                percentage = _data.PercentageToSpawn;
-                if (randNum > minValue && randNum <= (minValue + percentage))
-                    return _data;
-                else
-                    minValue += percentage;
-            }
-            return null;
         }
 
         /// <summary>

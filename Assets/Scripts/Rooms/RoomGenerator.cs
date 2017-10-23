@@ -87,7 +87,6 @@ namespace DumbProject.Rooms
             mainRoom.AddNetNodesOnDoors();
             GameManager.I.DungeonMng.ParentRoom(mainRoom, ExplorationStatus.InExploration);
 
-            GameManager.I.GDR_Element_Mng.AddGDR_ElementInRoom(mainRoom);
             return mainRoom;
         }
 
@@ -108,12 +107,8 @@ namespace DumbProject.Rooms
                 float randNum = Random.Range(0f, 1f);
 
                 if (randNum >= 0.1f)
-                {
-                    //for (int i = 0; i < Random.Range(0, 2); i++)
-                    //{
-                        GameManager.I.GDR_Element_Mng.AddGDR_ElementInRoom(room);
-                    //}
-                }
+                    GameManager.I.GDR_Element_Mng.AddGDR_ElementInRoom(room);
+
                 numberOfRoomsCreated++;
             }
         }
@@ -127,7 +122,6 @@ namespace DumbProject.Rooms
             objectiveRoom.AddNetNodesOnDoors();
             GameManager.I.DungeonMng.ParentRoom(objectiveRoom, ExplorationStatus.Unavailable);
 
-            //GameManager.I.ItemManager.InstantiateItemInRoom(objectiveRoom);
             return objectiveRoom;
         }
 

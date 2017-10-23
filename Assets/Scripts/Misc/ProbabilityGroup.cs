@@ -28,7 +28,7 @@ public class ProbabilityGroup<T> {
     {
         if (Elements.Count > 0)
         {
-            float randNum = Random.Range(0, 100);
+            float randNum = Random.Range(0f, 1f);
             float tempMinValue = 0f;
 
             for (int i = 0; i < Elements.Count; i++)
@@ -38,6 +38,7 @@ public class ProbabilityGroup<T> {
 
                 tempMinValue += Elements[i].Percentage;
             }
+            
         }
         return Elements[0].Obj;
     }
@@ -53,7 +54,7 @@ public class ProbabilityGroup<T> {
             weigthSum += element.Weigth;
 
         foreach (var element in Elements)
-            element.Percentage = element.Weigth / weigthSum / 100;
+            element.Percentage = element.Weigth / (weigthSum);
     }
 
     public class Element<T>
