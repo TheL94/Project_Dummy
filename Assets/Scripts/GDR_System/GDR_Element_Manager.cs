@@ -59,7 +59,7 @@ namespace DumbProject.GDR_System
         /// <param name="_data">Il data relativo all'oggetto che viene istanziato</param>
         IInteractable CreateInteractable(GDR_Element_Generic_Data _data)
         {
-            GameObject graphicObj = CreateGameObjectFromData(_data);
+            GameObject graphicObj = Instantiate(_data.ElementPrefab);
             IInteractable interactable = null;
 
             if (_data.GetType() == typeof(ChestData))
@@ -91,7 +91,7 @@ namespace DumbProject.GDR_System
 
         I_GDR_Equippable CreateEquippable(Transform _parent, GDR_Element_Generic_Data _data)
         {
-            GameObject graphicObj = CreateGameObjectFromData(_data);
+            GameObject graphicObj = Instantiate(_data.ElementPrefab);
             CreatePreviewObjectFromData(_data, new Vector3(5f, 5f, 5f), graphicObj.transform);
             graphicObj.transform.parent = _parent;
             graphicObj.transform.position = _parent.transform.position;
@@ -115,12 +115,6 @@ namespace DumbProject.GDR_System
             }
 
             return equippable;
-        }
-
-        GameObject CreateGameObjectFromData(GDR_Element_Generic_Data _data)
-        {
-            GameObject graphicObj = Instantiate(_data.ElementPrefab);
-            return graphicObj;
         }
 
         GameObject CreatePreviewObjectFromData(GDR_Element_Generic_Data _data, Vector3 _previewObjScale, Transform _parent)
