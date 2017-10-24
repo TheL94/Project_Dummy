@@ -62,6 +62,7 @@ namespace DumbProject.GDR
                 }
             }
         }
+        #endregion
 
         /// <summary>
         /// Impugna l'oggetto che raccoglie 
@@ -72,6 +73,5 @@ namespace DumbProject.GDR
         {
             itemToPick.GameObj.transform.parent = _gdrController.transform;
         }
-        #endregion
     }
 }
