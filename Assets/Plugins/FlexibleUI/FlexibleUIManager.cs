@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace FlexibleUI
 {
+    [AddComponentMenu("FlexibleUI/Manager")]
     public class FlexibleUIManager : MonoBehaviour
     {
         /// <summary>
