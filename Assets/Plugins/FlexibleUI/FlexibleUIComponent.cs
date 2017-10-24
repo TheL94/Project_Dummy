@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace FlexibleUI
 {
+    [AddComponentMenu("FlexibleUI/UIComponent")]
     public class FlexibleUIComponent : MonoBehaviour
     {
         public FlexibleUIData VerticalUIObjectData;
