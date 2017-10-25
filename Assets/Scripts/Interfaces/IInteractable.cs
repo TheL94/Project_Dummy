@@ -9,6 +9,6 @@ namespace DumbProject.Generic
     {
         bool IsInteractable { get; set; }
         Transform Transf { get; }
-        void Interact(AI_Controller _controller);
+        bool Interact(AI_Controller _controller);
     }
 }
