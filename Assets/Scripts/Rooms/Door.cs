@@ -126,7 +126,7 @@ namespace DumbProject.Rooms
                 {
                     //Caso in cui la porta collega all'esterno
                     //RelativeNetNode.AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
-                    _controller.SetAICurrentState((_controller as Dumby).DefaultLostCondition);
+                    _controller.SetAICurrentState((_controller as Dumby).DefaultDive);
                 }
             }
 
