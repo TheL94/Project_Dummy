@@ -113,6 +113,8 @@ namespace DumbProject.Rooms
             GameManager.I.DungeonMng.SetupRoomInDungeon(this);
 
             Destroy(RoomMovment);
+
+            DestroyPreviewableObjs();
         }
 
         /// <summary>
@@ -217,7 +219,7 @@ namespace DumbProject.Rooms
 
         public IInteractable AddInteractable(IInteractable _interactableToAdd)
         {
-            List<Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
+            List <Cell> freeCells = CellsInRoom.Where(c => c.ActualInteractable == null).ToList();
             Cell freeCell = freeCells[Random.Range(0, freeCells.Count)];
 
             // TODO : non molto bello, ma necessario
@@ -614,29 +616,23 @@ namespace DumbProject.Rooms
         }
         #endregion
 
-        private void OnDrawGizmos()
+        /// <summary>
+        /// Funzione che distrugge tutti gli oggetti preview per tutti gli interactable che implementano anche IPreviewable
+        /// </summary>
+        void DestroyPreviewableObjs()
         {
-            //switch (StatusOfExploration)
-            //{
-            //    case ExplorationStatus.NotInGame:
-            //        Gizmos.color = Color.white;
-            //        break;
-            //    case ExplorationStatus.Unavailable:
-            //        Gizmos.color = Color.red;
-            //        break;
-            //    case ExplorationStatus.NotExplored:
-            //        Gizmos.color = Color.yellow;
-            //        break;
-            //    case ExplorationStatus.InExploration:
-            //        Gizmos.color = Color.cyan;
-            //        break;
-            //    case ExplorationStatus.Explored:
-            //        Gizmos.color = Color.green;
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //Gizmos.DrawWireCube(transform.position + new Vector3(0f, 4f, 0f), new Vector3(5f, 1f, 5f));
+            foreach (IInteractable interactable in InteractableList)
+            {
+                if (typeof(IPreviewable).IsAssignableFrom(interactable.GetType()))
+                {
+                    Destroy((interactable as IPreviewable).PreviewObj);
+                }
+                else if(interactable.GetType() == typeof(Chest))
+                {
+                    IPreviewable previewable = ((interactable as I_GDR_EquippableHolder).Equippable as IPreviewable);
+                    Destroy(previewable.PreviewObj);
+                }
+            }
         }
     }
 

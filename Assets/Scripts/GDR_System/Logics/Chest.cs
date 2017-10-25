@@ -19,6 +19,14 @@ namespace DumbProject.GDR_System
 
         #region I_GDR_EquippableHolder
         public I_GDR_Equippable Equippable { get; set; }
+
+        public void EnableEquippable(bool _status)
+        {
+            foreach (MeshRenderer mesh in Equippable.GameObj.GetComponentsInChildren<MeshRenderer>())
+            {
+                mesh.enabled = _status;
+            }
+        }
         #endregion
 
         #region IInteractable
@@ -37,6 +45,7 @@ namespace DumbProject.GDR_System
 
         public void GDR_Interact(GDR_Controller _GDR_Controller)
         {
+            EnableEquippable(true);
             if (_GDR_Controller != null)
                 _GDR_Controller.OnInteract(this);
         }

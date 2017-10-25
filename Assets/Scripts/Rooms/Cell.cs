@@ -53,7 +53,6 @@ namespace DumbProject.Rooms
             get { return _actualInteractable; }
             set
             {
-                // TODO : posizionare bene l'oggetto
                 _actualInteractable = value;
                 _actualInteractable.Transf.parent = transform;
                 _actualInteractable.Transf.position = transform.position;
@@ -255,17 +254,5 @@ namespace DumbProject.Rooms
             }
         }
         #endregion
-
-        private void OnDrawGizmos()
-        {
-            //if (RelativeNode == null)
-            //    return;
-            //Gizmos.color = Color.green;
-            //foreach (INetworkable link in RelativeNode.Links)
-            //{
-            //    if (link != null)
-            //        Gizmos.DrawLine(RelativeNode.WorldPosition + new Vector3(0f, .5f, 0f), link.spacePosition + new Vector3(0f, .5f, 0f));
-            //}
-        }
     }
 }
