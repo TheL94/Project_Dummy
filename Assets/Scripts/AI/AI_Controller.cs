@@ -63,4 +63,17 @@ namespace Framework.AI
             return newStateInstance;
         }
     }
+
+    public static class AI_ControllerExtention
+    {
+        /// <summary>
+        /// Used to call a state change from outside
+        /// </summary>
+        /// <param name="_controller"></param>
+        /// <param name="_newState"></param>
+        public static void SetAICurrentState(this AI_Controller _controller, AI_State _newState)
+        {
+            _controller.CurrentState = _newState;
+        }
+    }
 }

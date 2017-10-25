@@ -57,13 +57,6 @@ namespace DumbProject.Rooms
                 _actualInteractable = value;
                 _actualInteractable.Transf.parent = transform;
                 _actualInteractable.Transf.position = transform.position;
-                if((_actualInteractable.GetType() == typeof(Weapon)) || (_actualInteractable.GetType() == typeof(Armor)) || (_actualInteractable.GetType() == typeof(Potion)))
-                {
-                    GameObject chest = GameManager.I.PoolMng.GetGameObject("Chest");
-                    chest.transform.position = _actualInteractable.Transf.position;
-                    chest.transform.parent = transform;
-                }
-
             }
         }
 

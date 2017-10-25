@@ -13,28 +13,38 @@ namespace DumbProject.GDR_System
         [HideInInspector]
         public List<GDR_Element_Generic_Data> Istances_GDR_Element_Data;
         [HideInInspector]
-        public ProbabilityGroup<GDR_Element_Generic_Data> ProbGroup;
+        public ProbabilityGroup<GDR_Element_Generic_Data> IInteractable_ProbGroup;
 
-        #region Setup
+        [HideInInspector]
+        public ProbabilityGroup<GDR_Element_Generic_Data> I_GDR_Equippable_ProbGroup;
+
+        #region API
         public void Init(List<GDR_Element_Generic_Data> _istances_GDR_Element_Data)
         {
             Istances_GDR_Element_Data = _istances_GDR_Element_Data;
-            ProbGroup = new ProbabilityGroup<GDR_Element_Generic_Data>(new List<ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>>());
-            foreach (GDR_Element_Generic_Data item in Istances_GDR_Element_Data)
+
+            IInteractable_ProbGroup = new ProbabilityGroup<GDR_Element_Generic_Data>(new List<ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>>());
+            I_GDR_Equippable_ProbGroup = new ProbabilityGroup<GDR_Element_Generic_Data>(new List<ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>>());
+            foreach (GDR_Element_Generic_Data GDR_Element in Istances_GDR_Element_Data)
             {
-                ProbGroup.Add(new ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>(item, item.PercentageToSpawn));
+                if ((GDR_Element.GetType() == typeof(ArmorData)) || (GDR_Element.GetType() == typeof(WeaponData)) || (GDR_Element.GetType() == typeof(PotionData)))
+                {
+                    I_GDR_Equippable_ProbGroup.Add(new ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>(GDR_Element, GDR_Element.PercentageToSpawn));
+                }
+                else
+                {
+                    IInteractable_ProbGroup.Add(new ProbabilityGroup<GDR_Element_Generic_Data>.Element<GDR_Element_Generic_Data>(GDR_Element, GDR_Element.PercentageToSpawn));
+                }
             }
         } 
-        #endregion
 
-        #region API
         /// <summary>
         /// 
         /// </summary>
         /// <param name="_room"></param>
         public void AddGDR_ElementInRoom(Room _room)
         {
-            GDR_Element_Generic_Data element_Generic_Data = ProbGroup.PickRandom();
+            GDR_Element_Generic_Data element_Generic_Data = IInteractable_ProbGroup.PickRandom();
             if (element_Generic_Data != null)
             {
                 IInteractable element = CreateInteractable(element_Generic_Data);
@@ -50,48 +60,73 @@ namespace DumbProject.GDR_System
         IInteractable CreateInteractable(GDR_Element_Generic_Data _data)
         {
             GameObject graphicObj = Instantiate(_data.ElementPrefab);
+            IInteractable interactable = null;
 
-            GameObject previewObj = Instantiate(_data.ElementPrefab, graphicObj.transform.position, graphicObj.transform.rotation, graphicObj.transform);
-            previewObj.layer = 9; // Preview Layer
-            foreach (Transform obj in previewObj.GetComponentsInChildren<Transform>())
+            if (_data.GetType() == typeof(ChestData))
             {
-                obj.gameObject.layer = 9; // Preview Layer
-            }       
-            previewObj.transform.localScale = new Vector3(5f, 5f, 5f);
-
-            IInteractable item = null;
-
-            if (_data.GetType() == typeof(WeaponData))
-            {
-                item = graphicObj.AddComponent<Weapon>();
-                (item as Weapon).Init(_data);
-            }
-            else if (_data.GetType() == typeof(PotionData))
-            {
-                item = graphicObj.AddComponent<Potion>();
-                (item as Potion).Init(_data);
-            }
-            else if (_data.GetType() == typeof(ArmorData))
-            {
-                item = graphicObj.AddComponent<Armor>();
-                (item as Armor).Init(_data);
+                interactable = graphicObj.AddComponent<Chest>();
+                (interactable as Chest).Init(_data);
+                (interactable as I_GDR_EquippableHolder).Equippable = CreateEquippable((interactable as Chest).transform, I_GDR_Equippable_ProbGroup.PickRandom());
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
-                item = graphicObj.AddComponent<TimeWaster>();
-                (item as TimeWaster).Init(_data);
+                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
+                interactable = graphicObj.AddComponent<TimeWaster>();
+                (interactable as TimeWaster).Init(_data);
             }
             else if (_data.GetType() == typeof(TrapData))
             {
-                item = graphicObj.AddComponent<Trap>();
-                (item as Trap).Init(_data);
+                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
+                interactable = graphicObj.AddComponent<Trap>();
+                (interactable as Trap).Init(_data);
             }
             else if (_data.GetType() == typeof(EnemyData))
             {
-                item = graphicObj.AddComponent<Enemy>();
-                (item as Enemy).Init(_data);
+                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
+                interactable = graphicObj.AddComponent<Enemy>();
+                (interactable as Enemy).Init(_data);
             }
-            return item;
+            return interactable;
+        }
+
+        I_GDR_Equippable CreateEquippable(Transform _parent, GDR_Element_Generic_Data _data)
+        {
+            GameObject graphicObj = Instantiate(_data.ElementPrefab);
+            CreatePreviewObjectFromData(_data, new Vector3(5f, 5f, 5f), graphicObj.transform);
+            graphicObj.transform.parent = _parent;
+            graphicObj.transform.position = _parent.transform.position;
+
+            I_GDR_Equippable equippable = null;
+
+            if (_data.GetType() == typeof(WeaponData))
+            {
+                equippable = graphicObj.AddComponent<Weapon>();
+                (equippable as Weapon).Init(_data);
+            }
+            else if (_data.GetType() == typeof(PotionData))
+            {
+                equippable = graphicObj.AddComponent<Potion>();
+                (equippable as Potion).Init(_data);
+            }
+            else if (_data.GetType() == typeof(ArmorData))
+            {
+                equippable = graphicObj.AddComponent<Armor>();
+                (equippable as Armor).Init(_data);
+            }
+
+            return equippable;
+        }
+
+        GameObject CreatePreviewObjectFromData(GDR_Element_Generic_Data _data, Vector3 _previewObjScale, Transform _parent)
+        {
+            GameObject previewObj = Instantiate(_data.ElementPrefab, _parent.position, _parent.rotation, _parent);
+            foreach (Transform obj in previewObj.GetComponentsInChildren<Transform>())
+            {
+                obj.gameObject.layer = 9; // Preview Layer
+            }
+            previewObj.transform.localScale = _previewObjScale;
+
+            return previewObj;
         }
         #endregion
     }
