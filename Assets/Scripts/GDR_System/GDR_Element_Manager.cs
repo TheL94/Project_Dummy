@@ -67,24 +67,25 @@ namespace DumbProject.GDR_System
                 interactable = graphicObj.AddComponent<Chest>();
                 (interactable as Chest).Init(_data);
                 (interactable as I_GDR_EquippableHolder).Equippable = CreateEquippable((interactable as Chest).transform, I_GDR_Equippable_ProbGroup.PickRandom());
+                (interactable as I_GDR_EquippableHolder).EnableEquippable(false);
             }
             else if (_data.GetType() == typeof(TimeWasterData))
             {
-                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
                 interactable = graphicObj.AddComponent<TimeWaster>();
-                (interactable as TimeWaster).Init(_data);
+                (interactable as TimeWaster).Init(_data);               
+                (interactable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(2f, 2f, 2f), graphicObj.transform);
             }
             else if (_data.GetType() == typeof(TrapData))
             {
-                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
                 interactable = graphicObj.AddComponent<Trap>();
                 (interactable as Trap).Init(_data);
+                (interactable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(2f, 2f, 2f), graphicObj.transform);
             }
             else if (_data.GetType() == typeof(EnemyData))
             {
-                CreatePreviewObjectFromData(_data, new Vector3(3f, 3f, 3f), graphicObj.transform);
                 interactable = graphicObj.AddComponent<Enemy>();
                 (interactable as Enemy).Init(_data);
+                (interactable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(2f, 2f, 2f), graphicObj.transform);
             }
             return interactable;
         }
@@ -92,7 +93,7 @@ namespace DumbProject.GDR_System
         I_GDR_Equippable CreateEquippable(Transform _parent, GDR_Element_Generic_Data _data)
         {
             GameObject graphicObj = Instantiate(_data.ElementPrefab);
-            CreatePreviewObjectFromData(_data, new Vector3(5f, 5f, 5f), graphicObj.transform);
+            
             graphicObj.transform.parent = _parent;
             graphicObj.transform.position = _parent.transform.position;
 
@@ -114,10 +115,12 @@ namespace DumbProject.GDR_System
                 (equippable as Armor).Init(_data);
             }
 
+            (equippable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(5f, 5f, 5f), _parent);
+
             return equippable;
         }
 
-        GameObject CreatePreviewObjectFromData(GDR_Element_Generic_Data _data, Vector3 _previewObjScale, Transform _parent)
+        GameObject CreatePreviewable(GDR_Element_Generic_Data _data, Vector3 _previewObjScale, Transform _parent)
         {
             GameObject previewObj = Instantiate(_data.ElementPrefab, _parent.position, _parent.rotation, _parent);
             foreach (Transform obj in previewObj.GetComponentsInChildren<Transform>())

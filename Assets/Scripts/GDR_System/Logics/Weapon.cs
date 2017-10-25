@@ -8,7 +8,7 @@ using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
-    public class Weapon : MonoBehaviour, I_GDR_Equippable
+    public class Weapon : MonoBehaviour, I_GDR_Equippable, IPreviewable
     {
         public WeaponData Data { get; private set; }
 
@@ -17,8 +17,17 @@ namespace DumbProject.GDR_System
             Data = _data as WeaponData;
         }
 
+        #region IPreviewable
+        public GameObject PreviewObj { get; set; }
+        #endregion
+
         #region I_GDR_Equippable
         public GameObject GameObj { get { return gameObject; } }
+
+        public void Equip(GDR_Controller _controller)
+        {
+
+        }
         #endregion
     }
 }

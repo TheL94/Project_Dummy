@@ -7,7 +7,7 @@ using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
-    public class TimeWaster : MonoBehaviour, IInteractable, I_GDR_Interactable
+    public class TimeWaster : MonoBehaviour, IInteractable, I_GDR_Interactable, IPreviewable
     {
         public TimeWasterData Data { get; private set; }
 
@@ -16,6 +16,10 @@ namespace DumbProject.GDR_System
             Data = _data as TimeWasterData;
             IsInteractable = true;
         }
+
+        #region IPreviewable
+        public GameObject PreviewObj { get; set; }
+        #endregion
 
         #region IInteractable
         public bool IsInteractable { get; set; }
