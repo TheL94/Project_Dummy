@@ -72,7 +72,7 @@ namespace DumbProject.GDR_System
             {
                 Life -= _damage;
                 inventoryCtrl.BreakArmor();
-                Debug.Log(Life);
+                Debug.Log(ID + " " + Life);
                 if (Life <= 0)
                 {
                     Life = 0;              

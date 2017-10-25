@@ -63,6 +63,7 @@ namespace DumbProject.GDR_System
                 GDR_Interact(_controller.GetComponent<GDR_Controller>());
                 attackSpeed = gdrController.Data.Speed;
 
+                Debug.Log("Enemy Life " + gdrController.Data.Life);
                 if (gdrController != null && (gdrController.Data.Life <= 0 || !IsInteractable))
                 {
                     IsInteractable = false;
