@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Generic;
-using DumbProject.GDR;
 using Framework.AI;
 
 namespace DumbProject.GDR_System
@@ -32,7 +31,7 @@ namespace DumbProject.GDR_System
         void ProximityCheck()
         {
             //TODO : Da rivedere
-            if (RelativeCell.RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
+            if (RelativeCell == null || RelativeCell.RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
                 return;
 
             if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= Data.ActivationRadius)

@@ -1,18 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Rooms;
 using DumbProject.Generic;
-using Framework.AI;
-using DumbProject.GDR_System;
 
-namespace DumbProject.GDR
+
+namespace DumbProject.GDR_System
 {
     [CreateAssetMenu(menuName = "GDR_Controller")]
     public class GDR_Data : ScriptableObject
     {
         public string ID;
-        public GDR_Controller GDRPrefab;
         public float ExperienceForNextLevel;
         public int PlayerLevel;
         public InventoryController inventoryCtrl;

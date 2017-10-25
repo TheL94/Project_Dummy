@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DumbProject.Rooms;
 using DumbProject.Generic;
-using DumbProject.GDR;
 using Framework.AI;
 
 namespace DumbProject.GDR_System
@@ -17,6 +17,8 @@ namespace DumbProject.GDR_System
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as EnemyData;
+            gdrController = gameObject.AddComponent<GDR_Controller>();
+            gdrController.Init(GameManager.I.GDR_ElementDataMng.GetGDR_DataByID(Data.DataID));
             IsInteractable = true;
         }
 

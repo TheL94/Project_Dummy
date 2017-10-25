@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DumbProject.Rooms;
-using DumbProject.Grid;
+using DumbProject.GDR_System;
 
 namespace DumbProject.Generic
 {
@@ -147,7 +147,7 @@ namespace DumbProject.Generic
             _room.StatusOfExploration = _newStatus;
             if (_newStatus == ExplorationStatus.Explored)
             {
-                GameManager.I.Dumby.GetComponent<GDR.GDR_Controller>().Data.GetExperience(GDR.ExperienceType.Room);
+                GameManager.I.Dumby.GetComponent<GDR_Controller>().Data.GetExperience(ExperienceType.Room);
                 //TODO : Da rivedere la chiamata in una posizione migliore.
             }
             _room.LinkCells();

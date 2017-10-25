@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using Framework.AI;
-using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
