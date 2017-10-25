@@ -104,9 +104,6 @@ namespace DumbProject.Rooms
         {
             _newEdgeObj.transform.localPosition = _position;
             _newEdgeObj.transform.parent = transform;
-            //Quaternion newRotation = ((transform.position - _newEdgeObj.transform.position) != Vector3.zero) ? 
-            //    Quaternion.LookRotation(transform.position - _newEdgeObj.transform.position) : Quaternion.identity;
-            //_newEdgeObj.transform.rotation = newRotation;
             Edge newEdge = _newEdgeObj.AddComponent<Edge>();
             newEdge.Setup(this);
             Edges.Add(newEdge);

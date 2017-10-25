@@ -8,5 +8,6 @@ namespace DumbProject.GDR_System
     public class EnemyData : GDR_Element_Generic_Data
     {
         public float ActivationRadius;
+        public string DataID;
     }
 }

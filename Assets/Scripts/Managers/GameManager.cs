@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Framework.AI;
 using DumbProject.Rooms;
@@ -57,7 +58,7 @@ namespace DumbProject.Generic
         [HideInInspector]
         public RoomDataManager RoomDataMng;
         [HideInInspector]
-        public GDR_ElementDataManger FillerDataMng;
+        public GDR_ElementDataManger GDR_ElementDataMng;
         [HideInInspector]
         public InputHandler InputHndl;
 
@@ -89,6 +90,7 @@ namespace DumbProject.Generic
         }
 
         #region API
+
         #region Game Flow
         /// <summary>
         /// Funzione che innesca il cambio di stato
@@ -108,8 +110,8 @@ namespace DumbProject.Generic
             RoomDataMng = GetComponent<RoomDataManager>();
             RoomDataMng.InitData();
 
-            FillerDataMng = GetComponent<GDR_ElementDataManger>();
-            FillerDataMng.InitData();
+            GDR_ElementDataMng = GetComponent<GDR_ElementDataManger>();
+            GDR_ElementDataMng.InitData();
 
             PoolMng = Instantiate(PoolManagerPrefab);
             PoolMng.Init(RoomDataMng.RoomGraphicComponentDatasInst);
@@ -131,7 +133,7 @@ namespace DumbProject.Generic
             DungeonMng = Instantiate(DungeonManagerPrefab);
 
             GDR_Element_Mng = Instantiate(GDR_Element_ManagerPrefab);
-            GDR_Element_Mng.Init(FillerDataMng.Istances_GDR_Element_Data);
+            GDR_Element_Mng.Init(GDR_ElementDataMng.Istances_GDR_Element_Data);
 
             ChageFlowState(FlowState.Menu);
         }
@@ -156,6 +158,10 @@ namespace DumbProject.Generic
             UIMng.GamePlayCtrl.ActivatePauseButton(true);
 
             Dumby = Instantiate(DumbyPrefab, DungeonMng.RoomInDungeon[0].CellsInRoom[0].RelativeNode.WorldPosition, Quaternion.identity);
+            GDR_Controller Dumby_GDR = Dumby.GetComponent<GDR_Controller>();
+            if (Dumby_GDR != null)
+                Dumby_GDR.Init(GDR_ElementDataMng.GetGDR_DataByID("Dumby"));
+
             SetAllAIStatus(true);
 
             ChageFlowState(FlowState.StartGameplay);
