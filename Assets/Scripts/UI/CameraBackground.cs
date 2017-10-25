@@ -19,6 +19,9 @@ namespace DumbProject.UI
 
         public void SetUIOrientation(ScreenOrientation _orientation)
         {
+            if(backGround == null)
+                backGround = GetComponent<Image>();
+
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {
                 if (GameManager.I.UIMng.ForceVerticalUI)
