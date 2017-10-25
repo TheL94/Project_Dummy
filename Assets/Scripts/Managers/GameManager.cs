@@ -172,7 +172,7 @@ namespace DumbProject.Generic
 
         public void GamePlayActions()
         {
-            Dumby.GetComponent<DumbyIndicatorController>().Init();
+            Dumby.GetComponent<IndicatorController>().Init();
         }
 
         public void PauseActions(bool _status)

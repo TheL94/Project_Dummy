@@ -37,7 +37,7 @@ namespace DumbProject.UI
 
         public Vector2 UpLeftFrameCorner;
 
-        public GameObject IconPrefab;
+        GameObject IconPrefab;
 
         [HideInInspector]
         public GameObject Icon;
@@ -62,7 +62,10 @@ namespace DumbProject.UI
         /// <summary>
         /// Funcion called inside the Init of the indicator
         /// </summary>
-        public virtual void OnStart() { }
+        public virtual void OnStart()
+        {
+            Icon.AddComponent<DumbyIndicatorRepositioning>().Init(this);
+        }
 
 
         private void Update()
