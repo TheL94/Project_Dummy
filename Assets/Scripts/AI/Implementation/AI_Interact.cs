@@ -36,8 +36,10 @@ namespace Framework.AI
                 return true;
             }
 
-            obj.Interact(_controller);
-            return true;
+            if (obj.Interact(_controller))
+                return true;
+            else
+                return false;
         }
     }
 }

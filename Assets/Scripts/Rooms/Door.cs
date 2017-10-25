@@ -107,7 +107,7 @@ namespace DumbProject.Rooms
             set { _isInteractable = value; }
         }
 
-        public void Interact(AI_Controller _controller)
+        public bool Interact(AI_Controller _controller)
         {
             GetComponentInChildren<InteractionAnimator>().OpenAsDoor();
 
@@ -134,6 +134,7 @@ namespace DumbProject.Rooms
             //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
             //_controller.INetworkableObjective = RelativeNetNode.Links[1];
             IsInteractable = false;
+            return true;
         }
         #endregion
         #endregion
