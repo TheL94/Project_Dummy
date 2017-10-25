@@ -8,7 +8,7 @@ using Framework.AI;
 
 namespace DumbProject.GDR_System
 {
-    public class Enemy : MonoBehaviour, IInteractable, I_GDR_Interactable
+    public class Enemy : MonoBehaviour, IInteractable, I_GDR_Interactable, IPreviewable
     {
         public GDR_Controller gdrController;
         public Cell RelativeCell { get; private set; }
@@ -39,6 +39,10 @@ namespace DumbProject.GDR_System
             if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= Data.ActivationRadius)
                 Interact(GameManager.I.Dumby);
         }
+
+        #region IPreviewable
+        public GameObject PreviewObj { get; set; }
+        #endregion
 
         #region IInteractable
         public bool IsInteractable { get; set; }

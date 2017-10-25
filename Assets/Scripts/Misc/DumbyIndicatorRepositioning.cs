@@ -9,13 +9,13 @@ namespace DumbProject.UI
 {
     public class DumbyIndicatorRepositioning : MonoBehaviour
     {
-        DumbyIndicatorController dumbyIndicatorMovement;
+        IndicatorController indicatorMovement;
 
         
 
-        public void Init(DumbyIndicatorController _indicator)
+        public void Init(IndicatorController _indicator)
         {
-            dumbyIndicatorMovement = _indicator;
+            indicatorMovement = _indicator;
             GetComponent<Button>().onClick.AddListener(() => { CameraRepositioning(); });
         }
 
@@ -29,7 +29,7 @@ namespace DumbProject.UI
         /// </summary>
         public void CameraRepositioning()
         {
-            GameManager.I.CameraHndl.GetComponent<Camera_CinematicController>().MoveTo(dumbyIndicatorMovement.transform.position);
+            GameManager.I.CameraHndl.GetComponent<Camera_CinematicController>().MoveTo(indicatorMovement.transform.position);
         }
     }
 }

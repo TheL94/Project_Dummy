@@ -8,7 +8,7 @@ using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
-    public class Potion : MonoBehaviour, I_GDR_Equippable
+    public class Potion : MonoBehaviour, I_GDR_Equippable, IPreviewable
     {
         public PotionData Data { get; private set; }
 
@@ -17,8 +17,14 @@ namespace DumbProject.GDR_System
             Data = _data as PotionData;
         }
 
+        #region IPreviewable
+        public GameObject PreviewObj { get; set; }
+        #endregion
+
         #region I_GDR_Equippable
         public GameObject GameObj { get { return gameObject; } }
+
+        public void Equip(GDR_Controller _controller) { }
         #endregion
     }
 }
