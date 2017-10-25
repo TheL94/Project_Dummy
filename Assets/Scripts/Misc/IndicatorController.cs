@@ -36,6 +36,7 @@ namespace DumbProject.UI
         }
         public bool DrawGizmos;
         public Vector2 UpLeftFrameCorner = new Vector2(415,170);
+        float offset = 5;
 
         GameObject IconPrefab;
 
@@ -43,7 +44,6 @@ namespace DumbProject.UI
         public GameObject Icon;
 
         Vector3 dumbyPosition;
-        float offset = 5;
 
         public void Init()
         {
