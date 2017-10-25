@@ -88,6 +88,9 @@ namespace DumbProject.UI
         {
             GameManager.I.CameraHndl.GetComponentInChildren<IUIChanger>().SetUIOrientation(DeviceCurrentOrientation);
 
+            //if(GameManager.I.Dumby != null)
+            //    GameManager.I.Dumby.GetComponent<IUIChanger>().SetUIOrientation(DeviceCurrentOrientation);
+
             foreach (IUIChanger changer in UIchangers)
             {
                 changer.SetUIOrientation(DeviceCurrentOrientation);

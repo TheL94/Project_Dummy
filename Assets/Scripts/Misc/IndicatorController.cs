@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace DumbProject.UI
 {
-    public class IndicatorController : MonoBehaviour
+    public class IndicatorController : MonoBehaviour, IUIChanger
     {
         UIManager uiManager;
 
@@ -35,7 +35,13 @@ namespace DumbProject.UI
             }
         }
         public bool DrawGizmos;
-        public Vector2 UpLeftFrameCorner = new Vector2(415,170);
+
+        public Vector2 CurrentUiFrame;
+
+        bool UiIsVertical;
+
+        Vector2 verticalUiFrame = new Vector2(0, 173);
+        Vector2 horizontalUiFrame = new Vector2(0.43f , 0.314f);
         float offset = 5;
 
         GameObject IconPrefab;
@@ -54,16 +60,10 @@ namespace DumbProject.UI
                 IconPrefab = Resources.Load("Prefabs/Misc/IndicatorPrefab") as GameObject;
                 Icon = Instantiate(IconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
             }
-            OnStart();
-        }
-
-
-        /// <summary>
-        /// Funcion called inside the Init of the indicator
-        /// </summary>
-        public virtual void OnStart()
-        {
             Icon.AddComponent<IndicatorRepositioner>().Init(this);
+            SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
+
+
         }
 
         private void Update()
@@ -100,22 +100,22 @@ namespace DumbProject.UI
             else
             {
                 if (iconPos.x >= Screen.width - offset)
-                    if (iconPos.y < UpLeftFrameCorner.y + offset + float.Epsilon)
-                        iconNewPos = new Vector3(Screen.width - offset, UpLeftFrameCorner.y, 0);
+                    if (iconPos.y < CurrentUiFrame.y + offset + float.Epsilon)
+                        iconNewPos = new Vector3(Screen.width - offset, CurrentUiFrame.y, 0);
                     else if (iconPos.y >= Screen.height - offset)
                         iconNewPos = new Vector3(Screen.width - offset, Screen.height - offset, 0);
                     else
                         iconNewPos = new Vector3(Screen.width - offset, dumbyPosition.y, 0);
 
-                if (iconPos.x > UpLeftFrameCorner.x - offset && iconPos.x < Screen.width - offset)
-                    if (iconPos.y <= UpLeftFrameCorner.y + offset + float.Epsilon)
-                        iconNewPos = new Vector3(dumbyPosition.x, UpLeftFrameCorner.y - offset, 0);
+                if (iconPos.x > CurrentUiFrame.x - offset && iconPos.x < Screen.width - offset)
+                    if (iconPos.y <= CurrentUiFrame.y + offset + float.Epsilon)
+                        iconNewPos = new Vector3(dumbyPosition.x, CurrentUiFrame.y - offset, 0);
                     else if (iconPos.y >= Screen.height - offset)
                         iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
                     else
                         iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
 
-                if (iconPos.x <= UpLeftFrameCorner.x - offset && iconPos.x >= offset)
+                if (iconPos.x <= CurrentUiFrame.x - offset && iconPos.x >= offset)
                     if (iconPos.y <= offset + float.Epsilon)
                         iconNewPos = new Vector3(dumbyPosition.x, offset, 0);
                     else if (iconPos.y >= Screen.height - offset)
@@ -124,12 +124,26 @@ namespace DumbProject.UI
                         iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
 
                 if (iconPos.x < offset)
-                    if (iconPos.y <= offset + float.Epsilon)
-                        iconNewPos = new Vector3(offset, offset, 0);
-                    else if (iconPos.y >= Screen.height - offset)
-                        iconNewPos = new Vector3(offset, Screen.height - offset, 0);
+                {
+                    if (!UiIsVertical)
+                    {
+                        if (iconPos.y <= offset + float.Epsilon)
+                            iconNewPos = new Vector3(offset, offset, 0);
+                        else if (iconPos.y >= Screen.height - offset)
+                            iconNewPos = new Vector3(offset, Screen.height - offset, 0);
+                        else
+                            iconNewPos = new Vector3(offset, dumbyPosition.y, 0); 
+                    }
                     else
-                        iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                    {
+                        if (iconPos.y <= CurrentUiFrame.y + float.Epsilon)
+                            iconNewPos = new Vector3(offset, CurrentUiFrame.y, 0);
+                        else if (iconPos.y >= Screen.height - offset)
+                            iconNewPos = new Vector3(offset, Screen.height - offset, 0);
+                        else
+                            iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                    }
+                }
             }
 
             Icon.transform.position = iconNewPos;
@@ -142,11 +156,12 @@ namespace DumbProject.UI
         bool CheckIfInsideTheScreen(Vector2 pos)
         {
             if (pos.x > 0 && pos.y > 0 && pos.x < Screen.width && pos.y < Screen.height)
-                if (!(pos.x > UpLeftFrameCorner.x && pos.y < UpLeftFrameCorner.y))
+                if (!(pos.x > CurrentUiFrame.x && pos.y < CurrentUiFrame.y))
                     return true;
 
             return false;
         }
+
 
         private void OnDrawGizmos()
         {
@@ -154,8 +169,40 @@ namespace DumbProject.UI
             {
                 Gizmos.color = Color.magenta;
 
-                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(Screen.width, UpLeftFrameCorner.y, 0));
-                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(UpLeftFrameCorner.x, 0, 0));
+                Gizmos.DrawLine(CurrentUiFrame, new Vector3(Screen.currentResolution.width, CurrentUiFrame.y, 0));
+                Gizmos.DrawLine(CurrentUiFrame, new Vector3(CurrentUiFrame.x, 0, 0));
+            }
+        }
+
+        public void SetUIOrientation(ScreenOrientation _orientation)
+        {
+            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
+            {
+                if (GameManager.I.UIMng.ForceVerticalUI)
+                {
+                    CurrentUiFrame = new Vector2(1080 * verticalUiFrame.x, 1920 * verticalUiFrame.y);
+                    UiIsVertical = true;
+                }
+                else
+                {
+                    CurrentUiFrame = new Vector2(1920 * horizontalUiFrame.x, 1080 * horizontalUiFrame.y);
+                    UiIsVertical = false;
+                }
+            }
+            else
+            {
+                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
+                {
+                    CurrentUiFrame = new Vector2(1080 * verticalUiFrame.x, 1920 * verticalUiFrame.y);
+                    UiIsVertical = true;
+                }
+
+                else
+                {
+                    CurrentUiFrame = new Vector2(Screen.currentResolution.width * horizontalUiFrame.x, 1080 * horizontalUiFrame.y);
+                    UiIsVertical = false;
+                }
+
             }
         }
     }
