@@ -40,7 +40,7 @@ namespace DumbProject.UI
 
         bool UiIsVertical;
 
-        Vector2 verticalUiFrame = new Vector2(0, 173);
+        Vector2 verticalUiFrame = new Vector2(0, 0.175f);
         Vector2 horizontalUiFrame = new Vector2(0.43f , 0.314f);
         float offset = 5;
 
@@ -180,12 +180,12 @@ namespace DumbProject.UI
             {
                 if (GameManager.I.UIMng.ForceVerticalUI)
                 {
-                    CurrentUiFrame = new Vector2(1080 * verticalUiFrame.x, 1920 * verticalUiFrame.y);
+                    CurrentUiFrame = new Vector2(Screen.width * verticalUiFrame.x, Screen.height * verticalUiFrame.y);
                     UiIsVertical = true;
                 }
                 else
                 {
-                    CurrentUiFrame = new Vector2(1920 * horizontalUiFrame.x, 1080 * horizontalUiFrame.y);
+                    CurrentUiFrame = new Vector2(Screen.width * horizontalUiFrame.x, Screen.height * horizontalUiFrame.y);
                     UiIsVertical = false;
                 }
             }
@@ -193,13 +193,13 @@ namespace DumbProject.UI
             {
                 if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
                 {
-                    CurrentUiFrame = new Vector2(1080 * verticalUiFrame.x, 1920 * verticalUiFrame.y);
+                    CurrentUiFrame = new Vector2(Screen.width * verticalUiFrame.x, Screen.height * verticalUiFrame.y);
                     UiIsVertical = true;
                 }
 
                 else
                 {
-                    CurrentUiFrame = new Vector2(Screen.currentResolution.width * horizontalUiFrame.x, 1080 * horizontalUiFrame.y);
+                    CurrentUiFrame = new Vector2(Screen.width * horizontalUiFrame.x, Screen.height * horizontalUiFrame.y);
                     UiIsVertical = false;
                 }
 
