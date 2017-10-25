@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DumbProject.Generic;
 
 
@@ -10,9 +11,17 @@ namespace DumbProject.UI
     {
         DumbyIndicatorManager dumbyIndicatorMovement;
 
+        
+
         public void Init(DumbyIndicatorManager _indicator)
         {
             dumbyIndicatorMovement = _indicator;
+            GetComponent<Button>().onClick.AddListener(() => { CameraRepositioning(); });
+        }
+
+        private void OnDisable()
+        {
+            GetComponent<Button>().onClick.RemoveAllListeners();
         }
 
         /// <summary>
