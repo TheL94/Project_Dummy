@@ -14,11 +14,16 @@ namespace DumbProject.GDR_System
         public Cell RelativeCell { get; private set; }
         public EnemyData Data { get; private set; }
 
+        float attackSpeed;
+
+        AI_Controller AI_Ctrl; //da rivedere!
+
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as EnemyData;
             gdrController = gameObject.AddComponent<GDR_Controller>();
             gdrController.Init(GameManager.I.GDR_ElementDataMng.GetGDR_DataByID(Data.DataID));
+            attackSpeed = gdrController.Data.Speed;
             IsInteractable = true;
         }
 
@@ -29,7 +34,7 @@ namespace DumbProject.GDR_System
 
         private void Update()
         {
-            ProximityCheck();
+            //ProximityCheck();
         }
 
         void ProximityCheck()
@@ -52,9 +57,20 @@ namespace DumbProject.GDR_System
 
         public bool Interact(AI_Controller _controller)
         {
-            GDR_Interact(_controller.GetComponent<GDR_Controller>());
+            if (CoolDown())
+            {
+                AI_Ctrl = _controller;
+                GDR_Interact(_controller.GetComponent<GDR_Controller>());
+                attackSpeed = gdrController.Data.Speed;
 
-            return true;
+                if (gdrController != null && (gdrController.Data.Life <= 0 || !IsInteractable))
+                {
+                    IsInteractable = false;
+                    Destroy(gameObject);
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
 
@@ -64,13 +80,19 @@ namespace DumbProject.GDR_System
         public void GDR_Interact(GDR_Controller _GDR_Controller)
         {
             if (_GDR_Controller != null)
-                _GDR_Controller.OnInteract(this);
+                _GDR_Controller.OnInteract(this, AI_Ctrl);
 
-            if (gdrController != null && (gdrController.Data.Life <= 0 || !IsInteractable))
-            {
-                IsInteractable = false;
-            }
+            AI_Ctrl = null;
         }
         #endregion
+
+        bool CoolDown()
+        {
+            attackSpeed -= Time.deltaTime;
+            if (attackSpeed <= 0)
+                return true;
+            else
+                return false;
+        }
     }
 }

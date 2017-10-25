@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Framework.AI;
+using DumbProject.Generic;
 
 namespace DumbProject.GDR_System
 {
@@ -20,7 +22,7 @@ namespace DumbProject.GDR_System
         /// <summary>
         /// Chiamata quando viene raccolto un oggetto da una cella.
         /// </summary>
-        public void OnInteract(I_GDR_Interactable _GDR_Interactable)
+        public void OnInteract(I_GDR_Interactable _GDR_Interactable, AI_Controller _controller = null)
         {
             if (_GDR_Interactable == null)
             {
@@ -51,6 +53,11 @@ namespace DumbProject.GDR_System
             {
                 if (Data.GetDamage((_GDR_Interactable as Trap).Data.Damage))
                     Data.GetExperience(ExperienceType.Trap, _GDR_Interactable.GDR_Data);
+                else
+                {
+                    if (_controller != null)
+                        _controller.SetAICurrentState((_controller as Dumby).DefaultDeath);
+                }
             }
             else if (_GDR_Interactable.GetType() == typeof(TimeWaster))
             {
@@ -60,6 +67,12 @@ namespace DumbProject.GDR_System
             {
                 if (Data.GetDamage((_GDR_Interactable as Enemy).gdrController.Data.Attack))
                     Data.GetExperience(ExperienceType.Enemy, _GDR_Interactable.GDR_Data);
+                else
+                {
+                    if(_controller != null)
+                        _controller.SetAICurrentState((_controller as Dumby).DefaultDeath);
+                }
+
             }
         }
     }

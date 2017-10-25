@@ -75,8 +75,7 @@ namespace DumbProject.GDR_System
                 Debug.Log(Life);
                 if (Life <= 0)
                 {
-                    Life = 0;
-                    Debug.LogWarning(ID+" is dead");
+                    Life = 0;              
                     return false;
                 }
             }

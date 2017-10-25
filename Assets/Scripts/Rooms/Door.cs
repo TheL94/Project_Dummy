@@ -98,19 +98,17 @@ namespace DumbProject.Rooms
         bool _isInteractable = true;
         public bool IsInteractable
         {
-            get
+            get { return _isInteractable; }
+            set
             {
-                if (StatusOfExploration == ExplorationStatus.Explored)
-                    _isInteractable = false;
-                return _isInteractable;
+                _isInteractable = value;
+                if(_isInteractable == false)
+                    GetComponentInChildren<InteractionAnimator>().OpenAsDoor();
             }
-            set { _isInteractable = value; }
         }
 
         public bool Interact(AI_Controller _controller)
         {
-            GetComponentInChildren<InteractionAnimator>().OpenAsDoor();
-
             foreach (Cell cell in AdjacentCells)
             {
                 if (cell != null)
@@ -125,14 +123,9 @@ namespace DumbProject.Rooms
                 else
                 {
                     //Caso in cui la porta collega all'esterno
-                    //RelativeNetNode.AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
                     _controller.SetAICurrentState((_controller as Dumby).DefaultDive);
                 }
             }
-
-            //se uno dei nodi collegati della porta è quello in cui c'è l'actor prende l'altro
-            //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
-            //_controller.INetworkableObjective = RelativeNetNode.Links[1];
             IsInteractable = false;
             return true;
         }
@@ -198,6 +191,8 @@ namespace DumbProject.Rooms
                             case ExplorationStatus.NotExplored:
                                 return status = ExplorationStatus.NotExplored;
                             case ExplorationStatus.Explored:
+                                if (IsInteractable)
+                                    IsInteractable = false;
                                 return status = ExplorationStatus.Explored;
                             default:
                                 Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
@@ -211,6 +206,8 @@ namespace DumbProject.Rooms
                                 return status = ExplorationStatus.NotExplored;
                             case ExplorationStatus.InExploration:
                             case ExplorationStatus.Explored:
+                                if (IsInteractable)
+                                    IsInteractable = false;
                                 return status = ExplorationStatus.Explored;
                             default:
                                 Debug.LogWarning("Porta in una combinazione di stanze non valutata!");
