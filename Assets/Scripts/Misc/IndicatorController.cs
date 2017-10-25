@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using UnityEngine.UI;
-using FlexibleUI;
+
 
 namespace DumbProject.UI
 {
-    public class DumbyIndicatorManager : MonoBehaviour
+    public class IndicatorController : MonoBehaviour
     {
         UIManager uiManager;
-        public bool DrawGizmos;
+
         private ScreenOrientation _tempDeviceOrientation;
         private ScreenOrientation TempDeviceOrientation
         {
@@ -35,21 +35,12 @@ namespace DumbProject.UI
             }
         }
 
-        private IconStatus _currentStatus;
-        public IconStatus CurrentStatus
-        {
-            get { return _currentStatus; }
-            set {
-                _currentStatus = value;
-                SetIconImage();
-            }
-        }
-
         public Vector2 UpLeftFrameCorner;
-        public GameObject DumbyIconPrefab;
 
-        Image iconImage;
-        GameObject DumbyIcon;
+        public GameObject IconPrefab;
+
+        [HideInInspector]
+        public GameObject Icon;
 
         Vector3 dumbyPosition;
         float offset;
@@ -61,11 +52,18 @@ namespace DumbProject.UI
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position);
             if (uiManager != null)
             {
-                DumbyIcon = Instantiate(DumbyIconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
-                DumbyIcon.GetComponent<DumbyIndicatorRepositioning>().Init(this);
-                iconImage = GetComponent<Image>();
+                IconPrefab = Resources.Load("Prefabs/Misc/IndicatorPrefab") as GameObject;
+                Icon = Instantiate(IconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
             }
+            OnStart();
         }
+
+
+        /// <summary>
+        /// Funcion called inside the Init of the indicator
+        /// </summary>
+        public virtual void OnStart() { }
+
 
         private void Update()
         {
@@ -75,14 +73,14 @@ namespace DumbProject.UI
             }
 
             if (GameManager.I.CurrentState == Flow.FlowState.Pause)
-                DumbyIcon.GetComponent<Image>().enabled = false;
+                Icon.GetComponent<Image>().enabled = false;
             else if (GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
-                DumbyIcon.GetComponent<Image>().enabled = true;
+                Icon.GetComponent<Image>().enabled = true;
                 UpdateIndicatorPosition();
             }
             else if (GameManager.I.CurrentState == Flow.FlowState.RecapGame)
-                Destroy(DumbyIcon);
+                Destroy(Icon);
         }
 
         /// <summary>
@@ -133,7 +131,7 @@ namespace DumbProject.UI
                         iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
             }
 
-            DumbyIcon.transform.position = iconNewPos;
+            Icon.transform.position = iconNewPos;
         }
 
         /// <summary>
@@ -147,48 +145,6 @@ namespace DumbProject.UI
                     return true;
 
             return false;
-        }
-
-        void SetIconImage()
-        {
-            if (iconImage != null)
-            {
-                switch (CurrentStatus)
-                {
-                    case IconStatus.Walk:
-                        // iconImage = walkImage
-                        break;
-                    case IconStatus.Fight:
-                        // iconImage = fightImage
-                        break;
-                    case IconStatus.Interact:
-                        break;
-                    case IconStatus.FindingPath:
-                        break;
-                    default:
-                        break;
-                } 
-            }
-        }
-
-
-        private void OnDrawGizmos()
-        {
-            if (DrawGizmos)
-            {
-                Gizmos.color = Color.magenta;
-
-                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(Screen.width, UpLeftFrameCorner.y, 0));
-                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(UpLeftFrameCorner.x, 0, 0));
-            }
-        }
-
-        public enum IconStatus
-        {
-            Walk,
-            Fight,
-            Interact,
-            FindingPath,
         }
     }
 }
