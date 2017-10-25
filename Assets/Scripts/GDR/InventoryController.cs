@@ -72,8 +72,11 @@ namespace DumbProject.GDR
         /// <param name="itemToPick"></param>
         void EquipItem(GDR_Controller _gdrController, I_GDR_Equippable itemToPick)
         {
-            itemToPick.GameObj.transform.parent = _gdrController.LeftHand.transform;
-            itemToPick.GameObj.transform.position = _gdrController.LeftHand.position;
+            if(itemToPick.GetType() == typeof(Weapon))
+            {
+                itemToPick.GameObj.transform.parent = _gdrController.LeftHand.transform;
+                itemToPick.GameObj.transform.position = _gdrController.LeftHand.position;
+            }
         }
     }
 }
