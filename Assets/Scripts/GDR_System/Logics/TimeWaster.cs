@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Framework.AI;
 using DumbProject.Generic;
-using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
     public class TimeWaster : MonoBehaviour, IInteractable, I_GDR_Interactable, IPreviewable
     {
         public TimeWasterData Data { get; private set; }
+        float timeWasted;
 
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as TimeWasterData;
+            timeWasted = Data.TimeToSpend;
             IsInteractable = true;
         }
 
@@ -25,10 +26,26 @@ namespace DumbProject.GDR_System
         public bool IsInteractable { get; set; }
         public Transform Transf { get { return transform; } }
 
-        public void Interact(AI_Controller _controller)
+        public bool Interact(AI_Controller _controller)
         {
-            IsInteractable = false;
-            GDR_Interact(_controller.GetComponent<GDR_Controller>());
+            if (CoolDown())
+            {
+                IsInteractable = false;
+                timeWasted = Data.TimeToSpend;
+                GDR_Interact(_controller.GetComponent<GDR_Controller>());
+                return true;
+            }
+
+            return false;
+        }
+
+        bool CoolDown()
+        {
+            timeWasted -= Time.deltaTime;
+            if (timeWasted <= 0)
+                return true;
+            else
+                return false;
         }
         #endregion
 

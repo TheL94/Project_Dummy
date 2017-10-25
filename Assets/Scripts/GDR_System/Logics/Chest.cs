@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
 using Framework.AI;
-using DumbProject.GDR;
 
 namespace DumbProject.GDR_System
 {
@@ -36,11 +35,13 @@ namespace DumbProject.GDR_System
         public bool IsInteractable { get; set; }
         public Transform Transf { get { return transform; } }
 
-        public void Interact(AI_Controller _controller)
+        public bool Interact(AI_Controller _controller)
         {
             IsInteractable = false;
             interactionAnimator.OpenAsChest();
             GDR_Interact(_controller.GetComponent<GDR_Controller>());
+
+            return true;
         }
         #endregion
 

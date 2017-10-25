@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.GDR;
 using DumbProject.Generic;
 using DumbProject.Rooms;
 
@@ -104,19 +103,21 @@ namespace DumbProject.GDR_System
             {
                 equippable = graphicObj.AddComponent<Weapon>();
                 (equippable as Weapon).Init(_data);
+                (equippable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(5f, 5f, 5f), _parent);
             }
             else if (_data.GetType() == typeof(PotionData))
             {
                 equippable = graphicObj.AddComponent<Potion>();
                 (equippable as Potion).Init(_data);
+                (equippable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(7f, 7f, 7f), _parent);
             }
             else if (_data.GetType() == typeof(ArmorData))
             {
                 equippable = graphicObj.AddComponent<Armor>();
                 (equippable as Armor).Init(_data);
+                (equippable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(2f, 2f, 2f), _parent);
             }
 
-            (equippable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(5f, 5f, 5f), _parent);
 
             return equippable;
         }

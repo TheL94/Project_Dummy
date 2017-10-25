@@ -1,13 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DumbProject.Grid;
-using DumbProject.Generic;
-using DumbProject.GDR_System;
-using DumbProject.Rooms;
-using Framework.AI;
 
-namespace DumbProject.GDR
+namespace DumbProject.GDR_System
 {
     public class GDR_Controller : MonoBehaviour
     {
@@ -16,32 +11,10 @@ namespace DumbProject.GDR
 
         public GDR_Data Data;
 
-        public void Init(GDR_Data data)
+        public void Init(GDR_Data _data)
         { 
-            data = Data;
-           // Data.ai_Controller = GetComponent<AI_Controller>();
-        }
-
-        private void Start()
-        {
-            Init(Data);
+            Data = _data;
             Data.inventoryCtrl = new InventoryController();
-        }
-
-        /// <summary>
-        /// Create and Instantiate a new GDR Data
-        /// </summary>
-        public GDR_Controller CreateGDR(GDR_Data _gdr_Data)
-        {
-            if (_gdr_Data)
-            {
-                GDR_Data NewIstanceGDRData;
-                NewIstanceGDRData = Instantiate(_gdr_Data);
-                GDR_Controller NewIstanceGDR = Instantiate(NewIstanceGDRData.GDRPrefab);
-                NewIstanceGDR.Init(NewIstanceGDRData);
-                return NewIstanceGDR;
-            }
-            return null;
         }
 
         /// <summary>
@@ -61,6 +34,7 @@ namespace DumbProject.GDR
                 if (_GDR_Equippable.GetType() == typeof(Potion))
                 {
                     Data.GetCure((_GDR_Equippable as Potion).Data.HealtRestore);
+                    Destroy(_GDR_Equippable.GameObj);
                     return;
                 }
                 else if (_GDR_Equippable.GetType() == typeof(Armor))

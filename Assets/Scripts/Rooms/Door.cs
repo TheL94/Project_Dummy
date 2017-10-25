@@ -107,7 +107,7 @@ namespace DumbProject.Rooms
             set { _isInteractable = value; }
         }
 
-        public void Interact(AI_Controller _controller)
+        public bool Interact(AI_Controller _controller)
         {
             GetComponentInChildren<InteractionAnimator>().OpenAsDoor();
 
@@ -126,7 +126,7 @@ namespace DumbProject.Rooms
                 {
                     //Caso in cui la porta collega all'esterno
                     //RelativeNetNode.AddLinks(new List<INetworkable>() { RelativeCell.RelativeNode.RelativeGrid.GetSpecificGridNode(GetOppositeOfRelativeCellPosition()) });
-                    _controller.SetAICurrentState((_controller as Dumby).DefaultLostCondition);
+                    _controller.SetAICurrentState((_controller as Dumby).DefaultDive);
                 }
             }
 
@@ -134,6 +134,7 @@ namespace DumbProject.Rooms
             //WARNING: stiamo assumendo che Links[0] sia sempre il primo nodo e che sia quindi quello da cui Actor arriva
             //_controller.INetworkableObjective = RelativeNetNode.Links[1];
             IsInteractable = false;
+            return true;
         }
         #endregion
         #endregion

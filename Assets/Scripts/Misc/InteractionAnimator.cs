@@ -9,7 +9,7 @@ namespace DumbProject.Generic {
         public float OpeningAngle;
         public void OpenAsDoor()
         {
-            transform.DORotateQuaternion(Quaternion.AngleAxis(OpeningAngle, Vector3.up), Duration);
+            transform.DOLocalRotateQuaternion(Quaternion.AngleAxis(OpeningAngle, Vector3.up), Duration);
         }
 
         public void OpenAsChest()

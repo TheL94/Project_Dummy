@@ -8,9 +8,9 @@ namespace DumbProject.Generic
 {
     public class Dumby : AI_Controller, IPathfinder
     {
-
-        public AI_State DefaultLostCondition;
-        public AI_State DefaultWinCondition;
+        public AI_State DefaultDeath;
+        public AI_State DefaultDive;
+        public AI_State DefaultWin;
 
         private Room _currentRoom;
         public Room CurrentRoom
