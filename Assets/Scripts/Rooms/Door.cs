@@ -109,7 +109,7 @@ namespace DumbProject.Rooms
 
         public void Interact(AI_Controller _controller)
         {
-            GetComponentInChildren<DoorOpener>().Open();
+            GetComponentInChildren<InteractionAnimator>().OpenAsDoor();
 
             foreach (Cell cell in AdjacentCells)
             {
