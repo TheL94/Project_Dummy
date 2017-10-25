@@ -34,6 +34,7 @@ namespace DumbProject.GDR_System
                 if (_GDR_Equippable.GetType() == typeof(Potion))
                 {
                     Data.GetCure((_GDR_Equippable as Potion).Data.HealtRestore);
+                    Destroy(_GDR_Equippable.GameObj);
                     return;
                 }
                 else if (_GDR_Equippable.GetType() == typeof(Armor))

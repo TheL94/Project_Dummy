@@ -23,7 +23,6 @@ namespace DumbProject.GDR_System
         /// <param name="itemToPick"></param>
         public void OnPickUpItem(GDR_Controller _gdrController, I_GDR_Equippable itemToPick)
         {
-
             OnDropPreviousItem(_gdrController, itemToPick);
             EquipItem(_gdrController, itemToPick);
             Inventory.Add(itemToPick);
@@ -75,6 +74,12 @@ namespace DumbProject.GDR_System
             {
                 itemToPick.GameObj.transform.parent = _gdrController.RightHand.transform;
                 itemToPick.GameObj.transform.position = _gdrController.RightHand.position;
+            }
+            if (itemToPick.GetType() == typeof(Armor))
+            {
+                itemToPick.GameObj.transform.parent = _gdrController.transform;
+                itemToPick.GameObj.transform.position = _gdrController.transform.position;
+                itemToPick.GameObj.SetActive(false);
             }
         }
     }
