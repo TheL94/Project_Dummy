@@ -9,11 +9,11 @@ namespace DumbProject.UI
 {
     public class DumbyIndicatorRepositioning : MonoBehaviour
     {
-        DumbyIndicatorManager dumbyIndicatorMovement;
+        DumbyIndicatorController dumbyIndicatorMovement;
 
         
 
-        public void Init(DumbyIndicatorManager _indicator)
+        public void Init(DumbyIndicatorController _indicator)
         {
             dumbyIndicatorMovement = _indicator;
             GetComponent<Button>().onClick.AddListener(() => { CameraRepositioning(); });
