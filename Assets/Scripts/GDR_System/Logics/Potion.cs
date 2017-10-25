@@ -23,8 +23,6 @@ namespace DumbProject.GDR_System
 
         #region I_GDR_Equippable
         public GameObject GameObj { get { return gameObject; } }
-
-        public void Equip(GDR_Controller _controller) { }
         #endregion
     }
 }

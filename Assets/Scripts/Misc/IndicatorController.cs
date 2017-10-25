@@ -34,8 +34,8 @@ namespace DumbProject.UI
                 return uiManager.DeviceCurrentOrientation;
             }
         }
-
-        public Vector2 UpLeftFrameCorner;
+        public bool DrawGizmos;
+        public Vector2 UpLeftFrameCorner = new Vector2(415,170);
 
         GameObject IconPrefab;
 
@@ -43,11 +43,10 @@ namespace DumbProject.UI
         public GameObject Icon;
 
         Vector3 dumbyPosition;
-        float offset;
+        float offset = 5;
 
         public void Init()
         {
-            offset = 5;
             uiManager = GameManager.I.UIMng;
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position);
             if (uiManager != null)
@@ -64,9 +63,8 @@ namespace DumbProject.UI
         /// </summary>
         public virtual void OnStart()
         {
-            Icon.AddComponent<DumbyIndicatorRepositioning>().Init(this);
+            Icon.AddComponent<IndicatorRepositioner>().Init(this);
         }
-
 
         private void Update()
         {
@@ -148,6 +146,17 @@ namespace DumbProject.UI
                     return true;
 
             return false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (DrawGizmos)
+            {
+                Gizmos.color = Color.magenta;
+
+                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(Screen.width, UpLeftFrameCorner.y, 0));
+                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(UpLeftFrameCorner.x, 0, 0));
+            }
         }
     }
 }

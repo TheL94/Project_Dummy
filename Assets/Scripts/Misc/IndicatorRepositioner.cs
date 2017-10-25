@@ -7,7 +7,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class DumbyIndicatorRepositioning : MonoBehaviour
+    public class IndicatorRepositioner : MonoBehaviour
     {
         IndicatorController indicatorMovement;
 

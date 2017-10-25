@@ -11,9 +11,12 @@ namespace DumbProject.GDR_System
     {
         public ChestData Data { get; private set; }
 
+        InteractionAnimator interactionAnimator;
+
         public void Init(GDR_Element_Generic_Data _data)
         {
-            Data = _data as ChestData;           
+            Data = _data as ChestData;
+            interactionAnimator = GetComponent<InteractionAnimator>();
             IsInteractable = true;
         }
 
@@ -36,6 +39,7 @@ namespace DumbProject.GDR_System
         public void Interact(AI_Controller _controller)
         {
             IsInteractable = false;
+            interactionAnimator.OpenAsChest();
             GDR_Interact(_controller.GetComponent<GDR_Controller>());
         }
         #endregion

@@ -65,6 +65,7 @@ namespace DumbProject.GDR_System
             if (_data.GetType() == typeof(ChestData))
             {
                 interactable = graphicObj.AddComponent<Chest>();
+                graphicObj.AddComponent<InteractionAnimator>();
                 (interactable as Chest).Init(_data);
                 (interactable as I_GDR_EquippableHolder).Equippable = CreateEquippable((interactable as Chest).transform, I_GDR_Equippable_ProbGroup.PickRandom());
                 (interactable as I_GDR_EquippableHolder).EnableEquippable(false);
@@ -79,7 +80,7 @@ namespace DumbProject.GDR_System
             {
                 interactable = graphicObj.AddComponent<Trap>();
                 (interactable as Trap).Init(_data);
-                (interactable as IPreviewable).PreviewObj = CreatePreviewable(_data, new Vector3(2f, 2f, 2f), graphicObj.transform);
+                (interactable as IPreviewable).PreviewObj = CreatePreviewable(_data, Vector3.one, graphicObj.transform);
             }
             else if (_data.GetType() == typeof(EnemyData))
             {
