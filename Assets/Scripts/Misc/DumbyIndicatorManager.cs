@@ -36,7 +36,6 @@ namespace DumbProject.UI
         }
 
         private IconStatus _currentStatus;
-
         public IconStatus CurrentStatus
         {
             get { return _currentStatus; }
@@ -47,7 +46,6 @@ namespace DumbProject.UI
         }
 
         public Vector2 UpLeftFrameCorner;
-
         public GameObject DumbyIconPrefab;
 
         Image iconImage;

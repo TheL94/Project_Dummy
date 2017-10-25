@@ -11,6 +11,9 @@ namespace DumbProject.GDR
 {
     public class GDR_Controller : MonoBehaviour
     {
+        public Transform RightHand;
+        public Transform LeftHand;
+
         public GDR_Data Data;
 
         public void Init(GDR_Data data)
