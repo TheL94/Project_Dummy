@@ -37,7 +37,7 @@ namespace DumbProject.UI
 
         public Vector2 UpLeftFrameCorner;
 
-        public GameObject IconPrefab;
+        GameObject IconPrefab;
 
         [HideInInspector]
         public GameObject Icon;
