@@ -10,7 +10,7 @@ namespace DumbProject.UI
     public class DumbyIndicatorManager : MonoBehaviour
     {
         UIManager uiManager;
-
+        public bool DrawGizmos;
         private ScreenOrientation _tempDeviceOrientation;
         private ScreenOrientation TempDeviceOrientation
         {
@@ -171,6 +171,17 @@ namespace DumbProject.UI
             }
         }
 
+
+        private void OnDrawGizmos()
+        {
+            if (DrawGizmos)
+            {
+                Gizmos.color = Color.magenta;
+
+                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(Screen.width, UpLeftFrameCorner.y, 0));
+                Gizmos.DrawLine(UpLeftFrameCorner, new Vector3(UpLeftFrameCorner.x, 0, 0));
+            }
+        }
 
         public enum IconStatus
         {
