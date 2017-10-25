@@ -285,12 +285,6 @@ namespace DumbProject.Rooms
             rotation = Quaternion.LookRotation(edge.RelativeCell.transform.position - position);      
             edge.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("TableSet1"), position, rotation);
             edges.Remove(edge);
-
-            foreach (Angle angle in FindAnglesWithoutWall())
-            {
-                position = angle.transform.position;
-                angle.SetLightingObject(GameManager.I.PoolMng.GetGameObject("YellowLight"), position);
-            }
         }
 
         /// <summary>

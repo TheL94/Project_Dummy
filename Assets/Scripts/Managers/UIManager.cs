@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FlexibleUI;
 using DumbProject.Generic;
+using DumbProject;
 using System.Linq;
 
 namespace DumbProject.UI
@@ -85,6 +86,8 @@ namespace DumbProject.UI
         /// </summary>
         void SetChildrensPanelsOrientation()
         {
+            GameManager.I.CameraHndl.GetComponentInChildren<IUIChanger>().SetUIOrientation(DeviceCurrentOrientation);
+
             foreach (IUIChanger changer in UIchangers)
             {
                 changer.SetUIOrientation(DeviceCurrentOrientation);
