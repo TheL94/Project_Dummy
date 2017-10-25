@@ -109,6 +109,8 @@ namespace DumbProject.Rooms
 
         public void Interact(AI_Controller _controller)
         {
+            GetComponentInChildren<DoorOpener>().Open();
+
             foreach (Cell cell in AdjacentCells)
             {
                 if (cell != null)
