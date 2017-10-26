@@ -122,7 +122,7 @@ namespace DumbProject.Rooms
             objectiveRoom.AddNetNodesOnDoors();
             GameManager.I.DungeonMng.ParentRoom(objectiveRoom, ExplorationStatus.Unavailable);
 
-            newRoomObj.AddComponent<IndicatorController>().Init();
+            newRoomObj.AddComponent<IndicatorController>().Init(false);
 
             return objectiveRoom;
         }

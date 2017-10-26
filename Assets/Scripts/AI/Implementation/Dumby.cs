@@ -36,7 +36,7 @@ namespace DumbProject.Generic
         {
             Indicator = GetComponent<IndicatorController>();
             if (Indicator != null)
-                Indicator.Init();
+                Indicator.Init(true);
         }
 
         #region Animation

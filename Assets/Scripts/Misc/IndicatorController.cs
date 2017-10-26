@@ -51,10 +51,7 @@ namespace DumbProject.UI
 
         Image actionImage;
 
-        public Sprite WalkSprite;
-        public Sprite FightSprite;
-        public Sprite ChooseSprite;
-        public Sprite InteractSprite;
+        IndicatorData Data;
 
         private ImageState _imageCurrentState;
 
@@ -75,20 +72,44 @@ namespace DumbProject.UI
 
         Vector3 targetPosition;
 
-        public void Init()
+
+        /// <summary>
+        /// Init per istanziare tutti i componenti dell'indicatore
+        /// </summary>
+        /// <param name="_calledByDumby">Vera se l'init viene chiamato da dumby per impostare il suo indicatore; 
+        /// falso se viene chiamato dalla stanza obbiettivo</param>
+        public void Init(bool _calledByDumby)
         {
             uiManager = GameManager.I.UIMng;
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position);
+            Data = Instantiate(Resources.Load("Data/UIData/IndicatorData/IndicatorData") as IndicatorData);
+            //Data = Instantiate(Resources.Load(""))
             if (uiManager != null)
             {
-                IconPrefab = Resources.Load("Prefabs/Misc/IndicatorPrefab") as GameObject;
-                Icon = Instantiate(IconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
-            }
-            Icon.AddComponent<IndicatorRepositioner>().Init(this);
-            SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
+                GameObject tempActionIndicator;
+                Icon = Instantiate(Data.GameObj, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
+                Image tempImage = Icon.AddComponent<Image>();
+                Icon.AddComponent<Button>();
+                Icon.AddComponent<IndicatorRepositioner>().Init(this);
 
-            List<Image> tempArray = Icon.GetComponentsInChildren<Image>().ToList();
-            actionImage = tempArray.Where(a => a.gameObject != Icon).First();
+                if (_calledByDumby)
+                {
+                    tempImage.sprite = Data.ForDumbyIndicator;
+                    tempActionIndicator = Instantiate(Data.GameObj, Icon.transform);
+                    actionImage = tempActionIndicator.AddComponent<Image>();
+
+                    actionImage.sprite = Data.ChooseSprite;
+                }
+                else
+                {
+                    tempImage.sprite = Data.GenericIndicator;
+                }
+
+                
+                //IconPrefab = Resources.Load("Prefabs/Misc/IndicatorPrefab") as GameObject;
+                //Icon = Instantiate(IconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
+            }
+            SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
         }
 
         private void Update()
@@ -268,19 +289,19 @@ namespace DumbProject.UI
             switch (_State)
             {
                 case ImageState.Walk:
-                    actionImage.sprite = WalkSprite;
+                    actionImage.sprite = Data.WalkSprite;
                     break;
                 case ImageState.Fight:
-                    actionImage.sprite = FightSprite;
+                    actionImage.sprite = Data.FightSprite;
                     break;
                 case ImageState.Choose:
-                    actionImage.sprite = ChooseSprite;
+                    actionImage.sprite = Data.ChooseSprite;
                     break;
                 case ImageState.Interact:
-                    actionImage.sprite = InteractSprite;
+                    actionImage.sprite = Data.InteractSprite;
                     break;
                 default:
-                    actionImage.sprite = ChooseSprite;
+                    actionImage.sprite = Data.ChooseSprite;
                     break;
             }
         }
