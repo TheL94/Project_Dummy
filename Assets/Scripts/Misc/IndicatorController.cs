@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DumbProject.Generic;
+using System.Linq;
 using UnityEngine.UI;
 
 
@@ -46,6 +47,29 @@ namespace DumbProject.UI
 
         GameObject IconPrefab;
 
+        #region Action Image Variables
+
+        Image actionImage;
+
+        public Sprite WalkSprite;
+        public Sprite FightSprite;
+        public Sprite ChooseSprite;
+        public Sprite InteractSprite;
+
+        private ImageState _imageCurrentState;
+
+        public ImageState ImageCurrentState
+        {
+            get { return _imageCurrentState; }
+            set
+            {
+                _imageCurrentState = value;
+                ChangeActionImage(_imageCurrentState);
+            }
+        }
+
+        #endregion
+
         [HideInInspector]
         public GameObject Icon;
 
@@ -63,6 +87,9 @@ namespace DumbProject.UI
             Icon.AddComponent<IndicatorRepositioner>().Init(this);
             SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
 
+            List<Image> tempArray = Icon.GetComponentsInChildren<Image>().ToList();
+
+            actionImage = tempArray.Where(a => a.gameObject != Icon).First();
 
         }
 
@@ -202,8 +229,42 @@ namespace DumbProject.UI
                     CurrentUiFrame = new Vector2(Screen.width * horizontalUiFrame.x, Screen.height * horizontalUiFrame.y);
                     UiIsVertical = false;
                 }
-
             }
         }
+
+        /// <summary>
+        /// Change the sprite of the Indicator
+        /// </summary>
+        /// <param name="_State">State of dumby to change the icon</param>
+        void ChangeActionImage(ImageState _State)
+        {
+            switch (_State)
+            {
+                case ImageState.Walk:
+                    actionImage.sprite = WalkSprite;
+                    break;
+                case ImageState.Fight:
+                    actionImage.sprite = FightSprite;
+                    break;
+                case ImageState.Choose:
+                    actionImage.sprite = ChooseSprite;
+                    break;
+                case ImageState.Interact:
+                    actionImage.sprite = InteractSprite;
+                    break;
+                default:
+                    actionImage.sprite = ChooseSprite;
+                    break;
+            }
+        }
+
+        public enum ImageState
+        {
+            Walk,
+            Fight,
+            Choose,
+            Interact,
+        }
+
     }
 }

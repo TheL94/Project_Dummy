@@ -176,11 +176,6 @@ namespace DumbProject.Generic
             cameraCinematic.Execute(DungeonMng.FirstRoom.transform.position ,DungeonMng.ObjectiveRoom.transform.position);
         }
 
-        public void GamePlayActions()
-        {
-            Dumby.GetComponent<IndicatorController>().Init();
-        }
-
         public void PauseActions(bool _status)
         {
             SetAllAIStatus(!_status);
