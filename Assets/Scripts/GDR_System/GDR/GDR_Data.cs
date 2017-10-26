@@ -37,7 +37,8 @@ namespace DumbProject.GDR_System
             set
             {
                 _maxArmor = value;
-                PopUp.ShowText(MaxArmor.ToString(), Color.yellow);
+                if(PopUp != null)
+                    PopUp.ShowText(MaxArmor.ToString(), Color.yellow);
                 Armor = MaxArmor;
             }
         }
@@ -75,14 +76,17 @@ namespace DumbProject.GDR_System
             Life = MaxLife;
             Armor = MaxArmor;
             CurrentLevel = 0;
-
-            PopUp = Instantiate(PopUp, _GDR_Ctrl.transform);
-            PopUp.transform.position = _GDR_Ctrl.transform.position;
+            if (PopUp != null)
+            {
+                PopUp = Instantiate(PopUp, _GDR_Ctrl.transform);
+                PopUp.transform.position = _GDR_Ctrl.transform.position;
+            }
         }
 
         public bool GetDamage(float _damage)
         {
-            PopUp.ShowText(_damage.ToString(), Color.red);
+            if (PopUp != null)
+                PopUp.ShowText(_damage.ToString(), Color.red);
             float damageToLife = 0f;
             if (Armor > 0)
             {
@@ -116,7 +120,8 @@ namespace DumbProject.GDR_System
 
         public void GetCure(float _cure)
         {
-            PopUp.ShowText(_cure.ToString(), Color.green);
+            if (PopUp != null)
+                PopUp.ShowText(_cure.ToString(), Color.green);
             Life += _cure;
             if (Life > MaxLife)
             {
