@@ -3,6 +3,7 @@ using Framework.AI;
 using Framework.Pathfinding;
 using UnityEngine;
 using System.Collections.Generic;
+using DumbProject.UI;
 
 namespace DumbProject.Generic
 {
@@ -11,6 +12,8 @@ namespace DumbProject.Generic
         public AI_State DefaultDeath;
         public AI_State DefaultDive;
         public AI_State DefaultWin;
+
+        public IndicatorController Indicator;
 
         private Room _currentRoom;
         public Room CurrentRoom
@@ -27,6 +30,10 @@ namespace DumbProject.Generic
         protected override void OnInit()
         {
             animator = GetComponentInChildren<Animator>();
+            Indicator = GetComponent<IndicatorController>();
+            if (Indicator != null)
+                Indicator.Init();
+
         }
 
         #region Animation
