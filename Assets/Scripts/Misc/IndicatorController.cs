@@ -49,7 +49,7 @@ namespace DumbProject.UI
         [HideInInspector]
         public GameObject Icon;
 
-        Vector3 dumbyPosition;
+        Vector3 targetPosition;
 
         public void Init()
         {
@@ -62,8 +62,6 @@ namespace DumbProject.UI
             }
             Icon.AddComponent<IndicatorRepositioner>().Init(this);
             SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
-
-
         }
 
         private void Update()
@@ -89,19 +87,17 @@ namespace DumbProject.UI
         /// </summary>
         void UpdateIndicatorPosition()
         {
-            dumbyPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
-            Vector3 iconPos = dumbyPosition;
+            targetPosition = Camera.main.WorldToScreenPoint(transform.position) + Vector3.up * 70;
+            Vector3 iconPos = targetPosition;
             Vector3 iconNewPos = iconPos;
 
-            if (CheckIfInsideTheScreen(dumbyPosition))
-            {
-                iconNewPos = dumbyPosition;
-            }
-            else
+            if (!CheckIfInsideTheScreen(targetPosition))
             {
                 iconNewPos = ConstrainPosition(iconPos);
             }
 
+            Icon.transform.rotation = ConstrainRotation(iconNewPos);
+            Icon.transform.Rotate(0, 0, 90);
             Icon.transform.position = iconNewPos;
         }
 
@@ -128,23 +124,23 @@ namespace DumbProject.UI
                 else if (iconPos.y >= Screen.height - offset)
                     iconNewPos = new Vector3(Screen.width - offset, Screen.height - offset, 0);
                 else
-                    iconNewPos = new Vector3(Screen.width - offset, dumbyPosition.y, 0);
+                    iconNewPos = new Vector3(Screen.width - offset, targetPosition.y, 0);
 
             if (iconPos.x > CurrentUiFrame.x - offset && iconPos.x < Screen.width - offset)
                 if (iconPos.y <= CurrentUiFrame.y + offset + float.Epsilon)
-                    iconNewPos = new Vector3(dumbyPosition.x, CurrentUiFrame.y - offset, 0);
+                    iconNewPos = new Vector3(targetPosition.x, CurrentUiFrame.y - offset, 0);
                 else if (iconPos.y >= Screen.height - offset)
-                    iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
+                    iconNewPos = new Vector3(targetPosition.x, Screen.height - offset, 0);
                 else
-                    iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
+                    iconNewPos = new Vector3(targetPosition.x, targetPosition.y, 0);
 
             if (iconPos.x <= CurrentUiFrame.x - offset && iconPos.x >= offset)
                 if (iconPos.y <= offset + float.Epsilon)
-                    iconNewPos = new Vector3(dumbyPosition.x, offset, 0);
+                    iconNewPos = new Vector3(targetPosition.x, offset, 0);
                 else if (iconPos.y >= Screen.height - offset)
-                    iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
+                    iconNewPos = new Vector3(targetPosition.x, Screen.height - offset, 0);
                 else
-                    iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
+                    iconNewPos = new Vector3(targetPosition.x, targetPosition.y, 0);
 
             if (iconPos.x < offset)
             {
@@ -155,7 +151,7 @@ namespace DumbProject.UI
                     else if (iconPos.y >= Screen.height - offset)
                         iconNewPos = new Vector3(offset, Screen.height - offset, 0);
                     else
-                        iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                        iconNewPos = new Vector3(offset, targetPosition.y, 0);
                 }
                 else
                 {
@@ -164,16 +160,23 @@ namespace DumbProject.UI
                     else if (iconPos.y >= Screen.height - offset)
                         iconNewPos = new Vector3(offset, Screen.height - offset, 0);
                     else
-                        iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                        iconNewPos = new Vector3(offset, targetPosition.y, 0);
                 }
             }
 
             return iconNewPos;
         }
 
-        void ConstrainRotation()
+        /// <summary>
+        /// Set the Icon orientation in order to look the target
+        /// </summary>
+        Quaternion ConstrainRotation(Vector3 iconPos)
         {
+            Vector3 direction = iconPos - new Vector3(Screen.width / 2, Screen.height / 2, 0);
+            Quaternion newRotation;
+            newRotation = Quaternion.LookRotation(Vector3.forward, direction);
 
+            return newRotation;
         }
 
         private void OnDrawGizmos()
