@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using Framework.Pathfinding;
-using System.Collections.Generic;
-using DumbProject.Generic;
+﻿using Framework.Pathfinding;
+using Framework.AI;
 using UnityEngine;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/FollowPath")]
     public class AI_FollowPath : AI_Action

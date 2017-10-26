@@ -55,6 +55,7 @@ namespace DumbProject.Rooms
             PlaceCells(_data, _centerNode);
             TrimCellEdges(_centerNode.RelativeGrid);
             PlaceDoors(_data);
+            HighlightRoomWalls(false, Color.black);
             TrimCellAngles();
             PlaceOtherGraphicElements();
         }

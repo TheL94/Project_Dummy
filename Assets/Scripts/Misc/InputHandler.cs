@@ -99,11 +99,8 @@ namespace DumbProject.Generic
 
                     if (GameManager.I.UIMng.GamePlayCtrl.RoomPanelContainer.CheckIfInputIsForRoomPreviews(clickOrigin, out roomPreview))
                     {
-
                         if (roomPreview != null)
                         {
-
-                            roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
                             if (roomPreview.ActualRoom.RoomMovment.RoomInitialPosition == roomPreview.ActualRoom.transform.position)
                             {
                                 roomPreview.CallRotateRoom();
@@ -199,7 +196,6 @@ namespace DumbProject.Generic
                     {
                         if(roomPreview != null)
                         {
-                            roomPreview.ActualRoom.RoomMovment.MovingToInitialPosition = true;
                             if(roomPreview.ActualRoom.RoomMovment.RoomInitialPosition == roomPreview.ActualRoom.transform.position)
                                 roomPreview.CallRotateRoom();
                             else

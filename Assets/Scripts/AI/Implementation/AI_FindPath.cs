@@ -1,9 +1,8 @@
-﻿using DumbProject.Generic;
+﻿using Framework.AI;
 using Framework.Pathfinding;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/FindPath")]
     public class AI_FindPath : AI_Action

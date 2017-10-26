@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using DumbProject.Rooms;
-using DumbProject.Generic;
-using DumbProject.GDR_System;
-using Framework.Pathfinding;
+﻿using Framework.AI;
 using UnityEngine;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/LooseTheGame")]
     public class AI_LooseTheGame : AI_Action

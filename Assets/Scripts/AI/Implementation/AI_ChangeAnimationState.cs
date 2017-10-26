@@ -1,7 +1,7 @@
-﻿using DumbProject.Generic;
+﻿using Framework.AI;
 using UnityEngine;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/ChangeAnimationState")]
     public class AI_ChangeAnimationState : AI_Action

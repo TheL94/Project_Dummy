@@ -1,12 +1,9 @@
-﻿using DumbProject.Rooms;
-using DumbProject.Generic;
+﻿using Framework.AI;
 using DumbProject;
-using DumbProject.GDR_System;
 using Framework.Pathfinding;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/Interact")]
     public class AI_Interact : AI_Action

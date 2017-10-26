@@ -15,7 +15,7 @@ namespace DumbProject.Generic
         /// </summary>
         public bool CheckRoomValidPosition(Room _room)
         {
-            if (CheckRoomPlacemnet(_room) && CheckDoorCollsions(_room))
+            if (CheckRoomPlacement(_room) && CheckDoorCollsions(_room))
                 return true;
             else
                 return false;
@@ -42,7 +42,7 @@ namespace DumbProject.Generic
         /// </summary>
         /// <param name="_room"></param>
         /// <returns></returns>
-        bool CheckRoomPlacemnet(Room _room)
+        bool CheckRoomPlacement(Room _room)
         {
             bool isValidPosition = false;
             foreach (Cell cell in _room.CellsInRoom)
