@@ -40,7 +40,6 @@ namespace DumbProject.Flow
                     GameManager.I.StartGameplayActions();
                     break;
                 case FlowState.Gameplay:
-                    GameManager.I.GamePlayActions();
                     if(_oldState == FlowState.Pause)
                         GameManager.I.PauseActions(false);
                     break;
