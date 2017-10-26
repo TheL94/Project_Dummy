@@ -9,25 +9,25 @@ namespace Framework.AI
     public class AI_WaitForInput : AI_Action
     {
         public UIManager.UIButton EndTurn;
-        private Button nextTurn;
+        private Button nextTurnButton;
         public KeyCode AlternativeKey;
         private bool isListening;
         private bool inputRecived;
 
         protected override bool Act(AI_Controller _controller)
         {
-            if (nextTurn == null)
+            if (nextTurnButton == null)
             {
                 WaitKey();
                 SetupButton();
             }
 
-            if (!isListening && nextTurn!=null)
+            if (!isListening && nextTurnButton!=null)
                 ButtonListen();
 
             if (inputRecived)
             {
-                nextTurn.onClick.RemoveListener(WaitButton);
+                nextTurnButton.onClick.RemoveListener(WaitButton);
                 isListening = false;
 
                 inputRecived = false;
@@ -50,16 +50,16 @@ namespace Framework.AI
             {
                 LabelContainer lc = button.GetComponent<LabelContainer>();
                 if (lc != null && lc.ButtonLabel == EndTurn)
-                    nextTurn = button;
+                    nextTurnButton = button;
             }
 
-            if(nextTurn != null)
+            if(nextTurnButton != null)
                 ButtonListen();
         }
 
         void ButtonListen()
         {
-            nextTurn.onClick.AddListener(WaitButton);
+            nextTurnButton.onClick.AddListener(WaitButton);
             isListening = true;
         }
 

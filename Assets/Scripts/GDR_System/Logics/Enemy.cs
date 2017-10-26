@@ -10,41 +10,25 @@ namespace DumbProject.GDR_System
 {
     public class Enemy : MonoBehaviour, IInteractable, I_GDR_Interactable, IPreviewable
     {
-        public GDR_Controller gdrController;
-        public Cell RelativeCell { get; private set; }
+        public GDR_Controller enemy_GDR_Controller;
         public EnemyData Data { get; private set; }
 
         float attackSpeed;
 
-        AI_Controller AI_Ctrl; //da rivedere!
+        AI_Controller AI_Ctrl; //TODO : da rivedere!
 
         public void Init(GDR_Element_Generic_Data _data)
         {
             Data = _data as EnemyData;
-            gdrController = gameObject.AddComponent<GDR_Controller>();
-            gdrController.Init(GameManager.I.GDR_ElementDataMng.GetGDR_DataByID(Data.DataID));
-            attackSpeed = gdrController.Data.Speed;
+            enemy_GDR_Controller = gameObject.AddComponent<GDR_Controller>();
+            enemy_GDR_Controller.Init(GameManager.I.GDR_ElementDataMng.GetGDR_DataByID(Data.DataID));
+            attackSpeed = enemy_GDR_Controller.Data.Speed;
             IsInteractable = true;
         }
 
-        public void SetRelativeCell(Cell _relativeCell)
+        public void Kill()
         {
-            RelativeCell = _relativeCell;
-        }
-
-        private void Update()
-        {
-            //ProximityCheck();
-        }
-
-        void ProximityCheck()
-        {
-            //TODO : Da rivedere
-            if (RelativeCell == null || RelativeCell.RelativeRoom.StatusOfExploration != ExplorationStatus.InExploration)
-                return;
-
-            if (Vector3.Distance(GameManager.I.Dumby.transform.position, transform.position) <= Data.ActivationRadius)
-                Interact(GameManager.I.Dumby);
+            Destroy(gameObject);
         }
 
         #region IPreviewable
@@ -55,21 +39,13 @@ namespace DumbProject.GDR_System
         public bool IsInteractable { get; set; }
         public Transform Transf { get { return transform; } }
 
-        public bool Interact(AI_Controller _controller)
+        public bool Interact(AI_Controller _dumby_AI_Controller)
         {
             if (CoolDown())
             {
-                AI_Ctrl = _controller;
-                GDR_Interact(_controller.GetComponent<GDR_Controller>());
-                attackSpeed = gdrController.Data.Speed;
-
-                Debug.Log("Enemy Life " + gdrController.Data.Life);
-                if (gdrController != null && (gdrController.Data.Life <= 0 || !IsInteractable))
-                {
-                    IsInteractable = false;
-                    Destroy(gameObject);
-                    return true;
-                }
+                AI_Ctrl = _dumby_AI_Controller;
+                GDR_Interact(_dumby_AI_Controller.GetComponent<GDR_Controller>());
+                attackSpeed = enemy_GDR_Controller.Data.Speed;
             }
             return false;
         }

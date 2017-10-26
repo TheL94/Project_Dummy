@@ -227,10 +227,6 @@ namespace DumbProject.Rooms
             {
                 (_interactableToAdd as Trap).SetRelativeCell(freeCell);
             }
-            else if (_interactableToAdd.GetType() == typeof(Enemy))
-            {
-                (_interactableToAdd as Enemy).SetRelativeCell(freeCell);
-            }
 
             freeCell.ActualInteractable = _interactableToAdd;
             InteractableList.Add(_interactableToAdd);
