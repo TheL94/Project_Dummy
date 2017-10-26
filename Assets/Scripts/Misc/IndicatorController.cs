@@ -99,51 +99,7 @@ namespace DumbProject.UI
             }
             else
             {
-                if (iconPos.x >= Screen.width - offset)
-                    if (iconPos.y < CurrentUiFrame.y + offset + float.Epsilon)
-                        iconNewPos = new Vector3(Screen.width - offset, CurrentUiFrame.y, 0);
-                    else if (iconPos.y >= Screen.height - offset)
-                        iconNewPos = new Vector3(Screen.width - offset, Screen.height - offset, 0);
-                    else
-                        iconNewPos = new Vector3(Screen.width - offset, dumbyPosition.y, 0);
-
-                if (iconPos.x > CurrentUiFrame.x - offset && iconPos.x < Screen.width - offset)
-                    if (iconPos.y <= CurrentUiFrame.y + offset + float.Epsilon)
-                        iconNewPos = new Vector3(dumbyPosition.x, CurrentUiFrame.y - offset, 0);
-                    else if (iconPos.y >= Screen.height - offset)
-                        iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
-                    else
-                        iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
-
-                if (iconPos.x <= CurrentUiFrame.x - offset && iconPos.x >= offset)
-                    if (iconPos.y <= offset + float.Epsilon)
-                        iconNewPos = new Vector3(dumbyPosition.x, offset, 0);
-                    else if (iconPos.y >= Screen.height - offset)
-                        iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
-                    else
-                        iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
-
-                if (iconPos.x < offset)
-                {
-                    if (!UiIsVertical)
-                    {
-                        if (iconPos.y <= offset + float.Epsilon)
-                            iconNewPos = new Vector3(offset, offset, 0);
-                        else if (iconPos.y >= Screen.height - offset)
-                            iconNewPos = new Vector3(offset, Screen.height - offset, 0);
-                        else
-                            iconNewPos = new Vector3(offset, dumbyPosition.y, 0); 
-                    }
-                    else
-                    {
-                        if (iconPos.y <= CurrentUiFrame.y + float.Epsilon)
-                            iconNewPos = new Vector3(offset, CurrentUiFrame.y, 0);
-                        else if (iconPos.y >= Screen.height - offset)
-                            iconNewPos = new Vector3(offset, Screen.height - offset, 0);
-                        else
-                            iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
-                    }
-                }
+                iconNewPos = ConstrainPosition(iconPos);
             }
 
             Icon.transform.position = iconNewPos;
@@ -162,6 +118,63 @@ namespace DumbProject.UI
             return false;
         }
 
+        Vector3 ConstrainPosition(Vector3 iconPos)
+        {
+            Vector3 iconNewPos = iconPos;
+
+            if (iconPos.x >= Screen.width - offset)
+                if (iconPos.y < CurrentUiFrame.y + offset + float.Epsilon)
+                    iconNewPos = new Vector3(Screen.width - offset, CurrentUiFrame.y, 0);
+                else if (iconPos.y >= Screen.height - offset)
+                    iconNewPos = new Vector3(Screen.width - offset, Screen.height - offset, 0);
+                else
+                    iconNewPos = new Vector3(Screen.width - offset, dumbyPosition.y, 0);
+
+            if (iconPos.x > CurrentUiFrame.x - offset && iconPos.x < Screen.width - offset)
+                if (iconPos.y <= CurrentUiFrame.y + offset + float.Epsilon)
+                    iconNewPos = new Vector3(dumbyPosition.x, CurrentUiFrame.y - offset, 0);
+                else if (iconPos.y >= Screen.height - offset)
+                    iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
+                else
+                    iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
+
+            if (iconPos.x <= CurrentUiFrame.x - offset && iconPos.x >= offset)
+                if (iconPos.y <= offset + float.Epsilon)
+                    iconNewPos = new Vector3(dumbyPosition.x, offset, 0);
+                else if (iconPos.y >= Screen.height - offset)
+                    iconNewPos = new Vector3(dumbyPosition.x, Screen.height - offset, 0);
+                else
+                    iconNewPos = new Vector3(dumbyPosition.x, dumbyPosition.y, 0);
+
+            if (iconPos.x < offset)
+            {
+                if (!UiIsVertical)
+                {
+                    if (iconPos.y <= offset + float.Epsilon)
+                        iconNewPos = new Vector3(offset, offset, 0);
+                    else if (iconPos.y >= Screen.height - offset)
+                        iconNewPos = new Vector3(offset, Screen.height - offset, 0);
+                    else
+                        iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                }
+                else
+                {
+                    if (iconPos.y <= CurrentUiFrame.y + float.Epsilon)
+                        iconNewPos = new Vector3(offset, CurrentUiFrame.y, 0);
+                    else if (iconPos.y >= Screen.height - offset)
+                        iconNewPos = new Vector3(offset, Screen.height - offset, 0);
+                    else
+                        iconNewPos = new Vector3(offset, dumbyPosition.y, 0);
+                }
+            }
+
+            return iconNewPos;
+        }
+
+        void ConstrainRotation()
+        {
+
+        }
 
         private void OnDrawGizmos()
         {
