@@ -178,7 +178,9 @@ namespace DumbProject.Generic
             InputHndl.enabled = false;
             Camera_CinematicController cameraCinematic = CameraHndl.GetComponent<Camera_CinematicController>();
             cameraCinematic.Init();
-            cameraCinematic.Execute(DungeonMng.FirstRoom.transform.position ,DungeonMng.ObjectiveRoom.transform.position);
+            //cameraCinematic.Execute(DungeonMng.FirstRoom.transform.position ,DungeonMng.ObjectiveRoom.transform.position);
+            GameManager.I.ChageFlowState(FlowState.Gameplay);
+            GameManager.I.InputHndl.enabled = true;
         }
 
         public void PauseActions(bool _status)
