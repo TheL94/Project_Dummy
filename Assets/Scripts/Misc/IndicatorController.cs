@@ -99,10 +99,21 @@ namespace DumbProject.UI
             }
 
             if (GameManager.I.CurrentState == Flow.FlowState.Pause)
-                Icon.GetComponent<Image>().enabled = false;
+            {
+                foreach (Image image in Icon.GetComponentsInChildren<Image>())
+                {
+                    image.enabled = false;
+                }
+                //Icon.GetComponent<Image>().enabled = false;
+            }
+
             else if (GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
-                Icon.GetComponent<Image>().enabled = true;
+                foreach (Image image in Icon.GetComponentsInChildren<Image>())
+                {
+                    image.enabled = true;
+                }
+                //Icon.GetComponent<Image>().enabled = true;
                 UpdateIndicatorPosition();
             }
             else if (GameManager.I.CurrentState == Flow.FlowState.RecapGame)
@@ -124,7 +135,7 @@ namespace DumbProject.UI
             }
 
             Icon.transform.rotation = ConstrainRotation(iconNewPos);
-            Icon.transform.Rotate(0, 0, 90);
+            //Icon.transform.Rotate(0, 0, 90);
             Icon.transform.position = iconNewPos;
         }
 

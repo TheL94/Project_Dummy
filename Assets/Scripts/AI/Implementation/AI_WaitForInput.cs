@@ -1,9 +1,9 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 using DumbProject.UI;
-using DumbProject.Generic;
+using Framework.AI;
 
-namespace Framework.AI
+namespace DumbProject.Generic
 {
     [CreateAssetMenu(menuName = "AI/NewAction/WaitForInput")]
     public class AI_WaitForInput : AI_Action

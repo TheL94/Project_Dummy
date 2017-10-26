@@ -145,6 +145,11 @@ namespace DumbProject.Generic
             UIMng.ActivateEndGameplayPanel(false);
         }
 
+        public void GameplayActions()
+        {
+            (Dumby as Dumby).IndicatorInit();
+        }
+
         public void EnterGameplayActions()
         {
             DungeonMng.Setup();
