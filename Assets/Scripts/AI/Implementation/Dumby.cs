@@ -30,10 +30,13 @@ namespace DumbProject.Generic
         protected override void OnInit()
         {
             animator = GetComponentInChildren<Animator>();
+        }
+
+        public void IndicatorInit()
+        {
             Indicator = GetComponent<IndicatorController>();
             if (Indicator != null)
                 Indicator.Init();
-
         }
 
         #region Animation

@@ -1,14 +1,10 @@
 fileFormatVersion: 2
 guid: c10c276c9925fec48a167e61b6b49991
-timeCreated: 1506421359
+timeCreated: 1509026470
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences:
-  - GDRPrefab: {fileID: 114434080894983120, guid: 0bc5f251699e5504cb56964c3cb0ed54,
-      type: 2}
-  - iC: {fileID: 114853279120793534, guid: fc09167508371764387c67ff81ca1275, type: 2}
-  - ai_Controller: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
