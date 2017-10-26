@@ -14,8 +14,7 @@ namespace DumbProject.GDR_System
         public int PlayerLevel;
         public InventoryController inventoryCtrl;
         public float PercentageToSpawn;
-
-        List<float> ExpLevel = new List<float>();
+        public List<float> ExpLevel = new List<float>();
 
         [SerializeField] float _maxLife;// rischio.
         public float MaxLife
@@ -42,13 +41,13 @@ namespace DumbProject.GDR_System
         }
         public float Armor { get; private set; }
 
+        public int CurrentLevel { get; private set; }
+
         public float Speed;
-        public float Attack;
+        public float Damage;
 
         public float ExperienceToGive;
         public float ExperienceMuliplier = 1;
-
-        GDR_Controller target;
 
         public ExperienceType experienceType;
 
@@ -65,17 +64,49 @@ namespace DumbProject.GDR_System
             }
         }
 
+        public void Init()
+        {
+            inventoryCtrl = new InventoryController();
+            Life = MaxLife;
+            Armor = MaxArmor;
+            CurrentLevel = 0;
+        }
+
         public bool GetDamage(float _damage)
         {
-            _damage -= Armor;
-            if(_damage > 0)
+            Debug.Log(ID + " will take " + _damage + " of Damage");
+            float damageToLife = 0f;
+            if (Armor > 0)
+            {
+                damageToLife = Armor - _damage;
+                if (damageToLife < 0)
+                {
+                    Life += damageToLife;
+                    inventoryCtrl.BreakArmor();
+                    Debug.Log(ID + "-- Life " + Life + "/" + MaxLife + " -- Armor " + Armor + "/" + MaxArmor);
+                    if (Life <= 0)
+                    {
+                        Life = 0;
+                        Debug.Log(ID + " Is Dead");
+                        return false;
+                    }
+                }
+                else
+                {
+                    Armor -= _damage;
+                    if (Armor < 0)
+                        Armor = 0;
+                    Debug.Log(ID + " - Armor absorb Damage");
+                }
+            }
+            else
             {
                 Life -= _damage;
-                inventoryCtrl.BreakArmor();
-                Debug.Log(ID + " " + Life);
+                Debug.Log(ID + "-- Life " + Life + "/" + MaxLife + " -- Armor " + Armor + "/" + MaxArmor);
                 if (Life <= 0)
                 {
-                    Life = 0;              
+                    Life = 0;
+                    Debug.Log(ID + " Is Dead");
                     return false;
                 }
             }
@@ -88,6 +119,40 @@ namespace DumbProject.GDR_System
             if (Life > MaxLife)
             {
                 Life = MaxLife;
+            }
+        }
+
+        /// <summary>
+        /// Get the target and attack it.
+        /// </summary>
+        /// <param name="_target"></param>
+        public bool AttackTarget(GDR_Controller _target)
+        {
+            return !_target.Data.GetDamage(Damage);
+        }
+
+        /// <summary>
+        /// Get the experience from the Enemy
+        /// </summary>
+        public void GetExperience(ExperienceType _experienceType, GDR_Element_Generic_Data _data = null)
+        {
+            Dumby dumby = FindObjectOfType<Dumby>();
+            switch (_experienceType)
+            {
+                case ExperienceType.None:
+                    break;
+                case ExperienceType.Enemy:
+                    ExperienceCounter += GetExperienceMultiplierFromEnemy();
+                    break;
+                case ExperienceType.Item:
+                    break;
+                case ExperienceType.Trap:
+                case ExperienceType.TimeWaster:
+                    ExperienceCounter += _data.ExperienceToGive;
+                    break;
+                case ExperienceType.Room:
+                    ExperienceCounter++;
+                    break;
             }
         }
 
@@ -129,12 +194,12 @@ namespace DumbProject.GDR_System
             if (_previousLevel < _newLevel)
             {
                 Speed = Speed * 1.05f;
-                Attack = Attack + 0.25f;
+                Damage = Damage + 0.25f;
             }
             if (_previousLevel > _newLevel)
             {
                 Speed = Speed * (-1.05f);
-                Attack = Attack + 0.25f;
+                Damage = Damage + 0.25f;
             }
         }
 
@@ -150,51 +215,7 @@ namespace DumbProject.GDR_System
                 return ExperienceToGive;
             }
             return 1;
-        }
-
-        /// <summary>
-        /// Get the target and attack it.
-        /// </summary>
-        /// <param name="_target"></param>
-        public void AttackTarget(GDR_Controller _target)
-        {
-            if (target = null)
-            {
-                target = _target;
-            }
-            _target.Data.Life -= Attack;
-        }
-
-        /// <summary>
-        /// Get the experience from the Enemy
-        /// </summary>
-        public void GetExperience(ExperienceType _experienceType, GDR_Element_Generic_Data _data = null)
-        {
-            Dumby dumby = FindObjectOfType<Dumby>();
-            switch (_experienceType)
-            {
-                case ExperienceType.Enemy:
-                    if (target != null)
-                    {
-                        ExperienceCounter += GetExperienceMultiplierFromEnemy();
-                        target = null;
-                    }
-                    break;
-                case ExperienceType.None:
-                    break;
-                case ExperienceType.Item:
-                    break;
-                case ExperienceType.Trap:               
-                case ExperienceType.TimeWaster:
-                    ExperienceCounter += _data.ExperienceToGive;
-                    break;
-                case ExperienceType.Room:
-                    ExperienceCounter++;
-                    break;
-            }
-        }
-        
-
+        }   
     }
 
     public enum ExperienceType

@@ -15,8 +15,8 @@ namespace DumbProject.GDR_System
 
         public void Init(GDR_Data _data)
         { 
-            Data = _data;
-            Data.inventoryCtrl = new InventoryController();
+            Data = Instantiate(_data);
+            Data.Init();
         }
 
         /// <summary>
@@ -65,14 +65,27 @@ namespace DumbProject.GDR_System
             }
             else if (_GDR_Interactable.GetType() == typeof(Enemy))
             {
-                if (Data.GetDamage((_GDR_Interactable as Enemy).gdrController.Data.Attack))
-                    Data.GetExperience(ExperienceType.Enemy, _GDR_Interactable.GDR_Data);
-                else
+                GDR_Controller _dumby_GDR_Controller = _controller.GetComponent<GDR_Controller>();
+
+                if ((_GDR_Interactable as Enemy).enemy_GDR_Controller.Data.AttackTarget(_dumby_GDR_Controller)) // enemy atta dumby, true se dumby muore
                 {
-                    if(_controller != null)
+                    // dumby va in stato di morte
+                    if (_controller != null)
+                    {
                         _controller.SetAICurrentState((_controller as Dumby).DefaultDeath);
+                        return;
+                    }
+                        
                 }
 
+                if (_dumby_GDR_Controller.Data.AttackTarget((_GDR_Interactable as Enemy).enemy_GDR_Controller)) // dumby attacca enemy, true se enemy muore
+                {
+                    // dumby prende esperienza all'uccisione del nemico
+                    Data.GetExperience(ExperienceType.Enemy, _GDR_Interactable.GDR_Data);
+                    (_GDR_Interactable as Enemy).IsInteractable = false;
+                    (_GDR_Interactable as Enemy).Kill();
+                    return;
+                }               
             }
         }
     }
