@@ -52,7 +52,9 @@ namespace DumbProject.GDR_System
             else if (_GDR_Interactable.GetType() == typeof(Trap))
             {
                 if (Data.GetDamage((_GDR_Interactable as Trap).Data.Damage))
+                {
                     Data.GetExperience(ExperienceType.Trap, _GDR_Interactable.GDR_Data);
+                }
                 else
                 {
                     if (_controller != null)

@@ -78,15 +78,15 @@ namespace DumbProject.GDR_System
             float damageToLife = 0f;
             if (Armor > 0)
             {
-                damageToLife = Armor - _damage;
-                if (damageToLife < 0)
+                damageToLife = _damage - Armor;
+                if (damageToLife > 0)
                 {
-                    Life += damageToLife;
+                    Armor -= _damage;
+                    Life -= damageToLife;
                     inventoryCtrl.BreakArmor();
                     Debug.Log(ID + "-- Life " + Life + "/" + MaxLife + " -- Armor " + Armor + "/" + MaxArmor);
                     if (Life <= 0)
                     {
-                        Life = 0;
                         Debug.Log(ID + " Is Dead");
                         return false;
                     }
@@ -94,9 +94,7 @@ namespace DumbProject.GDR_System
                 else
                 {
                     Armor -= _damage;
-                    if (Armor < 0)
-                        Armor = 0;
-                    Debug.Log(ID + " - Armor absorb Damage");
+                    Debug.Log(ID + " - Armor absorb Damage" + " -- Armor " + Armor + "/" + MaxArmor);
                 }
             }
             else
@@ -128,7 +126,13 @@ namespace DumbProject.GDR_System
         /// <param name="_target"></param>
         public bool AttackTarget(GDR_Controller _target)
         {
-            return !_target.Data.GetDamage(Damage);
+            float weaponDamage = inventoryCtrl.GetEquippedWeaponDamage();
+            float totalDamage = Damage;
+
+            if (weaponDamage > 0)
+                totalDamage += weaponDamage;
+
+            return !_target.Data.GetDamage(totalDamage);
         }
 
         /// <summary>
