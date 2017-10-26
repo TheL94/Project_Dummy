@@ -16,6 +16,18 @@ namespace DumbProject.GDR_System
             Inventory = new List<I_GDR_Equippable>();
         }
 
+        public float GetEquippedWeaponDamage()
+        {
+            foreach (I_GDR_Equippable item in Inventory)
+            {
+                if(item.GetType() == typeof(Weapon))
+                {
+                    return (item as Weapon).Data.Damage;
+                }
+            }
+            return -1;
+        }
+
         /// <summary>
         /// Raccoglie l'oggetto nella cella selezionata
         /// </summary>
