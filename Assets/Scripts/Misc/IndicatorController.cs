@@ -124,7 +124,7 @@ namespace DumbProject.UI
             }
 
             Icon.transform.rotation = ConstrainRotation(iconNewPos);
-            Icon.transform.Rotate(0, 0, 90);
+            //Icon.transform.Rotate(0, 0, 90);
             Icon.transform.position = iconNewPos;
         }
 
