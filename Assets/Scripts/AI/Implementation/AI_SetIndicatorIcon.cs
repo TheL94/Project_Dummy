@@ -8,10 +8,14 @@ namespace DumbProject.Generic
     public class AI_SetIndicatorIcon : AI_Action
     {
         public IndicatorController.ImageState StateIcon;
+        private IndicatorController indicator;
 
         protected override bool Act(AI_Controller _controller)
         {
-            (_controller as Dumby).Indicator.ImageCurrentState = StateIcon;
+            if (indicator == null)
+                indicator = (_controller as Dumby).Indicator;
+            else
+                indicator.ImageCurrentState = StateIcon;
             return true;
         }
     }
