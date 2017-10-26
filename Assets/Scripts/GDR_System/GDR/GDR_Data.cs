@@ -15,6 +15,7 @@ namespace DumbProject.GDR_System
         public InventoryController inventoryCtrl;
         public float PercentageToSpawn;
         public List<float> ExpLevel = new List<float>();
+        public GDR_PopUp PopUp;
 
         [SerializeField] float _maxLife;// rischio.
         public float MaxLife
@@ -36,6 +37,7 @@ namespace DumbProject.GDR_System
             set
             {
                 _maxArmor = value;
+                PopUp.ShowText(MaxArmor.ToString(), Color.yellow);
                 Armor = MaxArmor;
             }
         }
@@ -64,17 +66,23 @@ namespace DumbProject.GDR_System
             }
         }
 
-        public void Init()
+        GDR_Controller _GDR_Ctrl;
+
+        public void Init(GDR_Controller _GDR_Controller)
         {
+            _GDR_Ctrl = _GDR_Controller;
             inventoryCtrl = new InventoryController();
             Life = MaxLife;
             Armor = MaxArmor;
             CurrentLevel = 0;
+
+            PopUp = Instantiate(PopUp, _GDR_Ctrl.transform);
+            PopUp.transform.position = _GDR_Ctrl.transform.position;
         }
 
         public bool GetDamage(float _damage)
         {
-            Debug.Log(ID + " will take " + _damage + " of Damage");
+            PopUp.ShowText(_damage.ToString(), Color.red);
             float damageToLife = 0f;
             if (Armor > 0)
             {
@@ -84,27 +92,22 @@ namespace DumbProject.GDR_System
                     Armor -= _damage;
                     Life -= damageToLife;
                     inventoryCtrl.BreakArmor();
-                    Debug.Log(ID + "-- Life " + Life + "/" + MaxLife + " -- Armor " + Armor + "/" + MaxArmor);
                     if (Life <= 0)
                     {
-                        Debug.Log(ID + " Is Dead");
                         return false;
                     }
                 }
                 else
                 {
                     Armor -= _damage;
-                    Debug.Log(ID + " - Armor absorb Damage" + " -- Armor " + Armor + "/" + MaxArmor);
                 }
             }
             else
             {
                 Life -= _damage;
-                Debug.Log(ID + "-- Life " + Life + "/" + MaxLife + " -- Armor " + Armor + "/" + MaxArmor);
                 if (Life <= 0)
                 {
                     Life = 0;
-                    Debug.Log(ID + " Is Dead");
                     return false;
                 }
             }
@@ -113,6 +116,7 @@ namespace DumbProject.GDR_System
 
         public void GetCure(float _cure)
         {
+            PopUp.ShowText(_cure.ToString(), Color.green);
             Life += _cure;
             if (Life > MaxLife)
             {

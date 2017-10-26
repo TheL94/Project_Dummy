@@ -16,7 +16,7 @@ namespace DumbProject.GDR_System
         public void Init(GDR_Data _data)
         { 
             Data = Instantiate(_data);
-            Data.Init();
+            Data.Init(this);
         }
 
         /// <summary>
