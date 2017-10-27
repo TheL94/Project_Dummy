@@ -139,6 +139,11 @@ namespace DumbProject.UI
             }
             else if (GameManager.I.CurrentState == Flow.FlowState.RecapGame)
                 Destroy(Icon);
+
+            if (actionImage != null)
+            {
+                SetActionImageOrientation();
+            }
         }
 
         /// <summary>
@@ -237,6 +242,12 @@ namespace DumbProject.UI
 
             return newRotation;
         }
+
+        void SetActionImageOrientation()
+        {
+            actionImage.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        }
+
 
         private void OnDrawGizmos()
         {
