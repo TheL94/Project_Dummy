@@ -86,11 +86,13 @@ namespace DumbProject.GDR_System
             {
                 itemToPick.GameObj.transform.parent = _gdrController.RightHand.transform;
                 itemToPick.GameObj.transform.position = _gdrController.RightHand.position;
+                itemToPick.GameObj.transform.rotation = _gdrController.RightHand.rotation;
             }
             if (itemToPick.GetType() == typeof(Armor))
             {
                 itemToPick.GameObj.transform.parent = _gdrController.transform;
                 itemToPick.GameObj.transform.position = _gdrController.transform.position;
+
                 itemToPick.GameObj.SetActive(false);
             }
         }
