@@ -6,7 +6,7 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class UIEndGameplayController : MonoBehaviour
+    public class UIEndGameplayController : UIChanger
     {
         public Button SkipButton;
         public Text RecapText;
@@ -17,6 +17,7 @@ namespace DumbProject.UI
         public void Init(UIManager _uiManager)
         {
             uiManager = _uiManager;
+            ImageToChange = GetComponent<Image>();
             // TODO : inizializzare componenti del menu
         }
 
