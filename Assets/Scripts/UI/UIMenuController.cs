@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.UI;
 using DumbProject.Generic;
+using System;
 
 namespace DumbProject.UI
 {
-    public class UIMenuController : MonoBehaviour
+    public class UIMenuController : UIChanger
     {
         public MainMenuController MainMenuPanel;
         public CreditsMenuController CreditsPanel;
@@ -18,6 +19,7 @@ namespace DumbProject.UI
             uiManager = _uiManager;
             MainMenuPanel.Init(this);
             CreditsPanel.Init(this);
+            ImageToChange = GetComponent<Image>();
         }
 
         public void Setup()
@@ -25,6 +27,7 @@ namespace DumbProject.UI
             MainMenuPanel.gameObject.SetActive(true);
             CreditsPanel.gameObject.SetActive(false);
         }
+        
 
         #region MainMenuAPI
         public void PlayGame()
@@ -50,7 +53,11 @@ namespace DumbProject.UI
             MainMenuPanel.gameObject.SetActive(true);
             CreditsPanel.gameObject.SetActive(false);
         }
+
+
         #endregion
         #endregion
+
+        
     }
 }

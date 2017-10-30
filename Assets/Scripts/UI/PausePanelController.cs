@@ -6,21 +6,16 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class PausePanelController : MonoBehaviour, IUIChanger
+    public class PausePanelController : UIChanger
     {
         public Button ResumeButton;
         public Button ExitButton;
         UIGamePlayController controller;
-
-        Image gamePlayImage;
-
-        public Sprite VerticalUI;
-        public Sprite HorizontalUI;
-
+        
         public void Init(UIGamePlayController _controller)
         {
             controller = _controller;
-            gamePlayImage = GetComponent<Image>();
+            ImageToChange = GetComponentsInChildren<Image>()[1];
         }
 
         private void OnEnable()
@@ -33,24 +28,6 @@ namespace DumbProject.UI
         {
             ResumeButton.onClick.RemoveAllListeners();
             ExitButton.onClick.RemoveAllListeners();
-        }
-
-        public void SetUIOrientation(ScreenOrientation _orientation)
-        {
-            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-            {
-                if (GameManager.I.UIMng.ForceVerticalUI)
-                    gamePlayImage.sprite = VerticalUI;
-                else
-                    gamePlayImage.sprite = HorizontalUI;
-            }
-            else
-            {
-                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
-                    gamePlayImage.sprite = VerticalUI;
-                else
-                    gamePlayImage.sprite = HorizontalUI;
-            }
         }
     }
 }

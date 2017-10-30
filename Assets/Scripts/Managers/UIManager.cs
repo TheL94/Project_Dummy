@@ -26,9 +26,11 @@ namespace DumbProject.UI
         [HideInInspector]
         public UIEndGameplayController EndGameCtrl;
 
+        CameraBackground backGroundCamera;
+
         const string PrefabPath = "Prefabs/UI/";
 
-        List<IUIChanger> UIchangers = new List<IUIChanger>();
+        List<UIChanger> UIchangers = new List<UIChanger>();
 
         private void OnEnable()
         {
@@ -56,7 +58,9 @@ namespace DumbProject.UI
             EndGameCtrl.Init(this);
 
             FlexibleUIManager.UpdateUIOrientation();
-            UIchangers = GetComponentsInChildren<IUIChanger>().ToList();
+            UIchangers = GetComponentsInChildren<UIChanger>().ToList();
+            backGroundCamera = GameManager.I.CameraHndl.GetComponentInChildren<CameraBackground>();
+            UIchangers.Add(backGroundCamera as UIChanger);
 
             SetChildrensPanelsOrientation();
 
@@ -86,12 +90,10 @@ namespace DumbProject.UI
         /// </summary>
         void SetChildrensPanelsOrientation()
         {
-            GameManager.I.CameraHndl.GetComponentInChildren<IUIChanger>().SetUIOrientation(DeviceCurrentOrientation);
-
             //if(GameManager.I.Dumby != null)
             //    GameManager.I.Dumby.GetComponent<IUIChanger>().SetUIOrientation(DeviceCurrentOrientation);
 
-            foreach (IUIChanger changer in UIchangers)
+            foreach (UIChanger changer in UIchangers)
             {
                 changer.SetUIOrientation(DeviceCurrentOrientation);
             }

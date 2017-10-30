@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace DumbProject.UI
 {
-    public class IndicatorController : MonoBehaviour, IUIChanger
+    public class IndicatorController : UIChanger
     {
         UIManager uiManager;
 
@@ -45,7 +45,6 @@ namespace DumbProject.UI
         Vector2 horizontalUiFrame = new Vector2(0.43f , 0.314f);
         float offset = 5;
 
-        GameObject IconPrefab;
 
         #region Action Image Variables
 
@@ -260,7 +259,7 @@ namespace DumbProject.UI
             }
         }
 
-        public void SetUIOrientation(ScreenOrientation _orientation)
+        public override void SetUIOrientation(ScreenOrientation _orientation)
         {
             if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
             {

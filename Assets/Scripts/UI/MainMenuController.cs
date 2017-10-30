@@ -7,14 +7,9 @@ using DumbProject.Generic;
 
 namespace DumbProject.UI
 {
-    public class MainMenuController : MonoBehaviour, IUIChanger
+    public class MainMenuController : UIChanger
     {
         UIMenuController menuController;
-
-        Image menuImage;
-        public Sprite VerticalUI;
-        public Sprite HorizontalUI;
-
 
         public Button PlayButton;
         public Button CreditsButton;
@@ -23,7 +18,7 @@ namespace DumbProject.UI
         public void Init(UIMenuController _controller)
         {
             menuController = _controller;
-            menuImage = GetComponent<Image>();
+            ImageToChange = GetComponent<Image>();
         }
 
         private void OnEnable()
@@ -38,24 +33,6 @@ namespace DumbProject.UI
             PlayButton.onClick.RemoveAllListeners();
             CreditsButton.onClick.RemoveAllListeners();
             ExitButton.onClick.RemoveAllListeners();
-        }
-        
-        public void SetUIOrientation(ScreenOrientation _orientation)
-        {
-            if (GameManager.I.DeviceEnvironment == DeviceType.Desktop)
-            {
-                if (GameManager.I.UIMng.ForceVerticalUI)
-                    menuImage.sprite = VerticalUI;
-                else
-                    menuImage.sprite = HorizontalUI;
-            }
-            else
-            {
-                if (_orientation == ScreenOrientation.Portrait || _orientation == ScreenOrientation.PortraitUpsideDown)
-                    menuImage.sprite = VerticalUI;
-                else
-                    menuImage.sprite = HorizontalUI;
-            }
         }
     }
 }
