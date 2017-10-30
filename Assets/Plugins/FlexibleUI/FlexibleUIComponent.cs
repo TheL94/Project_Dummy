@@ -18,12 +18,13 @@ namespace FlexibleUI
             else if (VerticalUIObjectData != null)
                 FlexibleUIManager.SetRectTransformParametersByData(transform as RectTransform, VerticalUIObjectData, HorizontalUIObjectData);
             else
-                Debug.LogWarning("Missing UI Data and Fill Anchors disabled on " + name + " object !");
+                Debug.LogWarning("Missing UI Data and Fill Parent Anchors disabled on " + name + " object !");
         }
 
         private void OnEnable()
         {
             FlexibleUIManager.OnScreenOrientationChange += UpdateRectTransform;
+            UpdateRectTransform();
         }
 
         private void OnDisable()
