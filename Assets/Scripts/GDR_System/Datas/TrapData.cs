@@ -9,5 +9,6 @@ namespace DumbProject.GDR_System
     {
         public float Damage;
         public float ActivationRadius;
+        public bool ActiveOnce;
     }
 }
