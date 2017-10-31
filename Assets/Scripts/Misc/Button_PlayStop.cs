@@ -14,6 +14,8 @@ namespace DumbProject.Generic {
 
         private float _stopTimer;
 
+        public Image loadingImage;
+
         bool canToggle
         {
             get
@@ -39,7 +41,11 @@ namespace DumbProject.Generic {
             if (!isInitialized)
                 Init();
 
-            privateTimer -= Time.deltaTime;
+            if (privateTimer >= 0)
+            {
+                privateTimer -= Time.deltaTime;
+                loadingImage.fillAmount = privateTimer / Timer; 
+            }
             if (isToggled)
                 _stopTimer -= Time.deltaTime; 
 
@@ -57,7 +63,6 @@ namespace DumbProject.Generic {
                 return;
 
             dumbyAI.IsActive = !dumbyAI.IsActive;
-            privateTimer = Timer;
             _stopTimer = StopTimer;
         }
     }
