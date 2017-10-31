@@ -67,6 +67,5 @@ namespace DumbProject.Generic
         {
             inputRecived = true;
         }
-
     }
 }
