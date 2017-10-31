@@ -153,6 +153,7 @@ namespace DumbProject.Rooms
         void InstantiateFloorElement()
         {
             Floor.SetGraphicElement(GameManager.I.PoolMng.GetGameObject("Floor"), Quaternion.identity);
+            Floor.SetFillerGraphic(GameManager.I.PoolMng.GetGameObject("Rock"), Floor.transform.position, Floor.transform.rotation);
         }
 
         /// <summary>
