@@ -82,13 +82,6 @@ namespace DumbProject.Generic
             ChageFlowState(FlowState.Loading);
         }
 
-        void Update()
-        {
-            // TODO : per test 
-            if(Input.GetKeyDown(KeyCode.Space))
-                Dumby.IsActive = true;
-        }
-
         #region API
 
         #region Game Flow
