@@ -20,18 +20,63 @@ namespace DumbProject.Generic
         public float[] BoundsZ { get { return new float[] { 0f - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta,
             GameManager.I.MainGridCtrl.GridHeight * GameManager.I.MainGridCtrl.CellSize - GameManager.I.MainGridCtrl.CellSize * BorderLimitDelta }; } }
 
-        public float[] PerspectiveZoomBounds = new float[] { 25f, 85f };
-        public float[] OrthographicZoomBounds = new float[] { 8f, 18f };
+        // 2 valori, min e max
+        public float[] PerspectiveHorizontalZoomBounds;
+        public float[] PerspectiveVerticalZoomBounds;
+        public float[] OrthographicHorizontalZoomBounds;
+        public float[] OrthographicVerticalZoomBounds;
 
         Camera cam;
 
         Vector3 lastPanPosition;
         Vector3 startPosition;
 
-        public void Init()
+        public void Setup()
         {
             cam = GetComponentInChildren<Camera>();
             startPosition = transform.position;
+        }
+
+        public void Init()
+        {
+
+            if (startPosition != transform.position)
+                transform.position = startPosition;
+
+            if (cam.orthographic)
+            {
+                if (SystemInfo.deviceType == DeviceType.Desktop)
+                {
+                    if (GameManager.I.UIMng.ForceVerticalUI)
+                        cam.orthographicSize = OrthographicVerticalZoomBounds[1];
+                    else
+                        cam.orthographicSize = OrthographicHorizontalZoomBounds[1];
+                }
+                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                {
+                    if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeLeft || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeRight)
+                        cam.orthographicSize = OrthographicHorizontalZoomBounds[1];
+                    else if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        cam.orthographicSize = OrthographicVerticalZoomBounds[1];
+                }
+            }
+            else
+            {
+                if (SystemInfo.deviceType == DeviceType.Desktop)
+                {
+                    if (GameManager.I.UIMng.ForceVerticalUI)
+                        cam.fieldOfView = PerspectiveVerticalZoomBounds[1];
+                    else
+                        cam.fieldOfView = PerspectiveHorizontalZoomBounds[1];
+                }
+                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                {
+                    if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeLeft || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeRight)
+                        cam.fieldOfView = PerspectiveHorizontalZoomBounds[1];
+                    else if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        cam.fieldOfView = PerspectiveVerticalZoomBounds[1];
+                }
+            }
         }
 
         public void ResetValues()
@@ -87,11 +132,37 @@ namespace DumbProject.Generic
 
             if (cam.orthographic)
             {
-                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicZoomBounds[0], OrthographicZoomBounds[1]);
+                if (SystemInfo.deviceType == DeviceType.Desktop)
+                {
+                    if (GameManager.I.UIMng.ForceVerticalUI)
+                        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicVerticalZoomBounds[0], OrthographicVerticalZoomBounds[1]);
+                    else
+                        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicHorizontalZoomBounds[0], OrthographicHorizontalZoomBounds[1]);
+                }
+                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                {
+                    if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeLeft || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeRight)
+                        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicHorizontalZoomBounds[0], OrthographicHorizontalZoomBounds[1]);
+                    else if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (_offset * zoomSpeed), OrthographicVerticalZoomBounds[0], OrthographicVerticalZoomBounds[1]);
+                }
             }
             else
             {
-                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveZoomBounds[0], PerspectiveZoomBounds[1]);
+                if (SystemInfo.deviceType == DeviceType.Desktop)
+                {
+                    if (GameManager.I.UIMng.ForceVerticalUI)
+                        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveVerticalZoomBounds[0], PerspectiveVerticalZoomBounds[1]);
+                    else
+                        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveHorizontalZoomBounds[0], PerspectiveHorizontalZoomBounds[1]);
+                }
+                else if (SystemInfo.deviceType == DeviceType.Handheld)
+                {
+                    if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Landscape || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeLeft || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.LandscapeRight)
+                        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveHorizontalZoomBounds[0], PerspectiveHorizontalZoomBounds[1]);
+                    else if (GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.Portrait || GameManager.I.UIMng.DeviceCurrentOrientation == ScreenOrientation.PortraitUpsideDown)
+                        cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - (_offset * zoomSpeed), PerspectiveVerticalZoomBounds[0], PerspectiveVerticalZoomBounds[1]);
+                }
             }
         }
         #endregion

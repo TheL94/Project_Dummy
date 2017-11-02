@@ -95,7 +95,7 @@ namespace DumbProject.Generic
 
         public void LoadingActions()
         {
-            CameraHndl.Init();
+            CameraHndl.Setup();
 
             InputHndl = GetComponent<InputHandler>();
             InputHndl.Init(CameraHndl);
@@ -133,6 +133,7 @@ namespace DumbProject.Generic
 
         public void MenuActions()
         {
+            CameraHndl.Init();
             UIMng.ActivateMenuPanel(true);
             UIMng.ActivateGamePlayPanel(false);
             UIMng.ActivateEndGameplayPanel(false);
