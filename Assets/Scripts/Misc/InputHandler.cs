@@ -24,8 +24,7 @@ namespace DumbProject.Generic
 
         public void Init(CameraHandler _camera)
         {
-            cameraHandler = _camera;
-            
+            cameraHandler = _camera;        
         }
 
         void Update()
@@ -40,7 +39,7 @@ namespace DumbProject.Generic
 
         void HandleInput()
         {
-            if (GameManager.I.IsGamePaused)
+            if (GameManager.I.IsGamePaused || GameManager.I.CurrentState != Flow.FlowState.Gameplay)
                 return;
             if (GameManager.I.IsTouchAvailable)
             {
