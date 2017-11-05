@@ -13,6 +13,7 @@ namespace DumbProject.UI
         public RoomPanelContainer RoomPanelContainer;
         public PausePanelController PausePanel;
         public Button PauseButton;
+        public Button_PlayStop PlayStopButton;
 
         #region API
         public void Init(UIManager _uiManager)
@@ -53,6 +54,24 @@ namespace DumbProject.UI
         public void ActivatePauseButton(bool _status)
         {
             PauseButton.gameObject.SetActive(_status);
+        }
+
+        /// <summary>
+        /// Inizializza il bottone per cambiare lo stato della AI
+        /// </summary>
+        public void InitializePlayStopButton()
+        {
+            if (PlayStopButton.enabled == false)
+                PlayStopButton.enabled = true;
+            PlayStopButton.Init();
+        }
+        /// <summary>
+        /// Active if the game is in gameplay mode (so the timer can rum)
+        /// Inactive when the game is in Pause mode (the timer is stoped)
+        /// </summary>
+        public void SetNextTurnButtonStatus(bool _status)
+        {
+            PlayStopButton.enabled = !_status;
         }
         #endregion
 

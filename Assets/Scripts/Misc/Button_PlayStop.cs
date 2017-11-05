@@ -10,7 +10,7 @@ namespace DumbProject.Generic {
 
         public float Timer = 40f;
         float privateTimer;
-        float StopTimer = 10f;
+        public float StopTimer = 10f;
 
         private float _stopTimer;
 
@@ -34,12 +34,13 @@ namespace DumbProject.Generic {
             privateTimer = Timer;
             _stopTimer = StopTimer;
             isInitialized = true;
+            loadingImage.fillAmount = 1f;
         }
 
         private void Update()
         {
             if (!isInitialized)
-                Init();
+                return;
 
             if (privateTimer >= 0)
             {
@@ -64,6 +65,7 @@ namespace DumbProject.Generic {
 
             dumbyAI.IsActive = !dumbyAI.IsActive;
             _stopTimer = StopTimer;
+            loadingImage.fillAmount = 1f;
         }
     }
 }
