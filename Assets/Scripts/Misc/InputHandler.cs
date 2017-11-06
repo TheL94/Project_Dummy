@@ -223,6 +223,33 @@ namespace DumbProject.Generic
             cameraHandler.ZoomCamera(scroll);
         }
         #endregion
+
+        #region DragOnScreenEdges
+        /// <summary>
+        /// Return a vector that point perpendicular whith the colliding Edges
+        /// </summary>
+        /// <param name="_screenPosition"></param>
+        /// <param name="_offSet"></param>
+        /// <returns></returns>
+        Vector2 GetEdgeCollisionVector(Vector2 _screenPosition, float _offSet = .1f)
+        {
+            Vector2 outcome = Vector2.zero;
+
+            if (_screenPosition.x <= _offSet)
+                outcome -= new Vector2(_offSet, 0);
+
+            else if (_screenPosition.x >= Screen.width - _offSet)
+                outcome += new Vector2(_offSet, 0);
+
+            else if (_screenPosition.y <= _offSet)
+                outcome -= new Vector2(0, _offSet);
+
+            else if (_screenPosition.y >= Screen.height - _offSet)
+                outcome += new Vector2(0, _offSet);
+
+            return outcome;
+        }
+        #endregion
     }
 }
 
