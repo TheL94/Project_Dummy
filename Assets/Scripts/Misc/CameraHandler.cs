@@ -84,7 +84,6 @@ namespace DumbProject.Generic
             transform.position = startPosition;
         }
 
-
         public void SetLastPanPosition(Vector3 _lastPanPosition)
         {
             lastPanPosition = _lastPanPosition;

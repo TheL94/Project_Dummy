@@ -29,7 +29,15 @@ namespace DumbProject.Grid
         List<INetworkable> _links = new List<INetworkable>();
         public List<INetworkable> Links
         {
-            get { return _links; }
+            get
+            {
+                for (int i = 0; i < _links.Count; i++)
+                {
+                    if (_links[i] == null)
+                        _links.Remove(_links[i]);
+                }
+                return _links;
+            }
             set { _links = value; }
         }
 
@@ -45,10 +53,7 @@ namespace DumbProject.Grid
         public void RemoveLinks(List<INetworkable> _linksToRemove)
         {
             foreach (INetworkable _INet in _linksToRemove)
-            {
-                if (Links.Contains(_INet))
-                    Links.Remove(_INet);
-            }
+                Links.Remove(_INet);
         }
         #endregion
     }
