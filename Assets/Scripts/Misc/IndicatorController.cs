@@ -4,7 +4,7 @@ using UnityEngine;
 using DumbProject.Generic;
 using System.Linq;
 using UnityEngine.UI;
-
+using DumbProject.GDR_System;
 
 namespace DumbProject.UI
 {
@@ -67,7 +67,7 @@ namespace DumbProject.UI
         #endregion
 
         [HideInInspector]
-        public GameObject Icon;
+        public GameObject Indicator;
 
         Vector3 targetPosition;
 
@@ -82,19 +82,26 @@ namespace DumbProject.UI
             uiManager = GameManager.I.UIMng;
             Vector3 vector = Camera.main.WorldToScreenPoint(transform.position);
             Data = Instantiate(Resources.Load("Data/UIData/IndicatorData/IndicatorData") as IndicatorData);
-            //Data = Instantiate(Resources.Load(""))
+            
+            // ---------------
+
+            if(_calledByDumby)
+                dumbyController = GameManager.I.Dumby.GetComponent<GDR_Controller>();
+
+            // ---------------
+
             if (uiManager != null)
             {
                 GameObject tempActionIndicator;
-                Icon = Instantiate(Data.GameObj, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
-                Image tempImage = Icon.AddComponent<Image>();
-                Icon.AddComponent<Button>();
-                Icon.AddComponent<IndicatorRepositioner>().Init(this);
+                Indicator = Instantiate(Data.GameObj, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
+                Image tempImage = Indicator.AddComponent<Image>();
+                Indicator.AddComponent<Button>();
+                Indicator.AddComponent<IndicatorRepositioner>().Init(this);
 
                 if (_calledByDumby)
                 {
                     tempImage.sprite = Data.ForDumbyIndicator;
-                    tempActionIndicator = Instantiate(Data.GameObj, Icon.transform);
+                    tempActionIndicator = Instantiate(Data.GameObj, Indicator.transform);
                     actionImage = tempActionIndicator.AddComponent<Image>();
 
                     actionImage.sprite = Data.ChooseSprite;
@@ -103,10 +110,6 @@ namespace DumbProject.UI
                 {
                     tempImage.sprite = Data.GenericIndicator;
                 }
-
-                
-                //IconPrefab = Resources.Load("Prefabs/Misc/IndicatorPrefab") as GameObject;
-                //Icon = Instantiate(IconPrefab, vector + Vector3.up * 70, Quaternion.identity, uiManager.transform);
             }
             SetUIOrientation(GameManager.I.UIMng.DeviceCurrentOrientation);
         }
@@ -120,24 +123,26 @@ namespace DumbProject.UI
 
             if (GameManager.I.CurrentState == Flow.FlowState.Pause)
             {
-                foreach (Image image in Icon.GetComponentsInChildren<Image>())
+                foreach (Image image in Indicator.GetComponentsInChildren<Image>())
                 {
                     image.enabled = false;
                 }
-                //Icon.GetComponent<Image>().enabled = false;
             }
 
             else if (GameManager.I.CurrentState == Flow.FlowState.Gameplay)
             {
-                foreach (Image image in Icon.GetComponentsInChildren<Image>())
+                foreach (Image image in Indicator.GetComponentsInChildren<Image>())
                 {
                     image.enabled = true;
                 }
-                //Icon.GetComponent<Image>().enabled = true;
-                UpdateIndicatorPosition();
+
+                if (dumbyController)
+                    UpdateIndicatorColor();
+
+                UpdateIndicatorPosition(); 
             }
             else if (GameManager.I.CurrentState == Flow.FlowState.RecapGame)
-                Destroy(Icon);
+                Destroy(Indicator);
 
             if (actionImage != null)
             {
@@ -159,10 +164,28 @@ namespace DumbProject.UI
                 iconNewPos = ConstrainPosition(iconPos);
             }
 
-            Icon.transform.rotation = ConstrainRotation(iconNewPos);
+            Indicator.transform.rotation = ConstrainRotation(iconNewPos);
             //Icon.transform.Rotate(0, 0, 90);
-            Icon.transform.position = iconNewPos;
+            Indicator.transform.position = iconNewPos;
         }
+
+        #region TestRegion
+        
+
+        GDR_Controller dumbyController;
+        
+        void UpdateIndicatorColor()
+        {
+            if((dumbyController.GetLife() / dumbyController.GetMaxLife())> 0.75f)
+                Indicator.GetComponent<Image>().color = Color.green;
+            else if ((dumbyController.GetLife() / dumbyController.GetMaxLife()) > 0.35f)
+                Indicator.GetComponent<Image>().color = Color.yellow;
+            else
+                Indicator.GetComponent<Image>().color = Color.red;
+
+        }
+
+        #endregion
 
         /// <summary>
         /// Controlla se l'indicatore di Dumby si trova all'interno dello schermo

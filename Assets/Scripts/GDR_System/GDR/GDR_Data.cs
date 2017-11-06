@@ -28,7 +28,7 @@ namespace DumbProject.GDR_System
 
             }
         }
-      public float Life { get; private set; }
+        public float Life { get; private set; }
 
         [SerializeField] float _maxArmor;// rischio.
         public float MaxArmor

@@ -90,6 +90,22 @@ namespace DumbProject.GDR_System
                 }               
             }
         }
+
+        #region Test region
+        /// <summary>
+        /// Ritorna il valore della vita
+        /// </summary>
+        /// <returns></returns>
+        public float GetLife()
+        {
+            return Data.Life;
+        }
+
+        public float GetMaxLife()
+        {
+            return Data.MaxLife;
+        }
+        #endregion
     }
 }
 
