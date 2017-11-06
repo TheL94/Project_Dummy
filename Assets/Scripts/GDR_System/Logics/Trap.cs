@@ -71,7 +71,6 @@ namespace DumbProject.GDR_System
         {
             if (_GDR_Controller != null)
             {
-                Debug.Log(Data.Damage);
                 _GDR_Controller.OnInteract(this);
             }
         }
