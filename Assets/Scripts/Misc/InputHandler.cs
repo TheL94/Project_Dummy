@@ -174,6 +174,12 @@ namespace DumbProject.Generic
                     timer -= Time.deltaTime;
                     if (timer <= 0)
                     {
+                        Vector2 v = GetEdgeCollisionVector(Input.mousePosition);
+                        if (v != Vector2.zero)
+                        {
+                            /// Calcolare il vettore che porta dal ventro alla posizione attuale del mouse e muovere la camera in quella direzione
+                            cameraHandler.PanCamera(Input.mousePosition, new Vector3(Screen.width / 2, Screen.height / 2));
+                        }
                         if (roomPreview != null)
                         {
                             draggedRoom = roomPreview;
@@ -215,6 +221,8 @@ namespace DumbProject.Generic
             }
             else 
             {
+                
+
                 isDraggingCamera = false;
             }
             

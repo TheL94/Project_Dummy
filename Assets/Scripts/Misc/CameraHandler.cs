@@ -117,6 +117,31 @@ namespace DumbProject.Generic
             lastPanPosition = _newPanPosition;
         }
 
+        public void PanCamera(Vector3 _newPanPosition, Vector3 _referencialPosition)
+        {
+            // Determine how much to move the camera
+            Vector3 offset = cam.ScreenToViewportPoint(_referencialPosition - _newPanPosition);
+
+            float panSpeed;
+            if (GameManager.I.DeviceEnvironment == DeviceType.Handheld)
+                panSpeed = TouchPanSpeed;
+            else
+                panSpeed = MousePanSpeed;
+
+            panSpeed *= 0.01f;
+            Vector3 move = new Vector3(offset.x * panSpeed, 0, offset.y * panSpeed);
+            //compensate the eventual camera rotation;
+            move = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, 0f) * move;
+            // Perform the movement
+            transform.Translate(-move, Space.World);
+
+            // Ensure the camera remains within bounds.
+            Vector3 pos = transform.position;
+            pos.x = Mathf.Clamp(transform.position.x, BoundsX[0], BoundsX[1]);
+            pos.z = Mathf.Clamp(transform.position.z, BoundsZ[0], BoundsZ[1]);
+            transform.position = pos;
+        }
+
         public void ZoomCamera(float _offset)
         {
             if (_offset == 0)
