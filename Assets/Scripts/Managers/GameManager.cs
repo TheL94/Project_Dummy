@@ -175,12 +175,14 @@ namespace DumbProject.Generic
             //cameraCinematic.Execute(DungeonMng.FirstRoom.transform.position ,DungeonMng.ObjectiveRoom.transform.position);
             GameManager.I.ChageFlowState(FlowState.Gameplay);
             GameManager.I.InputHndl.enabled = true;
+            UIMng.GamePlayCtrl.InitializePlayStopButton();
         }
 
         public void PauseActions(bool _status)
         {
             SetAllAIStatus(!_status);
             UIMng.GamePlayCtrl.ActivatePausePanel(_status);
+            UIMng.GamePlayCtrl.SetNextTurnButtonStatus(_status);
         }
 
         public void RecapGameActions()
